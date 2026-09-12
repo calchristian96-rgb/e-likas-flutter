@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Same brand navy as lib/app/theme/app_theme.dart's
+         AppSemanticColors.navy (light) — used for the native
+         pre-Flutter launch screen and the adaptive-icon background,
+         so nothing native invents its own color. -->
+    <color name="elikas_navy">#FF082B5C</color>
+</resources>

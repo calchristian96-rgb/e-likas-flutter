@@ -1,0 +1,139 @@
+name: elikas_mobile
+description: "E-LIKAS resident app — evacuation centers, hazard map, and alerts for Ligao City. Read-only, no login, offline-first."
+publish_to: 'none'
+version: 0.1.0+1
+
+environment:
+  sdk: ">=3.12.0 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.8
+
+  # Local key-value storage — small app preferences and metadata only:
+  # the resident's selected language and theme mode
+  # (lib/core/localization/), and per-domain "last synced" timestamps
+  # (lib/core/sync/) for the Settings/Offline Data Management screens.
+  # The offline *data* cache itself (alerts, centers, hazards) is a
+  # Drift/SQLite database (lib/core/database/) — this never holds a
+  # copy of that.
+  shared_preferences: ^2.3.3
+
+  # State management
+  flutter_riverpod: 3.3.1
+  riverpod_annotation: 4.0.2
+
+  # Networking
+  dio: ^5.4.0
+
+  # Navigation
+  go_router: ^16.2.0
+
+  path_provider: ^2.1.5
+
+  # Drift/SQLite offline database. sqlcipher_flutter_libs (not
+  # sqlite3_flutter_libs) is the sole native SQLite provider for the
+  # whole app — combining both in one app is unsupported (they ship
+  # conflicting native libraries under the same name). SQLCipher's
+  # build is a superset of plain SQLite: a connection opened without a
+  # key behaves like ordinary unencrypted SQLite (the resident
+  # database), and one opened with `PRAGMA key` is fully encrypted at
+  # rest (the staff database) — one native library covers both cases.
+  drift: ^2.28.1
+  sqlcipher_flutter_libs: ^0.6.5
+  sqlite3: ^2.9.0
+  path: ^1.9.1
+
+  # Secure local storage — the staff Sanctum token and the encryption
+  # key for the staff-only Drift database (lib/core/security/). Never
+  # used for resident data, which has no secrets to protect.
+  flutter_secure_storage: ^11.0.0
+
+  # Collision-resistant local IDs for the offline family-registration
+  # pending queue (lib/features/family_registration/). Was already a
+  # transitive dependency; promoted to direct since staff code now
+  # imports it explicitly.
+  uuid: ^4.5.1
+
+  # Map and GIS
+  flutter_map: ^8.0.0
+  latlong2: ^0.9.1
+  power_geojson: ^3.41.0
+
+  # Staff evacuation-center photo picker (Part 2) — native camera/
+  # gallery picker for the `POST/PATCH /evacuation-centers` `photo`
+  # multipart field, which the backend now genuinely supports (see
+  # elikas-backend-main (4)'s StoreEvacuationCenterRequest). No
+  # existing image-picking dependency in this project to reuse.
+  image_picker: ^1.1.2
+
+  # Location
+  geolocator: ^13.0.0
+
+  # Connectivity
+  connectivity_plus: ^6.0.0
+
+  # Route guidance
+  routing_client_dart: ^1.0.7
+
+  # Local notifications
+  flutter_local_notifications: ^21.0.0
+
+  # Real-time communication
+  web_socket_channel: ^3.0.0
+
+  # Data model annotations
+  freezed_annotation: 3.1.0
+  json_annotation: 4.9.0
+
+  # Formatting
+  # Version bumped to 0.20.2 — flutter_localizations (added for the
+  # language-selection feature) pins intl to this exact version via
+  # the Flutter SDK, and pub's version solver requires this project's
+  # own constraint to be compatible with that pin.
+  intl: ^0.20.2
+  url_launcher: ^6.3.2
+
+  # Alert Details' "Share Alert" action — the standard, lightweight
+  # Flutter-team plugin for the device share sheet, same maintainer
+  # family as geolocator/url_launcher/connectivity_plus already in this
+  # project. No alternative already present could do this.
+  #
+  # >=13.2.0 specifically: that's the release that stopped applying its
+  # own Kotlin Gradle Plugin and adopted Flutter's Built-in Kotlin
+  # support instead — 10.1.4 was triggering "Future versions of Flutter
+  # will fail to build if your app uses plugins that apply KGP" at
+  # build time. Confirmed against this project's actual Android
+  # toolchain versions (AGP 9.0.1, Gradle 9.1.0, Kotlin 2.3.20, Java 17)
+  # that all comfortably exceed what >=13.2.0 requires (AGP >=8.12.1,
+  # Gradle >=8.13, Kotlin >=2.2.0) before upgrading, rather than
+  # assuming compatibility.
+  share_plus: ^13.3.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^6.0.0
+
+  # Code generation cluster
+  build_runner: 2.15.0
+  riverpod_generator: 4.0.3
+  freezed: 3.2.4
+  json_serializable: 6.11.4
+  drift_dev: ^2.28.1
+
+  # Testing
+  mocktail: ^1.0.0
+
+flutter:
+  uses-material-design: true
+  generate: true
+
+  assets:
+    - assets/images/
+    - assets/icons/

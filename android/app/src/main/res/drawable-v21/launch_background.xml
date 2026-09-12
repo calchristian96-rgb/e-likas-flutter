@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Same branded launch background as drawable/launch_background.xml
+     — API 21+ gets its own copy only because that's the Flutter
+     template convention; the content is identical (fixed navy, not
+     the system-theme-dependent white/black the stock template used
+     here). -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@color/elikas_navy" />
+    <item>
+        <bitmap
+            android:gravity="center"
+            android:src="@drawable/ic_launcher_logo" />
+    </item>
+</layer-list>

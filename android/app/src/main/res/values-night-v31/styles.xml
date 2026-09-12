@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Identical to values-v31/styles.xml — kept as its own file rather
+     than relying on values-v31 alone, since Android's resource
+     qualifier precedence checks ui-mode (night) before platform
+     version, and a night-mode API 31+ device could otherwise resolve
+     LaunchTheme from values-night instead of values-v31 and lose the
+     splash-screen attributes. Both variants render the same fixed
+     navy + logo regardless of system theme (see
+     drawable/launch_background.xml's doc comment). -->
+<resources>
+    <style name="LaunchTheme" parent="@android:style/Theme.Black.NoTitleBar">
+        <item name="android:windowSplashScreenBackground">@color/elikas_navy</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@drawable/ic_launcher_foreground</item>
+        <item name="android:windowSplashScreenIconBackgroundColor">@color/elikas_navy</item>
+        <item name="android:windowBackground">@drawable/launch_background</item>
+    </style>
+</resources>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Adaptive-icon foreground layer: the real E-LIKAS logo
+     (res/drawable-nodpi/ic_launcher_logo.png, an unmodified copy of
+     assets/images/elikas_logo.png), inset so it sits inside the
+     OS mask's safe zone regardless of whether a given launcher crops
+     the icon to a circle, squircle, or rounded square. -->
+<inset xmlns:android="http://schemas.android.com/apk/res/android"
+    android:drawable="@drawable/ic_launcher_logo"
+    android:insetLeft="14%"
+    android:insetTop="14%"
+    android:insetRight="14%"
+    android:insetBottom="14%" />

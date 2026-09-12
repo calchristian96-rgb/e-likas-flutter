@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Adaptive-icon background layer: solid E-LIKAS navy, matching
+     lib/app/theme/app_theme.dart's AppSemanticColors.navy (0xFF082B5C) —
+     same brand color as the Flutter splash screen, not a separate one
+     invented for Android. -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
+    <solid android:color="#FF082B5C" />
+</shape>

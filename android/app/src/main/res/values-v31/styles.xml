@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Android 12+ (API 31+) uses the platform SplashScreen API instead of
+     rendering android:windowBackground directly for the very first
+     frame — without this override it shows a generic system splash
+     (plain background + the launcher icon, un-branded look) rather
+     than picking up drawable/launch_background.xml. This makes that
+     system splash use the same navy + E-LIKAS logo instead. -->
+<resources>
+    <style name="LaunchTheme" parent="@android:style/Theme.Light.NoTitleBar">
+        <item name="android:windowSplashScreenBackground">@color/elikas_navy</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@drawable/ic_launcher_foreground</item>
+        <item name="android:windowSplashScreenIconBackgroundColor">@color/elikas_navy</item>
+        <item name="android:windowBackground">@drawable/launch_background</item>
+    </style>
+</resources>
