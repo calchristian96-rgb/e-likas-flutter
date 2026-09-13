@@ -26,4 +26,13 @@ abstract class EvacuationCentersRepository {
     int limit = 10,
     bool allowOfflineFallback = true,
   });
+
+  /// Best-effort backfill: if [centerId]'s cached row has no photo yet,
+  /// fetches the real one from `GET public/evacuation-centers/{id}`
+  /// (the only resident-reachable endpoint besides GIS map data that
+  /// returns `photo_url` — the plain list never does) and caches it.
+  /// Never throws; returns true only when a new photo was actually
+  /// written to the cache, so the caller knows whether a refresh of
+  /// the centers list is worthwhile.
+  Future<bool> refreshCenterPhotoIfMissing(int centerId);
 }

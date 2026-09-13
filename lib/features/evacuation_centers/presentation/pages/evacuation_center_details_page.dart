@@ -15,14 +15,17 @@ import '../widgets/center_status_display.dart';
 
 /// Full detail view for a single evacuation center, reached by tapping
 /// a card/row anywhere in the app. Everything except the Facilities
-/// section is built entirely from [EvacuationCenter] — every other
-/// field shown here is one the public `/public/evacuation-centers`
-/// response actually returns (confirmed against
-/// `PublicController::evacuationCenters()`). The Facilities section
-/// (`CenterFacilitiesSection`) is the one part of this page that makes
-/// its own request, to `GET public/evacuation-centers/{id}` — added on
-/// `elikas-backend-main (7)` — since the list endpoint above never
-/// carries facilities data. Deliberately still no Contact section:
+/// section and the photo is built entirely from [EvacuationCenter] —
+/// every other field shown here is one the public
+/// `/public/evacuation-centers` response actually returns (confirmed
+/// against `PublicController::evacuationCenters()`). The Facilities
+/// section (`CenterFacilitiesSection`) and the photo backfill
+/// (`_PhotoBackfillTrigger`) are the two parts of this page that make
+/// their own request, to `GET public/evacuation-centers/{id}` — added
+/// on `elikas-backend-main (7)` — since the list endpoint above never
+/// carries facilities data or `photo_url` at all (confirmed against a
+/// live production response, not just source reading). Deliberately
+/// still no Contact section:
 /// `camp_manager_name`/`camp_manager_contact` only exist on the
 /// staff-facing `EvacuationCenterResource` — the controller's own
 /// comment says camp manager contact details are intentionally excluded
@@ -122,6 +125,7 @@ class _CenterDetailsBody extends StatelessWidget {
         ),
         const SizedBox(height: 16),
         CenterPhotoCard(centerId: center.id, photoUrl: center.photoUrl),
+        if (center.photoUrl == null) _PhotoBackfillTrigger(centerId: center.id),
         const Divider(height: 32),
 
         // Overview — capacity/occupancy/available slots/percent, only
@@ -266,6 +270,29 @@ class _CenterDetailsBody extends StatelessWidget {
         SnackBar(content: Text(AppLocalizations.of(context).unableToOpenMaps)),
       );
     }
+  }
+}
+
+/// Renders nothing — a self-contained trigger, exactly like
+/// `CenterFacilitiesSection`'s own pattern, for
+/// `centerPhotoRefreshProvider`'s one-time backfill attempt (see that
+/// provider's doc comment). Mounted only when [EvacuationCenter.photoUrl]
+/// is null, so a center that already has a cached photo (from a prior
+/// GIS map visit, or a previous backfill) never re-fetches it here.
+/// `CenterPhotoCard` itself is completely unaware of this — a
+/// successful backfill invalidates the centers list, which flows back
+/// down through `centerByIdProvider` and simply gives `CenterPhotoCard`
+/// a non-null `photoUrl` on the next build, same as if the resident
+/// had visited the GIS map first.
+class _PhotoBackfillTrigger extends ConsumerWidget {
+  const _PhotoBackfillTrigger({required this.centerId});
+
+  final int centerId;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    ref.watch(centerPhotoRefreshProvider(centerId));
+    return const SizedBox.shrink();
   }
 }
 

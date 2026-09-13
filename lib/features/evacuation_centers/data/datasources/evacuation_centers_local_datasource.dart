@@ -41,6 +41,17 @@ class EvacuationCentersLocalDatasource {
     });
   }
 
+  /// Targeted single-column update — used only to backfill a real
+  /// photo for a center whose cached row doesn't have one yet (see
+  /// `EvacuationCentersRepositoryImpl.refreshCenterPhotoIfMissing`).
+  /// A no-op if [centerId] isn't cached at all yet; every other cached
+  /// field is left untouched.
+  Future<void> updatePhotoUrl(int centerId, String photoUrl) async {
+    await (_db.update(_db.evacuationCenters)
+          ..where((t) => t.id.equals(centerId)))
+        .write(EvacuationCentersCompanion(photoUrl: Value(photoUrl)));
+  }
+
   static EvacuationCentersCompanion _toCompanion(EvacuationCenterModel m) {
     return EvacuationCentersCompanion.insert(
       id: Value(m.id),

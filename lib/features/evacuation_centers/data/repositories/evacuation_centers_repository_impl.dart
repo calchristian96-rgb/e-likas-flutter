@@ -8,6 +8,7 @@ import '../../domain/entities/evacuation_center.dart';
 import '../../domain/repositories/evacuation_centers_repository.dart';
 import '../datasources/evacuation_centers_local_datasource.dart';
 import '../datasources/evacuation_centers_remote_datasource.dart';
+import '../models/evacuation_center_model.dart';
 
 class EvacuationCentersRepositoryImpl implements EvacuationCentersRepository {
   EvacuationCentersRepositoryImpl({
@@ -120,6 +121,40 @@ class EvacuationCentersRepositoryImpl implements EvacuationCentersRepository {
       return Success(models.map((m) => m.toEntity()).toList());
     } catch (_) {
       return const Failed(NetworkFailure('Could not load facilities.'));
+    }
+  }
+
+  /// See the interface doc comment for why this exists at all: the
+  /// plain centers list never returns `photo_url`, so a center's
+  /// cached row only ever gets a real photo via this backfill or a
+  /// prior GIS map visit (`MapLocalDatasource.cacheMapData`, which
+  /// already caches `photo_url` authoritatively for the exact same
+  /// reason). Best-effort by design — a failure here must never turn
+  /// into a visible error; the resident just keeps seeing the
+  /// placeholder they were already seeing.
+  @override
+  Future<bool> refreshCenterPhotoIfMissing(int centerId) async {
+    try {
+      final cached = await _local.getCachedCenters();
+      EvacuationCenterModel? existing;
+      for (final c in cached) {
+        if (c.id == centerId) {
+          existing = c;
+          break;
+        }
+      }
+      // Nothing cached yet, or it already has a real photo — either
+      // way there's nothing useful for this backfill to do.
+      if (existing == null || existing.photoUrl != null) return false;
+      if (!await _connectivity.hasConnection) return false;
+
+      final photoUrl = await _remote.getCenterPhotoUrl(centerId);
+      if (photoUrl == null || photoUrl.isEmpty) return false;
+
+      await _local.updatePhotoUrl(centerId, photoUrl);
+      return true;
+    } catch (_) {
+      return false;
     }
   }
 }

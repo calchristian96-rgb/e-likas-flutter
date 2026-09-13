@@ -15,10 +15,12 @@ class EvacuationCentersRemoteDatasource {
   }
 
   /// `GET public/evacuation-centers/{id}` — only the `facilities` array
-  /// is read here; every other field this endpoint returns (photo,
-  /// status, capacity, occupancy, coordinates) is already covered by
-  /// the existing list-based `EvacuationCenterModel`/`centerByIdProvider`
-  /// flow and deliberately left untouched rather than duplicated.
+  /// is read here; every other field this endpoint returns (status,
+  /// capacity, occupancy, coordinates) is already covered by the
+  /// existing list-based `EvacuationCenterModel`/`centerByIdProvider`
+  /// flow and deliberately left untouched rather than duplicated. Photo
+  /// is the one exception — see [getCenterPhotoUrl], which reads this
+  /// same endpoint's `photo_url` for a different purpose.
   Future<List<CenterFacilityModel>> getCenterFacilities(int centerId) async {
     final response = await _apiClient.get(
       ApiEndpoints.evacuationCenterDetail(centerId),
@@ -29,6 +31,24 @@ class EvacuationCentersRemoteDatasource {
     return facilities
         .map((e) => CenterFacilityModel.fromJson(e as Map<String, dynamic>))
         .toList();
+  }
+
+  /// `GET public/evacuation-centers/{id}` — only `photo_url` is read
+  /// here. Used to backfill a real photo for a center whose cached row
+  /// doesn't have one yet: `public/evacuation-centers` (the plain
+  /// list, confirmed against `PublicController::evacuationCenters()`
+  /// and a live production check) never returns `photo_url` at all —
+  /// only this detail endpoint and `public/gis/map-data` do. Without
+  /// this, a resident who opens Center Details without ever having
+  /// visited the GIS map first would see no photo for a center that
+  /// genuinely has one uploaded on the backend.
+  Future<String?> getCenterPhotoUrl(int centerId) async {
+    final response = await _apiClient.get(
+      ApiEndpoints.evacuationCenterDetail(centerId),
+    );
+    final envelope = response.data as Map<String, dynamic>;
+    final data = envelope['data'] as Map<String, dynamic>;
+    return data['photo_url'] as String?;
   }
 
   Future<List<EvacuationCenterModel>> getNearestCenters({

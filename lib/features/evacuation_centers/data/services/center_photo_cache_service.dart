@@ -89,41 +89,137 @@ class CenterPhotoCacheService {
   /// [File] on success, or null on any failure (bad URL, network
   /// error, non-200 response, disk error) — callers fall back to
   /// [getCachedFile] or a placeholder, never crash.
+  ///
+  /// **Root-cause fix (real-device `PathNotFoundException`):**
+  /// [_evictOtherFilesForCenter] used to run *before* the rename
+  /// below, matching on the `center_<id>_` filename prefix. The temp
+  /// file's own name (`center_<id>_<hash>.tmp`) also starts with that
+  /// exact prefix and is never equal to `keepFileName` (which has no
+  /// `.tmp` suffix) — so eviction was deleting the just-downloaded
+  /// temp file out from under the very next line, and the rename
+  /// below threw `PathNotFoundException` trying to move a file that
+  /// no longer existed. Running eviction *after* a verified-successful
+  /// rename fixes this: by then the temp path is gone (renamed away,
+  /// not deleted) and only genuinely stale old files for this center
+  /// remain to be cleaned up — including any leftover `.tmp` file from
+  /// a previous crashed/interrupted attempt, which this ordering now
+  /// also cleans up as a side benefit.
   Future<File?> downloadAndCache(int centerId, String url) async {
+    final Directory dir;
     try {
-      final dir = await _photosDirectory();
-      final fileName = _fileNameFor(centerId, url);
-      final tempFile = File(_pathIn(dir, '$fileName.tmp'));
+      dir = await _photosDirectory();
+    } catch (e, st) {
+      centerPhotoDebugLog(
+        'centerId=$centerId stage=resolveDirectory failed error=$e\n$st',
+      );
+      return null;
+    }
 
-      final response = await _dio.download(
+    final fileName = _fileNameFor(centerId, url);
+    final tempFile = File(_pathIn(dir, '$fileName.tmp'));
+    final finalFile = File(_pathIn(dir, fileName));
+
+    Response<dynamic> response;
+    try {
+      response = await _dio.download(
         url,
         tempFile.path,
         options: Options(receiveTimeout: const Duration(seconds: 20)),
       );
-      final tempExists = await tempFile.exists();
-      centerPhotoDebugLog(
-        'image url http status=${response.statusCode} '
-        'file written=$tempExists',
+    } catch (e, st) {
+      await _logFailure(
+        centerId: centerId,
+        stage: 'download',
+        targetFile: tempFile,
+        dir: dir,
+        error: e,
+        stackTrace: st,
       );
-      if (response.statusCode != 200 || !tempExists) {
-        await _safeDelete(tempFile);
-        return null;
-      }
-
-      await _evictOtherFilesForCenter(dir, centerId, keepFileName: fileName);
-
-      final finalFile = File(_pathIn(dir, fileName));
-      await _safeDelete(finalFile);
-      final saved = await tempFile.rename(finalFile.path);
-      centerPhotoDebugLog(
-        'image cached at path=${saved.path} exists after write='
-        '${await saved.exists()}',
-      );
-      return saved;
-    } catch (e) {
-      centerPhotoDebugLog('image download failed error=${e.runtimeType}');
+      await _safeDelete(tempFile);
       return null;
     }
+
+    final tempExists = await tempFile.exists();
+    centerPhotoDebugLog(
+      'centerId=$centerId image url http status=${response.statusCode} '
+      'file written=$tempExists tempPath=${tempFile.path}',
+    );
+    if (response.statusCode != 200 || !tempExists) {
+      await _safeDelete(tempFile);
+      return null;
+    }
+
+    try {
+      await _safeDelete(finalFile);
+    } catch (e, st) {
+      // _safeDelete already swallows its own errors, but stage-tag
+      // anything unexpected that somehow escapes it rather than
+      // letting it fall into the generic rename failure below.
+      await _logFailure(
+        centerId: centerId,
+        stage: 'deleteExistingFinalFile',
+        targetFile: finalFile,
+        dir: dir,
+        error: e,
+        stackTrace: st,
+      );
+    }
+
+    final File saved;
+    try {
+      saved = await tempFile.rename(finalFile.path);
+    } catch (e, st) {
+      await _logFailure(
+        centerId: centerId,
+        stage: 'rename',
+        targetFile: tempFile,
+        dir: dir,
+        error: e,
+        stackTrace: st,
+      );
+      await _safeDelete(tempFile);
+      return null;
+    }
+
+    final savedExists = await saved.exists();
+    centerPhotoDebugLog(
+      'centerId=$centerId image cached at path=${saved.path} '
+      'exists after write=$savedExists',
+    );
+    if (!savedExists) {
+      centerPhotoDebugLog(
+        'centerId=$centerId stage=verifyExists failed path=${saved.path}',
+      );
+      return null;
+    }
+
+    // Only now that the new file is safely in place — never before,
+    // see the doc comment above for exactly why "before" was the bug.
+    await _evictOtherFilesForCenter(dir, centerId, keepFileName: fileName);
+
+    return saved;
+  }
+
+  /// Logs enough detail to tell apart *which* filesystem operation
+  /// failed and why, per the debugging requirement this fix was built
+  /// against — never just "download failed" again.
+  Future<void> _logFailure({
+    required int centerId,
+    required String stage,
+    required File targetFile,
+    required Directory dir,
+    required Object error,
+    required StackTrace stackTrace,
+  }) async {
+    final parentExists = await dir.exists();
+    final targetExists = await targetFile.exists();
+    centerPhotoDebugLog(
+      'centerId=$centerId stage=$stage FAILED '
+      'errorType=${error.runtimeType} error=$error\n'
+      'targetFilePath=${targetFile.path} targetFileExists=$targetExists\n'
+      'parentDirPath=${dir.path} parentDirExists=$parentExists\n'
+      '$stackTrace',
+    );
   }
 
   /// Removes every cached file for [centerId] other than

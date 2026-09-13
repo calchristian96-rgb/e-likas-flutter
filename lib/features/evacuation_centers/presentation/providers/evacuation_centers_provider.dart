@@ -43,14 +43,15 @@ Future<List<EvacuationCenter>> allEvacuationCenters(Ref ref) async {
 }
 
 /// A single center for Center Details, found in the already-loaded
-/// full list rather than a new per-id request — no public
-/// `evacuation-centers/{id}` endpoint exists (confirmed against
-/// `PublicController`), and the full list is what every entry point
-/// into this screen (the centers list, Nearest Center's primary card
-/// and "other nearby centers" rows) already has loaded. Null means the
-/// list loaded fine but genuinely has no center with this id — an
-/// unreachable case from in-app navigation, but a stale deep link
-/// could reach it, so the page has to handle it rather than assume.
+/// full list rather than a new per-id request — the full list is what
+/// every entry point into this screen (the centers list, Nearest
+/// Center's primary card and "other nearby centers" rows) already has
+/// loaded, and every field except `photoUrl` is fully covered by it
+/// (see [centerPhotoRefreshProvider] for how that one gap is closed).
+/// Null means the list loaded fine but genuinely has no center with
+/// this id — an unreachable case from in-app navigation, but a stale
+/// deep link could reach it, so the page has to handle it rather than
+/// assume.
 @riverpod
 Future<EvacuationCenter?> centerById(Ref ref, int id) async {
   final centers = await ref.watch(allEvacuationCentersProvider.future);
@@ -103,4 +104,25 @@ Future<List<CenterFacility>> centerFacilities(Ref ref, int centerId) async {
     Success(:final value) => value,
     Failed(:final failure) => throw failure,
   };
+}
+
+/// Silently backfills a real photo for [centerId] when its cached row
+/// doesn't have one yet — see
+/// `EvacuationCentersRepositoryImpl.refreshCenterPhotoIfMissing`'s doc
+/// comment for why this gap exists (the plain centers list never
+/// returns `photo_url`) and why it's safe to always attempt this: it's
+/// a cheap no-op whenever a photo is already cached or the fetch/write
+/// fails for any reason. Returns whether a refresh of
+/// [allEvacuationCentersProvider] is worthwhile — watched by a small,
+/// invisible trigger widget on the details page (see
+/// `evacuation_center_details_page.dart`) rather than by
+/// [CenterPhotoCard] itself, so that widget's existing behavior stays
+/// completely unchanged.
+@riverpod
+Future<void> centerPhotoRefresh(Ref ref, int centerId) async {
+  final repository = ref.watch(evacuationCentersRepositoryProvider);
+  final refreshed = await repository.refreshCenterPhotoIfMissing(centerId);
+  if (refreshed) {
+    ref.invalidate(allEvacuationCentersProvider);
+  }
 }
