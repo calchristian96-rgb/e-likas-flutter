@@ -2691,6 +2691,240 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Registration removed from the queue.'**
   String get staffPendingDetailDeletedMessage;
+
+  /// No description provided for @ecBoardTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'EC Information Board'**
+  String get ecBoardTitle;
+
+  /// No description provided for @ecBoardEntryPointSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Add evacuees and view the age/sex breakdown for this center'**
+  String get ecBoardEntryPointSubtitle;
+
+  /// No description provided for @ecBoardAddEvacueeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Evacuee'**
+  String get ecBoardAddEvacueeTitle;
+
+  /// No description provided for @ecBoardEditEvacueeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Evacuee Entry'**
+  String get ecBoardEditEvacueeTitle;
+
+  /// No description provided for @ecBoardEntryDetailTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Evacuee Entry'**
+  String get ecBoardEntryDetailTitle;
+
+  /// No description provided for @ecBoardFieldSex.
+  ///
+  /// In en, this message translates to:
+  /// **'Sex'**
+  String get ecBoardFieldSex;
+
+  /// No description provided for @ecBoardFieldAgeBracket.
+  ///
+  /// In en, this message translates to:
+  /// **'Age Bracket'**
+  String get ecBoardFieldAgeBracket;
+
+  /// No description provided for @ecBoardFieldHousehold.
+  ///
+  /// In en, this message translates to:
+  /// **'Household'**
+  String get ecBoardFieldHousehold;
+
+  /// No description provided for @ecBoardHouseholdExisting.
+  ///
+  /// In en, this message translates to:
+  /// **'Existing household'**
+  String get ecBoardHouseholdExisting;
+
+  /// No description provided for @ecBoardHouseholdNew.
+  ///
+  /// In en, this message translates to:
+  /// **'New household'**
+  String get ecBoardHouseholdNew;
+
+  /// No description provided for @ecBoardSelectHouseholdButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Select household'**
+  String get ecBoardSelectHouseholdButton;
+
+  /// No description provided for @ecBoardHouseholdSearchHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Search by head of family name'**
+  String get ecBoardHouseholdSearchHint;
+
+  /// No description provided for @ecBoardPendingHouseholdBadge.
+  ///
+  /// In en, this message translates to:
+  /// **'Pending — not yet synced'**
+  String get ecBoardPendingHouseholdBadge;
+
+  /// No description provided for @ecBoardPendingHouseholdNotice.
+  ///
+  /// In en, this message translates to:
+  /// **'This household hasn\'t synced yet. This entry will sync automatically once it does.'**
+  String get ecBoardPendingHouseholdNotice;
+
+  /// No description provided for @ecBoardNewHouseholdHeadName.
+  ///
+  /// In en, this message translates to:
+  /// **'Head of Household Name'**
+  String get ecBoardNewHouseholdHeadName;
+
+  /// No description provided for @ecBoardSubmitButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Save Evacuee'**
+  String get ecBoardSubmitButton;
+
+  /// No description provided for @ecBoardValidationBanner.
+  ///
+  /// In en, this message translates to:
+  /// **'Please complete sex, age bracket, and household before saving.'**
+  String get ecBoardValidationBanner;
+
+  /// No description provided for @ecBoardSavedOfflineMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Saved offline. It will sync when you\'re back online.'**
+  String get ecBoardSavedOfflineMessage;
+
+  /// No description provided for @ecBoardSavedPendingHouseholdMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Saved — waiting for the selected household to sync first.'**
+  String get ecBoardSavedPendingHouseholdMessage;
+
+  /// No description provided for @ecBoardSuccessMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Evacuee added successfully.'**
+  String get ecBoardSuccessMessage;
+
+  /// No description provided for @ecBoardNoEventsAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'No evacuation events are available yet.'**
+  String get ecBoardNoEventsAvailable;
+
+  /// No description provided for @ecBoardLastKnownSectionTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Last Known Breakdown'**
+  String get ecBoardLastKnownSectionTitle;
+
+  /// No description provided for @ecBoardLastKnownSectionSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Live count of evacuees already confirmed on the server.'**
+  String get ecBoardLastKnownSectionSubtitle;
+
+  /// No description provided for @ecBoardLastKnownUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not load the last known breakdown.'**
+  String get ecBoardLastKnownUnavailable;
+
+  /// No description provided for @ecBoardLastKnownEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No evacuees recorded for this center and event yet.'**
+  String get ecBoardLastKnownEmpty;
+
+  /// No description provided for @ecBoardUnclassifiedLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Unclassified'**
+  String get ecBoardUnclassifiedLabel;
+
+  /// No description provided for @ecBoardPendingSectionTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'This Device\'s Pending Entries'**
+  String get ecBoardPendingSectionTitle;
+
+  /// No description provided for @ecBoardPendingSectionSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Not yet synced — kept separate from the confirmed count above.'**
+  String get ecBoardPendingSectionSubtitle;
+
+  /// No description provided for @ecBoardPendingListTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Pending Entries'**
+  String get ecBoardPendingListTitle;
+
+  /// No description provided for @ecBoardPendingListEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No pending entries on this device.'**
+  String get ecBoardPendingListEmpty;
+
+  /// No description provided for @ecBoardTotalLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Total'**
+  String get ecBoardTotalLabel;
+
+  /// Compact male/female count pair shown next to each age bracket row
+  ///
+  /// In en, this message translates to:
+  /// **'{male}M / {female}F'**
+  String ecBoardMaleFemaleCount(int male, int female);
+
+  /// No description provided for @ecBoardBracketInfant.
+  ///
+  /// In en, this message translates to:
+  /// **'Infant (0-6 mo)'**
+  String get ecBoardBracketInfant;
+
+  /// No description provided for @ecBoardBracketToddler.
+  ///
+  /// In en, this message translates to:
+  /// **'Toddler (7-24 mo)'**
+  String get ecBoardBracketToddler;
+
+  /// No description provided for @ecBoardBracketPreschooler.
+  ///
+  /// In en, this message translates to:
+  /// **'Preschooler'**
+  String get ecBoardBracketPreschooler;
+
+  /// No description provided for @ecBoardBracketSchoolAge.
+  ///
+  /// In en, this message translates to:
+  /// **'School Age'**
+  String get ecBoardBracketSchoolAge;
+
+  /// No description provided for @ecBoardBracketTeenage.
+  ///
+  /// In en, this message translates to:
+  /// **'Teenage'**
+  String get ecBoardBracketTeenage;
+
+  /// No description provided for @ecBoardBracketAdult.
+  ///
+  /// In en, this message translates to:
+  /// **'Adult'**
+  String get ecBoardBracketAdult;
+
+  /// No description provided for @ecBoardBracketSeniorCitizen.
+  ///
+  /// In en, this message translates to:
+  /// **'Senior Citizen'**
+  String get ecBoardBracketSeniorCitizen;
 }
 
 class _AppLocalizationsDelegate

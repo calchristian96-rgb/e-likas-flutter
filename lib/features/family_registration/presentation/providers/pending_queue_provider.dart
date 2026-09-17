@@ -3,6 +3,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../../../core/connectivity/connectivity_service.dart';
 import '../../../../core/database/staff_database.dart';
 import '../../../../core/debug/pending_count_debug_log.dart';
+import '../../../ec_board/presentation/providers/ec_board_provider.dart';
 import '../../../staff_auth/presentation/providers/staff_auth_provider.dart';
 import '../../data/datasources/pending_queue_local_datasource.dart';
 import '../../data/repositories/pending_queue_repository_impl.dart';
@@ -40,6 +41,7 @@ StaffSyncService staffSyncService(Ref ref) {
     pendingQueueRepository: ref.watch(pendingQueueRepositoryProvider),
     registrationRepository: ref.watch(registrationSubmitProvider),
     connectivity: ref.watch(connectivityServiceProvider),
+    ecBoardRepository: ref.watch(ecBoardRepositoryProvider),
   );
 }
 

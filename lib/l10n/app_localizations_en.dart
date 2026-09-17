@@ -1461,4 +1461,133 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get staffPendingDetailDeletedMessage =>
       'Registration removed from the queue.';
+
+  @override
+  String get ecBoardTitle => 'EC Information Board';
+
+  @override
+  String get ecBoardEntryPointSubtitle =>
+      'Add evacuees and view the age/sex breakdown for this center';
+
+  @override
+  String get ecBoardAddEvacueeTitle => 'Add Evacuee';
+
+  @override
+  String get ecBoardEditEvacueeTitle => 'Edit Evacuee Entry';
+
+  @override
+  String get ecBoardEntryDetailTitle => 'Evacuee Entry';
+
+  @override
+  String get ecBoardFieldSex => 'Sex';
+
+  @override
+  String get ecBoardFieldAgeBracket => 'Age Bracket';
+
+  @override
+  String get ecBoardFieldHousehold => 'Household';
+
+  @override
+  String get ecBoardHouseholdExisting => 'Existing household';
+
+  @override
+  String get ecBoardHouseholdNew => 'New household';
+
+  @override
+  String get ecBoardSelectHouseholdButton => 'Select household';
+
+  @override
+  String get ecBoardHouseholdSearchHint => 'Search by head of family name';
+
+  @override
+  String get ecBoardPendingHouseholdBadge => 'Pending — not yet synced';
+
+  @override
+  String get ecBoardPendingHouseholdNotice =>
+      'This household hasn\'t synced yet. This entry will sync automatically once it does.';
+
+  @override
+  String get ecBoardNewHouseholdHeadName => 'Head of Household Name';
+
+  @override
+  String get ecBoardSubmitButton => 'Save Evacuee';
+
+  @override
+  String get ecBoardValidationBanner =>
+      'Please complete sex, age bracket, and household before saving.';
+
+  @override
+  String get ecBoardSavedOfflineMessage =>
+      'Saved offline. It will sync when you\'re back online.';
+
+  @override
+  String get ecBoardSavedPendingHouseholdMessage =>
+      'Saved — waiting for the selected household to sync first.';
+
+  @override
+  String get ecBoardSuccessMessage => 'Evacuee added successfully.';
+
+  @override
+  String get ecBoardNoEventsAvailable =>
+      'No evacuation events are available yet.';
+
+  @override
+  String get ecBoardLastKnownSectionTitle => 'Last Known Breakdown';
+
+  @override
+  String get ecBoardLastKnownSectionSubtitle =>
+      'Live count of evacuees already confirmed on the server.';
+
+  @override
+  String get ecBoardLastKnownUnavailable =>
+      'Could not load the last known breakdown.';
+
+  @override
+  String get ecBoardLastKnownEmpty =>
+      'No evacuees recorded for this center and event yet.';
+
+  @override
+  String get ecBoardUnclassifiedLabel => 'Unclassified';
+
+  @override
+  String get ecBoardPendingSectionTitle => 'This Device\'s Pending Entries';
+
+  @override
+  String get ecBoardPendingSectionSubtitle =>
+      'Not yet synced — kept separate from the confirmed count above.';
+
+  @override
+  String get ecBoardPendingListTitle => 'Pending Entries';
+
+  @override
+  String get ecBoardPendingListEmpty => 'No pending entries on this device.';
+
+  @override
+  String get ecBoardTotalLabel => 'Total';
+
+  @override
+  String ecBoardMaleFemaleCount(int male, int female) {
+    return '${male}M / ${female}F';
+  }
+
+  @override
+  String get ecBoardBracketInfant => 'Infant (0-6 mo)';
+
+  @override
+  String get ecBoardBracketToddler => 'Toddler (7-24 mo)';
+
+  @override
+  String get ecBoardBracketPreschooler => 'Preschooler';
+
+  @override
+  String get ecBoardBracketSchoolAge => 'School Age';
+
+  @override
+  String get ecBoardBracketTeenage => 'Teenage';
+
+  @override
+  String get ecBoardBracketAdult => 'Adult';
+
+  @override
+  String get ecBoardBracketSeniorCitizen => 'Senior Citizen';
 }

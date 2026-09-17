@@ -121,3 +121,61 @@ class PendingFamilyRegistrations extends Table {
   @override
   Set<Column> get primaryKey => {localId};
 }
+
+/// One offline-queued (or being-synced) EC Information Board "Add
+/// Evacuee" entry — mirrors `PendingFamilyRegistrations` at a smaller
+/// scale (one evacuee's bracket/sex/household, not a full
+/// registration). See `EcBoardEntryDraft`'s doc comment for why the
+/// household reference is split into two nullable columns rather than
+/// one.
+@DataClassName('PendingEcBoardEntryRow')
+class PendingEcBoardEntries extends Table {
+  TextColumn get localId => text()();
+
+  IntColumn get evacuationCenterId => integer()();
+  IntColumn get evacuationEventId => integer()();
+
+  /// 'male' | 'female'.
+  TextColumn get sex => text()();
+
+  /// One of the 7 `AgeBracket` wire values.
+  TextColumn get ageBracket => text()();
+
+  /// 'existing' | 'new' — see `HouseholdMode`.
+  TextColumn get householdMode => text()();
+
+  /// Set once this entry's household is a confirmed real
+  /// `families.id` — either chosen directly from an already-synced
+  /// family, or promoted from [existingFamilyLocalId] once that local
+  /// registration itself syncs (see
+  /// `EcBoardRepository.promoteHouseholdReference`).
+  IntColumn get existingFamilyRemoteId => integer().nullable()();
+
+  /// Set when the household was chosen from this device's own
+  /// still-`pending` `PendingFamilyRegistrations.localId` — cleared
+  /// once promoted to [existingFamilyRemoteId].
+  TextColumn get existingFamilyLocalId => text().nullable()();
+
+  TextColumn get newHouseholdHeadName => text().nullable()();
+  IntColumn get newHouseholdBarangayId => integer().nullable()();
+
+  /// Display-only cache of the chosen household's name — see
+  /// `PendingEcBoardEntrySummary.householdLabel`'s doc comment.
+  TextColumn get householdLabel => text()();
+
+  /// One of: pending | syncing | needsAttention.
+  TextColumn get syncStatus => text()();
+
+  IntColumn get attemptCount => integer().withDefault(const Constant(0))();
+  IntColumn get lastAttemptAtEpochMs => integer().nullable()();
+  TextColumn get lastErrorCategory => text().nullable()();
+  TextColumn get lastErrorMessage => text().nullable()();
+
+  IntColumn get createdAtEpochMs => integer()();
+  IntColumn get updatedAtEpochMs => integer()();
+
+  IntColumn get ownerStaffId => integer().nullable()();
+
+  @override
+  Set<Column> get primaryKey => {localId};
+}

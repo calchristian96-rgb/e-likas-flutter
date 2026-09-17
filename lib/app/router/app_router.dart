@@ -11,6 +11,8 @@ import '../../features/alerts/presentation/pages/alert_details_page.dart';
 import '../../features/alerts/presentation/pages/alerts_page.dart';
 import '../../features/alerts/presentation/providers/alerts_summary_provider.dart';
 import '../../features/alerts/presentation/widgets/alert_type_display.dart';
+import '../../features/ec_board/presentation/pages/ec_board_page.dart';
+import '../../features/ec_board/presentation/pages/pending_ec_entry_detail_page.dart';
 import '../../features/emergency_hotlines/presentation/pages/emergency_hotlines_page.dart';
 import '../../features/evacuation_centers/presentation/pages/evacuation_center_details_page.dart';
 import '../../features/evacuation_centers/presentation/pages/evacuation_centers_list_page.dart';
@@ -485,6 +487,35 @@ final GoRouter appRouter = GoRouter(
                               centerId: id,
                             );
                           },
+                          routes: [
+                            // EC Information Board — Add Evacuee is
+                            // reached via Navigator.push from this
+                            // page and from the pending-entry detail
+                            // page (same "already has what it needs
+                            // in memory" reasoning as the center
+                            // edit/pending-registration edit flows
+                            // above), so only the board itself and its
+                            // pending-entry detail need named routes.
+                            GoRoute(
+                              path: 'ec-board',
+                              builder: (context, state) {
+                                final id = int.tryParse(
+                                  state.pathParameters['id'] ?? '',
+                                );
+                                return EcBoardPage(centerId: id ?? 0);
+                              },
+                              routes: [
+                                GoRoute(
+                                  path: ':localId',
+                                  builder: (context, state) =>
+                                      PendingEcEntryDetailPage(
+                                        localId:
+                                            state.pathParameters['localId']!,
+                                      ),
+                                ),
+                              ],
+                            ),
+                          ],
                         ),
                       ],
                     ),

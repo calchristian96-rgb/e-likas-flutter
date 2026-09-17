@@ -1490,4 +1490,136 @@ class AppLocalizationsFil extends AppLocalizations {
   @override
   String get staffPendingDetailDeletedMessage =>
       'Naalis ang rehistrasyon sa queue.';
+
+  @override
+  String get ecBoardTitle => 'EC Information Board';
+
+  @override
+  String get ecBoardEntryPointSubtitle =>
+      'Magdagdag ng mga evacuee at tingnan ang breakdown ng edad/kasarian para sa center na ito';
+
+  @override
+  String get ecBoardAddEvacueeTitle => 'Magdagdag ng Evacuee';
+
+  @override
+  String get ecBoardEditEvacueeTitle => 'I-edit ang Entry ng Evacuee';
+
+  @override
+  String get ecBoardEntryDetailTitle => 'Entry ng Evacuee';
+
+  @override
+  String get ecBoardFieldSex => 'Kasarian';
+
+  @override
+  String get ecBoardFieldAgeBracket => 'Age Bracket';
+
+  @override
+  String get ecBoardFieldHousehold => 'Sambahayan';
+
+  @override
+  String get ecBoardHouseholdExisting => 'Umiiral na sambahayan';
+
+  @override
+  String get ecBoardHouseholdNew => 'Bagong sambahayan';
+
+  @override
+  String get ecBoardSelectHouseholdButton => 'Pumili ng sambahayan';
+
+  @override
+  String get ecBoardHouseholdSearchHint =>
+      'Maghanap gamit ang pangalan ng puno ng pamilya';
+
+  @override
+  String get ecBoardPendingHouseholdBadge => 'Nakabinbin — hindi pa naka-sync';
+
+  @override
+  String get ecBoardPendingHouseholdNotice =>
+      'Hindi pa naka-sync ang sambahayang ito. Awtomatikong maki-sync ang entry na ito kapag na-sync na ito.';
+
+  @override
+  String get ecBoardNewHouseholdHeadName => 'Pangalan ng Puno ng Sambahayan';
+
+  @override
+  String get ecBoardSubmitButton => 'I-save ang Evacuee';
+
+  @override
+  String get ecBoardValidationBanner =>
+      'Pakikumpleto ang kasarian, age bracket, at sambahayan bago i-save.';
+
+  @override
+  String get ecBoardSavedOfflineMessage =>
+      'Na-save offline. Mag-si-sync ito kapag online ka na.';
+
+  @override
+  String get ecBoardSavedPendingHouseholdMessage =>
+      'Na-save — hinihintay munang maki-sync ang piniling sambahayan.';
+
+  @override
+  String get ecBoardSuccessMessage => 'Matagumpay na naidagdag ang evacuee.';
+
+  @override
+  String get ecBoardNoEventsAvailable =>
+      'Wala pang available na evacuation event.';
+
+  @override
+  String get ecBoardLastKnownSectionTitle => 'Huling Kilalang Breakdown';
+
+  @override
+  String get ecBoardLastKnownSectionSubtitle =>
+      'Live na bilang ng mga evacuee na nakumpirma na sa server.';
+
+  @override
+  String get ecBoardLastKnownUnavailable =>
+      'Hindi na-load ang huling kilalang breakdown.';
+
+  @override
+  String get ecBoardLastKnownEmpty =>
+      'Wala pang naitalang evacuee para sa center at event na ito.';
+
+  @override
+  String get ecBoardUnclassifiedLabel => 'Hindi Naklasipika';
+
+  @override
+  String get ecBoardPendingSectionTitle =>
+      'Mga Nakabinbing Entry ng Device na Ito';
+
+  @override
+  String get ecBoardPendingSectionSubtitle =>
+      'Hindi pa naka-sync — hiwalay sa nakumpirmang bilang sa itaas.';
+
+  @override
+  String get ecBoardPendingListTitle => 'Mga Nakabinbing Entry';
+
+  @override
+  String get ecBoardPendingListEmpty =>
+      'Walang nakabinbing entry sa device na ito.';
+
+  @override
+  String get ecBoardTotalLabel => 'Kabuuan';
+
+  @override
+  String ecBoardMaleFemaleCount(int male, int female) {
+    return '${male}L / ${female}B';
+  }
+
+  @override
+  String get ecBoardBracketInfant => 'Sanggol (0-6 buwan)';
+
+  @override
+  String get ecBoardBracketToddler => 'Toddler (7-24 buwan)';
+
+  @override
+  String get ecBoardBracketPreschooler => 'Preschooler';
+
+  @override
+  String get ecBoardBracketSchoolAge => 'Edad-Paaralan';
+
+  @override
+  String get ecBoardBracketTeenage => 'Tin-edyer';
+
+  @override
+  String get ecBoardBracketAdult => 'Nasa Hustong Gulang';
+
+  @override
+  String get ecBoardBracketSeniorCitizen => 'Senior Citizen';
 }

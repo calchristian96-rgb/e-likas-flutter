@@ -28,6 +28,7 @@ part 'staff_database.g.dart';
     LookupEvacuationCenters,
     CachedFamilies,
     PendingFamilyRegistrations,
+    PendingEcBoardEntries,
   ],
 )
 class StaffDatabase extends _$StaffDatabase {
@@ -50,7 +51,22 @@ class StaffDatabase extends _$StaffDatabase {
   StaffDatabase.forExecutor(super.executor);
 
   @override
-  int get schemaVersion => 1;
+  int get schemaVersion => 2;
+
+  /// Schema 2 adds `PendingEcBoardEntries` (EC Information Board's
+  /// offline queue) — a real device on schema 1 already has a
+  /// populated `elikas_staff.sqlite` (pending registrations, cached
+  /// families), so this must be an additive `onUpgrade`, never a
+  /// fresh `onCreate` wipe.
+  @override
+  MigrationStrategy get migration => MigrationStrategy(
+    onCreate: (m) => m.createAll(),
+    onUpgrade: (m, from, to) async {
+      if (from < 2) {
+        await m.createTable(pendingEcBoardEntries);
+      }
+    },
+  );
 }
 
 @Riverpod(keepAlive: true)

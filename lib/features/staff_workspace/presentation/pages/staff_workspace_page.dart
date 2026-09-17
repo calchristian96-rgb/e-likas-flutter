@@ -113,13 +113,12 @@ class _StaffWorkspaceBody extends ConsumerWidget {
             subtitle: l10n.staffWorkspacePendingRegistrationsSubtitle,
             onTap: () => context.push('/settings/staff/pending-registrations'),
           ),
-          _WorkspaceAction(
-            icon: Icons.groups_outlined,
-            iconColor: semantic.success,
-            label: l10n.staffWorkspaceAllEvacuees,
-            subtitle: l10n.staffWorkspaceAllEvacueesSubtitle,
-            onTap: () => context.push('/settings/staff/all-evacuees'),
-          ),
+          // Evacuation-center actions ahead of All Evacuees — EC Board
+          // (reached from a center's own detail page) is now the
+          // primary fast-entry workflow, so getting to a center comes
+          // first; "Register a Family"/"My Pending Registrations"
+          // above are unchanged relative to each other and to this
+          // block.
           _WorkspaceAction(
             icon: Icons.add_business_outlined,
             iconColor: semantic.navy,
@@ -133,6 +132,13 @@ class _StaffWorkspaceBody extends ConsumerWidget {
             label: l10n.staffManageEvacuationCenters,
             subtitle: l10n.staffManageEvacuationCentersSubtitle,
             onTap: () => context.push('/settings/staff/evacuation-centers'),
+          ),
+          _WorkspaceAction(
+            icon: Icons.groups_outlined,
+            iconColor: semantic.success,
+            label: l10n.staffWorkspaceAllEvacuees,
+            subtitle: l10n.staffWorkspaceAllEvacueesSubtitle,
+            onTap: () => context.push('/settings/staff/all-evacuees'),
           ),
           _WorkspaceAction(
             icon: Icons.sync_outlined,
