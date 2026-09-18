@@ -2925,6 +2925,66 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Senior Citizen'**
   String get ecBoardBracketSeniorCitizen;
+
+  /// No description provided for @ecBoardSectoralGroupsSectionTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Sectoral Groups'**
+  String get ecBoardSectoralGroupsSectionTitle;
+
+  /// No description provided for @ecBoardSectoralGroupsSectionSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Staff-reported totals, entered separately from Add Evacuee.'**
+  String get ecBoardSectoralGroupsSectionSubtitle;
+
+  /// No description provided for @ecBoardSectoralPwd.
+  ///
+  /// In en, this message translates to:
+  /// **'Persons with Disability'**
+  String get ecBoardSectoralPwd;
+
+  /// No description provided for @ecBoardSectoralChildHeadedFamily.
+  ///
+  /// In en, this message translates to:
+  /// **'Child-Headed Family'**
+  String get ecBoardSectoralChildHeadedFamily;
+
+  /// No description provided for @ecBoardSectoralSingleHeadedFamily.
+  ///
+  /// In en, this message translates to:
+  /// **'Single-Headed Family'**
+  String get ecBoardSectoralSingleHeadedFamily;
+
+  /// No description provided for @ecBoardSectoralSoloParent.
+  ///
+  /// In en, this message translates to:
+  /// **'Solo Parent'**
+  String get ecBoardSectoralSoloParent;
+
+  /// No description provided for @ecBoardSectoralPregnantWomen.
+  ///
+  /// In en, this message translates to:
+  /// **'Pregnant Women'**
+  String get ecBoardSectoralPregnantWomen;
+
+  /// No description provided for @ecBoardSectoralLactatingMothers.
+  ///
+  /// In en, this message translates to:
+  /// **'Lactating Mothers'**
+  String get ecBoardSectoralLactatingMothers;
+
+  /// No description provided for @ecBoardSectoralFourPsBeneficiary.
+  ///
+  /// In en, this message translates to:
+  /// **'4Ps Beneficiary'**
+  String get ecBoardSectoralFourPsBeneficiary;
+
+  /// No description provided for @ecBoardSectoralIndigenousPeoples.
+  ///
+  /// In en, this message translates to:
+  /// **'Indigenous Peoples'**
+  String get ecBoardSectoralIndigenousPeoples;
 }
 
 class _AppLocalizationsDelegate

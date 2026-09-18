@@ -10,7 +10,8 @@ import '../../../family_registration/presentation/providers/lookup_providers.dar
 import '../../domain/entities/age_bracket.dart';
 import '../../domain/entities/pending_ec_board_entry.dart';
 import '../providers/ec_board_provider.dart';
-import 'add_evacuee_form_page.dart';
+import 'add_evacuee_form_page.dart'
+    show AddEvacueeFormPage, localizedAgeBracket, localizedSectoralGroup;
 import 'pending_ec_entry_detail_page.dart';
 
 /// EC Information Board for one center — reached from
@@ -338,6 +339,44 @@ class _QuickCountSection extends ConsumerWidget {
                 ),
               ],
             ),
+            if (count.sectoralGroups.isNotEmpty) ...[
+              const SizedBox(height: 20),
+              Text(
+                l10n.ecBoardSectoralGroupsSectionTitle,
+                style: theme.textTheme.titleSmall,
+              ),
+              const SizedBox(height: 4),
+              Text(
+                l10n.ecBoardSectoralGroupsSectionSubtitle,
+                style: theme.textTheme.bodySmall?.copyWith(
+                  color: theme.colorScheme.onSurfaceVariant,
+                ),
+              ),
+              const SizedBox(height: 8),
+              for (final group in count.sectoralGroups)
+                if (group.group != null)
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 4),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            localizedSectoralGroup(context, group.group!),
+                          ),
+                        ),
+                        Text(
+                          l10n.ecBoardMaleFemaleCount(
+                            group.maleCount,
+                            group.femaleCount,
+                          ),
+                          style: theme.textTheme.bodyMedium?.copyWith(
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+            ],
           ],
         );
       },

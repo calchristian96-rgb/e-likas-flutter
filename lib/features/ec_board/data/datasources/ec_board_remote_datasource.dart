@@ -1,6 +1,7 @@
 import '../../../../core/network/staff_api_client.dart';
 import '../../domain/entities/age_bracket.dart';
 import '../../domain/entities/ec_board_quick_count.dart';
+import '../../domain/entities/sectoral_group.dart';
 
 /// The two EC Information Board endpoints:
 /// `POST /evacuation-centers/{id}/evacuees` and
@@ -39,7 +40,15 @@ class EcBoardRemoteDataSource {
       for (final entry in rawGroups)
         _parseAgeGroup(entry as Map<String, dynamic>),
     ];
-    return EcBoardQuickCount(ageGroups: ageGroups);
+    final rawSectoral = data['sectoral_groups'] as List? ?? const [];
+    final sectoralGroups = [
+      for (final entry in rawSectoral)
+        _parseSectoralGroup(entry as Map<String, dynamic>),
+    ];
+    return EcBoardQuickCount(
+      ageGroups: ageGroups,
+      sectoralGroups: sectoralGroups,
+    );
   }
 
   /// Parsed defensively — an entry whose `age_bracket` is null/absent
@@ -53,6 +62,16 @@ class EcBoardRemoteDataSource {
       ageBracket: rawBracket == 'unclassified'
           ? null
           : AgeBracket.fromWire(rawBracket),
+      maleCount: (json['male_count'] as num?)?.toInt() ?? 0,
+      femaleCount: (json['female_count'] as num?)?.toInt() ?? 0,
+    );
+  }
+
+  static EcBoardSectoralGroupCount _parseSectoralGroup(
+    Map<String, dynamic> json,
+  ) {
+    return EcBoardSectoralGroupCount(
+      group: SectoralGroup.fromWire(json['sectoral_group'] as String?),
       maleCount: (json['male_count'] as num?)?.toInt() ?? 0,
       femaleCount: (json['female_count'] as num?)?.toInt() ?? 0,
     );

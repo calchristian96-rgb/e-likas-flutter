@@ -1050,5 +1050,26 @@
   "ecBoardBracketAdult": "Adult",
   "@ecBoardBracketAdult": { "description": "PENDING Bikol (Ligao) local-language review — English fallback shown until reviewed. Staff-only screen, not resident-facing." },
   "ecBoardBracketSeniorCitizen": "Senior Citizen",
-  "@ecBoardBracketSeniorCitizen": { "description": "PENDING Bikol (Ligao) local-language review — English fallback shown until reviewed. Staff-only screen, not resident-facing." }
+  "@ecBoardBracketSeniorCitizen": { "description": "PENDING Bikol (Ligao) local-language review — English fallback shown until reviewed. Staff-only screen, not resident-facing." },
+
+  "ecBoardSectoralGroupsSectionTitle": "Sectoral Groups",
+  "@ecBoardSectoralGroupsSectionTitle": { "description": "PENDING Bikol (Ligao) local-language review — English fallback shown until reviewed. Staff-only screen, not resident-facing." },
+  "ecBoardSectoralGroupsSectionSubtitle": "Staff-reported totals, entered separately from Add Evacuee.",
+  "@ecBoardSectoralGroupsSectionSubtitle": { "description": "PENDING Bikol (Ligao) local-language review — English fallback shown until reviewed. Staff-only screen, not resident-facing." },
+  "ecBoardSectoralPwd": "Persons with Disability",
+  "@ecBoardSectoralPwd": { "description": "PENDING Bikol (Ligao) local-language review — English fallback shown until reviewed. Staff-only screen, not resident-facing." },
+  "ecBoardSectoralChildHeadedFamily": "Child-Headed Family",
+  "@ecBoardSectoralChildHeadedFamily": { "description": "PENDING Bikol (Ligao) local-language review — English fallback shown until reviewed. Staff-only screen, not resident-facing." },
+  "ecBoardSectoralSingleHeadedFamily": "Single-Headed Family",
+  "@ecBoardSectoralSingleHeadedFamily": { "description": "PENDING Bikol (Ligao) local-language review — English fallback shown until reviewed. Staff-only screen, not resident-facing." },
+  "ecBoardSectoralSoloParent": "Solo Parent",
+  "@ecBoardSectoralSoloParent": { "description": "PENDING Bikol (Ligao) local-language review — English fallback shown until reviewed. Staff-only screen, not resident-facing." },
+  "ecBoardSectoralPregnantWomen": "Pregnant Women",
+  "@ecBoardSectoralPregnantWomen": { "description": "PENDING Bikol (Ligao) local-language review — English fallback shown until reviewed. Staff-only screen, not resident-facing." },
+  "ecBoardSectoralLactatingMothers": "Lactating Mothers",
+  "@ecBoardSectoralLactatingMothers": { "description": "PENDING Bikol (Ligao) local-language review — English fallback shown until reviewed. Staff-only screen, not resident-facing." },
+  "ecBoardSectoralFourPsBeneficiary": "4Ps Beneficiary",
+  "@ecBoardSectoralFourPsBeneficiary": { "description": "PENDING Bikol (Ligao) local-language review — English fallback shown until reviewed. Staff-only screen, not resident-facing." },
+  "ecBoardSectoralIndigenousPeoples": "Indigenous Peoples",
+  "@ecBoardSectoralIndigenousPeoples": { "description": "PENDING Bikol (Ligao) local-language review — English fallback shown until reviewed. Staff-only screen, not resident-facing." }
 }

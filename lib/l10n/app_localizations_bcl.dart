@@ -1590,4 +1590,35 @@ class AppLocalizationsBcl extends AppLocalizations {
 
   @override
   String get ecBoardBracketSeniorCitizen => 'Senior Citizen';
+
+  @override
+  String get ecBoardSectoralGroupsSectionTitle => 'Sectoral Groups';
+
+  @override
+  String get ecBoardSectoralGroupsSectionSubtitle =>
+      'Staff-reported totals, entered separately from Add Evacuee.';
+
+  @override
+  String get ecBoardSectoralPwd => 'Persons with Disability';
+
+  @override
+  String get ecBoardSectoralChildHeadedFamily => 'Child-Headed Family';
+
+  @override
+  String get ecBoardSectoralSingleHeadedFamily => 'Single-Headed Family';
+
+  @override
+  String get ecBoardSectoralSoloParent => 'Solo Parent';
+
+  @override
+  String get ecBoardSectoralPregnantWomen => 'Pregnant Women';
+
+  @override
+  String get ecBoardSectoralLactatingMothers => 'Lactating Mothers';
+
+  @override
+  String get ecBoardSectoralFourPsBeneficiary => '4Ps Beneficiary';
+
+  @override
+  String get ecBoardSectoralIndigenousPeoples => 'Indigenous Peoples';
 }

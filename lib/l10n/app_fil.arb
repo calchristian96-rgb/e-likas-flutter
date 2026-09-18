@@ -516,5 +516,16 @@
   "ecBoardBracketSchoolAge": "Edad-Paaralan",
   "ecBoardBracketTeenage": "Tin-edyer",
   "ecBoardBracketAdult": "Nasa Hustong Gulang",
-  "ecBoardBracketSeniorCitizen": "Senior Citizen"
+  "ecBoardBracketSeniorCitizen": "Senior Citizen",
+
+  "ecBoardSectoralGroupsSectionTitle": "Mga Sektoral na Grupo",
+  "ecBoardSectoralGroupsSectionSubtitle": "Mga kabuuang iniulat ng staff, hiwalay na ipinasok mula sa Add Evacuee.",
+  "ecBoardSectoralPwd": "Taong May Kapansanan (PWD)",
+  "ecBoardSectoralChildHeadedFamily": "Pamilyang Pinamumunuan ng Bata",
+  "ecBoardSectoralSingleHeadedFamily": "Pamilyang Iisa ang Puno",
+  "ecBoardSectoralSoloParent": "Solo Parent",
+  "ecBoardSectoralPregnantWomen": "Buntis na Kababaihan",
+  "ecBoardSectoralLactatingMothers": "Nagpapasusong Ina",
+  "ecBoardSectoralFourPsBeneficiary": "4Ps Beneficiary",
+  "ecBoardSectoralIndigenousPeoples": "Katutubong Mamamayan"
 }

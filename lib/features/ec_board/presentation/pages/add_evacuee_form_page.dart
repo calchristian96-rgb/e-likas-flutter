@@ -13,6 +13,7 @@ import '../../../registered_families/domain/entities/registered_family.dart';
 import '../../../registered_families/presentation/providers/registered_families_provider.dart';
 import '../../domain/entities/age_bracket.dart';
 import '../../domain/entities/ec_board_entry_draft.dart';
+import '../../domain/entities/sectoral_group.dart';
 import '../providers/ec_board_provider.dart';
 
 /// Add Evacuee — a single evacuee's EC Information Board intake:
@@ -567,5 +568,22 @@ String localizedAgeBracket(BuildContext context, AgeBracket bracket) {
     AgeBracket.teenage => l10n.ecBoardBracketTeenage,
     AgeBracket.adult => l10n.ecBoardBracketAdult,
     AgeBracket.seniorCitizen => l10n.ecBoardBracketSeniorCitizen,
+  };
+}
+
+/// Localized display label for a `SectoralGroup` — read-only display
+/// use only (see that enum's doc comment for why this app never lets
+/// staff set these values itself).
+String localizedSectoralGroup(BuildContext context, SectoralGroup group) {
+  final l10n = AppLocalizations.of(context);
+  return switch (group) {
+    SectoralGroup.pwd => l10n.ecBoardSectoralPwd,
+    SectoralGroup.childHeadedFamily => l10n.ecBoardSectoralChildHeadedFamily,
+    SectoralGroup.singleHeadedFamily => l10n.ecBoardSectoralSingleHeadedFamily,
+    SectoralGroup.soloParent => l10n.ecBoardSectoralSoloParent,
+    SectoralGroup.pregnantWomen => l10n.ecBoardSectoralPregnantWomen,
+    SectoralGroup.lactatingMothers => l10n.ecBoardSectoralLactatingMothers,
+    SectoralGroup.fourPsBeneficiary => l10n.ecBoardSectoralFourPsBeneficiary,
+    SectoralGroup.indigenousPeoples => l10n.ecBoardSectoralIndigenousPeoples,
   };
 }

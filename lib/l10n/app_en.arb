@@ -616,5 +616,16 @@
   "ecBoardBracketSchoolAge": "School Age",
   "ecBoardBracketTeenage": "Teenage",
   "ecBoardBracketAdult": "Adult",
-  "ecBoardBracketSeniorCitizen": "Senior Citizen"
+  "ecBoardBracketSeniorCitizen": "Senior Citizen",
+
+  "ecBoardSectoralGroupsSectionTitle": "Sectoral Groups",
+  "ecBoardSectoralGroupsSectionSubtitle": "Staff-reported totals, entered separately from Add Evacuee.",
+  "ecBoardSectoralPwd": "Persons with Disability",
+  "ecBoardSectoralChildHeadedFamily": "Child-Headed Family",
+  "ecBoardSectoralSingleHeadedFamily": "Single-Headed Family",
+  "ecBoardSectoralSoloParent": "Solo Parent",
+  "ecBoardSectoralPregnantWomen": "Pregnant Women",
+  "ecBoardSectoralLactatingMothers": "Lactating Mothers",
+  "ecBoardSectoralFourPsBeneficiary": "4Ps Beneficiary",
+  "ecBoardSectoralIndigenousPeoples": "Indigenous Peoples"
 }

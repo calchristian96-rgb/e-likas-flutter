@@ -1622,4 +1622,36 @@ class AppLocalizationsFil extends AppLocalizations {
 
   @override
   String get ecBoardBracketSeniorCitizen => 'Senior Citizen';
+
+  @override
+  String get ecBoardSectoralGroupsSectionTitle => 'Mga Sektoral na Grupo';
+
+  @override
+  String get ecBoardSectoralGroupsSectionSubtitle =>
+      'Mga kabuuang iniulat ng staff, hiwalay na ipinasok mula sa Add Evacuee.';
+
+  @override
+  String get ecBoardSectoralPwd => 'Taong May Kapansanan (PWD)';
+
+  @override
+  String get ecBoardSectoralChildHeadedFamily =>
+      'Pamilyang Pinamumunuan ng Bata';
+
+  @override
+  String get ecBoardSectoralSingleHeadedFamily => 'Pamilyang Iisa ang Puno';
+
+  @override
+  String get ecBoardSectoralSoloParent => 'Solo Parent';
+
+  @override
+  String get ecBoardSectoralPregnantWomen => 'Buntis na Kababaihan';
+
+  @override
+  String get ecBoardSectoralLactatingMothers => 'Nagpapasusong Ina';
+
+  @override
+  String get ecBoardSectoralFourPsBeneficiary => '4Ps Beneficiary';
+
+  @override
+  String get ecBoardSectoralIndigenousPeoples => 'Katutubong Mamamayan';
 }
