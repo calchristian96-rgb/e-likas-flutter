@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../core/widgets/error_state.dart';
+import '../../../../core/widgets/sync_now_action.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../staff_auth/presentation/widgets/staff_auth_guard.dart';
 import '../../domain/entities/pending_registration.dart';
@@ -58,19 +59,7 @@ class _PendingRegistrationsBodyState
     return Scaffold(
       appBar: AppBar(
         title: Text(l10n.staffWorkspacePendingRegistrations),
-        actions: [
-          IconButton(
-            icon: _syncing
-                ? const SizedBox(
-                    width: 20,
-                    height: 20,
-                    child: CircularProgressIndicator(strokeWidth: 2),
-                  )
-                : const Icon(Icons.sync_outlined),
-            tooltip: l10n.staffWorkspaceSyncNow,
-            onPressed: _syncing ? null : _syncNow,
-          ),
-        ],
+        actions: [SyncNowAction(isSyncing: _syncing, onSync: _syncNow)],
       ),
       body: Column(
         children: [

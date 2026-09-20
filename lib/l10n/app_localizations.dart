@@ -1162,6 +1162,12 @@ abstract class AppLocalizations {
   /// **'Search my evacuation centers...'**
   String get searchMyEvacuationCentersHint;
 
+  /// No description provided for @staffCentersCitywideNotice.
+  ///
+  /// In en, this message translates to:
+  /// **'Showing centers citywide so you can help register residents temporarily in your area.'**
+  String get staffCentersCitywideNotice;
+
   /// No description provided for @noCentersMatchFilter.
   ///
   /// In en, this message translates to:
@@ -2140,6 +2146,12 @@ abstract class AppLocalizations {
   /// **'Your session expired. Sign in again to keep syncing.'**
   String get staffSyncStoppedForAuthMessage;
 
+  /// No description provided for @staffSyncRequiresConnectionMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Sync requires an internet connection.'**
+  String get staffSyncRequiresConnectionMessage;
+
   /// SnackBar shown after a manual Sync Now run completes
   ///
   /// In en, this message translates to:
@@ -2763,6 +2775,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Search by head of family name'**
   String get ecBoardHouseholdSearchHint;
+
+  /// No description provided for @ecBoardRefreshHouseholdsTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Refresh household list'**
+  String get ecBoardRefreshHouseholdsTooltip;
+
+  /// No description provided for @ecBoardHouseholdsUpToDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Up to date'**
+  String get ecBoardHouseholdsUpToDate;
 
   /// No description provided for @ecBoardPendingHouseholdBadge.
   ///

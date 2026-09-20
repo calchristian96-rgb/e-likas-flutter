@@ -594,6 +594,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get searchMyEvacuationCentersHint => 'Search my evacuation centers...';
 
   @override
+  String get staffCentersCitywideNotice =>
+      'Showing centers citywide so you can help register residents temporarily in your area.';
+
+  @override
   String get noCentersMatchFilter => 'No centers match your search or filter.';
 
   @override
@@ -1138,6 +1142,10 @@ class AppLocalizationsEn extends AppLocalizations {
       'Your session expired. Sign in again to keep syncing.';
 
   @override
+  String get staffSyncRequiresConnectionMessage =>
+      'Sync requires an internet connection.';
+
+  @override
   String staffSyncCompletedMessage(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
@@ -1498,6 +1506,12 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get ecBoardHouseholdSearchHint => 'Search by head of family name';
+
+  @override
+  String get ecBoardRefreshHouseholdsTooltip => 'Refresh household list';
+
+  @override
+  String get ecBoardHouseholdsUpToDate => 'Up to date';
 
   @override
   String get ecBoardPendingHouseholdBadge => 'Pending — not yet synced';

@@ -261,7 +261,7 @@ class EcBoardRepositoryImpl implements EcBoardRepository {
       evacuationEventId: m.evacuationEventId,
       status: PendingRegistrationStatus.fromWire(m.syncStatus),
       sex: m.sex,
-      ageBracket: AgeBracket.fromWire(m.ageBracket) ?? AgeBracket.adult,
+      ageBracket: AgeBracket.fromWire(m.ageBracket),
       householdLabel: m.householdLabel,
       createdAt: DateTime.fromMillisecondsSinceEpoch(m.createdAtEpochMs),
       updatedAt: DateTime.fromMillisecondsSinceEpoch(m.updatedAtEpochMs),

@@ -9,6 +9,7 @@ import '../../../../l10n/app_localizations.dart';
 import '../../../evacuation_centers/domain/entities/evacuation_center.dart';
 import '../../../evacuation_centers/presentation/providers/evacuation_centers_provider.dart';
 import '../../../evacuation_centers/presentation/widgets/center_status_display.dart';
+import '../../../staff_auth/domain/entities/staff_session.dart';
 import '../../../staff_auth/presentation/widgets/staff_auth_guard.dart';
 
 /// "Manage Evacuation Centers" — the staff center-management list.
@@ -34,13 +35,16 @@ class StaffEvacuationCentersListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StaffAuthGuard(
-      builder: (context, session) => const _StaffEvacuationCentersListBody(),
+      builder: (context, session) =>
+          _StaffEvacuationCentersListBody(session: session),
     );
   }
 }
 
 class _StaffEvacuationCentersListBody extends ConsumerStatefulWidget {
-  const _StaffEvacuationCentersListBody();
+  const _StaffEvacuationCentersListBody({required this.session});
+
+  final StaffSession session;
 
   @override
   ConsumerState<_StaffEvacuationCentersListBody> createState() =>
@@ -81,6 +85,7 @@ class _StaffEvacuationCentersListBodyState
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
+    final theme = Theme.of(context);
     final centersAsync = ref.watch(allEvacuationCentersProvider);
 
     return Scaffold(
@@ -99,6 +104,16 @@ class _StaffEvacuationCentersListBodyState
               label: Text(l10n.staffAddEvacuationCenter),
             ),
           ),
+          if (widget.session.isBarangayOfficial)
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
+              child: Text(
+                l10n.staffCentersCitywideNotice,
+                style: theme.textTheme.bodySmall?.copyWith(
+                  color: theme.colorScheme.onSurfaceVariant,
+                ),
+              ),
+            ),
           Padding(
             padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
             child: SearchField(

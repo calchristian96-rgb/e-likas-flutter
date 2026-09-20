@@ -609,6 +609,10 @@ class AppLocalizationsFil extends AppLocalizations {
       'Maghanap sa aking mga evacuation center...';
 
   @override
+  String get staffCentersCitywideNotice =>
+      'Ipinapakita ang mga center sa buong lungsod para matulungan mong irehistro ang mga residenteng pansamantalang nasa lugar mo.';
+
+  @override
   String get noCentersMatchFilter =>
       'Walang center na tumutugma sa iyong paghahanap o filter.';
 
@@ -1161,6 +1165,10 @@ class AppLocalizationsFil extends AppLocalizations {
       'Nag-expire ang iyong sesyon. Mag-sign in muli para magpatuloy ang pag-sync.';
 
   @override
+  String get staffSyncRequiresConnectionMessage =>
+      'Kailangan ng internet connection para mag-sync.';
+
+  @override
   String staffSyncCompletedMessage(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
@@ -1528,6 +1536,13 @@ class AppLocalizationsFil extends AppLocalizations {
   @override
   String get ecBoardHouseholdSearchHint =>
       'Maghanap gamit ang pangalan ng puno ng pamilya';
+
+  @override
+  String get ecBoardRefreshHouseholdsTooltip =>
+      'I-refresh ang listahan ng sambahayan';
+
+  @override
+  String get ecBoardHouseholdsUpToDate => 'Napapanahon';
 
   @override
   String get ecBoardPendingHouseholdBadge => 'Nakabinbin — hindi pa naka-sync';

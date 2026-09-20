@@ -400,6 +400,8 @@
   "@searchCentersHint": { "description": "PENDING Bikol (Ligao) local-language review — English fallback shown until reviewed." },
   "searchMyEvacuationCentersHint": "Search my evacuation centers...",
   "@searchMyEvacuationCentersHint": { "description": "PENDING Bikol (Ligao) local-language review — English fallback shown until reviewed. Staff-only screen, not resident-facing." },
+  "staffCentersCitywideNotice": "Showing centers citywide so you can help register residents temporarily in your area.",
+  "@staffCentersCitywideNotice": { "description": "PENDING Bikol (Ligao) local-language review — English fallback shown until reviewed. Staff-only screen, not resident-facing." },
   "noCentersMatchFilter": "No centers match your search or filter.",
   "@noCentersMatchFilter": { "description": "CRITICAL — safety-related. PENDING Bikol (Ligao) local-language review; do not translate without local review. English fallback shown." },
   "filteredCentersCount": "{count, plural, =1{1 {status} center} other{{count} {status} centers}}",
@@ -753,6 +755,8 @@
 
   "staffSyncStoppedForAuthMessage": "Your session expired. Sign in again to keep syncing.",
   "@staffSyncStoppedForAuthMessage": { "description": "PENDING Bikol (Ligao) local-language review — English fallback shown until reviewed. Staff-only screen, not resident-facing." },
+  "staffSyncRequiresConnectionMessage": "Sync requires an internet connection.",
+  "@staffSyncRequiresConnectionMessage": { "description": "PENDING Bikol (Ligao) local-language review — English fallback shown until reviewed. Staff-only screen, not resident-facing." },
   "staffSyncCompletedMessage": "{count, plural, =0{No registrations were synced.} =1{1 registration synced.} other{{count} registrations synced.}}",
   "@staffSyncCompletedMessage": {
     "description": "PENDING Bikol (Ligao) local-language review — English fallback shown until reviewed. Staff-only screen, not resident-facing.",
@@ -991,6 +995,10 @@
   "@ecBoardSelectHouseholdButton": { "description": "PENDING Bikol (Ligao) local-language review — English fallback shown until reviewed. Staff-only screen, not resident-facing." },
   "ecBoardHouseholdSearchHint": "Search by head of family name",
   "@ecBoardHouseholdSearchHint": { "description": "PENDING Bikol (Ligao) local-language review — English fallback shown until reviewed. Staff-only screen, not resident-facing." },
+  "ecBoardRefreshHouseholdsTooltip": "Refresh household list",
+  "@ecBoardRefreshHouseholdsTooltip": { "description": "PENDING Bikol (Ligao) local-language review — English fallback shown until reviewed. Staff-only screen, not resident-facing." },
+  "ecBoardHouseholdsUpToDate": "Up to date",
+  "@ecBoardHouseholdsUpToDate": { "description": "PENDING Bikol (Ligao) local-language review — English fallback shown until reviewed. Staff-only screen, not resident-facing." },
   "ecBoardPendingHouseholdBadge": "Pending — not yet synced",
   "@ecBoardPendingHouseholdBadge": { "description": "PENDING Bikol (Ligao) local-language review — English fallback shown until reviewed. Staff-only screen, not resident-facing." },
   "ecBoardPendingHouseholdNotice": "This household hasn't synced yet. This entry will sync automatically once it does.",

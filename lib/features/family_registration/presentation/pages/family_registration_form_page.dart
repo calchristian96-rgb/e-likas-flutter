@@ -356,6 +356,12 @@ class _FamilyRegistrationFormBodyState
         if (!mounted) return;
         ref.invalidate(pendingQueueCountsProvider);
         ref.invalidate(pendingRegistrationsProvider);
+        // This household is now real on the backend — refresh the
+        // registered-families cache too, so it's immediately choosable
+        // as an "existing household" on EC Board's Add Evacuee picker
+        // without a separate trip to Registered Families first.
+        ref.invalidate(registeredFamiliesProvider);
+        ref.invalidate(registeredFamiliesCacheOnlyProvider);
         _showSnack(l10n.staffRegSuccessMessage, isError: false);
         Navigator.of(context).maybePop();
       case Failed(:final failure):

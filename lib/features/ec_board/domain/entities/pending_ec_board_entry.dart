@@ -30,7 +30,13 @@ class PendingEcBoardEntrySummary {
   final int evacuationEventId;
   final PendingRegistrationStatus status;
   final String sex;
-  final AgeBracket ageBracket;
+
+  /// Null only for a locally-stored wire value that couldn't be parsed
+  /// against the current [AgeBracket] vocabulary (corrupted/legacy
+  /// data) — shown as "unclassified", same convention as
+  /// `EcBoardAgeGroupCount.ageBracket` on the live/synced side, never
+  /// silently reassigned to a real bracket.
+  final AgeBracket? ageBracket;
 
   /// Display-only: the chosen household's name (existing family's
   /// head-of-family name, or the new household's head name) — never

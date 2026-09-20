@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
 
 import '../../../../core/connectivity/connectivity_service.dart';
 import '../../../../core/error/failure.dart';
 import '../../../../core/error/result.dart';
+import '../../../../core/widgets/error_state.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../family_registration/domain/entities/pending_registration.dart';
 import '../../../family_registration/domain/entities/pending_registration_status.dart';
 import '../../../family_registration/presentation/providers/lookup_providers.dart';
 import '../../../family_registration/presentation/providers/pending_queue_provider.dart';
+import '../../../registered_families/domain/entities/registered_families_snapshot.dart';
 import '../../../registered_families/domain/entities/registered_family.dart';
 import '../../../registered_families/presentation/providers/registered_families_provider.dart';
 import '../../domain/entities/age_bracket.dart';
@@ -439,10 +442,38 @@ class _HouseholdPickerSheetState extends ConsumerState<_HouseholdPickerSheet> {
   String _query = '';
 
   @override
+  void initState() {
+    super.initState();
+    // Forces a genuine network attempt every time the picker opens,
+    // rather than showing whatever `registeredFamiliesProvider` last
+    // happened to have cached — a household registered earlier in this
+    // same session must show up here without leaving this screen.
+    // Deferred to right after the first frame: `ref.invalidate` needs
+    // this element's `InheritedWidget` dependencies (the surrounding
+    // `ProviderScope`) already resolved, which isn't true yet inside
+    // `initState` itself — calling it here directly throws
+    // "dependOnInheritedWidgetOfExactType... was called before
+    // initState() completed".
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) ref.invalidate(registeredFamiliesProvider);
+    });
+  }
+
+  Future<void> _refreshSynced() async {
+    ref.invalidate(registeredFamiliesProvider);
+    try {
+      await ref.read(registeredFamiliesProvider.future);
+    } catch (_) {
+      // The error state below already handles this — this callback
+      // just needs to let the pull-to-refresh spinner finish.
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     final theme = Theme.of(context);
-    final syncedAsync = ref.watch(registeredFamiliesCacheOnlyProvider);
+    final syncedAsync = ref.watch(registeredFamiliesProvider);
     final pendingAsync = ref.watch(pendingRegistrationsProvider);
 
     return DraggableScrollableSheet(
@@ -461,11 +492,29 @@ class _HouseholdPickerSheetState extends ConsumerState<_HouseholdPickerSheet> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                l10n.ecBoardSelectHouseholdButton,
-                style: theme.textTheme.titleMedium,
+              Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      l10n.ecBoardSelectHouseholdButton,
+                      style: theme.textTheme.titleMedium,
+                    ),
+                  ),
+                  IconButton(
+                    icon: syncedAsync.isLoading
+                        ? const SizedBox(
+                            width: 18,
+                            height: 18,
+                            child: CircularProgressIndicator(strokeWidth: 2),
+                          )
+                        : const Icon(Icons.refresh),
+                    tooltip: l10n.ecBoardRefreshHouseholdsTooltip,
+                    onPressed: syncedAsync.isLoading ? null : _refreshSynced,
+                  ),
+                ],
               ),
-              const SizedBox(height: 12),
+              _SyncedFreshnessLine(syncedAsync: syncedAsync, l10n: l10n),
+              const SizedBox(height: 4),
               TextField(
                 decoration: InputDecoration(
                   hintText: l10n.ecBoardHouseholdSearchHint,
@@ -476,58 +525,53 @@ class _HouseholdPickerSheetState extends ConsumerState<_HouseholdPickerSheet> {
               ),
               const SizedBox(height: 8),
               Expanded(
-                child: ListView(
-                  controller: scrollController,
-                  children: [
-                    ...pendingAsync
-                        .maybeWhen(
-                          data: (items) => _filteredPending(items),
-                          orElse: () => const <PendingRegistrationSummary>[],
-                        )
-                        .map(
-                          (item) => ListTile(
-                            leading: const Icon(Icons.cloud_off_outlined),
-                            title: Text(
-                              item.headOfFamilyName.isEmpty
-                                  ? l10n.staffPendingNoHeadName
-                                  : item.headOfFamilyName,
-                            ),
-                            subtitle: Text(l10n.ecBoardPendingHouseholdBadge),
-                            onTap: () => Navigator.of(context).pop(
-                              _HouseholdPick(
-                                label: item.headOfFamilyName.isEmpty
+                child: RefreshIndicator(
+                  onRefresh: _refreshSynced,
+                  child: ListView(
+                    controller: scrollController,
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    children: [
+                      ...pendingAsync
+                          .maybeWhen(
+                            data: (items) => _filteredPending(items),
+                            orElse: () => const <PendingRegistrationSummary>[],
+                          )
+                          .map(
+                            (item) => ListTile(
+                              leading: const Icon(Icons.cloud_off_outlined),
+                              title: Text(
+                                item.headOfFamilyName.isEmpty
                                     ? l10n.staffPendingNoHeadName
                                     : item.headOfFamilyName,
-                                localFamilyId: item.localId,
+                              ),
+                              subtitle: Text(l10n.ecBoardPendingHouseholdBadge),
+                              onTap: () => Navigator.of(context).pop(
+                                _HouseholdPick(
+                                  label: item.headOfFamilyName.isEmpty
+                                      ? l10n.staffPendingNoHeadName
+                                      : item.headOfFamilyName,
+                                  localFamilyId: item.localId,
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                    ...syncedAsync
-                        .maybeWhen(
-                          data: (items) => _filteredSynced(items),
-                          orElse: () => const <RegisteredFamily>[],
-                        )
-                        .map(
-                          (item) => ListTile(
-                            leading: const Icon(Icons.check_circle_outline),
-                            title: Text(
-                              item.headOfFamilyName.isEmpty
-                                  ? l10n.staffPendingNoHeadName
-                                  : item.headOfFamilyName,
-                            ),
-                            subtitle: Text(item.barangayName),
-                            onTap: () => Navigator.of(context).pop(
-                              _HouseholdPick(
-                                label: item.headOfFamilyName.isEmpty
-                                    ? l10n.staffPendingNoHeadName
-                                    : item.headOfFamilyName,
-                                remoteFamilyId: item.id,
-                              ),
+                      ...switch (syncedAsync) {
+                        AsyncData(:final value) => _filteredSynced(
+                          value.families,
+                        ).map(_syncedTile),
+                        AsyncError(:final error) => [
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 16),
+                            child: ErrorState(
+                              message: _describeSyncedError(error, l10n),
+                              onRetry: _refreshSynced,
                             ),
                           ),
-                        ),
-                  ],
+                        ],
+                        _ => const <Widget>[],
+                      },
+                    ],
+                  ),
                 ),
               ),
             ],
@@ -535,6 +579,33 @@ class _HouseholdPickerSheetState extends ConsumerState<_HouseholdPickerSheet> {
         );
       },
     );
+  }
+
+  ListTile _syncedTile(RegisteredFamily item) {
+    final l10n = AppLocalizations.of(context);
+    return ListTile(
+      leading: const Icon(Icons.check_circle_outline),
+      title: Text(
+        item.headOfFamilyName.isEmpty
+            ? l10n.staffPendingNoHeadName
+            : item.headOfFamilyName,
+      ),
+      subtitle: Text(item.barangayName),
+      onTap: () => Navigator.of(context).pop(
+        _HouseholdPick(
+          label: item.headOfFamilyName.isEmpty
+              ? l10n.staffPendingNoHeadName
+              : item.headOfFamilyName,
+          remoteFamilyId: item.id,
+        ),
+      ),
+    );
+  }
+
+  String _describeSyncedError(Object error, AppLocalizations l10n) {
+    if (error is NetworkFailure) return l10n.staffFamiliesNoCacheMessage;
+    if (error is Failure) return error.message;
+    return l10n.staffFamiliesLoadError;
   }
 
   List<PendingRegistrationSummary> _filteredPending(
@@ -553,6 +624,48 @@ class _HouseholdPickerSheetState extends ConsumerState<_HouseholdPickerSheet> {
     return items
         .where((i) => i.headOfFamilyName.toLowerCase().contains(q))
         .toList();
+  }
+}
+
+/// The synced-households freshness note under the picker's title —
+/// same "Showing data as of ..." / "Showing saved data" convention as
+/// `RegisteredFamiliesPage`'s own `_FreshnessLine`, so a household
+/// list that's actually still a cached fallback (offline, or the fetch
+/// this sheet just triggered failed) is never presented as if it were
+/// live without saying so.
+class _SyncedFreshnessLine extends StatelessWidget {
+  const _SyncedFreshnessLine({required this.syncedAsync, required this.l10n});
+
+  final AsyncValue<RegisteredFamiliesSnapshot> syncedAsync;
+  final AppLocalizations l10n;
+
+  @override
+  Widget build(BuildContext context) {
+    final snapshot = syncedAsync.value;
+    final theme = Theme.of(context);
+    if (snapshot == null) return const SizedBox.shrink();
+
+    final String text;
+    final epochMs = snapshot.lastSyncedAtEpochMs;
+    if (!snapshot.isFromCache) {
+      text = l10n.ecBoardHouseholdsUpToDate;
+    } else if (epochMs != null) {
+      final formatted = DateFormat.yMMMd().add_jm().format(
+        DateTime.fromMillisecondsSinceEpoch(epochMs),
+      );
+      text = l10n.staffFamiliesShowingAsOf(formatted);
+    } else {
+      text = l10n.staffFamiliesShowingSaved;
+    }
+    return Padding(
+      padding: const EdgeInsets.only(top: 2, bottom: 4),
+      child: Text(
+        text,
+        style: theme.textTheme.bodySmall?.copyWith(
+          color: theme.colorScheme.onSurfaceVariant,
+        ),
+      ),
+    );
   }
 }
 

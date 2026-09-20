@@ -238,6 +238,7 @@
   "evacuationCentersSubtitle": "Find nearby and available centers",
   "searchCentersHint": "Search centers",
   "searchMyEvacuationCentersHint": "Search my evacuation centers...",
+  "staffCentersCitywideNotice": "Showing centers citywide so you can help register residents temporarily in your area.",
   "noCentersMatchFilter": "No centers match your search or filter.",
   "filteredCentersCount": "{count, plural, =1{1 {status} center} other{{count} {status} centers}}",
   "@filteredCentersCount": {
@@ -445,6 +446,7 @@
   "staffFamiliesMembersSectionTitle": "Members",
 
   "staffSyncStoppedForAuthMessage": "Your session expired. Sign in again to keep syncing.",
+  "staffSyncRequiresConnectionMessage": "Sync requires an internet connection.",
   "staffSyncCompletedMessage": "{count, plural, =0{No registrations were synced.} =1{1 registration synced.} other{{count} registrations synced.}}",
   "@staffSyncCompletedMessage": {
     "description": "SnackBar shown after a manual Sync Now run completes",
@@ -583,6 +585,8 @@
   "ecBoardHouseholdNew": "New household",
   "ecBoardSelectHouseholdButton": "Select household",
   "ecBoardHouseholdSearchHint": "Search by head of family name",
+  "ecBoardRefreshHouseholdsTooltip": "Refresh household list",
+  "ecBoardHouseholdsUpToDate": "Up to date",
   "ecBoardPendingHouseholdBadge": "Pending — not yet synced",
   "ecBoardPendingHouseholdNotice": "This household hasn't synced yet. This entry will sync automatically once it does.",
   "ecBoardNewHouseholdHeadName": "Head of Household Name",

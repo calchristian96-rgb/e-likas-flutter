@@ -3,10 +3,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/widgets/empty_state.dart';
 import '../../../../core/widgets/error_state.dart';
+import '../../../../core/widgets/sync_now_action.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../family_registration/domain/entities/lookup_entities.dart';
 import '../../../family_registration/domain/entities/pending_registration_status.dart';
 import '../../../family_registration/presentation/providers/lookup_providers.dart';
+import '../../../family_registration/presentation/providers/pending_queue_provider.dart';
 import '../../domain/entities/age_bracket.dart';
 import '../../domain/entities/pending_ec_board_entry.dart';
 import '../providers/ec_board_provider.dart';
@@ -31,6 +33,7 @@ class EcBoardPage extends ConsumerStatefulWidget {
 
 class _EcBoardPageState extends ConsumerState<EcBoardPage> {
   int? _selectedEventId;
+  bool _syncing = false;
 
   void _ensureEventSelected(List<EvacuationEventLookup> events) {
     if (_selectedEventId != null) return;
@@ -42,13 +45,33 @@ class _EcBoardPageState extends ConsumerState<EcBoardPage> {
     }
   }
 
+  Future<void> _syncNow() async {
+    final l10n = AppLocalizations.of(context);
+    setState(() => _syncing = true);
+    final result = await ref.read(staffSyncNowProvider)();
+    if (!mounted) return;
+    setState(() => _syncing = false);
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          result.stoppedForAuth
+              ? l10n.staffSyncStoppedForAuthMessage
+              : l10n.staffSyncCompletedMessage(result.processed),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     final eventsAsync = ref.watch(evacuationEventsLookupProvider);
 
     return Scaffold(
-      appBar: AppBar(title: Text(l10n.ecBoardTitle)),
+      appBar: AppBar(
+        title: Text(l10n.ecBoardTitle),
+        actions: [SyncNowAction(isSyncing: _syncing, onSync: _syncNow)],
+      ),
       body: eventsAsync.when(
         data: (events) {
           _ensureEventSelected(events);
@@ -232,6 +255,12 @@ class _EventSelector extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
+    final openEvents = events.where((e) => e.isOpen).toList();
+    // Falls back to every event only when none are open — same
+    // fallback `_ensureEventSelected` already applies to the *default*
+    // selection, so a center with no currently-open event still has
+    // something selectable rather than an empty dropdown.
+    final selectable = openEvents.isNotEmpty ? openEvents : events;
     return DropdownButtonFormField<int>(
       initialValue: value,
       isExpanded: true,
@@ -240,7 +269,7 @@ class _EventSelector extends StatelessWidget {
         border: const OutlineInputBorder(),
       ),
       items: [
-        for (final event in events)
+        for (final event in selectable)
           DropdownMenuItem(
             value: event.id,
             child: Text(
@@ -398,7 +427,7 @@ class _PendingBreakdown extends StatelessWidget {
       return EmptyState(message: l10n.ecBoardPendingListEmpty);
     }
 
-    final counts = <AgeBracket, ({int male, int female})>{};
+    final counts = <AgeBracket?, ({int male, int female})>{};
     for (final entry in entries) {
       final current = counts[entry.ageBracket] ?? (male: 0, female: 0);
       counts[entry.ageBracket] = entry.sex == 'female'
@@ -415,13 +444,22 @@ class _PendingBreakdown extends StatelessWidget {
 
     return Column(
       children: [
-        for (final bracket in ageBracketValues)
+        // `null` last — an unclassified local entry is the unlikely
+        // corrupted-data edge case, not a normal bracket, so it's kept
+        // out of the youngest-to-oldest ordering the real brackets use.
+        for (final bracket in [...ageBracketValues, null])
           if (counts[bracket] case final c?)
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 4),
               child: Row(
                 children: [
-                  Expanded(child: Text(localizedAgeBracket(context, bracket))),
+                  Expanded(
+                    child: Text(
+                      bracket == null
+                          ? l10n.ecBoardUnclassifiedLabel
+                          : localizedAgeBracket(context, bracket),
+                    ),
+                  ),
                   Text(
                     l10n.ecBoardMaleFemaleCount(c.male, c.female),
                     style: theme.textTheme.bodyMedium?.copyWith(
@@ -497,7 +535,7 @@ class _PendingEntryTile extends ConsumerWidget {
         },
         title: Text(entry.householdLabel),
         subtitle: Text(
-          '$sexLabel • ${localizedAgeBracket(context, entry.ageBracket)}',
+          '$sexLabel • ${entry.ageBracket == null ? l10n.ecBoardUnclassifiedLabel : localizedAgeBracket(context, entry.ageBracket!)}',
         ),
       ),
     );

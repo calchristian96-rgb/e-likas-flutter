@@ -215,7 +215,9 @@ class _DetailBody extends StatelessWidget {
         ),
         _Row(
           label: l10n.ecBoardFieldAgeBracket,
-          value: localizedAgeBracket(context, summary.ageBracket),
+          value: summary.ageBracket == null
+              ? l10n.ecBoardUnclassifiedLabel
+              : localizedAgeBracket(context, summary.ageBracket!),
         ),
         _Row(label: l10n.ecBoardFieldHousehold, value: summary.householdLabel),
         if (detail.draft.existingFamilyLocalId != null) ...[
