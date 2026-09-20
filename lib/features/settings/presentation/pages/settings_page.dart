@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:flutter/foundation.dart' show kReleaseMode;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -30,6 +33,37 @@ class SettingsPage extends ConsumerStatefulWidget {
 
 class _SettingsPageState extends ConsumerState<SettingsPage> {
   bool _isSyncing = false;
+
+  // Hidden entry point to the developer backend-override screen —
+  // Android's own long-established "tap the build number 7 times"
+  // convention, so anyone who'd look for a hidden dev menu already
+  // knows the gesture. Resets if taps come more than 2s apart, so an
+  // idle app left open over a session can't accumulate stray taps into
+  // an accidental unlock. A no-op entirely in a release build: the row
+  // itself gets no onTap at all in that case (see build() below), so
+  // this counter is never even incremented.
+  int _aboutTapCount = 0;
+  Timer? _aboutTapResetTimer;
+
+  void _handleAboutTap() {
+    _aboutTapResetTimer?.cancel();
+    _aboutTapCount++;
+    if (_aboutTapCount >= 7) {
+      _aboutTapCount = 0;
+      context.push('/settings/dev');
+      return;
+    }
+    _aboutTapResetTimer = Timer(
+      const Duration(seconds: 2),
+      () => _aboutTapCount = 0,
+    );
+  }
+
+  @override
+  void dispose() {
+    _aboutTapResetTimer?.cancel();
+    super.dispose();
+  }
 
   Future<void> _handleSyncNow() async {
     setState(() => _isSyncing = true);
@@ -186,6 +220,10 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                 iconColor: semantic.navy,
                 title: 'E-LIKAS',
                 subtitle: l10n.aboutTagline,
+                // Deliberately no onTap at all in a release build —
+                // not just an inert one — so the tap sequence can't
+                // even begin to count there.
+                onTap: kReleaseMode ? null : _handleAboutTap,
               ),
             ],
           ),

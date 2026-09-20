@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../core/localization/app_locale.dart';
 import '../core/localization/app_theme_mode.dart';
 import '../core/localization/framework_localizations_fallback.dart';
+import '../core/widgets/dev_mode_banner.dart';
 import '../l10n/app_localizations.dart';
 import 'router/app_router.dart';
 import 'theme/app_theme.dart';
@@ -49,6 +50,8 @@ class ElikasApp extends ConsumerWidget {
         const FallbackWidgetsLocalizationsDelegate(),
       ],
       routerConfig: appRouter,
+      builder: (context, child) =>
+          DevModeBanner(child: child ?? const SizedBox.shrink()),
     );
   }
 }

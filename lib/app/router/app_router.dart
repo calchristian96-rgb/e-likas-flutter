@@ -26,6 +26,7 @@ import '../../features/family_registration/presentation/pages/family_registratio
 import '../../features/family_registration/presentation/pages/pending_registration_detail_page.dart';
 import '../../features/family_registration/presentation/pages/pending_registrations_page.dart';
 import '../../features/registered_families/presentation/pages/registered_families_page.dart';
+import '../../features/settings/presentation/pages/dev_settings_page.dart';
 import '../../features/settings/presentation/pages/offline_data_management_page.dart';
 import '../../features/staff_evacuation_centers/presentation/pages/evacuation_center_form_page.dart';
 import '../../features/staff_evacuation_centers/presentation/pages/staff_evacuation_center_detail_page.dart';
@@ -411,6 +412,16 @@ final GoRouter appRouter = GoRouter(
                   path: 'offline-data',
                   builder: (context, state) =>
                       const OfflineDataManagementPage(),
+                ),
+                // Hidden developer screen for the persistent
+                // local/staging backend override — reached only via
+                // the tap sequence on Settings' "E-LIKAS" about row,
+                // never linked anywhere else. DevSettingsPage's own
+                // build() refuses to render anything in a release
+                // build regardless of how this route was reached.
+                GoRoute(
+                  path: 'dev',
+                  builder: (context, state) => const DevSettingsPage(),
                 ),
                 // Barangay Staff Access subtree — additive, no
                 // interaction with the resident routes/branches above.
