@@ -613,6 +613,12 @@ class AppLocalizationsFil extends AppLocalizations {
       'Ipinapakita ang mga center sa buong lungsod para matulungan mong irehistro ang mga residenteng pansamantalang nasa lugar mo.';
 
   @override
+  String get centersYourBarangaySection => 'Ang iyong barangay';
+
+  @override
+  String get centersOtherBarangaysSection => 'Ibang mga barangay';
+
+  @override
   String get noCentersMatchFilter =>
       'Walang center na tumutugma sa iyong paghahanap o filter.';
 
@@ -1503,8 +1509,8 @@ class AppLocalizationsFil extends AppLocalizations {
   String get ecBoardTitle => 'EC Information Board';
 
   @override
-  String get ecBoardEntryPointSubtitle =>
-      'Magdagdag ng mga evacuee at tingnan ang breakdown ng edad/kasarian para sa center na ito';
+  String get ecBoardWorkspaceActionSubtitle =>
+      'Magdagdag ng mga evacuee at tingnan ang breakdown ng edad/kasarian para sa isang center';
 
   @override
   String get ecBoardAddEvacueeTitle => 'Magdagdag ng Evacuee';
@@ -1546,6 +1552,10 @@ class AppLocalizationsFil extends AppLocalizations {
 
   @override
   String get ecBoardPendingHouseholdBadge => 'Nakabinbin — hindi pa naka-sync';
+
+  @override
+  String get ecBoardPendingNewHouseholdBadge =>
+      'Bagong sambahayan mula sa device na ito — hindi pa naka-sync';
 
   @override
   String get ecBoardPendingHouseholdNotice =>
@@ -1592,6 +1602,10 @@ class AppLocalizationsFil extends AppLocalizations {
       'Wala pang naitalang evacuee para sa center at event na ito.';
 
   @override
+  String get ecBoardLastKnownFromCacheNotice =>
+      'Offline — ipinapakita ang huling nakumpirmang bilang na naka-save sa device na ito.';
+
+  @override
   String get ecBoardUnclassifiedLabel => 'Hindi Naklasipika';
 
   @override
@@ -1601,6 +1615,9 @@ class AppLocalizationsFil extends AppLocalizations {
   @override
   String get ecBoardPendingSectionSubtitle =>
       'Hindi pa naka-sync — hiwalay sa nakumpirmang bilang sa itaas.';
+
+  @override
+  String get ecBoardSyncNowInlineButton => 'I-sync Ngayon';
 
   @override
   String get ecBoardPendingListTitle => 'Mga Nakabinbing Entry';

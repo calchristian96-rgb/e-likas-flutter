@@ -30,6 +30,7 @@ part 'staff_database.g.dart';
     PendingFamilyRegistrations,
     PendingEcBoardEntries,
     PendingQuickCountEdits,
+    CachedQuickCounts,
   ],
 )
 class StaffDatabase extends _$StaffDatabase {
@@ -52,14 +53,17 @@ class StaffDatabase extends _$StaffDatabase {
   StaffDatabase.forExecutor(super.executor);
 
   @override
-  int get schemaVersion => 3;
+  int get schemaVersion => 4;
 
   /// Schema 2 adds `PendingEcBoardEntries` (EC Information Board's
   /// offline queue); schema 3 adds `PendingQuickCountEdits` (the
-  /// sectoral/4Ps offline edit) — a real device on an earlier schema
-  /// already has a populated `elikas_staff.sqlite` (pending
-  /// registrations, cached families), so this must stay an additive
-  /// `onUpgrade`, never a fresh `onCreate` wipe.
+  /// sectoral/4Ps offline edit); schema 4 adds `CachedQuickCounts`
+  /// (the "last known" quick-count snapshot, so it's still genuinely
+  /// available — not just an error — when EC Board is opened offline)
+  /// — a real device on an earlier schema already has a populated
+  /// `elikas_staff.sqlite` (pending registrations, cached families),
+  /// so this must stay an additive `onUpgrade`, never a fresh
+  /// `onCreate` wipe.
   @override
   MigrationStrategy get migration => MigrationStrategy(
     onCreate: (m) => m.createAll(),
@@ -69,6 +73,9 @@ class StaffDatabase extends _$StaffDatabase {
       }
       if (from < 3) {
         await m.createTable(pendingQuickCountEdits);
+      }
+      if (from < 4) {
+        await m.createTable(cachedQuickCounts);
       }
     },
   );

@@ -16,6 +16,7 @@ import '../../../registered_families/domain/entities/registered_family.dart';
 import '../../../registered_families/presentation/providers/registered_families_provider.dart';
 import '../../domain/entities/age_bracket.dart';
 import '../../domain/entities/ec_board_entry_draft.dart';
+import '../../domain/entities/pending_ec_board_entry.dart';
 import '../../domain/entities/sectoral_group.dart';
 import '../providers/ec_board_provider.dart';
 
@@ -77,7 +78,10 @@ class _AddEvacueeFormPageState extends ConsumerState<AddEvacueeFormPage> {
     final picked = await showModalBottomSheet<_HouseholdPick>(
       context: context,
       isScrollControlled: true,
-      builder: (context) => const _HouseholdPickerSheet(),
+      builder: (context) => _HouseholdPickerSheet(
+        centerId: widget.centerId,
+        evacuationEventId: widget.evacuationEventId,
+      ),
     );
     if (picked == null) return;
     setState(() {
@@ -431,7 +435,13 @@ class _HouseholdPick {
 /// means "syncs immediately" vs "waits for its own household to sync
 /// first" (see `EcBoardEntryDraft`'s doc comment).
 class _HouseholdPickerSheet extends ConsumerStatefulWidget {
-  const _HouseholdPickerSheet();
+  const _HouseholdPickerSheet({
+    required this.centerId,
+    required this.evacuationEventId,
+  });
+
+  final int centerId;
+  final int evacuationEventId;
 
   @override
   ConsumerState<_HouseholdPickerSheet> createState() =>
@@ -475,6 +485,12 @@ class _HouseholdPickerSheetState extends ConsumerState<_HouseholdPickerSheet> {
     final theme = Theme.of(context);
     final syncedAsync = ref.watch(registeredFamiliesProvider);
     final pendingAsync = ref.watch(pendingRegistrationsProvider);
+    final pendingNewHouseholdsAsync = ref.watch(
+      ecBoardPendingNewHouseholdsProvider(
+        widget.centerId,
+        widget.evacuationEventId,
+      ),
+    );
 
     return DraggableScrollableSheet(
       initialChildSize: 0.75,
@@ -531,6 +547,27 @@ class _HouseholdPickerSheetState extends ConsumerState<_HouseholdPickerSheet> {
                     controller: scrollController,
                     physics: const AlwaysScrollableScrollPhysics(),
                     children: [
+                      ...pendingNewHouseholdsAsync
+                          .maybeWhen(
+                            data: (items) => _filteredNewHouseholds(items),
+                            orElse: () =>
+                                const <PendingEcBoardEntrySummary>[],
+                          )
+                          .map(
+                            (item) => ListTile(
+                              leading: const Icon(Icons.cloud_off_outlined),
+                              title: Text(item.householdLabel),
+                              subtitle: Text(
+                                l10n.ecBoardPendingNewHouseholdBadge,
+                              ),
+                              onTap: () => Navigator.of(context).pop(
+                                _HouseholdPick(
+                                  label: item.householdLabel,
+                                  localFamilyId: item.localId,
+                                ),
+                              ),
+                            ),
+                          ),
                       ...pendingAsync
                           .maybeWhen(
                             data: (items) => _filteredPending(items),
@@ -606,6 +643,16 @@ class _HouseholdPickerSheetState extends ConsumerState<_HouseholdPickerSheet> {
     if (error is NetworkFailure) return l10n.staffFamiliesNoCacheMessage;
     if (error is Failure) return error.message;
     return l10n.staffFamiliesLoadError;
+  }
+
+  List<PendingEcBoardEntrySummary> _filteredNewHouseholds(
+    List<PendingEcBoardEntrySummary> items,
+  ) {
+    if (_query.isEmpty) return items;
+    final q = _query.toLowerCase();
+    return items
+        .where((i) => i.householdLabel.toLowerCase().contains(q))
+        .toList();
   }
 
   List<PendingRegistrationSummary> _filteredPending(

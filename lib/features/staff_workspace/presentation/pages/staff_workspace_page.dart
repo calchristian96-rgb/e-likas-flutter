@@ -113,12 +113,17 @@ class _StaffWorkspaceBody extends ConsumerWidget {
             subtitle: l10n.staffWorkspacePendingRegistrationsSubtitle,
             onTap: () => context.push('/settings/staff/pending-registrations'),
           ),
-          // Evacuation-center actions ahead of All Evacuees — EC Board
-          // (reached from a center's own detail page) is now the
-          // primary fast-entry workflow, so getting to a center comes
-          // first; "Register a Family"/"My Pending Registrations"
-          // above are unchanged relative to each other and to this
-          // block.
+          // EC Board is its own top-level entry point (not reached via
+          // Evacuation Centers management) — ahead of the management
+          // actions below since it's the primary fast-entry workflow
+          // for staff already at a center.
+          _WorkspaceAction(
+            icon: Icons.fact_check_outlined,
+            iconColor: theme.colorScheme.primary,
+            label: l10n.ecBoardTitle,
+            subtitle: l10n.ecBoardWorkspaceActionSubtitle,
+            onTap: () => context.push('/settings/staff/ec-board'),
+          ),
           _WorkspaceAction(
             icon: Icons.add_business_outlined,
             iconColor: semantic.navy,

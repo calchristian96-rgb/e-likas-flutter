@@ -11,8 +11,8 @@ import '../../features/alerts/presentation/pages/alert_details_page.dart';
 import '../../features/alerts/presentation/pages/alerts_page.dart';
 import '../../features/alerts/presentation/providers/alerts_summary_provider.dart';
 import '../../features/alerts/presentation/widgets/alert_type_display.dart';
+import '../../features/ec_board/presentation/pages/ec_board_centers_list_page.dart';
 import '../../features/ec_board/presentation/pages/ec_board_page.dart';
-import '../../features/ec_board/presentation/pages/pending_ec_entry_detail_page.dart';
 import '../../features/emergency_hotlines/presentation/pages/emergency_hotlines_page.dart';
 import '../../features/evacuation_centers/presentation/pages/evacuation_center_details_page.dart';
 import '../../features/evacuation_centers/presentation/pages/evacuation_centers_list_page.dart';
@@ -470,7 +470,10 @@ final GoRouter appRouter = GoRouter(
                     // same pattern PendingRegistrationDetailPage uses
                     // for its own edit flow (it needs the already-
                     // fetched center object, not a re-fetch keyed by
-                    // a route param).
+                    // a route param). EC Board itself is NOT nested
+                    // under here (see the standalone `ec-board` route
+                    // below) — opening the board has nothing to do
+                    // with managing a center's own details.
                     GoRoute(
                       path: 'evacuation-centers',
                       builder: (context, state) =>
@@ -498,35 +501,31 @@ final GoRouter appRouter = GoRouter(
                               centerId: id,
                             );
                           },
-                          routes: [
-                            // EC Information Board — Add Evacuee is
-                            // reached via Navigator.push from this
-                            // page and from the pending-entry detail
-                            // page (same "already has what it needs
-                            // in memory" reasoning as the center
-                            // edit/pending-registration edit flows
-                            // above), so only the board itself and its
-                            // pending-entry detail need named routes.
-                            GoRoute(
-                              path: 'ec-board',
-                              builder: (context, state) {
-                                final id = int.tryParse(
-                                  state.pathParameters['id'] ?? '',
-                                );
-                                return EcBoardPage(centerId: id ?? 0);
-                              },
-                              routes: [
-                                GoRoute(
-                                  path: ':localId',
-                                  builder: (context, state) =>
-                                      PendingEcEntryDetailPage(
-                                        localId:
-                                            state.pathParameters['localId']!,
-                                      ),
-                                ),
-                              ],
-                            ),
-                          ],
+                        ),
+                      ],
+                    ),
+                    // EC Information Board — its own top-level entry
+                    // point straight from the Staff Workspace, not
+                    // reached via Evacuation Centers management at
+                    // all: `ec-board` lists centers (barangay-pinned,
+                    // same as the management list) and `ec-board/:id`
+                    // is the board itself. Add Evacuee/pending-entry
+                    // detail are still reached via Navigator.push from
+                    // the board (same "already has what it needs in
+                    // memory" reasoning as the center edit flow above),
+                    // so only these two need named routes.
+                    GoRoute(
+                      path: 'ec-board',
+                      builder: (context, state) => const EcBoardCentersListPage(),
+                      routes: [
+                        GoRoute(
+                          path: ':id',
+                          builder: (context, state) {
+                            final id = int.tryParse(
+                              state.pathParameters['id'] ?? '',
+                            );
+                            return EcBoardPage(centerId: id ?? 0);
+                          },
                         ),
                       ],
                     ),

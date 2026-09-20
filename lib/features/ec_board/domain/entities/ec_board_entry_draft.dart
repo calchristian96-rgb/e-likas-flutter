@@ -17,6 +17,29 @@ enum HouseholdMode {
   };
 }
 
+/// The confirmed result of a successful `POST
+/// /evacuation-centers/{id}/evacuees` — both the new evacuee's own id
+/// and the household's real `families.id`, always present in the
+/// response regardless of [HouseholdMode] (an "existing" submission
+/// just echoes back the family it was already given). The family id
+/// matters specifically for [HouseholdMode.new_]: `StaffSyncService`
+/// uses it to promote any *other* still-pending EC Board entry that
+/// referenced this one's own [PendingEcBoardEntrySummary.localId] as
+/// its [EcBoardEntryDraft.existingFamilyLocalId] — see
+/// `EcBoardRepository.promoteHouseholdReference`'s doc comment for why
+/// that's the same mechanism a pending family registration's own
+/// promotion already uses, just keyed by an EC Board entry's local id
+/// instead of a `PendingFamilyRegistrations` one.
+class EcBoardSubmitResult {
+  const EcBoardSubmitResult({
+    required this.evacueeId,
+    required this.familyId,
+  });
+
+  final int evacueeId;
+  final int familyId;
+}
+
 /// A single Add Evacuee entry — one person's EC Information Board
 /// intake record. Deliberately far smaller than
 /// `FamilyRegistrationDraft`: this is a fast, single-evacuee counting

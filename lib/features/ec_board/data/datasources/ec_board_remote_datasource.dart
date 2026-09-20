@@ -1,5 +1,6 @@
 import '../../../../core/network/staff_api_client.dart';
 import '../../domain/entities/age_bracket.dart';
+import '../../domain/entities/ec_board_entry_draft.dart' show EcBoardSubmitResult;
 import '../../domain/entities/ec_board_quick_count.dart';
 import '../../domain/entities/quick_departure_request.dart';
 import '../../domain/entities/sectoral_group.dart';
@@ -12,18 +13,28 @@ class EcBoardRemoteDataSource {
 
   final StaffApiClient _client;
 
-  /// Returns the backend's `evacuee_id` — a **top-level** response
+  /// [EcBoardSubmitResult.evacueeId] is a **top-level** response
   /// field, deliberately read from the envelope directly rather than
   /// `data['id']` (which is the *family's* id, not the evacuee's — a
   /// real bug already caught and fixed in the desktop app's equivalent
-  /// work, so this reads the correct field from the start here).
-  Future<int> createEvacuee(int centerId, Map<String, dynamic> payload) async {
+  /// work); [EcBoardSubmitResult.familyId] is that `data['id']` field,
+  /// the FamilyResource the backend always returns regardless of
+  /// [HouseholdMode] — see that class's doc comment for why the caller
+  /// needs both.
+  Future<EcBoardSubmitResult> createEvacuee(
+    int centerId,
+    Map<String, dynamic> payload,
+  ) async {
     final response = await _client.post(
       '/evacuation-centers/$centerId/evacuees',
       data: payload,
     );
     final envelope = response.data as Map<String, dynamic>;
-    return envelope['evacuee_id'] as int;
+    final data = envelope['data'] as Map<String, dynamic>;
+    return EcBoardSubmitResult(
+      evacueeId: envelope['evacuee_id'] as int,
+      familyId: data['id'] as int,
+    );
   }
 
   Future<EcBoardQuickCount> getQuickCount({

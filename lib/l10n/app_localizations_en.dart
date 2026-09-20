@@ -598,6 +598,12 @@ class AppLocalizationsEn extends AppLocalizations {
       'Showing centers citywide so you can help register residents temporarily in your area.';
 
   @override
+  String get centersYourBarangaySection => 'Your barangay';
+
+  @override
+  String get centersOtherBarangaysSection => 'Other barangays';
+
+  @override
   String get noCentersMatchFilter => 'No centers match your search or filter.';
 
   @override
@@ -1474,8 +1480,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get ecBoardTitle => 'EC Information Board';
 
   @override
-  String get ecBoardEntryPointSubtitle =>
-      'Add evacuees and view the age/sex breakdown for this center';
+  String get ecBoardWorkspaceActionSubtitle =>
+      'Add evacuees and view the age/sex breakdown for a center';
 
   @override
   String get ecBoardAddEvacueeTitle => 'Add Evacuee';
@@ -1515,6 +1521,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get ecBoardPendingHouseholdBadge => 'Pending — not yet synced';
+
+  @override
+  String get ecBoardPendingNewHouseholdBadge =>
+      'New household from this device — not yet synced';
 
   @override
   String get ecBoardPendingHouseholdNotice =>
@@ -1561,6 +1571,10 @@ class AppLocalizationsEn extends AppLocalizations {
       'No evacuees recorded for this center and event yet.';
 
   @override
+  String get ecBoardLastKnownFromCacheNotice =>
+      'Offline — showing the last confirmed figures saved on this device.';
+
+  @override
   String get ecBoardUnclassifiedLabel => 'Unclassified';
 
   @override
@@ -1569,6 +1583,9 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get ecBoardPendingSectionSubtitle =>
       'Not yet synced — kept separate from the confirmed count above.';
+
+  @override
+  String get ecBoardSyncNowInlineButton => 'Sync Now';
 
   @override
   String get ecBoardPendingListTitle => 'Pending Entries';

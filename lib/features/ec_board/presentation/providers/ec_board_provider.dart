@@ -43,6 +43,24 @@ Future<PendingEcBoardEntryDetail?> ecBoardEntryDetail(Ref ref, String localId) {
   return ref.watch(ecBoardRepositoryProvider).getDetail(localId);
 }
 
+/// This device's own still-pending "new household" entries for one
+/// center+event — watched by the Add Evacuee household picker
+/// alongside synced and pending-family-registration households. See
+/// [EcBoardRepository.getPendingNewHouseholds]'s doc comment.
+@riverpod
+Future<List<PendingEcBoardEntrySummary>> ecBoardPendingNewHouseholds(
+  Ref ref,
+  int centerId,
+  int evacuationEventId,
+) {
+  return ref
+      .watch(ecBoardRepositoryProvider)
+      .getPendingNewHouseholds(
+        centerId: centerId,
+        evacuationEventId: evacuationEventId,
+      );
+}
+
 @riverpod
 Future<EcBoardQueueCounts> ecBoardCountsForCenter(Ref ref, int centerId) {
   return ref.watch(ecBoardRepositoryProvider).getCountsForCenter(centerId);
@@ -75,7 +93,8 @@ Future<EcBoardQuickCount> ecBoardQuickCount(
 /// branch and `StaffSyncService` — same one-wiring-not-two convention
 /// `registrationSubmitProvider` already established.
 @riverpod
-Future<Result<int>> Function(EcBoardEntryDraft draft) ecBoardSubmit(Ref ref) {
+Future<Result<EcBoardSubmitResult>> Function(EcBoardEntryDraft draft)
+ecBoardSubmit(Ref ref) {
   final repository = ref.watch(ecBoardRepositoryProvider);
   return (draft) => repository.submit(draft);
 }

@@ -74,11 +74,16 @@ class EcBoardSectoralGroupCount {
   int get total => maleCount + femaleCount;
 }
 
-/// The live, "last known" breakdown for one center+event — fetched
-/// on demand only (see `ecBoardQuickCountProvider`'s doc comment),
-/// never cached offline: this is explicitly a server-computed
-/// snapshot of *synced* data, kept visually separate from this
-/// device's own still-pending entries rather than merged with them.
+/// The live, "last known" breakdown for one center+event — a
+/// server-computed snapshot of *synced* data, kept visually separate
+/// from this device's own still-pending entries rather than merged
+/// with them. Fetched fresh on every page open when there's a
+/// connection; the most recent successful fetch is also cached
+/// locally (see `EcBoardRepository.getQuickCount`) so this "last
+/// known" figure is still genuinely available — not just an error —
+/// when staff open the board offline, matching this app's own
+/// established "network-first, cache fallback" pattern for every
+/// other lookup (e.g. `LookupRepositoryImpl`).
 class EcBoardQuickCount {
   const EcBoardQuickCount({
     required this.familiesCumulative,
@@ -91,6 +96,7 @@ class EcBoardQuickCount {
     this.sectoralGroups = const [],
     this.updatedByName,
     this.updatedAt,
+    this.isFromCache = false,
   });
 
   /// Every family/person ever recorded arriving at this center for
@@ -127,4 +133,11 @@ class EcBoardQuickCount {
   /// than 404ing).
   final String? updatedByName;
   final DateTime? updatedAt;
+
+  /// True when this came from the local cache of the last successful
+  /// fetch rather than a live request just now — the fetch itself
+  /// failed (offline, timeout, server error) and this is the fallback,
+  /// same "the app couldn't reach the server to reconfirm this"
+  /// signal `StaffSession.isFromCache` gives for a restored session.
+  final bool isFromCache;
 }

@@ -9,6 +9,7 @@ import '../../../../l10n/app_localizations.dart';
 import '../../../evacuation_centers/domain/entities/evacuation_center.dart';
 import '../../../evacuation_centers/presentation/providers/evacuation_centers_provider.dart';
 import '../../../evacuation_centers/presentation/widgets/center_status_display.dart';
+import '../../../evacuation_centers/presentation/widgets/pin_own_barangay_first.dart';
 import '../../../staff_auth/domain/entities/staff_session.dart';
 import '../../../staff_auth/presentation/widgets/staff_auth_guard.dart';
 
@@ -133,13 +134,16 @@ class _StaffEvacuationCentersListBodyState
                 if (visible.isEmpty) {
                   return Center(child: Text(l10n.noCentersMatchFilter));
                 }
-                return ListView.separated(
+                return ListView(
                   padding: const EdgeInsets.fromLTRB(16, 4, 16, 16),
-                  itemCount: visible.length,
-                  separatorBuilder: (context, index) =>
-                      const SizedBox(height: 8),
-                  itemBuilder: (context, index) =>
-                      _StaffCenterTile(center: visible[index]),
+                  children: buildBarangayGroupedCenterTiles(
+                    centers: visible,
+                    ownBarangayName: widget.session.barangayName,
+                    ownGroupLabel: l10n.centersYourBarangaySection,
+                    othersGroupLabel: l10n.centersOtherBarangaysSection,
+                    tileBuilder: (center) => _StaffCenterTile(center: center),
+                    spacer: const SizedBox(height: 8),
+                  ),
                 );
               },
               loading: () => const Center(child: CircularProgressIndicator()),

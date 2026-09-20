@@ -1,6 +1,8 @@
 import 'package:drift/drift.dart';
 
 import '../../../../core/database/staff_database.dart';
+import '../../domain/entities/ec_board_quick_count.dart';
+import '../models/cached_quick_count_codec.dart';
 import '../models/pending_ec_board_entry_model.dart';
 import '../models/pending_quick_count_edit_model.dart';
 
@@ -183,5 +185,40 @@ class EcBoardLocalDataSource {
       createdAtEpochMs: row.createdAtEpochMs,
       updatedAtEpochMs: row.updatedAtEpochMs,
     );
+  }
+
+  // --- CachedQuickCounts: the last successfully-fetched "last known"
+  // --- snapshot per (center, event) — see that table's own doc
+  // --- comment for why it isn't owner-scoped.
+
+  Future<void> cacheQuickCount({
+    required int centerId,
+    required int evacuationEventId,
+    required EcBoardQuickCount count,
+  }) async {
+    await _db
+        .into(_db.cachedQuickCounts)
+        .insertOnConflictUpdate(
+          CachedQuickCountsCompanion.insert(
+            evacuationCenterId: centerId,
+            evacuationEventId: evacuationEventId,
+            dataJson: CachedQuickCountCodec.encode(count),
+            cachedAtEpochMs: DateTime.now().millisecondsSinceEpoch,
+          ),
+        );
+  }
+
+  Future<EcBoardQuickCount?> getCachedQuickCount({
+    required int centerId,
+    required int evacuationEventId,
+  }) async {
+    final row =
+        await (_db.select(_db.cachedQuickCounts)..where(
+              (t) =>
+                  t.evacuationCenterId.equals(centerId) &
+                  t.evacuationEventId.equals(evacuationEventId),
+            ))
+            .getSingleOrNull();
+    return row == null ? null : CachedQuickCountCodec.decode(row.dataJson);
   }
 }

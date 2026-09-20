@@ -24,6 +24,20 @@ class EcBoardQueueCounts {
 abstract class EcBoardRepository {
   Future<List<PendingEcBoardEntrySummary>> getAllForCenter(int centerId);
 
+  /// This device's own still-pending [HouseholdMode.new_] entries for
+  /// one center+event — each one a genuinely distinct household this
+  /// staff account created inline via Add Evacuee (never merged with
+  /// [getAllForCenter]'s full list, which includes every household
+  /// mode and every event). Surfaced by the household picker
+  /// alongside synced and pending-family-registration households, so
+  /// a second evacuee can join one of *these* before it's ever synced
+  /// — see [EcBoardSubmitResult]'s doc comment for how that reference
+  /// gets promoted to a real family id once this entry itself syncs.
+  Future<List<PendingEcBoardEntrySummary>> getPendingNewHouseholds({
+    required int centerId,
+    required int evacuationEventId,
+  });
+
   Future<PendingEcBoardEntryDetail?> getDetail(String localId);
 
   /// Saves a brand-new entry as `pending`. Returns the generated
@@ -64,32 +78,36 @@ abstract class EcBoardRepository {
 
   /// Rewrites every pending entry whose [EcBoardEntryDraft
   /// .existingFamilyLocalId] matches [familyLocalId] to reference
-  /// [remoteFamilyId] instead — the "promotion" step `StaffSyncService`
-  /// runs immediately after a pending family registration syncs
-  /// successfully, so an EC Board entry queued against a household
-  /// that wasn't synced yet becomes syncable in the very same run.
+  /// [remoteFamilyId] instead. [familyLocalId] can be either a
+  /// `PendingFamilyRegistrations.localId` (the "promotion" step
+  /// `StaffSyncService` runs immediately after a pending family
+  /// registration syncs) or another `PendingEcBoardEntries.localId`
+  /// whose own [HouseholdMode.new_] submission just created that
+  /// family (see [EcBoardSubmitResult]'s doc comment) — either way, an
+  /// EC Board entry queued against a household that wasn't synced yet
+  /// becomes syncable in the very same run.
   Future<void> promoteHouseholdReference({
     required String familyLocalId,
     required int remoteFamilyId,
   });
 
-  /// One center+event's live breakdown — deliberately live-only, no
-  /// offline cache, no bulk/reference-data refresh path: fetched only
-  /// when a specific center's EC Board page is actually opened while
-  /// online (see `ecBoardQuickCountProvider`). Returns [Failed] on any
-  /// failure (offline, server error) — the UI shows that section as
-  /// unavailable rather than a fabricated or stale count.
+  /// One center+event's live breakdown. Network-first: a successful
+  /// fetch is also cached locally, so a failure (offline, server
+  /// error) falls back to the last cached snapshot — marked
+  /// [EcBoardQuickCount.isFromCache] — instead of [Failed], the same
+  /// "still show *something* real, clearly labeled" pattern every
+  /// other lookup in this app uses. Only genuinely [Failed] when
+  /// nothing has ever been cached for this center+event yet.
   Future<Result<EcBoardQuickCount>> getQuickCount({
     required int centerId,
     required int evacuationEventId,
   });
 
   /// The one online submission path:
-  /// `POST /evacuation-centers/{id}/evacuees`. Returns the backend's
-  /// `evacuee_id` (the response's top-level field — never `data.id`,
-  /// which is the family's id, a real bug caught in the desktop app's
-  /// equivalent work) on a confirmed 201.
-  Future<Result<int>> submit(EcBoardEntryDraft draft);
+  /// `POST /evacuation-centers/{id}/evacuees`. See
+  /// [EcBoardSubmitResult]'s doc comment for why both ids it carries
+  /// matter, not just the evacuee's.
+  Future<Result<EcBoardSubmitResult>> submit(EcBoardEntryDraft draft);
 
   // --- Sectoral/4Ps edit — same offline queue-then-sync shape as the
   // --- evacuee queue above, but exactly one draft per (center, event)

@@ -4,7 +4,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../app/theme/app_theme.dart';
 import '../../../../core/widgets/error_state.dart';
 import '../../../../l10n/app_localizations.dart';
-import '../../../ec_board/presentation/pages/ec_board_page.dart';
 import '../../../evacuation_centers/domain/entities/evacuation_center.dart';
 import '../../../evacuation_centers/presentation/widgets/center_photo_card.dart';
 import '../../../evacuation_centers/presentation/widgets/center_status_display.dart';
@@ -147,23 +146,6 @@ class _CenterDetailContent extends StatelessWidget {
         const SizedBox(height: 16),
         CenterPhotoCard(centerId: center.id, photoUrl: center.photoUrl),
         const SizedBox(height: 16),
-        Card(
-          color: theme.colorScheme.primaryContainer.withValues(alpha: 0.35),
-          child: ListTile(
-            leading: Icon(
-              Icons.fact_check_outlined,
-              color: theme.colorScheme.primary,
-            ),
-            title: Text(l10n.ecBoardTitle),
-            subtitle: Text(l10n.ecBoardEntryPointSubtitle),
-            trailing: const Icon(Icons.chevron_right),
-            onTap: () => Navigator.of(context).push<void>(
-              MaterialPageRoute(
-                builder: (_) => EcBoardPage(centerId: center.id),
-              ),
-            ),
-          ),
-        ),
         const Divider(height: 32),
         Text(l10n.overviewSectionTitle, style: theme.textTheme.titleSmall),
         const SizedBox(height: 10),

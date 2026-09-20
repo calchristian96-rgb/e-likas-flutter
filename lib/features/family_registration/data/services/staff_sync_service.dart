@@ -1,6 +1,8 @@
 import '../../../../core/connectivity/connectivity_service.dart';
 import '../../../../core/error/failure.dart';
 import '../../../../core/error/result.dart';
+import '../../../ec_board/domain/entities/ec_board_entry_draft.dart'
+    show HouseholdMode;
 import '../../../ec_board/domain/repositories/ec_board_repository.dart';
 import '../../domain/entities/pending_registration_status.dart';
 import '../../domain/repositories/family_registration_repository.dart';
@@ -152,9 +154,20 @@ class StaffSyncService {
     var processed = processedSoFar;
     final queue = await ecBoard.getPendingQueueInOrder();
 
-    for (final item in queue) {
-      final localId = item.summary.localId;
+    for (final queuedItem in queue) {
+      final localId = queuedItem.summary.localId;
       if (!await _connectivity.hasConnection) break;
+
+      // Re-fetched fresh rather than trusting `queuedItem` (captured
+      // once, before this loop started): a sibling entry queued
+      // against *this device's own* not-yet-synced new household
+      // (see `EcBoardSubmitResult`'s doc comment) can be promoted from
+      // `existingFamilyLocalId` to a real `existingFamilyRemoteId` by
+      // an earlier iteration of this very loop, and that promotion
+      // must be visible to the very next `isReadyToSync` check for
+      // both to sync in the same run rather than needing a second
+      // Sync Now tap.
+      final item = await ecBoard.getDetail(localId) ?? queuedItem;
 
       // An existing-household entry whose family hasn't synced yet
       // (still only a local reference) isn't ready — left `pending`
@@ -166,8 +179,19 @@ class StaffSyncService {
       final result = await ecBoard.submit(item.draft);
 
       switch (result) {
-        case Success():
+        case Success(:final value):
           await ecBoard.markSynced(localId);
+          // A brand-new household just got a real backend id — any
+          // other pending entry still referencing *this* entry's own
+          // local id (see `EcBoardEntryDraft.existingFamilyLocalId`'s
+          // doc comment) can now be promoted too, same mechanism as a
+          // synced family registration promoting its own references.
+          if (item.draft.householdMode == HouseholdMode.new_) {
+            await ecBoard.promoteHouseholdReference(
+              familyLocalId: localId,
+              remoteFamilyId: value.familyId,
+            );
+          }
           processed++;
         case Failed(:final failure):
           if (failure is AuthFailure) {

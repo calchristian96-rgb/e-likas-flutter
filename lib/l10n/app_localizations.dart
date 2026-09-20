@@ -1168,6 +1168,18 @@ abstract class AppLocalizations {
   /// **'Showing centers citywide so you can help register residents temporarily in your area.'**
   String get staffCentersCitywideNotice;
 
+  /// No description provided for @centersYourBarangaySection.
+  ///
+  /// In en, this message translates to:
+  /// **'Your barangay'**
+  String get centersYourBarangaySection;
+
+  /// No description provided for @centersOtherBarangaysSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Other barangays'**
+  String get centersOtherBarangaysSection;
+
   /// No description provided for @noCentersMatchFilter.
   ///
   /// In en, this message translates to:
@@ -2710,11 +2722,11 @@ abstract class AppLocalizations {
   /// **'EC Information Board'**
   String get ecBoardTitle;
 
-  /// No description provided for @ecBoardEntryPointSubtitle.
+  /// No description provided for @ecBoardWorkspaceActionSubtitle.
   ///
   /// In en, this message translates to:
-  /// **'Add evacuees and view the age/sex breakdown for this center'**
-  String get ecBoardEntryPointSubtitle;
+  /// **'Add evacuees and view the age/sex breakdown for a center'**
+  String get ecBoardWorkspaceActionSubtitle;
 
   /// No description provided for @ecBoardAddEvacueeTitle.
   ///
@@ -2794,6 +2806,12 @@ abstract class AppLocalizations {
   /// **'Pending — not yet synced'**
   String get ecBoardPendingHouseholdBadge;
 
+  /// No description provided for @ecBoardPendingNewHouseholdBadge.
+  ///
+  /// In en, this message translates to:
+  /// **'New household from this device — not yet synced'**
+  String get ecBoardPendingNewHouseholdBadge;
+
   /// No description provided for @ecBoardPendingHouseholdNotice.
   ///
   /// In en, this message translates to:
@@ -2866,6 +2884,12 @@ abstract class AppLocalizations {
   /// **'No evacuees recorded for this center and event yet.'**
   String get ecBoardLastKnownEmpty;
 
+  /// No description provided for @ecBoardLastKnownFromCacheNotice.
+  ///
+  /// In en, this message translates to:
+  /// **'Offline — showing the last confirmed figures saved on this device.'**
+  String get ecBoardLastKnownFromCacheNotice;
+
   /// No description provided for @ecBoardUnclassifiedLabel.
   ///
   /// In en, this message translates to:
@@ -2883,6 +2907,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Not yet synced — kept separate from the confirmed count above.'**
   String get ecBoardPendingSectionSubtitle;
+
+  /// No description provided for @ecBoardSyncNowInlineButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Sync Now'**
+  String get ecBoardSyncNowInlineButton;
 
   /// No description provided for @ecBoardPendingListTitle.
   ///

@@ -39,6 +39,20 @@ class EcBoardRepositoryImpl implements EcBoardRepository {
   }
 
   @override
+  Future<List<PendingEcBoardEntrySummary>> getPendingNewHouseholds({
+    required int centerId,
+    required int evacuationEventId,
+  }) async {
+    final owned = await _ownedModelsForCenter(centerId);
+    final newHouseholds = owned
+        .where((m) => m.evacuationEventId == evacuationEventId)
+        .where((m) => HouseholdMode.fromWire(m.householdMode) == HouseholdMode.new_)
+        .toList()
+      ..sort((a, b) => b.createdAtEpochMs.compareTo(a.createdAtEpochMs));
+    return newHouseholds.map(_toSummary).toList();
+  }
+
+  @override
   Future<PendingEcBoardEntryDetail?> getDetail(String localId) async {
     final model = _owned(await _local.getByLocalId(localId));
     return model == null ? null : _toDetail(model);
@@ -220,20 +234,30 @@ class EcBoardRepositoryImpl implements EcBoardRepository {
         centerId: centerId,
         evacuationEventId: evacuationEventId,
       );
+      await _local.cacheQuickCount(
+        centerId: centerId,
+        evacuationEventId: evacuationEventId,
+        count: count,
+      );
       return Success(count);
     } on DioException catch (e) {
+      final cached = await _local.getCachedQuickCount(
+        centerId: centerId,
+        evacuationEventId: evacuationEventId,
+      );
+      if (cached != null) return Success(cached);
       return Failed(mapStaffDioError(e));
     }
   }
 
   @override
-  Future<Result<int>> submit(EcBoardEntryDraft draft) async {
+  Future<Result<EcBoardSubmitResult>> submit(EcBoardEntryDraft draft) async {
     try {
-      final evacueeId = await _remote.createEvacuee(
+      final result = await _remote.createEvacuee(
         draft.evacuationCenterId,
         draft.toJson(),
       );
-      return Success(evacueeId);
+      return Success(result);
     } on DioException catch (e) {
       return Failed(mapStaffDioError(e));
     }

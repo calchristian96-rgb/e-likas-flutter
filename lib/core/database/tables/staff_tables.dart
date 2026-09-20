@@ -221,3 +221,25 @@ class PendingQuickCountEdits extends Table {
     ownerStaffId,
   };
 }
+
+/// Local cache of the last successfully-fetched `GET .../quick-count`
+/// response for one (center, event) — mirrors `CachedQuickCountCodec`.
+/// Not owner-scoped, unlike [PendingQuickCountEdits]: this is a mirror
+/// of shared server truth (what the "last known" figures actually
+/// are), not one staff member's own unsynced draft, so every signed-in
+/// account on this device sees the same cached snapshot — same
+/// reasoning as [LookupBarangays]/[LookupEvacuationEvents] having no
+/// owner column either.
+@DataClassName('CachedQuickCountRow')
+class CachedQuickCounts extends Table {
+  IntColumn get evacuationCenterId => integer()();
+  IntColumn get evacuationEventId => integer()();
+
+  /// JSON-encoded [EcBoardQuickCount] — see `CachedQuickCountCodec`.
+  TextColumn get dataJson => text()();
+
+  IntColumn get cachedAtEpochMs => integer()();
+
+  @override
+  Set<Column> get primaryKey => {evacuationCenterId, evacuationEventId};
+}

@@ -96,6 +96,8 @@ class _EcBoardPageState extends ConsumerState<EcBoardPage> {
             events: events,
             selectedEventId: eventId,
             onEventChanged: (id) => setState(() => _selectedEventId = id),
+            isSyncing: _syncing,
+            onSync: _syncNow,
           );
         },
         loading: () => const Center(child: CircularProgressIndicator()),
@@ -119,12 +121,16 @@ class _EcBoardBody extends ConsumerWidget {
     required this.events,
     required this.selectedEventId,
     required this.onEventChanged,
+    required this.isSyncing,
+    required this.onSync,
   });
 
   final int centerId;
   final List<EvacuationEventLookup> events;
   final int selectedEventId;
   final ValueChanged<int> onEventChanged;
+  final bool isSyncing;
+  final VoidCallback onSync;
 
   Future<void> _openAddEvacuee(BuildContext context, WidgetRef ref) async {
     await Navigator.of(context).push<void>(
@@ -251,9 +257,33 @@ class _EcBoardBody extends ConsumerWidget {
             evacuationEventId: selectedEventId,
           ),
           const Divider(height: 32),
-          Text(
-            l10n.ecBoardPendingSectionTitle,
-            style: theme.textTheme.titleMedium,
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                child: Text(
+                  l10n.ecBoardPendingSectionTitle,
+                  style: theme.textTheme.titleMedium,
+                ),
+              ),
+              // Sync Now, right where staff are already looking at what's
+              // waiting to be sent — in addition to the AppBar's own
+              // action, not a replacement for it.
+              isSyncing
+                  ? const Padding(
+                      padding: EdgeInsets.all(8),
+                      child: SizedBox(
+                        width: 18,
+                        height: 18,
+                        child: CircularProgressIndicator(strokeWidth: 2),
+                      ),
+                    )
+                  : TextButton.icon(
+                      onPressed: onSync,
+                      icon: const Icon(Icons.sync_outlined, size: 18),
+                      label: Text(l10n.ecBoardSyncNowInlineButton),
+                    ),
+            ],
           ),
           const SizedBox(height: 4),
           Text(
@@ -416,6 +446,27 @@ class _QuickCountSection extends ConsumerWidget {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            if (count.isFromCache) ...[
+              Row(
+                children: [
+                  Icon(
+                    Icons.cloud_off_outlined,
+                    size: 14,
+                    color: theme.colorScheme.onSurfaceVariant,
+                  ),
+                  const SizedBox(width: 6),
+                  Expanded(
+                    child: Text(
+                      l10n.ecBoardLastKnownFromCacheNotice,
+                      style: theme.textTheme.bodySmall?.copyWith(
+                        color: theme.colorScheme.onSurfaceVariant,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 8),
+            ],
             Row(
               children: [
                 Expanded(
@@ -623,10 +674,6 @@ class _PendingBreakdown extends StatelessWidget {
     final l10n = AppLocalizations.of(context);
     final theme = Theme.of(context);
 
-    if (entries.isEmpty) {
-      return EmptyState(message: l10n.ecBoardPendingListEmpty);
-    }
-
     final counts = <AgeBracket?, ({int male, int female})>{};
     for (final entry in entries) {
       final current = counts[entry.ageBracket] ?? (male: 0, female: 0);
@@ -644,31 +691,48 @@ class _PendingBreakdown extends StatelessWidget {
 
     return Column(
       children: [
-        // `null` last — an unclassified local entry is the unlikely
-        // corrupted-data edge case, not a normal bracket, so it's kept
-        // out of the youngest-to-oldest ordering the real brackets use.
-        for (final bracket in [...ageBracketValues, null])
-          if (counts[bracket] case final c?)
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 4),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Text(
-                      bracket == null
-                          ? l10n.ecBoardUnclassifiedLabel
-                          : localizedAgeBracket(context, bracket),
-                    ),
+        // Every real bracket always shown, zero-filled where there's
+        // no pending entry yet — this mirrors the official EC Board
+        // template's fixed row structure (every age category has its
+        // own row on the printed form regardless of whether it has a
+        // count), and matches the "Last Known" breakdown above it,
+        // which the server already renders the same complete way.
+        // Unclassified is the one exception, shown only when a
+        // corrupted local entry actually produced one — it isn't a
+        // row the template itself has.
+        for (final bracket in ageBracketValues)
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 4),
+            child: Row(
+              children: [
+                Expanded(child: Text(localizedAgeBracket(context, bracket))),
+                Text(
+                  l10n.ecBoardMaleFemaleCount(
+                    (counts[bracket] ?? (male: 0, female: 0)).male,
+                    (counts[bracket] ?? (male: 0, female: 0)).female,
                   ),
-                  Text(
-                    l10n.ecBoardMaleFemaleCount(c.male, c.female),
-                    style: theme.textTheme.bodyMedium?.copyWith(
-                      fontWeight: FontWeight.w600,
-                    ),
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    fontWeight: FontWeight.w600,
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
+          ),
+        if (counts[null] case final c?)
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 4),
+            child: Row(
+              children: [
+                Expanded(child: Text(l10n.ecBoardUnclassifiedLabel)),
+                Text(
+                  l10n.ecBoardMaleFemaleCount(c.male, c.female),
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ],
+            ),
+          ),
         const Divider(height: 20),
         Row(
           children: [
