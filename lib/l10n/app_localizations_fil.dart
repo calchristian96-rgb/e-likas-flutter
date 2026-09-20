@@ -1066,6 +1066,16 @@ class AppLocalizationsFil extends AppLocalizations {
   String get staffWorkspaceNeedsAttentionCount => 'Kailangan ng Aksyon';
 
   @override
+  String get staffWorkspaceFamilyRegistrationSection =>
+      'Pagpaparehistro ng Pamilya';
+
+  @override
+  String get staffWorkspaceEvacuationCentersSection => 'Mga Evacuation Center';
+
+  @override
+  String get staffWorkspaceRecordsSection => 'Mga Talaan';
+
+  @override
   String get staffWorkspaceRegisterFamily => 'Magrehistro ng Pamilya';
 
   @override
@@ -1089,10 +1099,6 @@ class AppLocalizationsFil extends AppLocalizations {
 
   @override
   String get staffWorkspaceSyncNow => 'I-sync Ngayon';
-
-  @override
-  String get staffWorkspaceSyncNowSubtitle =>
-      'Ipadala ang mga naghihintay na rehistrasyon at i-refresh ang naka-save na datos';
 
   @override
   String get staffWorkspaceLogout => 'Staff Logout';
@@ -1587,6 +1593,16 @@ class AppLocalizationsFil extends AppLocalizations {
       'Wala pang available na evacuation event.';
 
   @override
+  String get ecBoardAgeSexSectionTitle => 'Edad at Kasarian (Age & Sex)';
+
+  @override
+  String get ecBoardSectoralSectionTitle => 'Sectoral Group';
+
+  @override
+  String get ecBoardPendingSectoralEmptyState =>
+      'Walang nakabinbing update sa sectoral sa device na ito.';
+
+  @override
   String get ecBoardLastKnownSectionTitle => 'Huling Kilalang Breakdown';
 
   @override
@@ -1618,9 +1634,6 @@ class AppLocalizationsFil extends AppLocalizations {
 
   @override
   String get ecBoardSyncNowInlineButton => 'I-sync Ngayon';
-
-  @override
-  String get ecBoardPendingListTitle => 'Mga Nakabinbing Entry';
 
   @override
   String get ecBoardPendingListEmpty =>

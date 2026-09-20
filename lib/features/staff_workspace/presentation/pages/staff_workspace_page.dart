@@ -98,7 +98,16 @@ class _StaffWorkspaceBody extends ConsumerWidget {
               return ErrorState(message: 'Could not load pending counts.');
             },
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: 20),
+          // Grouped by workflow rather than one flat list — mirrors
+          // Settings' own sectioning. No standalone "Sync Now" action
+          // here: it used to push every pending queue at once with no
+          // indication that's what it did, easy to mistake for a
+          // scoped action given where it sat (right above Logout).
+          // Pending Registrations and EC Board — the two screens that
+          // actually have something to sync — each already have their
+          // own Sync Now exactly where that queue is visible.
+          _SectionLabel(title: l10n.staffWorkspaceFamilyRegistrationSection),
           _WorkspaceAction(
             icon: Icons.person_add_alt_1_outlined,
             iconColor: theme.colorScheme.primary,
@@ -113,6 +122,8 @@ class _StaffWorkspaceBody extends ConsumerWidget {
             subtitle: l10n.staffWorkspacePendingRegistrationsSubtitle,
             onTap: () => context.push('/settings/staff/pending-registrations'),
           ),
+          const SizedBox(height: 16),
+          _SectionLabel(title: l10n.staffWorkspaceEvacuationCentersSection),
           // EC Board is its own top-level entry point (not reached via
           // Evacuation Centers management) — ahead of the management
           // actions below since it's the primary fast-entry workflow
@@ -138,6 +149,8 @@ class _StaffWorkspaceBody extends ConsumerWidget {
             subtitle: l10n.staffManageEvacuationCentersSubtitle,
             onTap: () => context.push('/settings/staff/evacuation-centers'),
           ),
+          const SizedBox(height: 16),
+          _SectionLabel(title: l10n.staffWorkspaceRecordsSection),
           _WorkspaceAction(
             icon: Icons.groups_outlined,
             iconColor: semantic.success,
@@ -145,13 +158,7 @@ class _StaffWorkspaceBody extends ConsumerWidget {
             subtitle: l10n.staffWorkspaceAllEvacueesSubtitle,
             onTap: () => context.push('/settings/staff/all-evacuees'),
           ),
-          _WorkspaceAction(
-            icon: Icons.sync_outlined,
-            iconColor: theme.colorScheme.primary,
-            label: l10n.staffWorkspaceSyncNow,
-            subtitle: l10n.staffWorkspaceSyncNowSubtitle,
-            onTap: () => ref.read(staffSyncNowProvider)(),
-          ),
+          const SizedBox(height: 16),
           _WorkspaceAction(
             icon: Icons.logout_outlined,
             iconColor: theme.colorScheme.error,
@@ -160,6 +167,27 @@ class _StaffWorkspaceBody extends ConsumerWidget {
             onTap: () => _confirmLogout(context, ref),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class _SectionLabel extends StatelessWidget {
+  const _SectionLabel({required this.title});
+
+  final String title;
+
+  @override
+  Widget build(BuildContext context) {
+    final semantic = Theme.of(context).extension<AppSemanticColors>()!;
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(6, 0, 6, 8),
+      child: Text(
+        title.toUpperCase(),
+        style: Theme.of(context).textTheme.labelSmall?.copyWith(
+          color: semantic.navy,
+          letterSpacing: 0.6,
+        ),
       ),
     );
   }

@@ -1046,6 +1046,15 @@ class AppLocalizationsBcl extends AppLocalizations {
   String get staffWorkspaceNeedsAttentionCount => 'Needs Attention';
 
   @override
+  String get staffWorkspaceFamilyRegistrationSection => 'Family Registration';
+
+  @override
+  String get staffWorkspaceEvacuationCentersSection => 'Evacuation Centers';
+
+  @override
+  String get staffWorkspaceRecordsSection => 'Records';
+
+  @override
   String get staffWorkspaceRegisterFamily => 'Register a Family';
 
   @override
@@ -1067,10 +1076,6 @@ class AppLocalizationsBcl extends AppLocalizations {
 
   @override
   String get staffWorkspaceSyncNow => 'Sync Now';
-
-  @override
-  String get staffWorkspaceSyncNowSubtitle =>
-      'Push pending registrations and refresh cached data';
 
   @override
   String get staffWorkspaceLogout => 'Staff Logout';
@@ -1556,6 +1561,16 @@ class AppLocalizationsBcl extends AppLocalizations {
       'No evacuation events are available yet.';
 
   @override
+  String get ecBoardAgeSexSectionTitle => 'Age & Sex Disaggregation';
+
+  @override
+  String get ecBoardSectoralSectionTitle => 'Sectoral Group';
+
+  @override
+  String get ecBoardPendingSectoralEmptyState =>
+      'No pending sectoral update on this device.';
+
+  @override
   String get ecBoardLastKnownSectionTitle => 'Last Known Breakdown';
 
   @override
@@ -1586,9 +1601,6 @@ class AppLocalizationsBcl extends AppLocalizations {
 
   @override
   String get ecBoardSyncNowInlineButton => 'Sync Now';
-
-  @override
-  String get ecBoardPendingListTitle => 'Pending Entries';
 
   @override
   String get ecBoardPendingListEmpty => 'No pending entries on this device.';

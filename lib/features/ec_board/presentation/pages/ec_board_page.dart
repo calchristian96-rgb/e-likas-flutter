@@ -170,6 +170,23 @@ class _EcBoardBody extends ConsumerWidget {
     ref.invalidate(ecBoardQuickCountProvider(centerId, selectedEventId));
   }
 
+  Widget _syncNowButton(AppLocalizations l10n) {
+    return isSyncing
+        ? const Padding(
+            padding: EdgeInsets.all(8),
+            child: SizedBox(
+              width: 18,
+              height: 18,
+              child: CircularProgressIndicator(strokeWidth: 2),
+            ),
+          )
+        : TextButton.icon(
+            onPressed: onSync,
+            icon: const Icon(Icons.sync_outlined, size: 18),
+            label: Text(l10n.ecBoardSyncNowInlineButton),
+          );
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context);
@@ -178,8 +195,7 @@ class _EcBoardBody extends ConsumerWidget {
     final pendingQuickCountEditAsync = ref.watch(
       pendingQuickCountEditProvider(centerId, selectedEventId),
     );
-    final isOnline =
-        ref.watch(connectivityStatusProvider).value ?? false;
+    final isOnline = ref.watch(connectivityStatusProvider).value ?? false;
 
     return RefreshIndicator(
       onRefresh: () async {
@@ -187,6 +203,15 @@ class _EcBoardBody extends ConsumerWidget {
         ref.invalidate(ecBoardEntriesForCenterProvider(centerId));
         ref.invalidate(pendingQuickCountEditProvider(centerId, selectedEventId));
       },
+      // Grouped by CATEGORY (Age & Sex, then Sectoral Group), each a
+      // self-contained block with its own action button, confirmed
+      // figures, and pending figures together — mirroring the
+      // official printed EC Board form's own two-table layout, rather
+      // than the earlier structure that grouped by STATE (every
+      // confirmed figure first, then every pending figure after),
+      // which put Add Evacuee and Edit Sectoral & 4Ps side by side at
+      // the top with no visual link to the data each one actually
+      // edits.
       child: ListView(
         padding: const EdgeInsets.all(16),
         children: [
@@ -195,7 +220,25 @@ class _EcBoardBody extends ConsumerWidget {
             value: selectedEventId,
             onChanged: onEventChanged,
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 16),
+          if (isOnline)
+            _EcBoardActionButton(
+              icon: Icons.exit_to_app_outlined,
+              label: l10n.ecBoardQuickDepartureTitle,
+              subtitle: l10n.staffAddEvacuationCenterSubtitle,
+              onPressed: () => _openQuickDeparture(context, ref),
+              filled: false,
+            )
+          else
+            _QuickDepartureOfflineNotice(label: l10n.ecBoardQuickDepartureTitle),
+          const Divider(height: 40),
+
+          // ── Age & Sex Disaggregation ─────────────────────────
+          _EcBoardSectionHeader(
+            icon: Icons.groups_2_outlined,
+            title: l10n.ecBoardAgeSexSectionTitle,
+          ),
+          const SizedBox(height: 14),
           Row(
             children: [
               Icon(
@@ -214,32 +257,14 @@ class _EcBoardBody extends ConsumerWidget {
               ),
             ],
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: 12),
           _EcBoardActionButton(
             icon: Icons.person_add_alt_1_outlined,
             label: l10n.ecBoardAddEvacueeTitle,
             subtitle: l10n.staffWorkspaceRegisterFamilySubtitle,
             onPressed: () => _openAddEvacuee(context, ref),
           ),
-          const SizedBox(height: 12),
-          _EcBoardActionButton(
-            icon: Icons.groups_outlined,
-            label: l10n.ecBoardSectoralEditButton,
-            subtitle: l10n.staffWorkspaceRegisterFamilySubtitle,
-            onPressed: () => _openSectoralEdit(context, ref),
-          ),
-          const SizedBox(height: 12),
-          if (isOnline)
-            _EcBoardActionButton(
-              icon: Icons.exit_to_app_outlined,
-              label: l10n.ecBoardQuickDepartureTitle,
-              subtitle: l10n.staffAddEvacuationCenterSubtitle,
-              onPressed: () => _openQuickDeparture(context, ref),
-              filled: false,
-            )
-          else
-            _QuickDepartureOfflineNotice(label: l10n.ecBoardQuickDepartureTitle),
-          const Divider(height: 32),
+          const SizedBox(height: 20),
           Text(
             l10n.ecBoardLastKnownSectionTitle,
             style: theme.textTheme.titleMedium,
@@ -252,11 +277,11 @@ class _EcBoardBody extends ConsumerWidget {
             ),
           ),
           const SizedBox(height: 10),
-          _QuickCountSection(
+          _AgeSexQuickCountSection(
             centerId: centerId,
             evacuationEventId: selectedEventId,
           ),
-          const Divider(height: 32),
+          const SizedBox(height: 24),
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -266,23 +291,14 @@ class _EcBoardBody extends ConsumerWidget {
                   style: theme.textTheme.titleMedium,
                 ),
               ),
-              // Sync Now, right where staff are already looking at what's
-              // waiting to be sent — in addition to the AppBar's own
-              // action, not a replacement for it.
-              isSyncing
-                  ? const Padding(
-                      padding: EdgeInsets.all(8),
-                      child: SizedBox(
-                        width: 18,
-                        height: 18,
-                        child: CircularProgressIndicator(strokeWidth: 2),
-                      ),
-                    )
-                  : TextButton.icon(
-                      onPressed: onSync,
-                      icon: const Icon(Icons.sync_outlined, size: 18),
-                      label: Text(l10n.ecBoardSyncNowInlineButton),
-                    ),
+              // Sync Now, right where staff are already looking at
+              // this specific queue — in addition to the AppBar's own
+              // action and the Sectoral section's own copy below, not
+              // a replacement for either. All three trigger the same
+              // whole-queue sync (there's no way to sync just one
+              // category), but each stays where the staff member who
+              // needs it is already looking.
+              _syncNowButton(l10n),
             ],
           ),
           const SizedBox(height: 4),
@@ -293,19 +309,6 @@ class _EcBoardBody extends ConsumerWidget {
             ),
           ),
           const SizedBox(height: 10),
-          pendingQuickCountEditAsync.when(
-            data: (pending) => pending == null
-                ? const SizedBox.shrink()
-                : Padding(
-                    padding: const EdgeInsets.only(bottom: 16),
-                    child: _PendingSectoralCard(
-                      detail: pending,
-                      onTap: () => _openSectoralEdit(context, ref),
-                    ),
-                  ),
-            loading: () => const SizedBox.shrink(),
-            error: (error, stackTrace) => const SizedBox.shrink(),
-          ),
           entriesAsync.when(
             // Scoped to the selected event, matching the live
             // breakdown above exactly — the full list further down
@@ -333,9 +336,7 @@ class _EcBoardBody extends ConsumerWidget {
                   ref.invalidate(ecBoardEntriesForCenterProvider(centerId)),
             ),
           ),
-          const SizedBox(height: 16),
-          Text(l10n.ecBoardPendingListTitle, style: theme.textTheme.titleSmall),
-          const SizedBox(height: 8),
+          const SizedBox(height: 12),
           entriesAsync.when(
             data: (entries) {
               if (entries.isEmpty) {
@@ -353,6 +354,113 @@ class _EcBoardBody extends ConsumerWidget {
             },
             loading: () => const SizedBox.shrink(),
             error: (error, stackTrace) => const SizedBox.shrink(),
+          ),
+          const Divider(height: 40),
+
+          // ── Sectoral Group & 4Ps ─────────────────────────────
+          _EcBoardSectionHeader(
+            icon: Icons.diversity_3_outlined,
+            title: l10n.ecBoardSectoralSectionTitle,
+          ),
+          const SizedBox(height: 14),
+          _EcBoardActionButton(
+            icon: Icons.groups_outlined,
+            label: l10n.ecBoardSectoralEditButton,
+            subtitle: l10n.staffWorkspaceRegisterFamilySubtitle,
+            onPressed: () => _openSectoralEdit(context, ref),
+          ),
+          const SizedBox(height: 20),
+          Text(
+            l10n.ecBoardLastKnownSectionTitle,
+            style: theme.textTheme.titleMedium,
+          ),
+          const SizedBox(height: 10),
+          _SectoralQuickCountSection(
+            centerId: centerId,
+            evacuationEventId: selectedEventId,
+          ),
+          const SizedBox(height: 24),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                child: Text(
+                  l10n.ecBoardPendingSectionTitle,
+                  style: theme.textTheme.titleMedium,
+                ),
+              ),
+              _syncNowButton(l10n),
+            ],
+          ),
+          const SizedBox(height: 4),
+          Text(
+            l10n.ecBoardPendingSectionSubtitle,
+            style: theme.textTheme.bodySmall?.copyWith(
+              color: theme.colorScheme.onSurfaceVariant,
+            ),
+          ),
+          const SizedBox(height: 10),
+          pendingQuickCountEditAsync.when(
+            data: (pending) => pending == null
+                ? Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    child: EmptyState(
+                      message: l10n.ecBoardPendingSectoralEmptyState,
+                    ),
+                  )
+                : _PendingSectoralCard(
+                    detail: pending,
+                    onTap: () => _openSectoralEdit(context, ref),
+                  ),
+            loading: () => const Padding(
+              padding: EdgeInsets.symmetric(vertical: 16),
+              child: Center(
+                child: SizedBox(
+                  width: 22,
+                  height: 22,
+                  child: CircularProgressIndicator(strokeWidth: 2),
+                ),
+              ),
+            ),
+            error: (error, stackTrace) => const SizedBox.shrink(),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// A colored bar heading anchoring one of the page's two data
+/// categories (Age & Sex, Sectoral Group) — mirrors the printed EC
+/// Board form's own dark section bars, so the two categories read as
+/// clearly separate at a glance while scrolling, the way they do on
+/// the printed form.
+class _EcBoardSectionHeader extends StatelessWidget {
+  const _EcBoardSectionHeader({required this.icon, required this.title});
+
+  final IconData icon;
+  final String title;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final semantic = theme.extension<AppSemanticColors>()!;
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+      decoration: BoxDecoration(
+        color: semantic.navy,
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Row(
+        children: [
+          Icon(icon, color: Colors.white, size: 20),
+          const SizedBox(width: 10),
+          Text(
+            title,
+            style: theme.textTheme.titleSmall?.copyWith(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+            ),
           ),
         ],
       ),
@@ -405,8 +513,15 @@ class _EventSelector extends StatelessWidget {
   }
 }
 
-class _QuickCountSection extends ConsumerWidget {
-  const _QuickCountSection({
+/// The "Age & Sex Disaggregation" half of the Last Known figures —
+/// Cumulative/Now stats plus the full age-bracket table. Split out of
+/// what used to be one combined `_QuickCountSection` so it can sit
+/// directly under the Age & Sex section header, with the Sectoral
+/// figures (from the exact same fetch) rendered separately by
+/// [_SectoralQuickCountSection] under its own header further down the
+/// page.
+class _AgeSexQuickCountSection extends ConsumerWidget {
+  const _AgeSexQuickCountSection({
     required this.centerId,
     required this.evacuationEventId,
   });
@@ -447,24 +562,7 @@ class _QuickCountSection extends ConsumerWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             if (count.isFromCache) ...[
-              Row(
-                children: [
-                  Icon(
-                    Icons.cloud_off_outlined,
-                    size: 14,
-                    color: theme.colorScheme.onSurfaceVariant,
-                  ),
-                  const SizedBox(width: 6),
-                  Expanded(
-                    child: Text(
-                      l10n.ecBoardLastKnownFromCacheNotice,
-                      style: theme.textTheme.bodySmall?.copyWith(
-                        color: theme.colorScheme.onSurfaceVariant,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+              _CachedDataNotice(l10n: l10n, theme: theme),
               const SizedBox(height: 8),
             ],
             Row(
@@ -483,21 +581,6 @@ class _QuickCountSection extends ConsumerWidget {
                     cumulative: count.personsCumulative,
                     now: count.personsNow,
                   ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 16),
-            Row(
-              children: [
-                Expanded(
-                  child: Text(
-                    l10n.ecBoardFourPsBeneficiaryFamilies,
-                    style: theme.textTheme.bodyMedium,
-                  ),
-                ),
-                Text(
-                  '${count.beneficiaries4ps}',
-                  style: theme.textTheme.titleSmall,
                 ),
               ],
             ),
@@ -544,44 +627,104 @@ class _QuickCountSection extends ConsumerWidget {
                 ),
               ],
             ),
-            if (count.sectoralGroups.isNotEmpty) ...[
-              const SizedBox(height: 20),
-              Text(
-                l10n.ecBoardSectoralGroupsSectionTitle,
-                style: theme.textTheme.titleSmall,
-              ),
-              const SizedBox(height: 4),
-              Text(
-                l10n.ecBoardSectoralGroupsSectionSubtitle,
-                style: theme.textTheme.bodySmall?.copyWith(
-                  color: theme.colorScheme.onSurfaceVariant,
-                ),
-              ),
+          ],
+        );
+      },
+    );
+  }
+}
+
+/// The "Sectoral Group" half of the Last Known figures, plus the
+/// standalone 4Ps Beneficiary Families count — grouped here rather
+/// than with the Age & Sex table above because both are only ever
+/// edited from the same place (the Edit Sectoral & 4Ps form), and
+/// [count.updatedByName]/[count.updatedAt] are specifically about
+/// *this* figure, not the age/sex one. See
+/// [_AgeSexQuickCountSection]'s doc comment for why this is a
+/// separate widget from what used to be one combined section.
+class _SectoralQuickCountSection extends ConsumerWidget {
+  const _SectoralQuickCountSection({
+    required this.centerId,
+    required this.evacuationEventId,
+  });
+
+  final int centerId;
+  final int evacuationEventId;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context);
+    final theme = Theme.of(context);
+    final countAsync = ref.watch(
+      ecBoardQuickCountProvider(centerId, evacuationEventId),
+    );
+
+    return countAsync.when(
+      loading: () => const Padding(
+        padding: EdgeInsets.symmetric(vertical: 16),
+        child: Center(
+          child: SizedBox(
+            width: 22,
+            height: 22,
+            child: CircularProgressIndicator(strokeWidth: 2),
+          ),
+        ),
+      ),
+      error: (error, stackTrace) => ErrorState(
+        message: l10n.ecBoardLastKnownUnavailable,
+        onRetry: () => ref.invalidate(
+          ecBoardQuickCountProvider(centerId, evacuationEventId),
+        ),
+      ),
+      data: (count) {
+        if (count.sectoralGroups.isEmpty) {
+          return EmptyState(message: l10n.ecBoardLastKnownEmpty);
+        }
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            if (count.isFromCache) ...[
+              _CachedDataNotice(l10n: l10n, theme: theme),
               const SizedBox(height: 8),
-              for (final group in count.sectoralGroups)
-                if (group.group != null)
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 4),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: Text(
-                            localizedSectoralGroup(context, group.group!),
-                          ),
-                        ),
-                        Text(
-                          l10n.ecBoardMaleFemaleCount(
-                            group.maleCount,
-                            group.femaleCount,
-                          ),
-                          style: theme.textTheme.bodyMedium?.copyWith(
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
             ],
+            Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    l10n.ecBoardFourPsBeneficiaryFamilies,
+                    style: theme.textTheme.bodyMedium,
+                  ),
+                ),
+                Text(
+                  '${count.beneficiaries4ps}',
+                  style: theme.textTheme.titleSmall,
+                ),
+              ],
+            ),
+            const Divider(height: 20),
+            for (final group in count.sectoralGroups)
+              if (group.group != null)
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 4),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          localizedSectoralGroup(context, group.group!),
+                        ),
+                      ),
+                      Text(
+                        l10n.ecBoardMaleFemaleCount(
+                          group.maleCount,
+                          group.femaleCount,
+                        ),
+                        style: theme.textTheme.bodyMedium?.copyWith(
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
             if (count.updatedAt != null) ...[
               const SizedBox(height: 12),
               if (count.updatedByName != null)
@@ -596,6 +739,35 @@ class _QuickCountSection extends ConsumerWidget {
           ],
         );
       },
+    );
+  }
+}
+
+class _CachedDataNotice extends StatelessWidget {
+  const _CachedDataNotice({required this.l10n, required this.theme});
+
+  final AppLocalizations l10n;
+  final ThemeData theme;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Icon(
+          Icons.cloud_off_outlined,
+          size: 14,
+          color: theme.colorScheme.onSurfaceVariant,
+        ),
+        const SizedBox(width: 6),
+        Expanded(
+          child: Text(
+            l10n.ecBoardLastKnownFromCacheNotice,
+            style: theme.textTheme.bodySmall?.copyWith(
+              color: theme.colorScheme.onSurfaceVariant,
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

@@ -1996,6 +1996,24 @@ abstract class AppLocalizations {
   /// **'Needs Attention'**
   String get staffWorkspaceNeedsAttentionCount;
 
+  /// No description provided for @staffWorkspaceFamilyRegistrationSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Family Registration'**
+  String get staffWorkspaceFamilyRegistrationSection;
+
+  /// No description provided for @staffWorkspaceEvacuationCentersSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Evacuation Centers'**
+  String get staffWorkspaceEvacuationCentersSection;
+
+  /// No description provided for @staffWorkspaceRecordsSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Records'**
+  String get staffWorkspaceRecordsSection;
+
   /// No description provided for @staffWorkspaceRegisterFamily.
   ///
   /// In en, this message translates to:
@@ -2037,12 +2055,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Sync Now'**
   String get staffWorkspaceSyncNow;
-
-  /// No description provided for @staffWorkspaceSyncNowSubtitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Push pending registrations and refresh cached data'**
-  String get staffWorkspaceSyncNowSubtitle;
 
   /// No description provided for @staffWorkspaceLogout.
   ///
@@ -2860,6 +2872,24 @@ abstract class AppLocalizations {
   /// **'No evacuation events are available yet.'**
   String get ecBoardNoEventsAvailable;
 
+  /// No description provided for @ecBoardAgeSexSectionTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Age & Sex Disaggregation'**
+  String get ecBoardAgeSexSectionTitle;
+
+  /// No description provided for @ecBoardSectoralSectionTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Sectoral Group'**
+  String get ecBoardSectoralSectionTitle;
+
+  /// No description provided for @ecBoardPendingSectoralEmptyState.
+  ///
+  /// In en, this message translates to:
+  /// **'No pending sectoral update on this device.'**
+  String get ecBoardPendingSectoralEmptyState;
+
   /// No description provided for @ecBoardLastKnownSectionTitle.
   ///
   /// In en, this message translates to:
@@ -2913,12 +2943,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Sync Now'**
   String get ecBoardSyncNowInlineButton;
-
-  /// No description provided for @ecBoardPendingListTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Pending Entries'**
-  String get ecBoardPendingListTitle;
 
   /// No description provided for @ecBoardPendingListEmpty.
   ///
