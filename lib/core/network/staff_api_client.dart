@@ -8,7 +8,8 @@ part 'staff_api_client.g.dart';
 
 /// Authenticated Dio wrapper for the staff module — everything
 /// [ApiClient] (core/network/api_client.dart) never needed: `POST`,
-/// `PATCH`, and a Bearer token attached from [SecureTokenStorage].
+/// `PATCH`, `PUT`, and a Bearer token attached from
+/// [SecureTokenStorage].
 ///
 /// Deliberately its own [Dio] instance (via the same [buildDio]
 /// factory the public client uses) rather than a shared one: the
@@ -62,6 +63,14 @@ class StaffApiClient {
     Duration timeout = const Duration(seconds: 15),
   }) {
     return _dio.patch(path, data: data).timeout(timeout);
+  }
+
+  Future<Response<dynamic>> put(
+    String path, {
+    Object? data,
+    Duration timeout = const Duration(seconds: 15),
+  }) {
+    return _dio.put(path, data: data).timeout(timeout);
   }
 }
 

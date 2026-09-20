@@ -10,6 +10,9 @@ import '../../data/repositories/ec_board_repository_impl.dart';
 import '../../domain/entities/ec_board_entry_draft.dart';
 import '../../domain/entities/ec_board_quick_count.dart';
 import '../../domain/entities/pending_ec_board_entry.dart';
+import '../../domain/entities/pending_quick_count_edit.dart';
+import '../../domain/entities/quick_departure_request.dart';
+import '../../domain/entities/sectoral_group_draft.dart';
 import '../../domain/repositories/ec_board_repository.dart';
 
 part 'ec_board_provider.g.dart';
@@ -75,4 +78,49 @@ Future<EcBoardQuickCount> ecBoardQuickCount(
 Future<Result<int>> Function(EcBoardEntryDraft draft) ecBoardSubmit(Ref ref) {
   final repository = ref.watch(ecBoardRepositoryProvider);
   return (draft) => repository.submit(draft);
+}
+
+/// This device's own not-yet-synced sectoral/4Ps edit for one
+/// center+event, or null when there isn't one — watched by both the
+/// edit form (to resume an unsynced draft) and `EcBoardPage` (to show
+/// the "Pending" card). `.autoDispose`, same reasoning as
+/// [ecBoardQuickCount]: re-fetches fresh from local storage every time
+/// the page reopens rather than risking a stale in-memory copy after a
+/// sync run elsewhere invalidates it.
+@riverpod
+Future<PendingQuickCountEditDetail?> pendingQuickCountEdit(
+  Ref ref,
+  int centerId,
+  int evacuationEventId,
+) {
+  return ref
+      .watch(ecBoardRepositoryProvider)
+      .getPendingQuickCountEdit(
+        centerId: centerId,
+        evacuationEventId: evacuationEventId,
+      );
+}
+
+/// The single online-submit path (`PUT /evacuation-centers/{id}
+/// /quick-count`) — shared by the sectoral/4Ps edit form's "try online
+/// first" branch and `StaffSyncService`, same one-wiring-not-two
+/// convention as [ecBoardSubmit].
+@riverpod
+Future<Result<EcBoardQuickCount>> Function(SectoralGroupDraft draft)
+ecBoardUpdateQuickCount(Ref ref) {
+  final repository = ref.watch(ecBoardRepositoryProvider);
+  return (draft) => repository.updateQuickCount(draft);
+}
+
+/// The single Quick Departure submission path (`POST
+/// /evacuation-centers/{id}/quick-departure`) — **online-only, never
+/// queued**, so unlike [ecBoardSubmit]/[ecBoardUpdateQuickCount] there
+/// is no offline fallback branch for a caller to reach for; the form
+/// itself must confirm connectivity before ever calling this (see
+/// `QuickDepartureRequest`'s doc comment for why).
+@riverpod
+Future<Result<String>> Function(QuickDepartureRequest request)
+ecBoardQuickDeparture(Ref ref) {
+  final repository = ref.watch(ecBoardRepositoryProvider);
+  return (request) => repository.quickDeparture(request);
 }

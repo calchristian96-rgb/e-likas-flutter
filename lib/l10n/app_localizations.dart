@@ -3009,6 +3009,168 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Indigenous Peoples'**
   String get ecBoardSectoralIndigenousPeoples;
+
+  /// No description provided for @ecBoardSyncNowExplanation.
+  ///
+  /// In en, this message translates to:
+  /// **'Sync Now sends your offline entries (new evacuees, sectoral updates) to the server.'**
+  String get ecBoardSyncNowExplanation;
+
+  /// No description provided for @ecBoardSectoralEditButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Sectoral & 4Ps'**
+  String get ecBoardSectoralEditButton;
+
+  /// No description provided for @ecBoardFamiliesLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Families'**
+  String get ecBoardFamiliesLabel;
+
+  /// No description provided for @ecBoardPersonsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Persons'**
+  String get ecBoardPersonsLabel;
+
+  /// No description provided for @ecBoardNowLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'now'**
+  String get ecBoardNowLabel;
+
+  /// Small caption under a Now figure, e.g. '12 cumulative'
+  ///
+  /// In en, this message translates to:
+  /// **'{count} cumulative'**
+  String ecBoardCumulativeValue(int count);
+
+  /// No description provided for @ecBoardFourPsBeneficiaryFamilies.
+  ///
+  /// In en, this message translates to:
+  /// **'4Ps Beneficiary Families'**
+  String get ecBoardFourPsBeneficiaryFamilies;
+
+  /// Footer line under the sectoral breakdown naming who last saved it
+  ///
+  /// In en, this message translates to:
+  /// **'Last updated by {name}'**
+  String ecBoardSectoralUpdatedBy(String name);
+
+  /// No description provided for @ecBoardPendingSectoralCardTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Pending sectoral update'**
+  String get ecBoardPendingSectoralCardTitle;
+
+  /// No description provided for @ecBoardPendingSectoralCardSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Not yet synced — tap to review or edit.'**
+  String get ecBoardPendingSectoralCardSubtitle;
+
+  /// No description provided for @ecBoardSectoralFormTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Sectoral & 4Ps Report'**
+  String get ecBoardSectoralFormTitle;
+
+  /// No description provided for @ecBoardSectoralFormSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Manually-reported totals for this center and event — separate from Add Evacuee.'**
+  String get ecBoardSectoralFormSubtitle;
+
+  /// No description provided for @ecBoardSectoralFormFieldsHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the number of people in each category.'**
+  String get ecBoardSectoralFormFieldsHint;
+
+  /// No description provided for @ecBoardSectoralSaveButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Save Sectoral & 4Ps'**
+  String get ecBoardSectoralSaveButton;
+
+  /// No description provided for @ecBoardSectoralSavedOfflineMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Saved offline. This will sync when you\'re back online.'**
+  String get ecBoardSectoralSavedOfflineMessage;
+
+  /// No description provided for @ecBoardSectoralSuccessMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Sectoral & 4Ps report updated successfully.'**
+  String get ecBoardSectoralSuccessMessage;
+
+  /// No description provided for @ecBoardQuickDepartureTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Quick Departure'**
+  String get ecBoardQuickDepartureTitle;
+
+  /// No description provided for @ecBoardQuickDepartureSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark people currently at this center as departed, by age bracket, sex, and quantity.'**
+  String get ecBoardQuickDepartureSubtitle;
+
+  /// No description provided for @ecBoardQuickDepartureQuantity.
+  ///
+  /// In en, this message translates to:
+  /// **'Quantity'**
+  String get ecBoardQuickDepartureQuantity;
+
+  /// No description provided for @ecBoardQuickDepartureStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Status'**
+  String get ecBoardQuickDepartureStatus;
+
+  /// No description provided for @ecBoardQuickDepartureReturnedHome.
+  ///
+  /// In en, this message translates to:
+  /// **'Returned home'**
+  String get ecBoardQuickDepartureReturnedHome;
+
+  /// No description provided for @ecBoardQuickDepartureTransferred.
+  ///
+  /// In en, this message translates to:
+  /// **'Transferred'**
+  String get ecBoardQuickDepartureTransferred;
+
+  /// No description provided for @ecBoardQuickDepartureSubmitButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark as Departed'**
+  String get ecBoardQuickDepartureSubmitButton;
+
+  /// No description provided for @ecBoardQuickDepartureValidationBanner.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select sex, age bracket, quantity, and status.'**
+  String get ecBoardQuickDepartureValidationBanner;
+
+  /// No description provided for @ecBoardQuickDepartureSuccessMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Marked as departed.'**
+  String get ecBoardQuickDepartureSuccessMessage;
+
+  /// No description provided for @ecBoardQuickDepartureOfflineMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Quick Departure requires an internet connection.'**
+  String get ecBoardQuickDepartureOfflineMessage;
+
+  /// No description provided for @ecBoardQuickDepartureOfflineExplanation.
+  ///
+  /// In en, this message translates to:
+  /// **'Quick Departure requires an internet connection, since it needs to check who\'s currently confirmed at this center.'**
+  String get ecBoardQuickDepartureOfflineExplanation;
 }
 
 class _AppLocalizationsDelegate

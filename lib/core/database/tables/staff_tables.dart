@@ -179,3 +179,45 @@ class PendingEcBoardEntries extends Table {
   @override
   Set<Column> get primaryKey => {localId};
 }
+
+/// This device's own not-yet-synced sectoral/4Ps edit — at most one row
+/// per (center, event, owner), unlike [PendingEcBoardEntries]' many
+/// discrete rows: `PUT .../quick-count` is one mutable aggregate, not
+/// an appendable list, so a second local save before the first syncs
+/// simply overwrites this row rather than adding another one (see
+/// `EcBoardRepository.saveQuickCountEdit`'s doc comment). No legacy
+/// data predates this table, so — unlike the older tables above —
+/// [ownerStaffId] is required rather than nullable-for-migration.
+@DataClassName('PendingQuickCountEditRow')
+class PendingQuickCountEdits extends Table {
+  IntColumn get evacuationCenterId => integer()();
+  IntColumn get evacuationEventId => integer()();
+  IntColumn get ownerStaffId => integer()();
+
+  IntColumn get beneficiaries4ps => integer()();
+
+  /// JSON-encoded `List<{sectoral_group, male_count, female_count}>` —
+  /// always all 8 categories (see `SectoralGroupDraft`'s doc comment).
+  /// Kept as one JSON blob rather than 16 separate columns, same
+  /// reasoning as `PendingFamilyRegistrations.payloadJson`: this data
+  /// only ever needs to round-trip whole, never queried column-by-column.
+  TextColumn get sectoralGroupsJson => text()();
+
+  /// One of: pending | syncing | needsAttention.
+  TextColumn get syncStatus => text()();
+
+  IntColumn get attemptCount => integer().withDefault(const Constant(0))();
+  IntColumn get lastAttemptAtEpochMs => integer().nullable()();
+  TextColumn get lastErrorCategory => text().nullable()();
+  TextColumn get lastErrorMessage => text().nullable()();
+
+  IntColumn get createdAtEpochMs => integer()();
+  IntColumn get updatedAtEpochMs => integer()();
+
+  @override
+  Set<Column> get primaryKey => {
+    evacuationCenterId,
+    evacuationEventId,
+    ownerStaffId,
+  };
+}

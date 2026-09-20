@@ -254,6 +254,15 @@ class AppTheme {
             fontSize: 12.5,
             color: colorScheme.onSurfaceVariant,
           ),
+          // The one style this override block used to leave out —
+          // `Typography.material2021(...).black` (the "black" half of
+          // the `.merge()` above) colors it for a light background, so
+          // on this app's dark theme it rendered as near-invisible
+          // dark-on-dark text. Every field-group label that uses
+          // `labelLarge` (Add Evacuee's "Sex"/"Age Bracket" headers,
+          // the sectoral/4Ps form's category names) was silently
+          // affected until this was added alongside its siblings above.
+          labelLarge: base.labelLarge?.copyWith(color: colorScheme.onSurface),
           labelMedium: base.labelMedium?.copyWith(
             fontSize: 13,
             fontWeight: FontWeight.w600,

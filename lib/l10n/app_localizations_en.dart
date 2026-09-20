@@ -1635,4 +1635,99 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get ecBoardSectoralIndigenousPeoples => 'Indigenous Peoples';
+
+  @override
+  String get ecBoardSyncNowExplanation =>
+      'Sync Now sends your offline entries (new evacuees, sectoral updates) to the server.';
+
+  @override
+  String get ecBoardSectoralEditButton => 'Edit Sectoral & 4Ps';
+
+  @override
+  String get ecBoardFamiliesLabel => 'Families';
+
+  @override
+  String get ecBoardPersonsLabel => 'Persons';
+
+  @override
+  String get ecBoardNowLabel => 'now';
+
+  @override
+  String ecBoardCumulativeValue(int count) {
+    return '$count cumulative';
+  }
+
+  @override
+  String get ecBoardFourPsBeneficiaryFamilies => '4Ps Beneficiary Families';
+
+  @override
+  String ecBoardSectoralUpdatedBy(String name) {
+    return 'Last updated by $name';
+  }
+
+  @override
+  String get ecBoardPendingSectoralCardTitle => 'Pending sectoral update';
+
+  @override
+  String get ecBoardPendingSectoralCardSubtitle =>
+      'Not yet synced — tap to review or edit.';
+
+  @override
+  String get ecBoardSectoralFormTitle => 'Sectoral & 4Ps Report';
+
+  @override
+  String get ecBoardSectoralFormSubtitle =>
+      'Manually-reported totals for this center and event — separate from Add Evacuee.';
+
+  @override
+  String get ecBoardSectoralFormFieldsHint =>
+      'Enter the number of people in each category.';
+
+  @override
+  String get ecBoardSectoralSaveButton => 'Save Sectoral & 4Ps';
+
+  @override
+  String get ecBoardSectoralSavedOfflineMessage =>
+      'Saved offline. This will sync when you\'re back online.';
+
+  @override
+  String get ecBoardSectoralSuccessMessage =>
+      'Sectoral & 4Ps report updated successfully.';
+
+  @override
+  String get ecBoardQuickDepartureTitle => 'Quick Departure';
+
+  @override
+  String get ecBoardQuickDepartureSubtitle =>
+      'Mark people currently at this center as departed, by age bracket, sex, and quantity.';
+
+  @override
+  String get ecBoardQuickDepartureQuantity => 'Quantity';
+
+  @override
+  String get ecBoardQuickDepartureStatus => 'Status';
+
+  @override
+  String get ecBoardQuickDepartureReturnedHome => 'Returned home';
+
+  @override
+  String get ecBoardQuickDepartureTransferred => 'Transferred';
+
+  @override
+  String get ecBoardQuickDepartureSubmitButton => 'Mark as Departed';
+
+  @override
+  String get ecBoardQuickDepartureValidationBanner =>
+      'Please select sex, age bracket, quantity, and status.';
+
+  @override
+  String get ecBoardQuickDepartureSuccessMessage => 'Marked as departed.';
+
+  @override
+  String get ecBoardQuickDepartureOfflineMessage =>
+      'Quick Departure requires an internet connection.';
+
+  @override
+  String get ecBoardQuickDepartureOfflineExplanation =>
+      'Quick Departure requires an internet connection, since it needs to check who\'s currently confirmed at this center.';
 }

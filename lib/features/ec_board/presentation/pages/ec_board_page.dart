@@ -1,20 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../app/theme/app_theme.dart';
 import '../../../../core/widgets/empty_state.dart';
 import '../../../../core/widgets/error_state.dart';
+import '../../../../core/widgets/last_updated_label.dart';
 import '../../../../core/widgets/sync_now_action.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../family_registration/domain/entities/lookup_entities.dart';
 import '../../../family_registration/domain/entities/pending_registration_status.dart';
 import '../../../family_registration/presentation/providers/lookup_providers.dart';
 import '../../../family_registration/presentation/providers/pending_queue_provider.dart';
+import '../../../home/presentation/providers/home_provider.dart'
+    show connectivityStatusProvider;
 import '../../domain/entities/age_bracket.dart';
 import '../../domain/entities/pending_ec_board_entry.dart';
+import '../../domain/entities/pending_quick_count_edit.dart';
 import '../providers/ec_board_provider.dart';
 import 'add_evacuee_form_page.dart'
     show AddEvacueeFormPage, localizedAgeBracket, localizedSectoralGroup;
 import 'pending_ec_entry_detail_page.dart';
+import 'quick_departure_form_page.dart';
+import 'sectoral_quick_count_form_page.dart';
 
 /// EC Information Board for one center — reached from
 /// `StaffEvacuationCenterDetailPage`. Shows two deliberately separate
@@ -132,16 +139,47 @@ class _EcBoardBody extends ConsumerWidget {
     ref.invalidate(ecBoardCountsForCenterProvider(centerId));
   }
 
+  Future<void> _openSectoralEdit(BuildContext context, WidgetRef ref) async {
+    await Navigator.of(context).push<void>(
+      MaterialPageRoute(
+        builder: (_) => SectoralQuickCountFormPage(
+          centerId: centerId,
+          evacuationEventId: selectedEventId,
+        ),
+      ),
+    );
+    ref.invalidate(ecBoardQuickCountProvider(centerId, selectedEventId));
+    ref.invalidate(pendingQuickCountEditProvider(centerId, selectedEventId));
+  }
+
+  Future<void> _openQuickDeparture(BuildContext context, WidgetRef ref) async {
+    await Navigator.of(context).push<void>(
+      MaterialPageRoute(
+        builder: (_) => QuickDepartureFormPage(
+          centerId: centerId,
+          evacuationEventId: selectedEventId,
+        ),
+      ),
+    );
+    ref.invalidate(ecBoardQuickCountProvider(centerId, selectedEventId));
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context);
     final theme = Theme.of(context);
     final entriesAsync = ref.watch(ecBoardEntriesForCenterProvider(centerId));
+    final pendingQuickCountEditAsync = ref.watch(
+      pendingQuickCountEditProvider(centerId, selectedEventId),
+    );
+    final isOnline =
+        ref.watch(connectivityStatusProvider).value ?? false;
 
     return RefreshIndicator(
       onRefresh: () async {
         ref.invalidate(ecBoardQuickCountProvider(centerId, selectedEventId));
         ref.invalidate(ecBoardEntriesForCenterProvider(centerId));
+        ref.invalidate(pendingQuickCountEditProvider(centerId, selectedEventId));
       },
       child: ListView(
         padding: const EdgeInsets.all(16),
@@ -151,12 +189,50 @@ class _EcBoardBody extends ConsumerWidget {
             value: selectedEventId,
             onChanged: onEventChanged,
           ),
-          const SizedBox(height: 16),
-          FilledButton.icon(
-            onPressed: () => _openAddEvacuee(context, ref),
-            icon: const Icon(Icons.person_add_alt_1_outlined),
-            label: Text(l10n.ecBoardAddEvacueeTitle),
+          const SizedBox(height: 12),
+          Row(
+            children: [
+              Icon(
+                Icons.sync_outlined,
+                size: 16,
+                color: theme.colorScheme.onSurfaceVariant,
+              ),
+              const SizedBox(width: 6),
+              Expanded(
+                child: Text(
+                  l10n.ecBoardSyncNowExplanation,
+                  style: theme.textTheme.bodySmall?.copyWith(
+                    color: theme.colorScheme.onSurfaceVariant,
+                  ),
+                ),
+              ),
+            ],
           ),
+          const SizedBox(height: 16),
+          _EcBoardActionButton(
+            icon: Icons.person_add_alt_1_outlined,
+            label: l10n.ecBoardAddEvacueeTitle,
+            subtitle: l10n.staffWorkspaceRegisterFamilySubtitle,
+            onPressed: () => _openAddEvacuee(context, ref),
+          ),
+          const SizedBox(height: 12),
+          _EcBoardActionButton(
+            icon: Icons.groups_outlined,
+            label: l10n.ecBoardSectoralEditButton,
+            subtitle: l10n.staffWorkspaceRegisterFamilySubtitle,
+            onPressed: () => _openSectoralEdit(context, ref),
+          ),
+          const SizedBox(height: 12),
+          if (isOnline)
+            _EcBoardActionButton(
+              icon: Icons.exit_to_app_outlined,
+              label: l10n.ecBoardQuickDepartureTitle,
+              subtitle: l10n.staffAddEvacuationCenterSubtitle,
+              onPressed: () => _openQuickDeparture(context, ref),
+              filled: false,
+            )
+          else
+            _QuickDepartureOfflineNotice(label: l10n.ecBoardQuickDepartureTitle),
           const Divider(height: 32),
           Text(
             l10n.ecBoardLastKnownSectionTitle,
@@ -187,6 +263,19 @@ class _EcBoardBody extends ConsumerWidget {
             ),
           ),
           const SizedBox(height: 10),
+          pendingQuickCountEditAsync.when(
+            data: (pending) => pending == null
+                ? const SizedBox.shrink()
+                : Padding(
+                    padding: const EdgeInsets.only(bottom: 16),
+                    child: _PendingSectoralCard(
+                      detail: pending,
+                      onTap: () => _openSectoralEdit(context, ref),
+                    ),
+                  ),
+            loading: () => const SizedBox.shrink(),
+            error: (error, stackTrace) => const SizedBox.shrink(),
+          ),
           entriesAsync.when(
             // Scoped to the selected event, matching the live
             // breakdown above exactly — the full list further down
@@ -325,7 +414,43 @@ class _QuickCountSection extends ConsumerWidget {
           return EmptyState(message: l10n.ecBoardLastKnownEmpty);
         }
         return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            Row(
+              children: [
+                Expanded(
+                  child: _CumulativeNowStat(
+                    label: l10n.ecBoardFamiliesLabel,
+                    cumulative: count.familiesCumulative,
+                    now: count.familiesNow,
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: _CumulativeNowStat(
+                    label: l10n.ecBoardPersonsLabel,
+                    cumulative: count.personsCumulative,
+                    now: count.personsNow,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 16),
+            Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    l10n.ecBoardFourPsBeneficiaryFamilies,
+                    style: theme.textTheme.bodyMedium,
+                  ),
+                ),
+                Text(
+                  '${count.beneficiaries4ps}',
+                  style: theme.textTheme.titleSmall,
+                ),
+              ],
+            ),
+            const Divider(height: 24),
             for (final group in count.ageGroups)
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 4),
@@ -361,8 +486,8 @@ class _QuickCountSection extends ConsumerWidget {
                 ),
                 Text(
                   l10n.ecBoardMaleFemaleCount(
-                    count.totalMale,
-                    count.totalFemale,
+                    count.ageGroupsTotal.maleCount,
+                    count.ageGroupsTotal.femaleCount,
                   ),
                   style: theme.textTheme.titleSmall,
                 ),
@@ -406,9 +531,84 @@ class _QuickCountSection extends ConsumerWidget {
                     ),
                   ),
             ],
+            if (count.updatedAt != null) ...[
+              const SizedBox(height: 12),
+              if (count.updatedByName != null)
+                Text(
+                  l10n.ecBoardSectoralUpdatedBy(count.updatedByName!),
+                  style: theme.textTheme.bodySmall?.copyWith(
+                    color: theme.colorScheme.onSurfaceVariant,
+                  ),
+                ),
+              LastUpdatedLabel(timestamp: count.updatedAt),
+            ],
           ],
         );
       },
+    );
+  }
+}
+
+/// One "Cumulative" (everyone ever recorded here for this event, only
+/// ever grows) vs "Now" (who's still physically here) figure — see
+/// `EcBoardQuickCount.familiesCumulative`'s doc comment for why these
+/// two numbers can and do legitimately differ (Quick Departure moves
+/// "Now" down without ever touching "Cumulative").
+class _CumulativeNowStat extends StatelessWidget {
+  const _CumulativeNowStat({
+    required this.label,
+    required this.cumulative,
+    required this.now,
+  });
+
+  final String label;
+  final int cumulative;
+  final int now;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    final theme = Theme.of(context);
+    return Container(
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: theme.colorScheme.surfaceContainerHighest.withValues(
+          alpha: 0.4,
+        ),
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            label,
+            style: theme.textTheme.labelMedium?.copyWith(
+              color: theme.colorScheme.onSurfaceVariant,
+            ),
+          ),
+          const SizedBox(height: 6),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.baseline,
+            textBaseline: TextBaseline.alphabetic,
+            children: [
+              Text('$now', style: theme.textTheme.headlineSmall),
+              const SizedBox(width: 4),
+              Text(
+                l10n.ecBoardNowLabel,
+                style: theme.textTheme.bodySmall?.copyWith(
+                  color: theme.colorScheme.onSurfaceVariant,
+                ),
+              ),
+            ],
+          ),
+          Text(
+            l10n.ecBoardCumulativeValue(cumulative),
+            style: theme.textTheme.bodySmall?.copyWith(
+              color: theme.colorScheme.onSurfaceVariant,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -536,6 +736,159 @@ class _PendingEntryTile extends ConsumerWidget {
         title: Text(entry.householdLabel),
         subtitle: Text(
           '$sexLabel • ${entry.ageBracket == null ? l10n.ecBoardUnclassifiedLabel : localizedAgeBracket(context, entry.ageBracket!)}',
+        ),
+      ),
+    );
+  }
+}
+
+/// One action button plus a short caption underneath explaining its
+/// offline/online behavior — the one visual pattern every EC Board
+/// action shares (see this app's own established phrasing on the
+/// Staff Dashboard: "Works offline — syncs when you're ready" for
+/// Register a Family, "Online only — not queued offline" for Add
+/// Evacuation Center), reused verbatim here so staff learn it once and
+/// recognize it everywhere. [filled] distinguishes the two
+/// offline-capable actions (Add Evacuee, sectoral/4Ps — solid,
+/// primary-styled buttons) from the online-only one (Quick Departure —
+/// outlined, deliberately a step down in visual weight from an action
+/// that isn't always available).
+class _EcBoardActionButton extends StatelessWidget {
+  const _EcBoardActionButton({
+    required this.icon,
+    required this.label,
+    required this.subtitle,
+    required this.onPressed,
+    this.filled = true,
+  });
+
+  final IconData icon;
+  final String label;
+  final String subtitle;
+  final VoidCallback onPressed;
+  final bool filled;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        filled
+            ? FilledButton.icon(
+                onPressed: onPressed,
+                icon: Icon(icon),
+                label: Text(label),
+              )
+            : OutlinedButton.icon(
+                onPressed: onPressed,
+                icon: Icon(icon),
+                label: Text(label),
+              ),
+        const SizedBox(height: 4),
+        Text(
+          subtitle,
+          textAlign: TextAlign.center,
+          style: theme.textTheme.bodySmall?.copyWith(
+            color: theme.colorScheme.onSurfaceVariant,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+/// Shown instead of the Quick Departure button while offline —
+/// deliberately not just that same button greyed out: a disabled
+/// button with no context reads as "temporarily broken," while this
+/// explains the actual reason (see `QuickDepartureRequest`'s doc
+/// comment) so staff understand it's a deliberate safety choice, not a
+/// bug or an oversight.
+class _QuickDepartureOfflineNotice extends StatelessWidget {
+  const _QuickDepartureOfflineNotice({required this.label});
+
+  final String label;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    final theme = Theme.of(context);
+    final warning =
+        theme.extension<AppSemanticColors>()?.warning ?? Colors.amber.shade800;
+    return Container(
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: warning.withValues(alpha: 0.12),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: warning.withValues(alpha: 0.4)),
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Icon(Icons.cloud_off_outlined, color: warning),
+          const SizedBox(width: 10),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  label,
+                  style: theme.textTheme.titleSmall?.copyWith(color: warning),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  l10n.ecBoardQuickDepartureOfflineExplanation,
+                  style: theme.textTheme.bodySmall,
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// This device's own not-yet-synced sectoral/4Ps edit — shown as a
+/// distinct card (matching the visual weight of a pending evacuee
+/// tile) rather than merged into the "Last Known" figures above, since
+/// this hasn't been confirmed by the server yet.
+class _PendingSectoralCard extends StatelessWidget {
+  const _PendingSectoralCard({required this.detail, required this.onTap});
+
+  final PendingQuickCountEditDetail detail;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    final colorScheme = Theme.of(context).colorScheme;
+    final summary = detail.summary;
+
+    return Card(
+      child: ListTile(
+        onTap: onTap,
+        leading: switch (summary.status) {
+          PendingRegistrationStatus.needsAttention => Icon(
+            Icons.error_outline,
+            color: colorScheme.error,
+          ),
+          PendingRegistrationStatus.syncing => SizedBox(
+            width: 24,
+            height: 24,
+            child: CircularProgressIndicator(
+              strokeWidth: 2,
+              color: colorScheme.primary,
+            ),
+          ),
+          PendingRegistrationStatus.pending => Icon(
+            Icons.cloud_off_outlined,
+            color: colorScheme.onSurfaceVariant,
+          ),
+        },
+        title: Text(l10n.ecBoardPendingSectoralCardTitle),
+        subtitle: Text(
+          summary.lastErrorMessage ?? l10n.ecBoardPendingSectoralCardSubtitle,
         ),
       ),
     );

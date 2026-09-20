@@ -3,6 +3,9 @@ import '../../../family_registration/domain/entities/pending_registration_status
 import '../entities/ec_board_entry_draft.dart';
 import '../entities/ec_board_quick_count.dart';
 import '../entities/pending_ec_board_entry.dart';
+import '../entities/pending_quick_count_edit.dart';
+import '../entities/quick_departure_request.dart';
+import '../entities/sectoral_group_draft.dart';
 
 class EcBoardQueueCounts {
   const EcBoardQueueCounts({
@@ -87,4 +90,72 @@ abstract class EcBoardRepository {
   /// which is the family's id, a real bug caught in the desktop app's
   /// equivalent work) on a confirmed 201.
   Future<Result<int>> submit(EcBoardEntryDraft draft);
+
+  // --- Sectoral/4Ps edit — same offline queue-then-sync shape as the
+  // --- evacuee queue above, but exactly one draft per (center, event)
+  // --- rather than a list (see `PendingQuickCountEditSummary`'s doc
+  // --- comment).
+
+  Future<PendingQuickCountEditDetail?> getPendingQuickCountEdit({
+    required int centerId,
+    required int evacuationEventId,
+  });
+
+  /// Upserts this device's pending sectoral/4Ps draft for
+  /// [draft]'s (center, event) — replaces any earlier unsynced draft
+  /// for that same pair outright (last-save-wins locally, matching the
+  /// last-sync-wins policy the sync itself uses): this is one mutable
+  /// aggregate, not an appendable list, so there's nothing to merge.
+  Future<void> saveQuickCountEdit(SectoralGroupDraft draft);
+
+  Future<void> deleteQuickCountEdit({
+    required int centerId,
+    required int evacuationEventId,
+  });
+
+  // --- Used only by StaffSyncService — not by the UI directly. ---
+
+  Future<void> markQuickCountEditSyncing({
+    required int centerId,
+    required int evacuationEventId,
+  });
+
+  Future<void> markQuickCountEditSynced({
+    required int centerId,
+    required int evacuationEventId,
+  });
+
+  Future<void> markQuickCountEditNeedsAttention({
+    required int centerId,
+    required int evacuationEventId,
+    required PendingErrorCategory category,
+    required String message,
+  });
+
+  Future<void> markQuickCountEditRetryLater({
+    required int centerId,
+    required int evacuationEventId,
+    required String message,
+  });
+
+  /// Every pending sectoral/4Ps draft across every center+event —
+  /// same "process everything, one flat queue" shape
+  /// [getPendingQueueInOrder] uses for evacuees.
+  Future<List<PendingQuickCountEditDetail>> getPendingQuickCountEditQueue();
+
+  /// `PUT /evacuation-centers/{id}/quick-count` — returns the backend's
+  /// full, freshly-saved quick-count (same shape [getQuickCount]
+  /// returns), so a caller that just synced can refresh its "last
+  /// known" view from the response directly instead of issuing a
+  /// second GET.
+  Future<Result<EcBoardQuickCount>> updateQuickCount(SectoralGroupDraft draft);
+
+  /// `POST /evacuation-centers/{id}/quick-departure` —
+  /// **deliberately never queued offline**; see
+  /// [QuickDepartureRequest]'s doc comment for why. Callers must check
+  /// connectivity themselves before ever presenting this action, same
+  /// as the UI-level guard already does. Returns the backend's own
+  /// confirmation message (e.g. "3 evacuee(s) marked as departed.")
+  /// on success.
+  Future<Result<String>> quickDeparture(QuickDepartureRequest request);
 }

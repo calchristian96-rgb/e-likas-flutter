@@ -41,6 +41,12 @@ class StaffSyncRunResult {
 /// family must get its chance to become a real backend id first (see
 /// [_promoteHouseholdReferences]) before any EC Board entry pointing
 /// at it can possibly sync.
+///
+/// Finally, the sectoral/4Ps edit queue (see
+/// [_runQuickCountEditQueue]) — one `PUT .../quick-count` per pending
+/// (center, event) draft, always last since it has no ordering
+/// dependency on the other two but naturally comes after whatever it's
+/// reporting on has had its own chance to sync first.
 class StaffSyncService {
   StaffSyncService({
     required PendingQueueRepository pendingQueueRepository,
@@ -110,7 +116,9 @@ class StaffSyncService {
       }
 
       final ecResult = await _runEcBoardQueue(processed);
-      return ecResult;
+      if (ecResult.stoppedForAuth) return ecResult;
+
+      return _runQuickCountEditQueue(ecResult.processed);
     } finally {
       _running = false;
     }
@@ -174,6 +182,112 @@ class StaffSyncService {
     }
 
     return StaffSyncRunResult(processed: processed, stoppedForAuth: false);
+  }
+
+  /// The sectoral/4Ps edit queue — **always last**, after both the
+  /// family-registration and EC Board evacuee queues above: it has no
+  /// dependency on either of them the way EC Board entries depend on
+  /// families, but running it last still means a center's headcount
+  /// (which the sectoral report is *about*) has had its own chance to
+  /// finish syncing first in the same run.
+  Future<StaffSyncRunResult> _runQuickCountEditQueue(int processedSoFar) async {
+    final ecBoard = _ecBoardRepository;
+    if (ecBoard == null) {
+      return StaffSyncRunResult(
+        processed: processedSoFar,
+        stoppedForAuth: false,
+      );
+    }
+
+    var processed = processedSoFar;
+    final queue = await ecBoard.getPendingQuickCountEditQueue();
+
+    for (final item in queue) {
+      final centerId = item.summary.evacuationCenterId;
+      final eventId = item.summary.evacuationEventId;
+      if (!await _connectivity.hasConnection) break;
+
+      await ecBoard.markQuickCountEditSyncing(
+        centerId: centerId,
+        evacuationEventId: eventId,
+      );
+      final result = await ecBoard.updateQuickCount(item.draft);
+
+      switch (result) {
+        case Success():
+          await ecBoard.markQuickCountEditSynced(
+            centerId: centerId,
+            evacuationEventId: eventId,
+          );
+          processed++;
+        case Failed(:final failure):
+          if (failure is AuthFailure) {
+            await ecBoard.markQuickCountEditRetryLater(
+              centerId: centerId,
+              evacuationEventId: eventId,
+              message: failure.message,
+            );
+            return StaffSyncRunResult(
+              processed: processed,
+              stoppedForAuth: true,
+            );
+          }
+          await _applyQuickCountEditFailure(ecBoard, centerId, eventId, failure);
+      }
+    }
+
+    return StaffSyncRunResult(processed: processed, stoppedForAuth: false);
+  }
+
+  Future<void> _applyQuickCountEditFailure(
+    EcBoardRepository ecBoard,
+    int centerId,
+    int evacuationEventId,
+    Failure failure,
+  ) async {
+    switch (failure) {
+      case ValidationFailure():
+        await ecBoard.markQuickCountEditNeedsAttention(
+          centerId: centerId,
+          evacuationEventId: evacuationEventId,
+          category: PendingErrorCategory.validation,
+          message: failure.message,
+        );
+      case ForbiddenFailure():
+        await ecBoard.markQuickCountEditNeedsAttention(
+          centerId: centerId,
+          evacuationEventId: evacuationEventId,
+          category: PendingErrorCategory.forbidden,
+          message: failure.message,
+        );
+      case AmbiguousWriteFailure():
+        // Unlike a POST, this PUT is naturally idempotent (it always
+        // sets the full 8-category state, never increments) — but
+        // still needsAttention rather than silently retried, so staff
+        // see and can confirm exactly what actually saved server-side
+        // after a dropped connection rather than assuming it took.
+        await ecBoard.markQuickCountEditNeedsAttention(
+          centerId: centerId,
+          evacuationEventId: evacuationEventId,
+          category: PendingErrorCategory.ambiguous,
+          message: failure.message,
+        );
+      case RateLimitFailure():
+      case NetworkFailure():
+      case ServerFailure():
+        await ecBoard.markQuickCountEditRetryLater(
+          centerId: centerId,
+          evacuationEventId: evacuationEventId,
+          message: failure.message,
+        );
+      default:
+        await ecBoard.markQuickCountEditNeedsAttention(
+          centerId: centerId,
+          evacuationEventId: evacuationEventId,
+          category: PendingErrorCategory.server,
+          message: failure.message,
+        );
+    }
   }
 
   Future<void> _applyEcBoardFailure(

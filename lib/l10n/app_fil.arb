@@ -531,5 +531,35 @@
   "ecBoardSectoralPregnantWomen": "Buntis na Kababaihan",
   "ecBoardSectoralLactatingMothers": "Nagpapasusong Ina",
   "ecBoardSectoralFourPsBeneficiary": "4Ps Beneficiary",
-  "ecBoardSectoralIndigenousPeoples": "Katutubong Mamamayan"
+  "ecBoardSectoralIndigenousPeoples": "Katutubong Mamamayan",
+
+  "ecBoardSyncNowExplanation": "Ang I-sync Ngayon ay nagpapadala ng iyong mga offline entry (bagong evacuee, sectoral update) sa server.",
+  "ecBoardSectoralEditButton": "I-edit ang Sectoral at 4Ps",
+  "ecBoardFamiliesLabel": "Pamilya",
+  "ecBoardPersonsLabel": "Tao",
+  "ecBoardNowLabel": "ngayon",
+  "ecBoardCumulativeValue": "{count} kumulatibo",
+  "ecBoardFourPsBeneficiaryFamilies": "4Ps Beneficiary na mga Pamilya",
+  "ecBoardSectoralUpdatedBy": "Huling in-update ni {name}",
+  "ecBoardPendingSectoralCardTitle": "Nakabinbin na sectoral update",
+  "ecBoardPendingSectoralCardSubtitle": "Hindi pa naka-sync — i-tap para suriin o i-edit.",
+
+  "ecBoardSectoralFormTitle": "Ulat ng Sectoral at 4Ps",
+  "ecBoardSectoralFormSubtitle": "Manu-manong naiuulat na kabuuan para sa center at event na ito — hiwalay sa Add Evacuee.",
+  "ecBoardSectoralFormFieldsHint": "Ilagay ang bilang ng tao sa bawat kategorya.",
+  "ecBoardSectoralSaveButton": "I-save ang Sectoral at 4Ps",
+  "ecBoardSectoralSavedOfflineMessage": "Na-save offline. Mag-si-sync ito kapag online ka na.",
+  "ecBoardSectoralSuccessMessage": "Matagumpay na na-update ang ulat ng Sectoral at 4Ps.",
+
+  "ecBoardQuickDepartureTitle": "Quick Departure",
+  "ecBoardQuickDepartureSubtitle": "Markahan ang mga taong umalis sa center na ito, ayon sa age bracket, kasarian, at bilang.",
+  "ecBoardQuickDepartureQuantity": "Bilang",
+  "ecBoardQuickDepartureStatus": "Katayuan",
+  "ecBoardQuickDepartureReturnedHome": "Umuwi na",
+  "ecBoardQuickDepartureTransferred": "Nailipat",
+  "ecBoardQuickDepartureSubmitButton": "Markahan bilang Umalis",
+  "ecBoardQuickDepartureValidationBanner": "Piliin ang kasarian, age bracket, bilang, at katayuan.",
+  "ecBoardQuickDepartureSuccessMessage": "Naitala bilang umalis.",
+  "ecBoardQuickDepartureOfflineMessage": "Kailangan ng internet connection para sa Quick Departure.",
+  "ecBoardQuickDepartureOfflineExplanation": "Kailangan ng internet connection ang Quick Departure dahil kailangan nitong tingnan kung sino ang kasalukuyang nakumpirma sa center na ito."
 }

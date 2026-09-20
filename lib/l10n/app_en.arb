@@ -631,5 +631,43 @@
   "ecBoardSectoralPregnantWomen": "Pregnant Women",
   "ecBoardSectoralLactatingMothers": "Lactating Mothers",
   "ecBoardSectoralFourPsBeneficiary": "4Ps Beneficiary",
-  "ecBoardSectoralIndigenousPeoples": "Indigenous Peoples"
+  "ecBoardSectoralIndigenousPeoples": "Indigenous Peoples",
+
+  "ecBoardSyncNowExplanation": "Sync Now sends your offline entries (new evacuees, sectoral updates) to the server.",
+  "ecBoardSectoralEditButton": "Edit Sectoral & 4Ps",
+  "ecBoardFamiliesLabel": "Families",
+  "ecBoardPersonsLabel": "Persons",
+  "ecBoardNowLabel": "now",
+  "ecBoardCumulativeValue": "{count} cumulative",
+  "@ecBoardCumulativeValue": {
+    "description": "Small caption under a Now figure, e.g. '12 cumulative'",
+    "placeholders": { "count": { "type": "int" } }
+  },
+  "ecBoardFourPsBeneficiaryFamilies": "4Ps Beneficiary Families",
+  "ecBoardSectoralUpdatedBy": "Last updated by {name}",
+  "@ecBoardSectoralUpdatedBy": {
+    "description": "Footer line under the sectoral breakdown naming who last saved it",
+    "placeholders": { "name": { "type": "String" } }
+  },
+  "ecBoardPendingSectoralCardTitle": "Pending sectoral update",
+  "ecBoardPendingSectoralCardSubtitle": "Not yet synced — tap to review or edit.",
+
+  "ecBoardSectoralFormTitle": "Sectoral & 4Ps Report",
+  "ecBoardSectoralFormSubtitle": "Manually-reported totals for this center and event — separate from Add Evacuee.",
+  "ecBoardSectoralFormFieldsHint": "Enter the number of people in each category.",
+  "ecBoardSectoralSaveButton": "Save Sectoral & 4Ps",
+  "ecBoardSectoralSavedOfflineMessage": "Saved offline. This will sync when you're back online.",
+  "ecBoardSectoralSuccessMessage": "Sectoral & 4Ps report updated successfully.",
+
+  "ecBoardQuickDepartureTitle": "Quick Departure",
+  "ecBoardQuickDepartureSubtitle": "Mark people currently at this center as departed, by age bracket, sex, and quantity.",
+  "ecBoardQuickDepartureQuantity": "Quantity",
+  "ecBoardQuickDepartureStatus": "Status",
+  "ecBoardQuickDepartureReturnedHome": "Returned home",
+  "ecBoardQuickDepartureTransferred": "Transferred",
+  "ecBoardQuickDepartureSubmitButton": "Mark as Departed",
+  "ecBoardQuickDepartureValidationBanner": "Please select sex, age bracket, quantity, and status.",
+  "ecBoardQuickDepartureSuccessMessage": "Marked as departed.",
+  "ecBoardQuickDepartureOfflineMessage": "Quick Departure requires an internet connection.",
+  "ecBoardQuickDepartureOfflineExplanation": "Quick Departure requires an internet connection, since it needs to check who's currently confirmed at this center."
 }

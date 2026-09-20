@@ -8,10 +8,14 @@ import '../../domain/entities/age_bracket.dart';
 import '../../domain/entities/ec_board_entry_draft.dart';
 import '../../domain/entities/ec_board_quick_count.dart';
 import '../../domain/entities/pending_ec_board_entry.dart';
+import '../../domain/entities/pending_quick_count_edit.dart';
+import '../../domain/entities/quick_departure_request.dart';
+import '../../domain/entities/sectoral_group_draft.dart';
 import '../../domain/repositories/ec_board_repository.dart';
 import '../datasources/ec_board_local_datasource.dart';
 import '../datasources/ec_board_remote_datasource.dart';
 import '../models/pending_ec_board_entry_model.dart';
+import '../models/pending_quick_count_edit_model.dart';
 
 /// Every read/write here is scoped to [_ownerStaffId] — same ownership
 /// rule as `PendingQueueRepositoryImpl`, so one staff account can never
@@ -233,6 +237,214 @@ class EcBoardRepositoryImpl implements EcBoardRepository {
     } on DioException catch (e) {
       return Failed(mapStaffDioError(e));
     }
+  }
+
+  // --- Sectoral/4Ps edit ---
+
+  @override
+  Future<PendingQuickCountEditDetail?> getPendingQuickCountEdit({
+    required int centerId,
+    required int evacuationEventId,
+  }) async {
+    final ownerStaffId = _ownerStaffId;
+    if (ownerStaffId == null) return null;
+    final model = await _local.getQuickCountEdit(
+      centerId: centerId,
+      evacuationEventId: evacuationEventId,
+      ownerStaffId: ownerStaffId,
+    );
+    return model == null ? null : _toQuickCountEditDetail(model);
+  }
+
+  @override
+  Future<void> saveQuickCountEdit(SectoralGroupDraft draft) async {
+    final ownerStaffId = _ownerStaffId;
+    if (ownerStaffId == null) return;
+    final now = DateTime.now().millisecondsSinceEpoch;
+    final existing = await _local.getQuickCountEdit(
+      centerId: draft.evacuationCenterId,
+      evacuationEventId: draft.evacuationEventId,
+      ownerStaffId: ownerStaffId,
+    );
+    await _local.putQuickCountEdit(
+      PendingQuickCountEditModel(
+        evacuationCenterId: draft.evacuationCenterId,
+        evacuationEventId: draft.evacuationEventId,
+        ownerStaffId: ownerStaffId,
+        beneficiaries4ps: draft.beneficiaries4ps,
+        sectoralGroups: draft.sectoralGroups,
+        syncStatus: PendingRegistrationStatus.pending.wireValue,
+        createdAtEpochMs: existing?.createdAtEpochMs ?? now,
+        updatedAtEpochMs: now,
+      ),
+    );
+  }
+
+  @override
+  Future<void> deleteQuickCountEdit({
+    required int centerId,
+    required int evacuationEventId,
+  }) async {
+    final ownerStaffId = _ownerStaffId;
+    if (ownerStaffId == null) return;
+    await _local.deleteQuickCountEdit(
+      centerId: centerId,
+      evacuationEventId: evacuationEventId,
+      ownerStaffId: ownerStaffId,
+    );
+  }
+
+  @override
+  Future<void> markQuickCountEditSyncing({
+    required int centerId,
+    required int evacuationEventId,
+  }) async {
+    final existing = await _ownedQuickCountEdit(centerId, evacuationEventId);
+    if (existing == null) return;
+    await _local.putQuickCountEdit(
+      existing.copyWith(
+        syncStatus: PendingRegistrationStatus.syncing.wireValue,
+        updatedAtEpochMs: DateTime.now().millisecondsSinceEpoch,
+      ),
+    );
+  }
+
+  @override
+  Future<void> markQuickCountEditSynced({
+    required int centerId,
+    required int evacuationEventId,
+  }) async {
+    final ownerStaffId = _ownerStaffId;
+    if (ownerStaffId == null) return;
+    final existing = await _ownedQuickCountEdit(centerId, evacuationEventId);
+    if (existing == null) return;
+    await _local.deleteQuickCountEdit(
+      centerId: centerId,
+      evacuationEventId: evacuationEventId,
+      ownerStaffId: ownerStaffId,
+    );
+  }
+
+  @override
+  Future<void> markQuickCountEditNeedsAttention({
+    required int centerId,
+    required int evacuationEventId,
+    required PendingErrorCategory category,
+    required String message,
+  }) async {
+    final existing = await _ownedQuickCountEdit(centerId, evacuationEventId);
+    if (existing == null) return;
+    await _local.putQuickCountEdit(
+      existing.copyWith(
+        syncStatus: PendingRegistrationStatus.needsAttention.wireValue,
+        attemptCount: existing.attemptCount + 1,
+        lastAttemptAtEpochMs: DateTime.now().millisecondsSinceEpoch,
+        lastErrorCategory: category.wireValue,
+        lastErrorMessage: message,
+        updatedAtEpochMs: DateTime.now().millisecondsSinceEpoch,
+      ),
+    );
+  }
+
+  @override
+  Future<void> markQuickCountEditRetryLater({
+    required int centerId,
+    required int evacuationEventId,
+    required String message,
+  }) async {
+    final existing = await _ownedQuickCountEdit(centerId, evacuationEventId);
+    if (existing == null) return;
+    await _local.putQuickCountEdit(
+      existing.copyWith(
+        syncStatus: PendingRegistrationStatus.pending.wireValue,
+        attemptCount: existing.attemptCount + 1,
+        lastAttemptAtEpochMs: DateTime.now().millisecondsSinceEpoch,
+        lastErrorMessage: message,
+        updatedAtEpochMs: DateTime.now().millisecondsSinceEpoch,
+      ),
+    );
+  }
+
+  @override
+  Future<List<PendingQuickCountEditDetail>>
+  getPendingQuickCountEditQueue() async {
+    final ownerStaffId = _ownerStaffId;
+    if (ownerStaffId == null) return const [];
+    final all = await _local.getAllQuickCountEdits();
+    final owned = all
+        .where((m) => m.ownerStaffId == ownerStaffId)
+        .where(
+          (m) =>
+              PendingRegistrationStatus.fromWire(m.syncStatus) ==
+              PendingRegistrationStatus.pending,
+        )
+        .toList()
+      ..sort((a, b) => a.createdAtEpochMs.compareTo(b.createdAtEpochMs));
+    return owned.map(_toQuickCountEditDetail).toList();
+  }
+
+  @override
+  Future<Result<EcBoardQuickCount>> updateQuickCount(
+    SectoralGroupDraft draft,
+  ) async {
+    try {
+      final count = await _remote.updateQuickCount(
+        draft.evacuationCenterId,
+        draft,
+      );
+      return Success(count);
+    } on DioException catch (e) {
+      return Failed(mapStaffDioError(e));
+    }
+  }
+
+  @override
+  Future<Result<String>> quickDeparture(QuickDepartureRequest request) async {
+    try {
+      final message = await _remote.quickDeparture(request);
+      return Success(message);
+    } on DioException catch (e) {
+      return Failed(mapStaffDioError(e));
+    }
+  }
+
+  Future<PendingQuickCountEditModel?> _ownedQuickCountEdit(
+    int centerId,
+    int evacuationEventId,
+  ) async {
+    final ownerStaffId = _ownerStaffId;
+    if (ownerStaffId == null) return null;
+    return _local.getQuickCountEdit(
+      centerId: centerId,
+      evacuationEventId: evacuationEventId,
+      ownerStaffId: ownerStaffId,
+    );
+  }
+
+  PendingQuickCountEditDetail _toQuickCountEditDetail(
+    PendingQuickCountEditModel m,
+  ) {
+    return PendingQuickCountEditDetail(
+      summary: PendingQuickCountEditSummary(
+        evacuationCenterId: m.evacuationCenterId,
+        evacuationEventId: m.evacuationEventId,
+        status: PendingRegistrationStatus.fromWire(m.syncStatus),
+        beneficiaries4ps: m.beneficiaries4ps,
+        createdAt: DateTime.fromMillisecondsSinceEpoch(m.createdAtEpochMs),
+        updatedAt: DateTime.fromMillisecondsSinceEpoch(m.updatedAtEpochMs),
+        attemptCount: m.attemptCount,
+        lastErrorCategory: m.lastErrorCategory == null
+            ? null
+            : PendingErrorCategory.fromWire(m.lastErrorCategory!),
+        lastErrorMessage: m.lastErrorMessage,
+      ),
+      draft: SectoralGroupDraft(
+        evacuationCenterId: m.evacuationCenterId,
+        evacuationEventId: m.evacuationEventId,
+        beneficiaries4ps: m.beneficiaries4ps,
+        sectoralGroups: m.sectoralGroups,
+      ),
+    );
   }
 
   Future<List<PendingEcBoardEntryModel>> _ownedModels() async {

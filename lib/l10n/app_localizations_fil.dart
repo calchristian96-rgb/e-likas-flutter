@@ -1669,4 +1669,100 @@ class AppLocalizationsFil extends AppLocalizations {
 
   @override
   String get ecBoardSectoralIndigenousPeoples => 'Katutubong Mamamayan';
+
+  @override
+  String get ecBoardSyncNowExplanation =>
+      'Ang I-sync Ngayon ay nagpapadala ng iyong mga offline entry (bagong evacuee, sectoral update) sa server.';
+
+  @override
+  String get ecBoardSectoralEditButton => 'I-edit ang Sectoral at 4Ps';
+
+  @override
+  String get ecBoardFamiliesLabel => 'Pamilya';
+
+  @override
+  String get ecBoardPersonsLabel => 'Tao';
+
+  @override
+  String get ecBoardNowLabel => 'ngayon';
+
+  @override
+  String ecBoardCumulativeValue(int count) {
+    return '$count kumulatibo';
+  }
+
+  @override
+  String get ecBoardFourPsBeneficiaryFamilies =>
+      '4Ps Beneficiary na mga Pamilya';
+
+  @override
+  String ecBoardSectoralUpdatedBy(String name) {
+    return 'Huling in-update ni $name';
+  }
+
+  @override
+  String get ecBoardPendingSectoralCardTitle => 'Nakabinbin na sectoral update';
+
+  @override
+  String get ecBoardPendingSectoralCardSubtitle =>
+      'Hindi pa naka-sync — i-tap para suriin o i-edit.';
+
+  @override
+  String get ecBoardSectoralFormTitle => 'Ulat ng Sectoral at 4Ps';
+
+  @override
+  String get ecBoardSectoralFormSubtitle =>
+      'Manu-manong naiuulat na kabuuan para sa center at event na ito — hiwalay sa Add Evacuee.';
+
+  @override
+  String get ecBoardSectoralFormFieldsHint =>
+      'Ilagay ang bilang ng tao sa bawat kategorya.';
+
+  @override
+  String get ecBoardSectoralSaveButton => 'I-save ang Sectoral at 4Ps';
+
+  @override
+  String get ecBoardSectoralSavedOfflineMessage =>
+      'Na-save offline. Mag-si-sync ito kapag online ka na.';
+
+  @override
+  String get ecBoardSectoralSuccessMessage =>
+      'Matagumpay na na-update ang ulat ng Sectoral at 4Ps.';
+
+  @override
+  String get ecBoardQuickDepartureTitle => 'Quick Departure';
+
+  @override
+  String get ecBoardQuickDepartureSubtitle =>
+      'Markahan ang mga taong umalis sa center na ito, ayon sa age bracket, kasarian, at bilang.';
+
+  @override
+  String get ecBoardQuickDepartureQuantity => 'Bilang';
+
+  @override
+  String get ecBoardQuickDepartureStatus => 'Katayuan';
+
+  @override
+  String get ecBoardQuickDepartureReturnedHome => 'Umuwi na';
+
+  @override
+  String get ecBoardQuickDepartureTransferred => 'Nailipat';
+
+  @override
+  String get ecBoardQuickDepartureSubmitButton => 'Markahan bilang Umalis';
+
+  @override
+  String get ecBoardQuickDepartureValidationBanner =>
+      'Piliin ang kasarian, age bracket, bilang, at katayuan.';
+
+  @override
+  String get ecBoardQuickDepartureSuccessMessage => 'Naitala bilang umalis.';
+
+  @override
+  String get ecBoardQuickDepartureOfflineMessage =>
+      'Kailangan ng internet connection para sa Quick Departure.';
+
+  @override
+  String get ecBoardQuickDepartureOfflineExplanation =>
+      'Kailangan ng internet connection ang Quick Departure dahil kailangan nitong tingnan kung sino ang kasalukuyang nakumpirma sa center na ito.';
 }

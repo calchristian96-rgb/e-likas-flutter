@@ -2,6 +2,7 @@ import 'package:drift/drift.dart';
 
 import '../../../../core/database/staff_database.dart';
 import '../models/pending_ec_board_entry_model.dart';
+import '../models/pending_quick_count_edit_model.dart';
 
 /// Drift-backed CRUD over the EC Board offline queue, in the encrypted
 /// staff [StaffDatabase] — mirrors `PendingQueueLocalDataSource`
@@ -95,6 +96,92 @@ class EcBoardLocalDataSource {
       createdAtEpochMs: row.createdAtEpochMs,
       updatedAtEpochMs: row.updatedAtEpochMs,
       ownerStaffId: row.ownerStaffId,
+    );
+  }
+
+  // --- PendingQuickCountEdits: one mutable row per (center, event,
+  // --- owner) — see that table's own doc comment.
+
+  Future<List<PendingQuickCountEditModel>> getAllQuickCountEdits() async {
+    final rows = await _db.select(_db.pendingQuickCountEdits).get();
+    return rows.map(_quickCountEditFromRow).toList();
+  }
+
+  Future<PendingQuickCountEditModel?> getQuickCountEdit({
+    required int centerId,
+    required int evacuationEventId,
+    required int ownerStaffId,
+  }) async {
+    final row =
+        await (_db.select(_db.pendingQuickCountEdits)..where(
+              (t) =>
+                  t.evacuationCenterId.equals(centerId) &
+                  t.evacuationEventId.equals(evacuationEventId) &
+                  t.ownerStaffId.equals(ownerStaffId),
+            ))
+            .getSingleOrNull();
+    return row == null ? null : _quickCountEditFromRow(row);
+  }
+
+  Future<void> putQuickCountEdit(PendingQuickCountEditModel model) async {
+    await _db
+        .into(_db.pendingQuickCountEdits)
+        .insertOnConflictUpdate(_quickCountEditToCompanion(model));
+  }
+
+  Future<void> deleteQuickCountEdit({
+    required int centerId,
+    required int evacuationEventId,
+    required int ownerStaffId,
+  }) async {
+    await (_db.delete(_db.pendingQuickCountEdits)..where(
+          (t) =>
+              t.evacuationCenterId.equals(centerId) &
+              t.evacuationEventId.equals(evacuationEventId) &
+              t.ownerStaffId.equals(ownerStaffId),
+        ))
+        .go();
+  }
+
+  static PendingQuickCountEditsCompanion _quickCountEditToCompanion(
+    PendingQuickCountEditModel m,
+  ) {
+    return PendingQuickCountEditsCompanion.insert(
+      evacuationCenterId: m.evacuationCenterId,
+      evacuationEventId: m.evacuationEventId,
+      ownerStaffId: m.ownerStaffId,
+      beneficiaries4ps: m.beneficiaries4ps,
+      sectoralGroupsJson: PendingQuickCountEditModel.encodeSectoralGroups(
+        m.sectoralGroups,
+      ),
+      syncStatus: m.syncStatus,
+      attemptCount: Value(m.attemptCount),
+      lastAttemptAtEpochMs: Value(m.lastAttemptAtEpochMs),
+      lastErrorCategory: Value(m.lastErrorCategory),
+      lastErrorMessage: Value(m.lastErrorMessage),
+      createdAtEpochMs: m.createdAtEpochMs,
+      updatedAtEpochMs: m.updatedAtEpochMs,
+    );
+  }
+
+  static PendingQuickCountEditModel _quickCountEditFromRow(
+    PendingQuickCountEditRow row,
+  ) {
+    return PendingQuickCountEditModel(
+      evacuationCenterId: row.evacuationCenterId,
+      evacuationEventId: row.evacuationEventId,
+      ownerStaffId: row.ownerStaffId,
+      beneficiaries4ps: row.beneficiaries4ps,
+      sectoralGroups: PendingQuickCountEditModel.decodeSectoralGroups(
+        row.sectoralGroupsJson,
+      ),
+      syncStatus: row.syncStatus,
+      attemptCount: row.attemptCount,
+      lastAttemptAtEpochMs: row.lastAttemptAtEpochMs,
+      lastErrorCategory: row.lastErrorCategory,
+      lastErrorMessage: row.lastErrorMessage,
+      createdAtEpochMs: row.createdAtEpochMs,
+      updatedAtEpochMs: row.updatedAtEpochMs,
     );
   }
 }

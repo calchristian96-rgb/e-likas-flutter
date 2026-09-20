@@ -82,7 +82,21 @@ Future<PendingRegistrationDetail?> pendingRegistrationDetail(
 /// screen's own sync action can trigger the same run and have it
 /// automatically refresh every provider that reads the queue,
 /// without either screen needing to know which providers those are.
-@riverpod
+///
+/// `keepAlive: true` is load-bearing, not cosmetic: every caller
+/// reaches this via a one-shot `ref.read(staffSyncNowProvider)()`,
+/// never `ref.watch`, so nothing keeps a plain autoDispose instance of
+/// this alive while the returned closure is still mid-flight — with
+/// three sequential network phases (family queue, EC Board queue,
+/// sectoral/4Ps queue) now chained through `service.run()`, that flight
+/// is long enough that Riverpod could dispose this provider (and the
+/// `ref` the closure already closed over) before the closure reaches
+/// its own `ref.invalidate(...)` calls, throwing "Cannot use the Ref
+/// of staffSyncNowProvider after it has been disposed" — confirmed
+/// live: the sync's own PUT/POST calls still completed and saved
+/// correctly, but the post-sync UI refresh crashed before ever
+/// running.
+@Riverpod(keepAlive: true)
 Future<StaffSyncRunResult> Function() staffSyncNow(Ref ref) {
   return () async {
     final service = ref.read(staffSyncServiceProvider);
@@ -98,6 +112,7 @@ Future<StaffSyncRunResult> Function() staffSyncNow(Ref ref) {
     ref.invalidate(ecBoardEntriesForCenterProvider);
     ref.invalidate(ecBoardCountsForCenterProvider);
     ref.invalidate(ecBoardQuickCountProvider);
+    ref.invalidate(pendingQuickCountEditProvider);
 
     // A registration that just synced here may now be a choosable
     // "existing household" on EC Board's Add Evacuee picker — refresh
