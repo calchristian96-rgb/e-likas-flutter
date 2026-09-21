@@ -12,6 +12,7 @@ class StaffSyncRunResult {
   const StaffSyncRunResult({
     required this.processed,
     required this.stoppedForAuth,
+    this.wasOffline = false,
   });
 
   final int processed;
@@ -20,6 +21,14 @@ class StaffSyncRunResult {
   /// — the caller (the sync-trigger provider) surfaces "session
   /// expired, sign in again" and the remaining queue is untouched.
   final bool stoppedForAuth;
+
+  /// True when there was no connection at all the moment this run
+  /// started — nothing was attempted. Distinct from [processed] being
+  /// 0 for an ordinary "already up to date" run: the caller uses this
+  /// to show "you're offline" rather than a misleadingly-generic
+  /// "0 synced" message that reads the same as genuinely having
+  /// nothing pending.
+  final bool wasOffline;
 }
 
 /// Processes the pending queue **sequentially, never concurrently**
@@ -77,6 +86,13 @@ class StaffSyncService {
     if (_running) {
       return const StaffSyncRunResult(processed: 0, stoppedForAuth: false);
     }
+    if (!await _connectivity.hasConnection) {
+      return const StaffSyncRunResult(
+        processed: 0,
+        stoppedForAuth: false,
+        wasOffline: true,
+      );
+    }
     _running = true;
     try {
       var processed = 0;
@@ -121,6 +137,58 @@ class StaffSyncService {
       if (ecResult.stoppedForAuth) return ecResult;
 
       return _runQuickCountEditQueue(ecResult.processed);
+    } finally {
+      _running = false;
+    }
+  }
+
+  /// Pushes only the EC Board evacuee queue — used by EC Board's own
+  /// "Sync Now" next to its Age & Sex pending table, so tapping it
+  /// doesn't also push an unrelated pending sectoral/4Ps edit the
+  /// staff member wasn't looking at. Deliberately doesn't run the
+  /// family-registration phase first: an entry still referencing a
+  /// not-yet-synced family registration is simply left `pending` by
+  /// [_runEcBoardQueue]'s own `isReadyToSync` check, exactly as if
+  /// this were partway through [run] — it becomes syncable once that
+  /// registration itself syncs (from Pending Registrations, or the
+  /// next full [run]), not silently dropped.
+  Future<StaffSyncRunResult> syncEcBoardEntriesOnly() async {
+    if (_running) {
+      return const StaffSyncRunResult(processed: 0, stoppedForAuth: false);
+    }
+    if (!await _connectivity.hasConnection) {
+      return const StaffSyncRunResult(
+        processed: 0,
+        stoppedForAuth: false,
+        wasOffline: true,
+      );
+    }
+    _running = true;
+    try {
+      return await _runEcBoardQueue(0);
+    } finally {
+      _running = false;
+    }
+  }
+
+  /// Pushes only the pending sectoral/4Ps edit — used by EC Board's
+  /// own "Sync Now" next to its Sectoral Group pending card, same
+  /// "don't push what the staff member isn't looking at" reasoning as
+  /// [syncEcBoardEntriesOnly].
+  Future<StaffSyncRunResult> syncQuickCountEditOnly() async {
+    if (_running) {
+      return const StaffSyncRunResult(processed: 0, stoppedForAuth: false);
+    }
+    if (!await _connectivity.hasConnection) {
+      return const StaffSyncRunResult(
+        processed: 0,
+        stoppedForAuth: false,
+        wasOffline: true,
+      );
+    }
+    _running = true;
+    try {
+      return await _runQuickCountEditQueue(0);
     } finally {
       _running = false;
     }

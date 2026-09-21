@@ -7,6 +7,8 @@ import '../../../../core/widgets/error_state.dart';
 import '../../../../core/widgets/last_updated_label.dart';
 import '../../../../core/widgets/sync_now_action.dart';
 import '../../../../l10n/app_localizations.dart';
+import '../../../family_registration/data/services/staff_sync_service.dart'
+    show StaffSyncRunResult;
 import '../../../family_registration/domain/entities/lookup_entities.dart';
 import '../../../family_registration/domain/entities/pending_registration_status.dart';
 import '../../../family_registration/presentation/providers/lookup_providers.dart';
@@ -38,9 +40,19 @@ class EcBoardPage extends ConsumerStatefulWidget {
   ConsumerState<EcBoardPage> createState() => _EcBoardPageState();
 }
 
+/// Which queue a Sync Now tap is pushing — [all] is the AppBar's own
+/// action (used by no other page besides this one and Pending
+/// Registrations); the other two are EC Board's own contextual
+/// buttons, each scoped to exactly the pending data sitting next to
+/// it. `StaffSyncService._running` already guarantees only one sync of
+/// any kind runs app-wide at once, so this only needs to track *which*
+/// button should show its own spinner rather than all three lighting
+/// up for a sync only one of them started.
+enum _SyncTarget { all, ecBoardEntries, quickCountEdit }
+
 class _EcBoardPageState extends ConsumerState<EcBoardPage> {
   int? _selectedEventId;
-  bool _syncing = false;
+  _SyncTarget? _activeSync;
 
   void _ensureEventSelected(List<EvacuationEventLookup> events) {
     if (_selectedEventId != null) return;
@@ -52,22 +64,40 @@ class _EcBoardPageState extends ConsumerState<EcBoardPage> {
     }
   }
 
-  Future<void> _syncNow() async {
-    final l10n = AppLocalizations.of(context);
-    setState(() => _syncing = true);
-    final result = await ref.read(staffSyncNowProvider)();
+  Future<void> _runSync(
+    _SyncTarget target,
+    Future<StaffSyncRunResult> Function() action,
+  ) async {
+    if (_activeSync != null) return;
+    setState(() => _activeSync = target);
+    final result = await action();
     if (!mounted) return;
-    setState(() => _syncing = false);
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(
-          result.stoppedForAuth
-              ? l10n.staffSyncStoppedForAuthMessage
-              : l10n.staffSyncCompletedMessage(result.processed),
-        ),
-      ),
-    );
+    setState(() => _activeSync = null);
+    final l10n = AppLocalizations.of(context);
+    // `wasOffline` checked first — a plain count-based message would
+    // otherwise read as "0 registrations synced," which looks like a
+    // normal empty run rather than "this never even attempted to
+    // reach the server," when there's actually no connection at all.
+    final message = result.wasOffline
+        ? l10n.staffSyncRequiresConnectionMessage
+        : result.stoppedForAuth
+        ? l10n.staffSyncStoppedForAuthMessage
+        : l10n.staffSyncCompletedMessage(result.processed);
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
   }
+
+  Future<void> _syncAll() =>
+      _runSync(_SyncTarget.all, () => ref.read(staffSyncNowProvider)());
+
+  Future<void> _syncEcBoardEntries() => _runSync(
+    _SyncTarget.ecBoardEntries,
+    () => ref.read(staffSyncEcBoardEntriesOnlyProvider)(),
+  );
+
+  Future<void> _syncQuickCountEdit() => _runSync(
+    _SyncTarget.quickCountEdit,
+    () => ref.read(staffSyncQuickCountEditOnlyProvider)(),
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -77,7 +107,12 @@ class _EcBoardPageState extends ConsumerState<EcBoardPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(l10n.ecBoardTitle),
-        actions: [SyncNowAction(isSyncing: _syncing, onSync: _syncNow)],
+        actions: [
+          SyncNowAction(
+            isSyncing: _activeSync == _SyncTarget.all,
+            onSync: _syncAll,
+          ),
+        ],
       ),
       body: eventsAsync.when(
         data: (events) {
@@ -96,8 +131,10 @@ class _EcBoardPageState extends ConsumerState<EcBoardPage> {
             events: events,
             selectedEventId: eventId,
             onEventChanged: (id) => setState(() => _selectedEventId = id),
-            isSyncing: _syncing,
-            onSync: _syncNow,
+            isSyncingEcBoardEntries: _activeSync == _SyncTarget.ecBoardEntries,
+            onSyncEcBoardEntries: _syncEcBoardEntries,
+            isSyncingQuickCountEdit: _activeSync == _SyncTarget.quickCountEdit,
+            onSyncQuickCountEdit: _syncQuickCountEdit,
           );
         },
         loading: () => const Center(child: CircularProgressIndicator()),
@@ -121,16 +158,20 @@ class _EcBoardBody extends ConsumerWidget {
     required this.events,
     required this.selectedEventId,
     required this.onEventChanged,
-    required this.isSyncing,
-    required this.onSync,
+    required this.isSyncingEcBoardEntries,
+    required this.onSyncEcBoardEntries,
+    required this.isSyncingQuickCountEdit,
+    required this.onSyncQuickCountEdit,
   });
 
   final int centerId;
   final List<EvacuationEventLookup> events;
   final int selectedEventId;
   final ValueChanged<int> onEventChanged;
-  final bool isSyncing;
-  final VoidCallback onSync;
+  final bool isSyncingEcBoardEntries;
+  final VoidCallback onSyncEcBoardEntries;
+  final bool isSyncingQuickCountEdit;
+  final VoidCallback onSyncQuickCountEdit;
 
   Future<void> _openAddEvacuee(BuildContext context, WidgetRef ref) async {
     await Navigator.of(context).push<void>(
@@ -170,21 +211,43 @@ class _EcBoardBody extends ConsumerWidget {
     ref.invalidate(ecBoardQuickCountProvider(centerId, selectedEventId));
   }
 
-  Widget _syncNowButton(AppLocalizations l10n) {
-    return isSyncing
-        ? const Padding(
-            padding: EdgeInsets.all(8),
-            child: SizedBox(
-              width: 18,
-              height: 18,
-              child: CircularProgressIndicator(strokeWidth: 2),
-            ),
-          )
-        : TextButton.icon(
-            onPressed: onSync,
-            icon: const Icon(Icons.sync_outlined, size: 18),
-            label: Text(l10n.ecBoardSyncNowInlineButton),
-          );
+  /// [isOnline] disables the button outright while offline — matching
+  /// `SyncNowAction`'s own AppBar convention — rather than letting the
+  /// tap go through and land on a `wasOffline` result the staff member
+  /// only finds out about from a SnackBar afterwards. The disabled
+  /// label stays short ("Offline") rather than the full explanation:
+  /// this sits in a `Row` next to a section title that needs its own
+  /// room, and the full sentence — which fits fine as a SnackBar body
+  /// or a tooltip — pushed that title into an unreadable one-word-per
+  /// -line wrap the first time this was tried.
+  Widget _syncNowButton({
+    required AppLocalizations l10n,
+    required bool isSyncing,
+    required bool isOnline,
+    required VoidCallback onSync,
+  }) {
+    if (isSyncing) {
+      return const Padding(
+        padding: EdgeInsets.all(8),
+        child: SizedBox(
+          width: 18,
+          height: 18,
+          child: CircularProgressIndicator(strokeWidth: 2),
+        ),
+      );
+    }
+    return Tooltip(
+      message: isOnline
+          ? l10n.ecBoardSyncNowInlineButton
+          : l10n.staffSyncRequiresConnectionMessage,
+      child: TextButton.icon(
+        onPressed: isOnline ? onSync : null,
+        icon: const Icon(Icons.sync_outlined, size: 18),
+        label: Text(
+          isOnline ? l10n.ecBoardSyncNowInlineButton : l10n.offlineModeLabel,
+        ),
+      ),
+    );
   }
 
   @override
@@ -283,22 +346,26 @@ class _EcBoardBody extends ConsumerWidget {
           ),
           const SizedBox(height: 24),
           Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Expanded(
                 child: Text(
                   l10n.ecBoardPendingSectionTitle,
                   style: theme.textTheme.titleMedium,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                 ),
               ),
-              // Sync Now, right where staff are already looking at
-              // this specific queue — in addition to the AppBar's own
-              // action and the Sectoral section's own copy below, not
-              // a replacement for either. All three trigger the same
-              // whole-queue sync (there's no way to sync just one
-              // category), but each stays where the staff member who
-              // needs it is already looking.
-              _syncNowButton(l10n),
+              // Pushes only this queue — the Sectoral section's own
+              // copy further down pushes only its pending edit, and
+              // the AppBar's action is the one place that still pushes
+              // everything at once.
+              _syncNowButton(
+                l10n: l10n,
+                isSyncing: isSyncingEcBoardEntries,
+                isOnline: isOnline,
+                onSync: onSyncEcBoardEntries,
+              ),
             ],
           ),
           const SizedBox(height: 4),
@@ -381,15 +448,22 @@ class _EcBoardBody extends ConsumerWidget {
           ),
           const SizedBox(height: 24),
           Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Expanded(
                 child: Text(
                   l10n.ecBoardPendingSectionTitle,
                   style: theme.textTheme.titleMedium,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                 ),
               ),
-              _syncNowButton(l10n),
+              _syncNowButton(
+                l10n: l10n,
+                isSyncing: isSyncingQuickCountEdit,
+                isOnline: isOnline,
+                onSync: onSyncQuickCountEdit,
+              ),
             ],
           ),
           const SizedBox(height: 4),

@@ -134,3 +134,42 @@ Future<StaffSyncRunResult> Function() staffSyncNow(Ref ref) {
     return result;
   };
 }
+
+/// EC Board's own "Sync Now" next to its Age & Sex pending table —
+/// pushes only the evacuee queue, not the unrelated sectoral/4Ps edit
+/// [staffSyncQuickCountEditOnlyProvider] covers. `keepAlive: true` for
+/// the same reason as [staffSyncNowProvider].
+@Riverpod(keepAlive: true)
+Future<StaffSyncRunResult> Function() staffSyncEcBoardEntriesOnly(Ref ref) {
+  return () async {
+    final service = ref.read(staffSyncServiceProvider);
+    final result = await service.syncEcBoardEntriesOnly();
+
+    ref.invalidate(ecBoardEntriesForCenterProvider);
+    ref.invalidate(ecBoardCountsForCenterProvider);
+    if (result.processed > 0) {
+      ref.invalidate(registeredFamiliesProvider);
+      ref.invalidate(registeredFamiliesCacheOnlyProvider);
+    }
+    if (result.stoppedForAuth) ref.invalidate(staffAuthProvider);
+
+    return result;
+  };
+}
+
+/// EC Board's own "Sync Now" next to its Sectoral Group pending card —
+/// pushes only the pending sectoral/4Ps edit, not the unrelated
+/// evacuee queue [staffSyncEcBoardEntriesOnlyProvider] covers.
+@Riverpod(keepAlive: true)
+Future<StaffSyncRunResult> Function() staffSyncQuickCountEditOnly(Ref ref) {
+  return () async {
+    final service = ref.read(staffSyncServiceProvider);
+    final result = await service.syncQuickCountEditOnly();
+
+    ref.invalidate(ecBoardQuickCountProvider);
+    ref.invalidate(pendingQuickCountEditProvider);
+    if (result.stoppedForAuth) ref.invalidate(staffAuthProvider);
+
+    return result;
+  };
+}

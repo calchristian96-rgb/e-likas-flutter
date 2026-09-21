@@ -24,11 +24,17 @@ class StaffIdentityCard extends StatelessWidget {
     final semantic = theme.extension<AppSemanticColors>()!;
     final l10n = AppLocalizations.of(context);
 
-    // CSWD/admin accounts have no barangay — shown as just the role,
-    // never "Brgy. null" or a dangling "Brgy." with nothing after it.
+    // roleDisplayName ("Barangay Official"), never the raw backend
+    // enum value session.role ("barangay_official") this card used to
+    // show verbatim. CSWD/admin accounts have no barangay — shown as
+    // just the role, never "Brgy. null" or a dangling "Brgy." with
+    // nothing after it.
     final subtitle = session.barangayName != null
-        ? l10n.staffIdentityWithBarangay(session.role, session.barangayName!)
-        : session.role;
+        ? l10n.staffIdentityWithBarangay(
+            session.roleDisplayName,
+            session.barangayName!,
+          )
+        : session.roleDisplayName;
 
     return Container(
       decoration: BoxDecoration(

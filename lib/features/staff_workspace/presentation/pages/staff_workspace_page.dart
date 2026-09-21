@@ -3,10 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../app/theme/app_theme.dart';
-import '../../../../core/debug/pending_count_debug_log.dart';
-import '../../../../core/widgets/error_state.dart';
 import '../../../../l10n/app_localizations.dart';
-import '../../../family_registration/presentation/providers/pending_queue_provider.dart';
 import '../../../staff_auth/domain/entities/staff_session.dart';
 import '../../../staff_auth/presentation/providers/staff_auth_provider.dart';
 import '../../../staff_auth/presentation/widgets/staff_auth_guard.dart';
@@ -57,7 +54,6 @@ class _StaffWorkspaceBody extends ConsumerWidget {
     final l10n = AppLocalizations.of(context);
     final theme = Theme.of(context);
     final semantic = theme.extension<AppSemanticColors>()!;
-    final countsAsync = ref.watch(pendingQueueCountsProvider);
 
     return Scaffold(
       appBar: AppBar(title: Text(l10n.staffWorkspaceTitle)),
@@ -66,38 +62,6 @@ class _StaffWorkspaceBody extends ConsumerWidget {
         children: [
           if (session.isFromCache) _OfflineSessionBanner(l10n: l10n),
           StaffIdentityCard(session: session),
-          const SizedBox(height: 16),
-          countsAsync.when(
-            data: (counts) => Row(
-              children: [
-                Expanded(
-                  child: _CountTile(
-                    label: l10n.staffWorkspacePendingCount,
-                    count: counts.pending,
-                    color: theme.colorScheme.primary,
-                  ),
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: _CountTile(
-                    label: l10n.staffWorkspaceNeedsAttentionCount,
-                    count: counts.needsAttention,
-                    color: theme.colorScheme.error,
-                  ),
-                ),
-              ],
-            ),
-            loading: () => const SizedBox(
-              height: 64,
-              child: Center(child: CircularProgressIndicator()),
-            ),
-            error: (error, stackTrace) {
-              pendingCountDebugLog('UI ERROR TYPE=${error.runtimeType}');
-              pendingCountDebugLog('UI ERROR=$error');
-              pendingCountDebugLog('STACK=$stackTrace');
-              return ErrorState(message: 'Could not load pending counts.');
-            },
-          ),
           const SizedBox(height: 20),
           // Grouped by workflow rather than one flat list — mirrors
           // Settings' own sectioning. No standalone "Sync Now" action
@@ -230,39 +194,6 @@ class _OfflineSessionBanner extends StatelessWidget {
   }
 }
 
-class _CountTile extends StatelessWidget {
-  const _CountTile({
-    required this.label,
-    required this.count,
-    required this.color,
-  });
-
-  final String label;
-  final int count;
-  final Color color;
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      color: color.withValues(alpha: 0.08),
-      child: Padding(
-        padding: const EdgeInsets.all(12),
-        child: Column(
-          children: [
-            Text(
-              '$count',
-              style: Theme.of(
-                context,
-              ).textTheme.headlineMedium?.copyWith(color: color),
-            ),
-            const SizedBox(height: 4),
-            Text(label, textAlign: TextAlign.center),
-          ],
-        ),
-      ),
-    );
-  }
-}
 
 class _WorkspaceAction extends StatelessWidget {
   const _WorkspaceAction({

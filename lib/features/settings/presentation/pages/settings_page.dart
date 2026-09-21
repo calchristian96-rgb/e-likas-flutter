@@ -10,13 +10,11 @@ import '../../../../core/localization/app_locale.dart';
 import '../../../../core/localization/app_theme_mode.dart';
 import '../../../../core/localization/language_selector_sheet.dart';
 import '../../../../core/localization/theme_mode_selector_sheet.dart';
-import '../../../../core/widgets/last_updated_label.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../home/presentation/providers/home_provider.dart';
 import '../../../staff_auth/presentation/providers/staff_auth_provider.dart';
 import '../../../staff_auth/presentation/widgets/staff_identity_card.dart';
 import '../providers/notification_preference_provider.dart';
-import '../providers/offline_data_provider.dart';
 
 /// Every row here either does something real or shows a genuinely
 /// measured value — no fake toggles, no placeholder rows for
@@ -32,8 +30,6 @@ class SettingsPage extends ConsumerStatefulWidget {
 }
 
 class _SettingsPageState extends ConsumerState<SettingsPage> {
-  bool _isSyncing = false;
-
   // Hidden entry point to the developer backend-override screen —
   // Android's own long-established "tap the build number 7 times"
   // convention, so anyone who'd look for a hidden dev menu already
@@ -65,20 +61,6 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
     super.dispose();
   }
 
-  Future<void> _handleSyncNow() async {
-    setState(() => _isSyncing = true);
-    final ok = await ref.read(offlineDataOverviewProvider.notifier).syncAll();
-    if (!mounted) return;
-    setState(() => _isSyncing = false);
-    final l10n = AppLocalizations.of(context);
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(ok ? l10n.syncCompleted : l10n.syncPartialFailure),
-        duration: const Duration(seconds: 3),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -87,7 +69,6 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
     final locale = ref.watch(appLocaleProvider);
     final themeMode = ref.watch(appThemeModeProvider);
     final isConnected = ref.watch(connectivityStatusProvider).value ?? false;
-    final overviewAsync = ref.watch(offlineDataOverviewProvider);
     final staffSession = ref.watch(staffAuthProvider).value;
     final notificationsEnabled = ref.watch(notificationPreferenceProvider);
 
@@ -99,38 +80,17 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
           _SectionLabel(title: l10n.settingsSectionOfflineData),
           _SettingsCard(
             children: [
+              // No standalone "Sync Now" row here — it would just be a
+              // second way to trigger the exact same `syncAll()` the
+              // Offline Data Management screen's own "Update All"
+              // button already does, one tap into the row above, next
+              // to the real per-domain freshness it's actually about.
               _SettingsRow(
                 icon: Icons.cloud_download_outlined,
                 iconColor: theme.colorScheme.primary,
                 title: l10n.settingsOfflineData,
                 subtitle: l10n.settingsOfflineDataSubtitle,
                 onTap: () => context.push('/settings/offline-data'),
-              ),
-              const _RowDivider(),
-              _SettingsRow(
-                icon: Icons.sync,
-                iconColor: semantic.success,
-                title: l10n.settingsSyncNow,
-                subtitleWidget: overviewAsync.when(
-                  data: (snapshot) =>
-                      LastUpdatedLabel(timestamp: snapshot.mostRecentSync),
-                  loading: () => Text(l10n.checkingForAlerts),
-                  error: (_, _) => Text(l10n.settingsSyncNeverRun),
-                ),
-                trailing: _isSyncing
-                    ? const SizedBox(
-                        width: 20,
-                        height: 20,
-                        child: CircularProgressIndicator(strokeWidth: 2.4),
-                      )
-                    : FilledButton(
-                        onPressed: _handleSyncNow,
-                        style: FilledButton.styleFrom(
-                          minimumSize: const Size(72, 36),
-                          padding: const EdgeInsets.symmetric(horizontal: 14),
-                        ),
-                        child: Text(l10n.settingsSyncButton),
-                      ),
               ),
               const _RowDivider(),
               _SettingsRow(
