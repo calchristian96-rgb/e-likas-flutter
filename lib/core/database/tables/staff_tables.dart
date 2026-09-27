@@ -65,6 +65,19 @@ class CachedFamilies extends Table {
   TextColumn get memberNamesNewlineJoined =>
       text().withDefault(const Constant(''))();
 
+  /// Whether a member is linked as this family's head — Add Evacuee's
+  /// "Already here" offers "This person is the household head" only
+  /// when not. Defaults to true for rows cached before schema 6, so the
+  /// offer never appears on stale data (the next refresh corrects it,
+  /// and the server never replaces a linked head regardless).
+  BoolColumn get hasHeadLinked => boolean().withDefault(const Constant(true))();
+
+  /// A leftover "EC Board bulk entry" household from the retired typed
+  /// headcount — never offered as "Already here" (the server refuses to
+  /// add anyone to one). Added in schema 6.
+  BoolColumn get isLegacyBulkEntry =>
+      boolean().withDefault(const Constant(false))();
+
   @override
   Set<Column> get primaryKey => {familyId, ownerStaffId};
 }
@@ -141,6 +154,18 @@ class PendingEcBoardEntries extends Table {
   /// One of the 7 `AgeBracket` wire values.
   TextColumn get ageBracket => text()();
 
+  /// Optional per-person sectoral flags (see `PerPersonSectoralFlag`),
+  /// mirroring the backend's own nullable `evacuees` columns: `true`
+  /// when ticked, `null` when not — null means "not recorded", never
+  /// "no". Added in schema 6; rows queued before then read as null for
+  /// all six.
+  BoolColumn get isPwd => boolean().nullable()();
+  BoolColumn get isPregnant => boolean().nullable()();
+  BoolColumn get isLactating => boolean().nullable()();
+  BoolColumn get isSoloParent => boolean().nullable()();
+  BoolColumn get isIndigenousPerson => boolean().nullable()();
+  BoolColumn get isFourPsBeneficiary => boolean().nullable()();
+
   /// 'existing' | 'new' — see `HouseholdMode`.
   TextColumn get householdMode => text()();
 
@@ -158,6 +183,20 @@ class PendingEcBoardEntries extends Table {
 
   TextColumn get newHouseholdHeadName => text().nullable()();
   IntColumn get newHouseholdBarangayId => integer().nullable()();
+
+  /// Household head answers, sent exactly as the backend's addEvacuee()
+  /// takes them (see `EcBoardEntryDraft`): [headIsSelf] links this
+  /// person as the head — of a new household, or of an existing one
+  /// with no head linked yet. The other three are asked only for a new
+  /// household, and only-when-someone-else-heads-it for [headSex]/
+  /// [headIsMinor]. null = "not yet known", never "no". Added in
+  /// schema 6.
+  BoolColumn get headIsSelf => boolean().nullable()();
+  BoolColumn get isSingleHeaded => boolean().nullable()();
+  BoolColumn get headIsMinor => boolean().nullable()();
+
+  /// 'male' | 'female' | null.
+  TextColumn get headSex => text().nullable()();
 
   /// Display-only cache of the chosen household's name — see
   /// `PendingEcBoardEntrySummary.householdLabel`'s doc comment.
@@ -180,51 +219,9 @@ class PendingEcBoardEntries extends Table {
   Set<Column> get primaryKey => {localId};
 }
 
-/// This device's own not-yet-synced sectoral/4Ps edit — at most one row
-/// per (center, event, owner), unlike [PendingEcBoardEntries]' many
-/// discrete rows: `PUT .../quick-count` is one mutable aggregate, not
-/// an appendable list, so a second local save before the first syncs
-/// simply overwrites this row rather than adding another one (see
-/// `EcBoardRepository.saveQuickCountEdit`'s doc comment). No legacy
-/// data predates this table, so — unlike the older tables above —
-/// [ownerStaffId] is required rather than nullable-for-migration.
-@DataClassName('PendingQuickCountEditRow')
-class PendingQuickCountEdits extends Table {
-  IntColumn get evacuationCenterId => integer()();
-  IntColumn get evacuationEventId => integer()();
-  IntColumn get ownerStaffId => integer()();
-
-  IntColumn get beneficiaries4ps => integer()();
-
-  /// JSON-encoded `List<{sectoral_group, male_count, female_count}>` —
-  /// always all 8 categories (see `SectoralGroupDraft`'s doc comment).
-  /// Kept as one JSON blob rather than 16 separate columns, same
-  /// reasoning as `PendingFamilyRegistrations.payloadJson`: this data
-  /// only ever needs to round-trip whole, never queried column-by-column.
-  TextColumn get sectoralGroupsJson => text()();
-
-  /// One of: pending | syncing | needsAttention.
-  TextColumn get syncStatus => text()();
-
-  IntColumn get attemptCount => integer().withDefault(const Constant(0))();
-  IntColumn get lastAttemptAtEpochMs => integer().nullable()();
-  TextColumn get lastErrorCategory => text().nullable()();
-  TextColumn get lastErrorMessage => text().nullable()();
-
-  IntColumn get createdAtEpochMs => integer()();
-  IntColumn get updatedAtEpochMs => integer()();
-
-  @override
-  Set<Column> get primaryKey => {
-    evacuationCenterId,
-    evacuationEventId,
-    ownerStaffId,
-  };
-}
-
 /// Local cache of the last successfully-fetched `GET .../quick-count`
 /// response for one (center, event) — mirrors `CachedQuickCountCodec`.
-/// Not owner-scoped, unlike [PendingQuickCountEdits]: this is a mirror
+/// Not owner-scoped, unlike [PendingEcBoardEntries]: this is a mirror
 /// of shared server truth (what the "last known" figures actually
 /// are), not one staff member's own unsynced draft, so every signed-in
 /// account on this device sees the same cached snapshot — same

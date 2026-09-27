@@ -46,4 +46,22 @@ class RegisteredFamiliesRemoteDataSource {
     }
     return results;
   }
+
+  /// `GET /families/{id}` — one family with every member and their
+  /// evacuation records (`FamilyController::show`, which 403s outside
+  /// this account's barangay the same way the list is scoped).
+  Future<Map<String, dynamic>> fetchOne(int familyId) async {
+    final response = await _client.get('/families/$familyId');
+    final envelope = response.data as Map<String, dynamic>;
+    return envelope['data'] as Map<String, dynamic>;
+  }
+
+  /// `POST /evacuees/{id}/check-out` — closes that member's open
+  /// evacuation record (`EvacueeController::checkOut`).
+  Future<void> checkOut(int evacueeId, String status) async {
+    await _client.post(
+      '/evacuees/$evacueeId/check-out',
+      data: {'status': status},
+    );
+  }
 }

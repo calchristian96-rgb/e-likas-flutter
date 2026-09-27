@@ -8,14 +8,12 @@ import '../../domain/entities/age_bracket.dart';
 import '../../domain/entities/ec_board_entry_draft.dart';
 import '../../domain/entities/ec_board_quick_count.dart';
 import '../../domain/entities/pending_ec_board_entry.dart';
-import '../../domain/entities/pending_quick_count_edit.dart';
+import '../../domain/entities/per_person_sectoral_flag.dart';
 import '../../domain/entities/quick_departure_request.dart';
-import '../../domain/entities/sectoral_group_draft.dart';
 import '../../domain/repositories/ec_board_repository.dart';
 import '../datasources/ec_board_local_datasource.dart';
 import '../datasources/ec_board_remote_datasource.dart';
 import '../models/pending_ec_board_entry_model.dart';
-import '../models/pending_quick_count_edit_model.dart';
 
 /// Every read/write here is scoped to [_ownerStaffId] — same ownership
 /// rule as `PendingQueueRepositoryImpl`, so one staff account can never
@@ -44,11 +42,15 @@ class EcBoardRepositoryImpl implements EcBoardRepository {
     required int evacuationEventId,
   }) async {
     final owned = await _ownedModelsForCenter(centerId);
-    final newHouseholds = owned
-        .where((m) => m.evacuationEventId == evacuationEventId)
-        .where((m) => HouseholdMode.fromWire(m.householdMode) == HouseholdMode.new_)
-        .toList()
-      ..sort((a, b) => b.createdAtEpochMs.compareTo(a.createdAtEpochMs));
+    final newHouseholds =
+        owned
+            .where((m) => m.evacuationEventId == evacuationEventId)
+            .where(
+              (m) =>
+                  HouseholdMode.fromWire(m.householdMode) == HouseholdMode.new_,
+            )
+            .toList()
+          ..sort((a, b) => b.createdAtEpochMs.compareTo(a.createdAtEpochMs));
     return newHouseholds.map(_toSummary).toList();
   }
 
@@ -82,6 +84,8 @@ class EcBoardRepositoryImpl implements EcBoardRepository {
         createdAtEpochMs: now,
         updatedAtEpochMs: now,
         ownerStaffId: _ownerStaffId,
+        sectoralFlags: draft.sectoralFlags.map((f) => f.wireValue).toSet(),
+        head: _headAnswersOf(draft),
       ),
     );
     return localId;
@@ -110,6 +114,10 @@ class EcBoardRepositoryImpl implements EcBoardRepository {
         householdLabel: householdLabel,
         syncStatus: PendingRegistrationStatus.pending.wireValue,
         updatedAtEpochMs: DateTime.now().millisecondsSinceEpoch,
+        // The full set, not a merge — unticking a box while editing a
+        // pending entry has to clear it.
+        sectoralFlags: draft.sectoralFlags.map((f) => f.wireValue).toSet(),
+        head: _headAnswersOf(draft),
       ),
     );
   }
@@ -263,165 +271,6 @@ class EcBoardRepositoryImpl implements EcBoardRepository {
     }
   }
 
-  // --- Sectoral/4Ps edit ---
-
-  @override
-  Future<PendingQuickCountEditDetail?> getPendingQuickCountEdit({
-    required int centerId,
-    required int evacuationEventId,
-  }) async {
-    final ownerStaffId = _ownerStaffId;
-    if (ownerStaffId == null) return null;
-    final model = await _local.getQuickCountEdit(
-      centerId: centerId,
-      evacuationEventId: evacuationEventId,
-      ownerStaffId: ownerStaffId,
-    );
-    return model == null ? null : _toQuickCountEditDetail(model);
-  }
-
-  @override
-  Future<void> saveQuickCountEdit(SectoralGroupDraft draft) async {
-    final ownerStaffId = _ownerStaffId;
-    if (ownerStaffId == null) return;
-    final now = DateTime.now().millisecondsSinceEpoch;
-    final existing = await _local.getQuickCountEdit(
-      centerId: draft.evacuationCenterId,
-      evacuationEventId: draft.evacuationEventId,
-      ownerStaffId: ownerStaffId,
-    );
-    await _local.putQuickCountEdit(
-      PendingQuickCountEditModel(
-        evacuationCenterId: draft.evacuationCenterId,
-        evacuationEventId: draft.evacuationEventId,
-        ownerStaffId: ownerStaffId,
-        beneficiaries4ps: draft.beneficiaries4ps,
-        sectoralGroups: draft.sectoralGroups,
-        syncStatus: PendingRegistrationStatus.pending.wireValue,
-        createdAtEpochMs: existing?.createdAtEpochMs ?? now,
-        updatedAtEpochMs: now,
-      ),
-    );
-  }
-
-  @override
-  Future<void> deleteQuickCountEdit({
-    required int centerId,
-    required int evacuationEventId,
-  }) async {
-    final ownerStaffId = _ownerStaffId;
-    if (ownerStaffId == null) return;
-    await _local.deleteQuickCountEdit(
-      centerId: centerId,
-      evacuationEventId: evacuationEventId,
-      ownerStaffId: ownerStaffId,
-    );
-  }
-
-  @override
-  Future<void> markQuickCountEditSyncing({
-    required int centerId,
-    required int evacuationEventId,
-  }) async {
-    final existing = await _ownedQuickCountEdit(centerId, evacuationEventId);
-    if (existing == null) return;
-    await _local.putQuickCountEdit(
-      existing.copyWith(
-        syncStatus: PendingRegistrationStatus.syncing.wireValue,
-        updatedAtEpochMs: DateTime.now().millisecondsSinceEpoch,
-      ),
-    );
-  }
-
-  @override
-  Future<void> markQuickCountEditSynced({
-    required int centerId,
-    required int evacuationEventId,
-  }) async {
-    final ownerStaffId = _ownerStaffId;
-    if (ownerStaffId == null) return;
-    final existing = await _ownedQuickCountEdit(centerId, evacuationEventId);
-    if (existing == null) return;
-    await _local.deleteQuickCountEdit(
-      centerId: centerId,
-      evacuationEventId: evacuationEventId,
-      ownerStaffId: ownerStaffId,
-    );
-  }
-
-  @override
-  Future<void> markQuickCountEditNeedsAttention({
-    required int centerId,
-    required int evacuationEventId,
-    required PendingErrorCategory category,
-    required String message,
-  }) async {
-    final existing = await _ownedQuickCountEdit(centerId, evacuationEventId);
-    if (existing == null) return;
-    await _local.putQuickCountEdit(
-      existing.copyWith(
-        syncStatus: PendingRegistrationStatus.needsAttention.wireValue,
-        attemptCount: existing.attemptCount + 1,
-        lastAttemptAtEpochMs: DateTime.now().millisecondsSinceEpoch,
-        lastErrorCategory: category.wireValue,
-        lastErrorMessage: message,
-        updatedAtEpochMs: DateTime.now().millisecondsSinceEpoch,
-      ),
-    );
-  }
-
-  @override
-  Future<void> markQuickCountEditRetryLater({
-    required int centerId,
-    required int evacuationEventId,
-    required String message,
-  }) async {
-    final existing = await _ownedQuickCountEdit(centerId, evacuationEventId);
-    if (existing == null) return;
-    await _local.putQuickCountEdit(
-      existing.copyWith(
-        syncStatus: PendingRegistrationStatus.pending.wireValue,
-        attemptCount: existing.attemptCount + 1,
-        lastAttemptAtEpochMs: DateTime.now().millisecondsSinceEpoch,
-        lastErrorMessage: message,
-        updatedAtEpochMs: DateTime.now().millisecondsSinceEpoch,
-      ),
-    );
-  }
-
-  @override
-  Future<List<PendingQuickCountEditDetail>>
-  getPendingQuickCountEditQueue() async {
-    final ownerStaffId = _ownerStaffId;
-    if (ownerStaffId == null) return const [];
-    final all = await _local.getAllQuickCountEdits();
-    final owned = all
-        .where((m) => m.ownerStaffId == ownerStaffId)
-        .where(
-          (m) =>
-              PendingRegistrationStatus.fromWire(m.syncStatus) ==
-              PendingRegistrationStatus.pending,
-        )
-        .toList()
-      ..sort((a, b) => a.createdAtEpochMs.compareTo(b.createdAtEpochMs));
-    return owned.map(_toQuickCountEditDetail).toList();
-  }
-
-  @override
-  Future<Result<EcBoardQuickCount>> updateQuickCount(
-    SectoralGroupDraft draft,
-  ) async {
-    try {
-      final count = await _remote.updateQuickCount(
-        draft.evacuationCenterId,
-        draft,
-      );
-      return Success(count);
-    } on DioException catch (e) {
-      return Failed(mapStaffDioError(e));
-    }
-  }
-
   @override
   Future<Result<String>> quickDeparture(QuickDepartureRequest request) async {
     try {
@@ -430,45 +279,6 @@ class EcBoardRepositoryImpl implements EcBoardRepository {
     } on DioException catch (e) {
       return Failed(mapStaffDioError(e));
     }
-  }
-
-  Future<PendingQuickCountEditModel?> _ownedQuickCountEdit(
-    int centerId,
-    int evacuationEventId,
-  ) async {
-    final ownerStaffId = _ownerStaffId;
-    if (ownerStaffId == null) return null;
-    return _local.getQuickCountEdit(
-      centerId: centerId,
-      evacuationEventId: evacuationEventId,
-      ownerStaffId: ownerStaffId,
-    );
-  }
-
-  PendingQuickCountEditDetail _toQuickCountEditDetail(
-    PendingQuickCountEditModel m,
-  ) {
-    return PendingQuickCountEditDetail(
-      summary: PendingQuickCountEditSummary(
-        evacuationCenterId: m.evacuationCenterId,
-        evacuationEventId: m.evacuationEventId,
-        status: PendingRegistrationStatus.fromWire(m.syncStatus),
-        beneficiaries4ps: m.beneficiaries4ps,
-        createdAt: DateTime.fromMillisecondsSinceEpoch(m.createdAtEpochMs),
-        updatedAt: DateTime.fromMillisecondsSinceEpoch(m.updatedAtEpochMs),
-        attemptCount: m.attemptCount,
-        lastErrorCategory: m.lastErrorCategory == null
-            ? null
-            : PendingErrorCategory.fromWire(m.lastErrorCategory!),
-        lastErrorMessage: m.lastErrorMessage,
-      ),
-      draft: SectoralGroupDraft(
-        evacuationCenterId: m.evacuationCenterId,
-        evacuationEventId: m.evacuationEventId,
-        beneficiaries4ps: m.beneficiaries4ps,
-        sectoralGroups: m.sectoralGroups,
-      ),
-    );
   }
 
   Future<List<PendingEcBoardEntryModel>> _ownedModels() async {
@@ -491,6 +301,7 @@ class EcBoardRepositoryImpl implements EcBoardRepository {
   }
 
   PendingEcBoardEntrySummary _toSummary(PendingEcBoardEntryModel m) {
+    final draft = _draftOf(m);
     return PendingEcBoardEntrySummary(
       localId: m.localId,
       evacuationCenterId: m.evacuationCenterId,
@@ -506,23 +317,45 @@ class EcBoardRepositoryImpl implements EcBoardRepository {
           ? null
           : PendingErrorCategory.fromWire(m.lastErrorCategory!),
       lastErrorMessage: m.lastErrorMessage,
+      sectoralFlags: draft.sectoralFlags,
+      headIsSelf: draft.headIsSelf,
+      createsChildHeadedHousehold: draft.createsChildHeadedHousehold,
+      createsSingleHeadedHousehold: draft.createsSingleHeadedHousehold,
+      newHouseholdHeadSex: draft.newHouseholdHeadSex,
     );
   }
 
-  PendingEcBoardEntryDetail _toDetail(PendingEcBoardEntryModel m) {
-    return PendingEcBoardEntryDetail(
-      summary: _toSummary(m),
-      draft: EcBoardEntryDraft(
-        evacuationCenterId: m.evacuationCenterId,
-        evacuationEventId: m.evacuationEventId,
-        sex: m.sex,
-        ageBracket: AgeBracket.fromWire(m.ageBracket),
-        householdMode: HouseholdMode.fromWire(m.householdMode),
-        existingFamilyRemoteId: m.existingFamilyRemoteId,
-        existingFamilyLocalId: m.existingFamilyLocalId,
-        newHouseholdHeadName: m.newHouseholdHeadName,
-        newHouseholdBarangayId: m.newHouseholdBarangayId,
-      ),
-    );
-  }
+  static Set<PerPersonSectoralFlag> _flagsFromWire(Set<String> wire) => {
+    for (final value in wire) ?PerPersonSectoralFlag.fromWire(value),
+  };
+
+  static HeadAnswers _headAnswersOf(EcBoardEntryDraft draft) => (
+    headIsSelf: draft.headIsSelf,
+    isSingleHeaded: draft.isSingleHeaded,
+    headIsMinor: draft.headIsMinor,
+    headSex: draft.headSex,
+  );
+
+  /// A null head answer (an entry queued before they existed) reads as
+  /// "not the head" / "not yet known" — exactly what such an entry
+  /// originally sent, which was no head fields at all.
+  EcBoardEntryDraft _draftOf(PendingEcBoardEntryModel m) => EcBoardEntryDraft(
+    evacuationCenterId: m.evacuationCenterId,
+    evacuationEventId: m.evacuationEventId,
+    sex: m.sex,
+    ageBracket: AgeBracket.fromWire(m.ageBracket),
+    householdMode: HouseholdMode.fromWire(m.householdMode),
+    existingFamilyRemoteId: m.existingFamilyRemoteId,
+    existingFamilyLocalId: m.existingFamilyLocalId,
+    newHouseholdHeadName: m.newHouseholdHeadName,
+    newHouseholdBarangayId: m.newHouseholdBarangayId,
+    sectoralFlags: _flagsFromWire(m.sectoralFlags),
+    headIsSelf: m.head.headIsSelf ?? false,
+    isSingleHeaded: m.head.isSingleHeaded,
+    headIsMinor: m.head.headIsMinor,
+    headSex: m.head.headSex,
+  );
+
+  PendingEcBoardEntryDetail _toDetail(PendingEcBoardEntryModel m) =>
+      PendingEcBoardEntryDetail(summary: _toSummary(m), draft: _draftOf(m));
 }

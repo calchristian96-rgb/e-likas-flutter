@@ -7,6 +7,7 @@ import '../../../../core/error/failure.dart';
 import '../../../../core/error/result.dart';
 import '../../../../core/widgets/error_state.dart';
 import '../../../../l10n/app_localizations.dart';
+import '../../../family_registration/domain/entities/lookup_entities.dart';
 import '../../../family_registration/domain/entities/pending_registration.dart';
 import '../../../family_registration/domain/entities/pending_registration_status.dart';
 import '../../../family_registration/presentation/providers/lookup_providers.dart';
@@ -17,13 +18,18 @@ import '../../../registered_families/presentation/providers/registered_families_
 import '../../domain/entities/age_bracket.dart';
 import '../../domain/entities/ec_board_entry_draft.dart';
 import '../../domain/entities/pending_ec_board_entry.dart';
+import '../../domain/entities/per_person_sectoral_flag.dart';
 import '../../domain/entities/sectoral_group.dart';
 import '../providers/ec_board_provider.dart';
 
-/// Add Evacuee — a single evacuee's EC Information Board intake:
-/// bracket + sex + which household. Also the Review/Edit screen for an
-/// existing queued entry when [editingLocalId]/[initialDraft] are
-/// given, same dual-purpose pattern `FamilyRegistrationFormPage` uses.
+/// Add Evacuee — a single evacuee's EC Information Board intake, in the
+/// same four sections, order and wording as the web dashboard's Add
+/// evacuee panel: who this person is, their household, the household's
+/// actual head (only when that's someone else), then optional sectoral
+/// details — with a plain-language "Will be recorded" read-back pinned
+/// beside the save button. Also the Review/Edit screen for an existing
+/// queued entry when [editingLocalId]/[initialDraft] are given, same
+/// dual-purpose pattern `FamilyRegistrationFormPage` uses.
 class AddEvacueeFormPage extends ConsumerStatefulWidget {
   const AddEvacueeFormPage({
     super.key,
@@ -50,7 +56,20 @@ class _AddEvacueeFormPageState extends ConsumerState<AddEvacueeFormPage> {
   bool _submitting = false;
   bool _dirty = false;
 
+  /// Whether the chosen "Already here" household has no head linked yet
+  /// — the only case "This person is the household head" is offered
+  /// there (the real head arriving later). Never offered otherwise: the
+  /// server never replaces a linked head from Add Evacuee.
+  bool _existingHeadOffered = false;
+
   bool get _isEditing => widget.editingLocalId != null;
+
+  bool get _isNew => _draft.householdMode == HouseholdMode.new_;
+
+  /// Whether the person being added is being recorded as the head —
+  /// the New household tickbox, or the Already here one when offered.
+  bool get _personIsHead =>
+      _draft.headIsSelf && (_isNew || _existingHeadOffered);
 
   @override
   void initState() {
@@ -65,6 +84,43 @@ class _AddEvacueeFormPageState extends ConsumerState<AddEvacueeFormPage> {
           householdMode: HouseholdMode.existing,
         );
     _householdLabel = widget.initialHouseholdLabel;
+    // Reopening a queued entry that links its household's head: it was
+    // only ever allowed because that household had no head, so keep
+    // offering it; otherwise look the household up to decide.
+    _existingHeadOffered =
+        _draft.householdMode == HouseholdMode.existing && _draft.headIsSelf;
+    if (!_existingHeadOffered &&
+        _draft.householdMode == HouseholdMode.existing) {
+      WidgetsBinding.instance.addPostFrameCallback((_) => _lookUpHeadOffer());
+    }
+  }
+
+  /// Best-effort: if the household can't be looked up (nothing cached
+  /// yet), the tick simply isn't offered — the safe default, since the
+  /// server never links a head over an existing one anyway.
+  Future<void> _lookUpHeadOffer() async {
+    final remoteId = _draft.existingFamilyRemoteId;
+    final localId = _draft.existingFamilyLocalId;
+    var offered = false;
+    try {
+      if (remoteId != null) {
+        final cached = await ref.read(
+          registeredFamiliesCacheOnlyProvider.future,
+        );
+        offered = cached.any((f) => f.id == remoteId && !f.hasHeadLinked);
+      } else if (localId != null) {
+        final pendingNew = await ref.read(
+          ecBoardPendingNewHouseholdsProvider(
+            widget.centerId,
+            widget.evacuationEventId,
+          ).future,
+        );
+        offered = pendingNew.any((e) => e.localId == localId && !e.headIsSelf);
+      }
+    } catch (_) {
+      return;
+    }
+    if (mounted && offered) setState(() => _existingHeadOffered = true);
   }
 
   void _update(EcBoardEntryDraft Function(EcBoardEntryDraft) fn) {
@@ -72,6 +128,33 @@ class _AddEvacueeFormPageState extends ConsumerState<AddEvacueeFormPage> {
       _draft = fn(_draft);
       _dirty = true;
     });
+  }
+
+  void _setMode(HouseholdMode mode) {
+    if (mode == _draft.householdMode) return;
+    setState(() {
+      _dirty = true;
+      _householdLabel = mode == HouseholdMode.new_
+          ? _trimmedOrNull(_draft.newHouseholdHeadName)
+          : null;
+      _existingHeadOffered = false;
+      _draft = _draft.copyWith(
+        householdMode: mode,
+        clearExistingFamilyRemoteId: true,
+        clearExistingFamilyLocalId: true,
+        // A new household defaults to "this person is the head" (the
+        // common case, same as the web form); Already here never does.
+        headIsSelf: mode == HouseholdMode.new_,
+        isSingleHeaded: (value: null),
+        headIsMinor: (value: null),
+        headSex: (value: null),
+      );
+    });
+  }
+
+  static String? _trimmedOrNull(String? value) {
+    final trimmed = value?.trim() ?? '';
+    return trimmed.isEmpty ? null : trimmed;
   }
 
   Future<void> _pickExistingHousehold() async {
@@ -87,11 +170,14 @@ class _AddEvacueeFormPageState extends ConsumerState<AddEvacueeFormPage> {
     setState(() {
       _householdLabel = picked.label;
       _dirty = true;
+      _existingHeadOffered = !picked.headLinked;
       _draft = _draft.copyWith(
         existingFamilyRemoteId: picked.remoteFamilyId,
         clearExistingFamilyRemoteId: picked.remoteFamilyId == null,
         existingFamilyLocalId: picked.localFamilyId,
         clearExistingFamilyLocalId: picked.localFamilyId == null,
+        // A different household: the head tick was about the old one.
+        headIsSelf: false,
       );
     });
   }
@@ -138,6 +224,12 @@ class _AddEvacueeFormPageState extends ConsumerState<AddEvacueeFormPage> {
       return;
     }
 
+    // Never send a head tick for an existing household that wasn't
+    // offered one (e.g. its head got linked since the entry was queued).
+    final draft = _isNew || _existingHeadOffered
+        ? _draft
+        : _draft.copyWith(headIsSelf: false);
+
     setState(() => _submitting = true);
     final isOnline = await ref.read(connectivityServiceProvider).hasConnection;
     final queueRepo = ref.read(ecBoardRepositoryProvider);
@@ -146,15 +238,15 @@ class _AddEvacueeFormPageState extends ConsumerState<AddEvacueeFormPage> {
     // household reference is still only a local pending-registration
     // id, so the backend has nothing real to attach this evacuee to
     // yet — same reasoning as `EcBoardEntryDraft.isReadyToSync`.
-    if (!isOnline || !_draft.isReadyToSync) {
+    if (!isOnline || !draft.isReadyToSync) {
       if (widget.editingLocalId case final localId?) {
         await queueRepo.updateDraft(
           localId,
-          _draft,
+          draft,
           householdLabel: householdLabel,
         );
       } else {
-        await queueRepo.enqueue(_draft, householdLabel: householdLabel);
+        await queueRepo.enqueue(draft, householdLabel: householdLabel);
       }
       if (!mounted) return;
       setState(() => _submitting = false);
@@ -171,7 +263,7 @@ class _AddEvacueeFormPageState extends ConsumerState<AddEvacueeFormPage> {
       return;
     }
 
-    final result = await ref.read(ecBoardSubmitProvider)(_draft);
+    final result = await ref.read(ecBoardSubmitProvider)(draft);
     if (!mounted) return;
     setState(() => _submitting = false);
 
@@ -184,20 +276,22 @@ class _AddEvacueeFormPageState extends ConsumerState<AddEvacueeFormPage> {
         if (!mounted) return;
         ref.invalidate(ecBoardEntriesForCenterProvider(widget.centerId));
         ref.invalidate(ecBoardCountsForCenterProvider(widget.centerId));
+        // The household's head link/answers may have just changed.
+        ref.invalidate(registeredFamiliesProvider);
         _showSnack(l10n.ecBoardSuccessMessage, isError: false);
         Navigator.of(context).maybePop();
       case Failed(:final failure):
         final localId = switch (widget.editingLocalId) {
           final id? => id,
           null => await queueRepo.enqueue(
-            _draft,
+            draft,
             householdLabel: householdLabel,
           ),
         };
         if (widget.editingLocalId != null) {
           await queueRepo.updateDraft(
             localId,
-            _draft,
+            draft,
             householdLabel: householdLabel,
           );
         }
@@ -220,10 +314,91 @@ class _AddEvacueeFormPageState extends ConsumerState<AddEvacueeFormPage> {
     }
   }
 
+  /// The "Will be recorded" read-back: plain sentences built from
+  /// exactly what [_submit] will send, so a wrong answer is visible
+  /// before saving — the same sentences the web form shows.
+  List<String> _summaryLines(AppLocalizations l10n, List<Barangay> barangays) {
+    String minorText(bool? isMinor) => switch (isMinor) {
+      null => l10n.ecBoardSummaryMinorUnknown,
+      true => l10n.ecBoardSummaryMinor,
+      false => l10n.ecBoardSummaryNotMinor,
+    };
+    String sexText(String? sex) => switch (sex) {
+      'male' => l10n.ecBoardSummaryMale,
+      'female' => l10n.ecBoardSummaryFemale,
+      _ => l10n.ecBoardSummarySexNotYetKnown,
+    };
+    final bracket = _draft.ageBracket;
+    final lines = <String>[
+      if (_draft.sex == null || bracket == null)
+        l10n.ecBoardSummaryChooseAgeSex
+      else
+        l10n.ecBoardSummaryAdding(
+          sexText(_draft.sex),
+          localizedAgeBracket(context, bracket).toLowerCase(),
+        ),
+    ];
+
+    if (!_isNew) {
+      final label = _householdLabel;
+      lines.add(
+        label == null
+            ? l10n.ecBoardSummaryChooseHousehold
+            : l10n.ecBoardSummaryJoinsHousehold(label),
+      );
+      if (_personIsHead) {
+        lines.add(l10n.ecBoardSummaryBecomesHead(minorText(bracket?.isMinor)));
+      }
+    } else {
+      final barangayName = barangays
+          .where((b) => b.id == _draft.newHouseholdBarangayId)
+          .map((b) => b.name)
+          .firstOrNull;
+      lines
+        ..add(
+          l10n.ecBoardSummaryNewHousehold(
+            _trimmedOrNull(_draft.newHouseholdHeadName) ??
+                l10n.ecBoardSummaryNoHeadName,
+            barangayName ?? l10n.ecBoardSummaryNoBarangay,
+          ),
+        )
+        ..add(
+          _draft.headIsSelf
+              ? l10n.ecBoardSummaryHeadIsThisPerson(minorText(bracket?.isMinor))
+              : l10n.ecBoardSummaryHeadIsSomeoneElse(
+                  sexText(_draft.headSex),
+                  minorText(_draft.headIsMinor),
+                ),
+        )
+        ..add(
+          l10n.ecBoardSummarySingleHeaded(switch (_draft.isSingleHeaded) {
+            null => l10n.ecBoardSummaryAnswerUnknown,
+            true => l10n.ecBoardSummaryAnswerYes,
+            false => l10n.ecBoardSummaryAnswerNo,
+          }),
+        );
+    }
+
+    final flags = [
+      for (final flag in PerPersonSectoralFlag.values)
+        if (_draft.sectoralFlags.contains(flag)) localizedFlag(context, flag),
+    ];
+    lines.add(
+      flags.isEmpty
+          ? l10n.ecBoardSummaryNoSectoral
+          : l10n.ecBoardSummarySectoral(flags.join(', ')),
+    );
+    return lines;
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     final theme = Theme.of(context);
+    // Only a new household names a barangay (for the read-back).
+    final barangays = _isNew
+        ? ref.watch(barangaysProvider).value ?? const <Barangay>[]
+        : const <Barangay>[];
 
     return PopScope(
       canPop: !_dirty,
@@ -242,173 +417,210 @@ class _AddEvacueeFormPageState extends ConsumerState<AddEvacueeFormPage> {
           ),
         ),
         body: SafeArea(
-          child: ListView(
-            padding: const EdgeInsets.all(16),
+          child: Column(
             children: [
-              Text(l10n.ecBoardFieldSex, style: theme.textTheme.labelLarge),
-              const SizedBox(height: 6),
-              Wrap(
-                spacing: 8,
-                children: [
-                  ChoiceChip(
-                    label: Text(l10n.staffRegSexMale),
-                    selected: _draft.sex == 'male',
-                    onSelected: (_) => _update((d) => d.copyWith(sex: 'male')),
-                  ),
-                  ChoiceChip(
-                    label: Text(l10n.staffRegSexFemale),
-                    selected: _draft.sex == 'female',
-                    onSelected: (_) =>
-                        _update((d) => d.copyWith(sex: 'female')),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 16),
-              Text(
-                l10n.ecBoardFieldAgeBracket,
-                style: theme.textTheme.labelLarge,
-              ),
-              const SizedBox(height: 6),
-              Wrap(
-                spacing: 8,
-                runSpacing: 8,
-                children: [
-                  for (final bracket in ageBracketValues)
-                    ChoiceChip(
-                      label: Text(localizedAgeBracket(context, bracket)),
-                      selected: _draft.ageBracket == bracket,
-                      onSelected: (_) =>
-                          _update((d) => d.copyWith(ageBracket: bracket)),
+              Expanded(
+                child: ListView(
+                  padding: const EdgeInsets.fromLTRB(16, 12, 16, 16),
+                  children: [
+                    Text(
+                      l10n.ecBoardAddEvacueeIntro,
+                      style: theme.textTheme.bodySmall?.copyWith(
+                        color: theme.colorScheme.onSurfaceVariant,
+                      ),
                     ),
-                ],
-              ),
-              const Divider(height: 32),
-              Text(
-                l10n.ecBoardFieldHousehold,
-                style: theme.textTheme.labelLarge,
-              ),
-              const SizedBox(height: 6),
-              Wrap(
-                spacing: 8,
-                children: [
-                  ChoiceChip(
-                    label: Text(l10n.ecBoardHouseholdExisting),
-                    selected: _draft.householdMode == HouseholdMode.existing,
-                    onSelected: (_) => _update(
-                      (d) => d.copyWith(householdMode: HouseholdMode.existing),
-                    ),
-                  ),
-                  ChoiceChip(
-                    label: Text(l10n.ecBoardHouseholdNew),
-                    selected: _draft.householdMode == HouseholdMode.new_,
-                    onSelected: (_) => setState(() {
-                      _householdLabel = null;
-                      _dirty = true;
-                      _draft = _draft.copyWith(
-                        householdMode: HouseholdMode.new_,
-                        clearExistingFamilyRemoteId: true,
-                        clearExistingFamilyLocalId: true,
-                      );
-                    }),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 12),
-              if (_draft.householdMode == HouseholdMode.existing) ...[
-                OutlinedButton.icon(
-                  onPressed: _pickExistingHousehold,
-                  icon: const Icon(Icons.search),
-                  label: Text(
-                    _householdLabel ?? l10n.ecBoardSelectHouseholdButton,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ),
-                if (_draft.existingFamilyLocalId != null) ...[
-                  const SizedBox(height: 8),
-                  Text(
-                    l10n.ecBoardPendingHouseholdNotice,
-                    style: theme.textTheme.bodySmall?.copyWith(
-                      color: theme.colorScheme.onSurfaceVariant,
-                    ),
-                  ),
-                ],
-              ] else ...[
-                TextFormField(
-                  initialValue: _draft.newHouseholdHeadName,
-                  decoration: InputDecoration(
-                    labelText: l10n.ecBoardNewHouseholdHeadName,
-                    border: const OutlineInputBorder(),
-                  ),
-                  textCapitalization: TextCapitalization.words,
-                  onChanged: (value) {
-                    setState(() {
-                      _householdLabel = value.trim().isEmpty
-                          ? null
-                          : value.trim();
-                      _dirty = true;
-                      _draft = _draft.copyWith(newHouseholdHeadName: value);
-                    });
-                  },
-                ),
-                const SizedBox(height: 12),
-                Consumer(
-                  builder: (context, ref, _) {
-                    final barangaysAsync = ref.watch(barangaysProvider);
-                    return barangaysAsync.when(
-                      data: (barangays) => DropdownButtonFormField<int>(
-                        initialValue: _draft.newHouseholdBarangayId,
-                        isExpanded: true,
-                        decoration: InputDecoration(
-                          labelText: l10n.staffRegFieldBarangay,
-                          border: const OutlineInputBorder(),
+                    const SizedBox(height: 12),
+                    _FormSection(
+                      title: l10n.ecBoardSectionWhoIsThisPerson,
+                      children: [
+                        _FieldLabel(l10n.ecBoardFieldAgeBracket),
+                        Wrap(
+                          spacing: 8,
+                          runSpacing: 8,
+                          children: [
+                            for (final bracket in ageBracketValues)
+                              ChoiceChip(
+                                label: Text(
+                                  localizedAgeBracket(context, bracket),
+                                ),
+                                selected: _draft.ageBracket == bracket,
+                                onSelected: (_) => _update(
+                                  (d) => d.copyWith(ageBracket: bracket),
+                                ),
+                              ),
+                          ],
                         ),
-                        items: [
-                          for (final barangay in barangays)
-                            DropdownMenuItem(
-                              value: barangay.id,
-                              child: Text(
-                                barangay.name,
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
+                        const SizedBox(height: 14),
+                        _FieldLabel(l10n.ecBoardFieldSex),
+                        Wrap(
+                          spacing: 8,
+                          children: [
+                            ChoiceChip(
+                              label: Text(l10n.staffRegSexMale),
+                              selected: _draft.sex == 'male',
+                              // Pregnant/lactating are hidden for a male
+                              // evacuee, so any already ticked are
+                              // cleared too — a hidden flag would
+                              // otherwise still be sent (and rejected).
+                              onSelected: (_) => _update(
+                                (d) => d.copyWith(
+                                  sex: 'male',
+                                  sectoralFlags: d.sectoralFlags
+                                      .where((f) => !f.femaleOnly)
+                                      .toSet(),
+                                ),
                               ),
                             ),
+                            ChoiceChip(
+                              label: Text(l10n.staffRegSexFemale),
+                              selected: _draft.sex == 'female',
+                              onSelected: (_) =>
+                                  _update((d) => d.copyWith(sex: 'female')),
+                            ),
+                          ],
+                        ),
+                        if (_personIsHead) ...[
+                          const SizedBox(height: 12),
+                          _HeadNote(text: l10n.ecBoardHeadNote),
                         ],
-                        selectedItemBuilder: (context) => [
-                          for (final barangay in barangays)
-                            Text(
-                              barangay.name,
-                              maxLines: 1,
+                      ],
+                    ),
+                    const SizedBox(height: 12),
+                    _FormSection(
+                      title: l10n.ecBoardFieldHousehold,
+                      children: [
+                        SizedBox(
+                          width: double.infinity,
+                          child: SegmentedButton<HouseholdMode>(
+                            showSelectedIcon: false,
+                            segments: [
+                              ButtonSegment(
+                                value: HouseholdMode.existing,
+                                label: Text(l10n.ecBoardHouseholdExisting),
+                              ),
+                              ButtonSegment(
+                                value: HouseholdMode.new_,
+                                label: Text(l10n.ecBoardHouseholdNew),
+                              ),
+                            ],
+                            selected: {_draft.householdMode},
+                            onSelectionChanged: (s) => _setMode(s.first),
+                          ),
+                        ),
+                        const SizedBox(height: 12),
+                        if (!_isNew) ...[
+                          OutlinedButton.icon(
+                            onPressed: _pickExistingHousehold,
+                            icon: const Icon(Icons.search),
+                            label: Text(
+                              _householdLabel ??
+                                  l10n.ecBoardSelectHouseholdButton,
                               overflow: TextOverflow.ellipsis,
                             ),
+                          ),
+                          if (_draft.existingFamilyLocalId != null) ...[
+                            const SizedBox(height: 8),
+                            Text(
+                              l10n.ecBoardPendingHouseholdNotice,
+                              style: theme.textTheme.bodySmall?.copyWith(
+                                color: theme.colorScheme.onSurfaceVariant,
+                              ),
+                            ),
+                          ],
+                          if (_existingHeadOffered)
+                            CheckboxListTile(
+                              contentPadding: EdgeInsets.zero,
+                              controlAffinity: ListTileControlAffinity.leading,
+                              value: _draft.headIsSelf,
+                              title: Text(l10n.ecBoardThisPersonIsHead),
+                              subtitle: Text(l10n.ecBoardNoHeadLinkedYet),
+                              onChanged: (on) => _update(
+                                (d) => d.copyWith(headIsSelf: on ?? false),
+                              ),
+                            ),
+                        ] else ...[
+                          _BarangayDropdown(
+                            value: _draft.newHouseholdBarangayId,
+                            onChanged: (id) => _update(
+                              (d) => d.copyWith(newHouseholdBarangayId: id),
+                            ),
+                          ),
+                          const SizedBox(height: 12),
+                          TextFormField(
+                            initialValue: _draft.newHouseholdHeadName,
+                            decoration: InputDecoration(
+                              labelText: l10n.ecBoardNewHouseholdHeadName,
+                              hintText: 'e.g. Juan Dela Cruz',
+                              border: const OutlineInputBorder(),
+                            ),
+                            textCapitalization: TextCapitalization.words,
+                            onChanged: (value) => setState(() {
+                              _householdLabel = _trimmedOrNull(value);
+                              _dirty = true;
+                              _draft = _draft.copyWith(
+                                newHouseholdHeadName: value,
+                              );
+                            }),
+                          ),
+                          CheckboxListTile(
+                            contentPadding: EdgeInsets.zero,
+                            controlAffinity: ListTileControlAffinity.leading,
+                            value: _draft.headIsSelf,
+                            title: Text(l10n.ecBoardThisPersonIsHead),
+                            // Head's sex / minor describe someone else,
+                            // so they're cleared when this person heads
+                            // the household instead.
+                            onChanged: (on) => _update(
+                              (d) => d.copyWith(
+                                headIsSelf: on ?? false,
+                                headSex: (value: null),
+                                headIsMinor: (value: null),
+                              ),
+                            ),
+                          ),
+                          _FieldLabel(l10n.ecBoardSingleHeadedQuestion),
+                          _TriStateAnswer<bool>(
+                            value: _draft.isSingleHeaded,
+                            options: [
+                              (true, l10n.ecBoardAnswerYes),
+                              (false, l10n.ecBoardAnswerNo),
+                            ],
+                            onChanged: (v) => _update(
+                              (d) => d.copyWith(isSingleHeaded: (value: v)),
+                            ),
+                          ),
                         ],
-                        onChanged: (id) => _update(
-                          (d) => d.copyWith(newHouseholdBarangayId: id),
-                        ),
+                      ],
+                    ),
+                    if (_isNew && !_draft.headIsSelf) ...[
+                      const SizedBox(height: 12),
+                      _HeadOfHouseholdInset(
+                        headSex: _draft.headSex,
+                        headIsMinor: _draft.headIsMinor,
+                        onHeadSexChanged: (v) =>
+                            _update((d) => d.copyWith(headSex: (value: v))),
+                        onHeadIsMinorChanged: (v) =>
+                            _update((d) => d.copyWith(headIsMinor: (value: v))),
                       ),
-                      loading: () => const LinearProgressIndicator(),
-                      error: (error, stackTrace) => Text(
-                        l10n.staffRegLookupUnavailable,
-                        style: TextStyle(color: theme.colorScheme.error),
-                      ),
-                    );
-                  },
+                    ],
+                    const SizedBox(height: 12),
+                    _SectoralFlagsSection(
+                      selected: _draft.sectoralFlags,
+                      isMale: _draft.sex == 'male',
+                      onChanged: (flags) =>
+                          _update((d) => d.copyWith(sectoralFlags: flags)),
+                    ),
+                  ],
                 ),
-              ],
-              const SizedBox(height: 24),
-              FilledButton(
-                onPressed: _submitting ? null : _submit,
-                style: FilledButton.styleFrom(
-                  minimumSize: const Size.fromHeight(48),
-                ),
-                child: _submitting
-                    ? const SizedBox(
-                        width: 20,
-                        height: 20,
-                        child: CircularProgressIndicator(strokeWidth: 2),
-                      )
-                    : Text(l10n.ecBoardSubmitButton),
               ),
-              const SizedBox(height: 24),
+              // Hidden while typing: above the keyboard it would leave
+              // only a sliver of the form visible.
+              if (MediaQuery.viewInsetsOf(context).bottom == 0)
+                _WillBeRecordedFooter(
+                  lines: _summaryLines(l10n, barangays),
+                  submitting: _submitting,
+                  onSubmit: _submit,
+                ),
             ],
           ),
         ),
@@ -417,14 +629,393 @@ class _AddEvacueeFormPageState extends ConsumerState<AddEvacueeFormPage> {
   }
 }
 
+/// One titled section of the form — each about ONE subject, so a field
+/// never leaves it unclear who it describes.
+class _FormSection extends StatelessWidget {
+  const _FormSection({required this.title, required this.children});
+
+  final String title;
+  final List<Widget> children;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return Card(
+      margin: EdgeInsets.zero,
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(16, 14, 16, 16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(title, style: theme.textTheme.titleMedium),
+            const SizedBox(height: 12),
+            ...children,
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _FieldLabel extends StatelessWidget {
+  const _FieldLabel(this.text);
+
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 6),
+      child: Text(text, style: Theme.of(context).textTheme.labelLarge),
+    );
+  }
+}
+
+class _HeadNote extends StatelessWidget {
+  const _HeadNote({required this.text});
+
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Icon(
+          Icons.how_to_reg_outlined,
+          size: 18,
+          color: theme.colorScheme.primary,
+        ),
+        const SizedBox(width: 6),
+        Expanded(
+          child: Text(
+            text,
+            style: theme.textTheme.bodySmall?.copyWith(
+              color: theme.colorScheme.primary,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+/// "Not yet known" plus the given answers. "Not yet known" is always
+/// available and is stored as null — never guessed as "no".
+class _TriStateAnswer<T> extends StatelessWidget {
+  const _TriStateAnswer({
+    required this.value,
+    required this.options,
+    required this.onChanged,
+  });
+
+  final T? value;
+  final List<(T, String)> options;
+  final ValueChanged<T?> onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    return Wrap(
+      spacing: 8,
+      runSpacing: 8,
+      children: [
+        ChoiceChip(
+          label: Text(l10n.ecBoardAnswerNotYetKnown),
+          selected: value == null,
+          onSelected: (_) => onChanged(null),
+        ),
+        for (final (option, label) in options)
+          ChoiceChip(
+            label: Text(label),
+            selected: value == option,
+            onSelected: (_) => onChanged(option),
+          ),
+      ],
+    );
+  }
+}
+
+/// Only when the head is someone OTHER than the person being added: set
+/// apart (a tinted inset, the web form's dashed box) so these two answers
+/// can't be mistaken for this person's own.
+class _HeadOfHouseholdInset extends StatelessWidget {
+  const _HeadOfHouseholdInset({
+    required this.headSex,
+    required this.headIsMinor,
+    required this.onHeadSexChanged,
+    required this.onHeadIsMinorChanged,
+  });
+
+  final String? headSex;
+  final bool? headIsMinor;
+  final ValueChanged<String?> onHeadSexChanged;
+  final ValueChanged<bool?> onHeadIsMinorChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    final theme = Theme.of(context);
+    return Container(
+      padding: const EdgeInsets.fromLTRB(16, 14, 16, 16),
+      decoration: BoxDecoration(
+        color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: theme.colorScheme.outlineVariant),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(l10n.ecBoardHeadSectionTitle, style: theme.textTheme.titleSmall),
+          const SizedBox(height: 2),
+          Text(
+            l10n.ecBoardHeadSectionSubtitle,
+            style: theme.textTheme.bodySmall?.copyWith(
+              color: theme.colorScheme.onSurfaceVariant,
+            ),
+          ),
+          const SizedBox(height: 12),
+          _FieldLabel(l10n.ecBoardHeadSexLabel),
+          _TriStateAnswer<String>(
+            value: headSex,
+            options: [
+              ('male', l10n.staffRegSexMale),
+              ('female', l10n.staffRegSexFemale),
+            ],
+            onChanged: onHeadSexChanged,
+          ),
+          const SizedBox(height: 12),
+          _FieldLabel(l10n.ecBoardHeadIsMinorLabel),
+          _TriStateAnswer<bool>(
+            value: headIsMinor,
+            options: [
+              (true, l10n.ecBoardAnswerYesUnder18),
+              (false, l10n.ecBoardAnswerNo),
+            ],
+            onChanged: onHeadIsMinorChanged,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _BarangayDropdown extends ConsumerWidget {
+  const _BarangayDropdown({required this.value, required this.onChanged});
+
+  final int? value;
+  final ValueChanged<int?> onChanged;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context);
+    final theme = Theme.of(context);
+    return ref
+        .watch(barangaysProvider)
+        .when(
+          data: (barangays) => DropdownButtonFormField<int>(
+            initialValue: value,
+            isExpanded: true,
+            decoration: InputDecoration(
+              labelText: l10n.staffRegFieldBarangay,
+              border: const OutlineInputBorder(),
+            ),
+            items: [
+              for (final barangay in barangays)
+                DropdownMenuItem(
+                  value: barangay.id,
+                  child: Text(
+                    barangay.name,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+            ],
+            selectedItemBuilder: (context) => [
+              for (final barangay in barangays)
+                Text(
+                  barangay.name,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+            ],
+            onChanged: onChanged,
+          ),
+          loading: () => const LinearProgressIndicator(),
+          error: (error, stackTrace) => Text(
+            l10n.staffRegLookupUnavailable,
+            style: TextStyle(color: theme.colorScheme.error),
+          ),
+        );
+  }
+}
+
+/// Pinned below the scrolling form, so the read-back and the save
+/// button stay in view however many questions are open above them.
+class _WillBeRecordedFooter extends StatelessWidget {
+  const _WillBeRecordedFooter({
+    required this.lines,
+    required this.submitting,
+    required this.onSubmit,
+  });
+
+  final List<String> lines;
+  final bool submitting;
+  final VoidCallback onSubmit;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    final theme = Theme.of(context);
+    return Material(
+      elevation: 3,
+      color: theme.colorScheme.surface,
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Semantics(
+              liveRegion: true,
+              child: Container(
+                constraints: const BoxConstraints(maxHeight: 140),
+                padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
+                decoration: BoxDecoration(
+                  color: theme.colorScheme.primaryContainer.withValues(
+                    alpha: 0.35,
+                  ),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        l10n.ecBoardWillBeRecordedTitle,
+                        style: theme.textTheme.labelLarge,
+                      ),
+                      const SizedBox(height: 4),
+                      for (final line in lines)
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 2),
+                          child: Text(line, style: theme.textTheme.bodySmall),
+                        ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(height: 10),
+            FilledButton(
+              onPressed: submitting ? null : onSubmit,
+              style: FilledButton.styleFrom(
+                minimumSize: const Size.fromHeight(48),
+              ),
+              child: submitting
+                  ? const SizedBox(
+                      width: 20,
+                      height: 20,
+                      child: CircularProgressIndicator(strokeWidth: 2),
+                    )
+                  : Text(l10n.ecBoardSubmitButton),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/// Optional sectoral flags for the ONE person being added, collapsed by
+/// default so the common case (most evacuees are none of these) stays
+/// fast — and opened already when editing an entry that has some set.
+/// Unticked means "not recorded", not "no".
+class _SectoralFlagsSection extends StatelessWidget {
+  const _SectoralFlagsSection({
+    required this.selected,
+    required this.isMale,
+    required this.onChanged,
+  });
+
+  final Set<PerPersonSectoralFlag> selected;
+  final bool isMale;
+  final ValueChanged<Set<PerPersonSectoralFlag>> onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    final theme = Theme.of(context);
+
+    return Card(
+      margin: EdgeInsets.zero,
+      clipBehavior: Clip.antiAlias,
+      child: ExpansionTile(
+        initiallyExpanded: selected.isNotEmpty,
+        title: Text(l10n.ecBoardSectoralFlagsTitle),
+        subtitle: selected.isEmpty
+            ? null
+            : Text(l10n.ecBoardSectoralFlagsTicked(selected.length)),
+        childrenPadding: const EdgeInsets.fromLTRB(16, 0, 16, 12),
+        expandedCrossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Wrap(
+            spacing: 8,
+            runSpacing: 8,
+            children: [
+              for (final flag in PerPersonSectoralFlag.values)
+                if (!(flag.femaleOnly && isMale))
+                  FilterChip(
+                    label: Text(localizedFlag(context, flag)),
+                    selected: selected.contains(flag),
+                    onSelected: (on) => onChanged(
+                      on ? {...selected, flag} : ({...selected}..remove(flag)),
+                    ),
+                  ),
+            ],
+          ),
+          const SizedBox(height: 8),
+          Text(
+            l10n.ecBoardSectoralFlagsHelp,
+            style: theme.textTheme.bodySmall?.copyWith(
+              color: theme.colorScheme.onSurfaceVariant,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// The one person's own flag label — the same words the full
+/// registration form uses for a member ("Pregnant", not the board's
+/// "Pregnant Women" row name).
+String localizedFlag(BuildContext context, PerPersonSectoralFlag flag) {
+  final l10n = AppLocalizations.of(context);
+  return switch (flag) {
+    PerPersonSectoralFlag.pwd => l10n.staffRegIsPwd,
+    PerPersonSectoralFlag.pregnant => l10n.staffRegIsPregnant,
+    PerPersonSectoralFlag.lactating => l10n.staffRegIsLactating,
+    PerPersonSectoralFlag.soloParent => l10n.staffRegIsSoloParent,
+    PerPersonSectoralFlag.indigenousPerson => l10n.staffRegIsIndigenous,
+    PerPersonSectoralFlag.fourPsBeneficiary => l10n.staffRegIs4psMember,
+  };
+}
+
 class _HouseholdPick {
   const _HouseholdPick({
     required this.label,
+    required this.headLinked,
     this.remoteFamilyId,
     this.localFamilyId,
   });
 
   final String label;
+
+  /// Whether this household already has its head — when not, the form
+  /// offers "This person is the household head".
+  final bool headLinked;
   final int? remoteFamilyId;
   final String? localFamilyId;
 }
@@ -550,8 +1141,7 @@ class _HouseholdPickerSheetState extends ConsumerState<_HouseholdPickerSheet> {
                       ...pendingNewHouseholdsAsync
                           .maybeWhen(
                             data: (items) => _filteredNewHouseholds(items),
-                            orElse: () =>
-                                const <PendingEcBoardEntrySummary>[],
+                            orElse: () => const <PendingEcBoardEntrySummary>[],
                           )
                           .map(
                             (item) => ListTile(
@@ -564,6 +1154,7 @@ class _HouseholdPickerSheetState extends ConsumerState<_HouseholdPickerSheet> {
                                 _HouseholdPick(
                                   label: item.householdLabel,
                                   localFamilyId: item.localId,
+                                  headLinked: item.headIsSelf,
                                 ),
                               ),
                             ),
@@ -588,6 +1179,9 @@ class _HouseholdPickerSheetState extends ConsumerState<_HouseholdPickerSheet> {
                                       ? l10n.staffPendingNoHeadName
                                       : item.headOfFamilyName,
                                   localFamilyId: item.localId,
+                                  // A full registration always has
+                                  // exactly one head.
+                                  headLinked: true,
                                 ),
                               ),
                             ),
@@ -634,6 +1228,7 @@ class _HouseholdPickerSheetState extends ConsumerState<_HouseholdPickerSheet> {
               ? l10n.staffPendingNoHeadName
               : item.headOfFamilyName,
           remoteFamilyId: item.id,
+          headLinked: item.hasHeadLinked,
         ),
       ),
     );
@@ -665,11 +1260,13 @@ class _HouseholdPickerSheetState extends ConsumerState<_HouseholdPickerSheet> {
         .toList();
   }
 
+  /// Never offers a legacy bulk-entry household: it isn't a real family,
+  /// and the server refuses to add anyone to one.
   List<RegisteredFamily> _filteredSynced(List<RegisteredFamily> items) {
-    if (_query.isEmpty) return items;
     final q = _query.toLowerCase();
     return items
-        .where((i) => i.headOfFamilyName.toLowerCase().contains(q))
+        .where((i) => !i.isLegacyBulkEntry)
+        .where((i) => q.isEmpty || i.headOfFamilyName.toLowerCase().contains(q))
         .toList();
   }
 }

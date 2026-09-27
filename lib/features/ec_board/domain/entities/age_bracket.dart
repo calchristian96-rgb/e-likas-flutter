@@ -31,6 +31,14 @@ enum AgeBracket {
     'senior_citizen' => AgeBracket.seniorCitizen,
     _ => null,
   };
+
+  /// Under 18 — the backend's own `Family::MINOR_AGE_BRACKETS`, which
+  /// answers "is the head a minor?" when the person being added is the
+  /// head.
+  bool get isMinor => switch (this) {
+    AgeBracket.adult || AgeBracket.seniorCitizen => false,
+    _ => true,
+  };
 }
 
 /// Fixed display order for every bracket-driven UI (Add Evacuee's

@@ -1509,13 +1509,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get ecBoardFieldSex => 'Sex';
 
   @override
-  String get ecBoardFieldAgeBracket => 'Age Bracket';
+  String get ecBoardFieldAgeBracket => 'Age group';
 
   @override
   String get ecBoardFieldHousehold => 'Household';
 
   @override
-  String get ecBoardHouseholdExisting => 'Existing household';
+  String get ecBoardHouseholdExisting => 'Already here';
 
   @override
   String get ecBoardHouseholdNew => 'New household';
@@ -1544,14 +1544,14 @@ class AppLocalizationsEn extends AppLocalizations {
       'This household hasn\'t synced yet. This entry will sync automatically once it does.';
 
   @override
-  String get ecBoardNewHouseholdHeadName => 'Head of Household Name';
+  String get ecBoardNewHouseholdHeadName => 'Household head\'s name';
 
   @override
   String get ecBoardSubmitButton => 'Save Evacuee';
 
   @override
   String get ecBoardValidationBanner =>
-      'Please complete sex, age bracket, and household before saving.';
+      'Please complete sex, age group, and household before saving.';
 
   @override
   String get ecBoardSavedOfflineMessage =>
@@ -1573,10 +1573,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get ecBoardSectoralSectionTitle => 'Sectoral Group';
-
-  @override
-  String get ecBoardPendingSectoralEmptyState =>
-      'No pending sectoral update on this device.';
 
   @override
   String get ecBoardLastKnownSectionTitle => 'Last Known Breakdown';
@@ -1643,13 +1639,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get ecBoardBracketSeniorCitizen => 'Senior Citizen';
 
   @override
-  String get ecBoardSectoralGroupsSectionTitle => 'Sectoral Groups';
-
-  @override
-  String get ecBoardSectoralGroupsSectionSubtitle =>
-      'Staff-reported totals, entered separately from Add Evacuee.';
-
-  @override
   String get ecBoardSectoralPwd => 'Persons with Disability';
 
   @override
@@ -1674,11 +1663,31 @@ class AppLocalizationsEn extends AppLocalizations {
   String get ecBoardSectoralIndigenousPeoples => 'Indigenous Peoples';
 
   @override
-  String get ecBoardSyncNowExplanation =>
-      'Sync Now sends your offline entries (new evacuees, sectoral updates) to the server.';
+  String get ecBoardSectoralFlagsTitle => 'Sectoral details (optional)';
 
   @override
-  String get ecBoardSectoralEditButton => 'Edit Sectoral & 4Ps';
+  String get ecBoardSectoralFlagsHelp =>
+      'Tick only what you know. Leaving a box unticked records nothing — it doesn\'t mean \"no\".';
+
+  @override
+  String ecBoardSectoralFlagsTicked(int count) {
+    return '$count ticked';
+  }
+
+  @override
+  String get ecBoardPendingSectoralFromEntriesTitle => 'Added on this device';
+
+  @override
+  String get ecBoardPendingSectoralFromEntriesSubtitle =>
+      'Not yet synced: sectoral details, and new households\' head answers, from this device\'s pending evacuees for this event. They sync with those evacuees.';
+
+  @override
+  String get ecBoardPendingSectoralFromEntriesEmpty =>
+      'No sectoral details or household answers on this device\'s pending evacuees.';
+
+  @override
+  String get ecBoardSyncNowExplanation =>
+      'Sync Now sends the evacuees you added offline — with their sectoral details and household answers — to the server.';
 
   @override
   String get ecBoardFamiliesLabel => 'Families';
@@ -1696,40 +1705,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get ecBoardFourPsBeneficiaryFamilies => '4Ps Beneficiary Families';
-
-  @override
-  String ecBoardSectoralUpdatedBy(String name) {
-    return 'Last updated by $name';
-  }
-
-  @override
-  String get ecBoardPendingSectoralCardTitle => 'Pending sectoral update';
-
-  @override
-  String get ecBoardPendingSectoralCardSubtitle =>
-      'Not yet synced — tap to review or edit.';
-
-  @override
-  String get ecBoardSectoralFormTitle => 'Sectoral & 4Ps Report';
-
-  @override
-  String get ecBoardSectoralFormSubtitle =>
-      'Manually-reported totals for this center and event — separate from Add Evacuee.';
-
-  @override
-  String get ecBoardSectoralFormFieldsHint =>
-      'Enter the number of people in each category.';
-
-  @override
-  String get ecBoardSectoralSaveButton => 'Save Sectoral & 4Ps';
-
-  @override
-  String get ecBoardSectoralSavedOfflineMessage =>
-      'Saved offline. This will sync when you\'re back online.';
-
-  @override
-  String get ecBoardSectoralSuccessMessage =>
-      'Sectoral & 4Ps report updated successfully.';
 
   @override
   String get ecBoardQuickDepartureTitle => 'Quick Departure';
@@ -1767,4 +1742,221 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get ecBoardQuickDepartureOfflineExplanation =>
       'Quick Departure requires an internet connection, since it needs to check who\'s currently confirmed at this center.';
+
+  @override
+  String get ecBoardAddEvacueeIntro =>
+      'Name and birthdate can be added later on the web dashboard\'s Evacuees page.';
+
+  @override
+  String get ecBoardSectionWhoIsThisPerson => 'Who is this person?';
+
+  @override
+  String get ecBoardHeadNote =>
+      'This person\'s age and sex will be used for the household head.';
+
+  @override
+  String get ecBoardThisPersonIsHead => 'This person is the household head';
+
+  @override
+  String get ecBoardNoHeadLinkedYet => 'This household has no head linked yet.';
+
+  @override
+  String get ecBoardSingleHeadedQuestion =>
+      'Only one household head? (single-headed)';
+
+  @override
+  String get ecBoardAnswerNotYetKnown => 'Not yet known';
+
+  @override
+  String get ecBoardAnswerYes => 'Yes';
+
+  @override
+  String get ecBoardAnswerNo => 'No';
+
+  @override
+  String get ecBoardAnswerYesUnder18 => 'Yes (under 18)';
+
+  @override
+  String get ecBoardHeadSectionTitle => 'About the actual household head';
+
+  @override
+  String get ecBoardHeadSectionSubtitle =>
+      'Someone other than the person you\'re adding. Used until they\'re added and linked.';
+
+  @override
+  String get ecBoardHeadSexLabel => 'Head\'s sex';
+
+  @override
+  String get ecBoardHeadIsMinorLabel => 'Head is a minor?';
+
+  @override
+  String get ecBoardWillBeRecordedTitle => 'Will be recorded';
+
+  @override
+  String ecBoardSummaryAdding(String sex, String ageGroup) {
+    return 'Adding 1 $sex, $ageGroup.';
+  }
+
+  @override
+  String get ecBoardSummaryChooseAgeSex =>
+      'Choose this person\'s age group and sex.';
+
+  @override
+  String ecBoardSummaryJoinsHousehold(String household) {
+    return 'Joins the household already here: $household.';
+  }
+
+  @override
+  String get ecBoardSummaryChooseHousehold =>
+      'Choose the household this person belongs to.';
+
+  @override
+  String ecBoardSummaryBecomesHead(String minor) {
+    return 'Becomes that household\'s head ($minor).';
+  }
+
+  @override
+  String ecBoardSummaryNewHousehold(String name, String barangay) {
+    return 'New household: $name, $barangay.';
+  }
+
+  @override
+  String get ecBoardSummaryNoHeadName => '(head\'s name not entered yet)';
+
+  @override
+  String get ecBoardSummaryNoBarangay => 'no barangay chosen';
+
+  @override
+  String ecBoardSummaryHeadIsThisPerson(String minor) {
+    return 'Head: this person ($minor).';
+  }
+
+  @override
+  String ecBoardSummaryHeadIsSomeoneElse(String sex, String minor) {
+    return 'Head: someone else, $sex, $minor.';
+  }
+
+  @override
+  String get ecBoardSummarySexNotYetKnown => 'sex not yet known';
+
+  @override
+  String get ecBoardSummaryMinorUnknown => 'minor or not: not yet known';
+
+  @override
+  String get ecBoardSummaryMinor => 'a minor';
+
+  @override
+  String get ecBoardSummaryNotMinor => 'not a minor';
+
+  @override
+  String ecBoardSummarySingleHeaded(String answer) {
+    return 'Single-headed: $answer.';
+  }
+
+  @override
+  String get ecBoardSummaryAnswerUnknown => 'not yet known';
+
+  @override
+  String get ecBoardSummaryAnswerYes => 'yes';
+
+  @override
+  String get ecBoardSummaryAnswerNo => 'no';
+
+  @override
+  String get ecBoardSummaryMale => 'male';
+
+  @override
+  String get ecBoardSummaryFemale => 'female';
+
+  @override
+  String ecBoardSummarySectoral(String flags) {
+    return 'Sectoral: $flags.';
+  }
+
+  @override
+  String get ecBoardSummaryNoSectoral => 'No sectoral details.';
+
+  @override
+  String get ecBoardSectoralLiveExplanation =>
+      'Counted from each evacuee\'s sectoral details. Child- and single-headed families are counted once per household, by the head\'s sex, from the answers given when the household was added.';
+
+  @override
+  String familyMemberDetailsPending(int index) {
+    return 'Member $index — details pending';
+  }
+
+  @override
+  String familyMemberCheckedInAt(String center) {
+    return 'Checked in at $center';
+  }
+
+  @override
+  String get familyMemberCheckedInUnspecified =>
+      'Checked in at unspecified location';
+
+  @override
+  String get familyMemberCheckedOut => 'Checked out';
+
+  @override
+  String get familyMembersNeedConnection =>
+      'Connect to the internet to see who\'s still checked in and to check someone out.';
+
+  @override
+  String familyHeadNotLinked(String answers) {
+    return 'Head not yet linked. Counts use the answers given for the head ($answers) until a member is linked. When the head arrives, add them with Add Evacuee → Already here and tick \"This person is the household head\".';
+  }
+
+  @override
+  String get familyHeadNotLinkedNothingKnown =>
+      'Head not yet linked. Nothing is known about the head yet until a member is linked. When the head arrives, add them with Add Evacuee → Already here and tick \"This person is the household head\".';
+
+  @override
+  String get familyLegacyBulkEntryNotice =>
+      'Legacy bulk entry — needs manual review. Anonymous people from an old headcount, not a real family.';
+
+  @override
+  String get checkOutButton => 'Check out';
+
+  @override
+  String checkOutDialogTitle(String name) {
+    return 'Check out $name';
+  }
+
+  @override
+  String checkOutDialogSubtitle(String center) {
+    return 'Closes their stay at $center, so they no longer count as here now.';
+  }
+
+  @override
+  String get checkOutTheirCurrentLocation => 'their current location';
+
+  @override
+  String get checkOutReasonLabel => 'Reason';
+
+  @override
+  String get checkOutReturnedHome => 'Returned home';
+
+  @override
+  String get checkOutTransferred => 'Transferred elsewhere';
+
+  @override
+  String get checkOutReturnedHomeLower => 'returned home';
+
+  @override
+  String get checkOutTransferredLower => 'transferred elsewhere';
+
+  @override
+  String checkOutConfirm(String name, String reason) {
+    return 'Check out $name as $reason? They\'ll no longer count as here now.';
+  }
+
+  @override
+  String checkOutMemberPendingName(int index) {
+    return 'Member $index (details pending)';
+  }
+
+  @override
+  String checkOutSucceeded(String name) {
+    return '$name checked out.';
+  }
 }

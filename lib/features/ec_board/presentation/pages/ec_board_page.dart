@@ -4,7 +4,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../app/theme/app_theme.dart';
 import '../../../../core/widgets/empty_state.dart';
 import '../../../../core/widgets/error_state.dart';
-import '../../../../core/widgets/last_updated_label.dart';
 import '../../../../core/widgets/sync_now_action.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../family_registration/data/services/staff_sync_service.dart'
@@ -17,13 +16,12 @@ import '../../../home/presentation/providers/home_provider.dart'
     show connectivityStatusProvider;
 import '../../domain/entities/age_bracket.dart';
 import '../../domain/entities/pending_ec_board_entry.dart';
-import '../../domain/entities/pending_quick_count_edit.dart';
+import '../../domain/entities/sectoral_group.dart';
 import '../providers/ec_board_provider.dart';
 import 'add_evacuee_form_page.dart'
     show AddEvacueeFormPage, localizedAgeBracket, localizedSectoralGroup;
 import 'pending_ec_entry_detail_page.dart';
 import 'quick_departure_form_page.dart';
-import 'sectoral_quick_count_form_page.dart';
 
 /// EC Information Board for one center — reached from
 /// `StaffEvacuationCenterDetailPage`. Shows two deliberately separate
@@ -41,14 +39,11 @@ class EcBoardPage extends ConsumerStatefulWidget {
 }
 
 /// Which queue a Sync Now tap is pushing — [all] is the AppBar's own
-/// action (used by no other page besides this one and Pending
-/// Registrations); the other two are EC Board's own contextual
-/// buttons, each scoped to exactly the pending data sitting next to
-/// it. `StaffSyncService._running` already guarantees only one sync of
-/// any kind runs app-wide at once, so this only needs to track *which*
-/// button should show its own spinner rather than all three lighting
-/// up for a sync only one of them started.
-enum _SyncTarget { all, ecBoardEntries, quickCountEdit }
+/// action; [ecBoardEntries] is the contextual button next to this
+/// device's pending evacuees. `StaffSyncService._running` already
+/// guarantees only one sync of any kind runs app-wide at once, so this
+/// only needs to track *which* button should show its own spinner.
+enum _SyncTarget { all, ecBoardEntries }
 
 class _EcBoardPageState extends ConsumerState<EcBoardPage> {
   int? _selectedEventId;
@@ -83,7 +78,9 @@ class _EcBoardPageState extends ConsumerState<EcBoardPage> {
         : result.stoppedForAuth
         ? l10n.staffSyncStoppedForAuthMessage
         : l10n.staffSyncCompletedMessage(result.processed);
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text(message)));
   }
 
   Future<void> _syncAll() =>
@@ -92,11 +89,6 @@ class _EcBoardPageState extends ConsumerState<EcBoardPage> {
   Future<void> _syncEcBoardEntries() => _runSync(
     _SyncTarget.ecBoardEntries,
     () => ref.read(staffSyncEcBoardEntriesOnlyProvider)(),
-  );
-
-  Future<void> _syncQuickCountEdit() => _runSync(
-    _SyncTarget.quickCountEdit,
-    () => ref.read(staffSyncQuickCountEditOnlyProvider)(),
   );
 
   @override
@@ -133,8 +125,6 @@ class _EcBoardPageState extends ConsumerState<EcBoardPage> {
             onEventChanged: (id) => setState(() => _selectedEventId = id),
             isSyncingEcBoardEntries: _activeSync == _SyncTarget.ecBoardEntries,
             onSyncEcBoardEntries: _syncEcBoardEntries,
-            isSyncingQuickCountEdit: _activeSync == _SyncTarget.quickCountEdit,
-            onSyncQuickCountEdit: _syncQuickCountEdit,
           );
         },
         loading: () => const Center(child: CircularProgressIndicator()),
@@ -160,8 +150,6 @@ class _EcBoardBody extends ConsumerWidget {
     required this.onEventChanged,
     required this.isSyncingEcBoardEntries,
     required this.onSyncEcBoardEntries,
-    required this.isSyncingQuickCountEdit,
-    required this.onSyncQuickCountEdit,
   });
 
   final int centerId;
@@ -170,8 +158,6 @@ class _EcBoardBody extends ConsumerWidget {
   final ValueChanged<int> onEventChanged;
   final bool isSyncingEcBoardEntries;
   final VoidCallback onSyncEcBoardEntries;
-  final bool isSyncingQuickCountEdit;
-  final VoidCallback onSyncQuickCountEdit;
 
   Future<void> _openAddEvacuee(BuildContext context, WidgetRef ref) async {
     await Navigator.of(context).push<void>(
@@ -184,19 +170,8 @@ class _EcBoardBody extends ConsumerWidget {
     );
     ref.invalidate(ecBoardEntriesForCenterProvider(centerId));
     ref.invalidate(ecBoardCountsForCenterProvider(centerId));
-  }
-
-  Future<void> _openSectoralEdit(BuildContext context, WidgetRef ref) async {
-    await Navigator.of(context).push<void>(
-      MaterialPageRoute(
-        builder: (_) => SectoralQuickCountFormPage(
-          centerId: centerId,
-          evacuationEventId: selectedEventId,
-        ),
-      ),
-    );
+    // An online add lands straight in the server's live figures.
     ref.invalidate(ecBoardQuickCountProvider(centerId, selectedEventId));
-    ref.invalidate(pendingQuickCountEditProvider(centerId, selectedEventId));
   }
 
   Future<void> _openQuickDeparture(BuildContext context, WidgetRef ref) async {
@@ -255,26 +230,20 @@ class _EcBoardBody extends ConsumerWidget {
     final l10n = AppLocalizations.of(context);
     final theme = Theme.of(context);
     final entriesAsync = ref.watch(ecBoardEntriesForCenterProvider(centerId));
-    final pendingQuickCountEditAsync = ref.watch(
-      pendingQuickCountEditProvider(centerId, selectedEventId),
-    );
     final isOnline = ref.watch(connectivityStatusProvider).value ?? false;
 
     return RefreshIndicator(
       onRefresh: () async {
         ref.invalidate(ecBoardQuickCountProvider(centerId, selectedEventId));
         ref.invalidate(ecBoardEntriesForCenterProvider(centerId));
-        ref.invalidate(pendingQuickCountEditProvider(centerId, selectedEventId));
       },
       // Grouped by CATEGORY (Age & Sex, then Sectoral Group), each a
-      // self-contained block with its own action button, confirmed
-      // figures, and pending figures together — mirroring the
-      // official printed EC Board form's own two-table layout, rather
-      // than the earlier structure that grouped by STATE (every
-      // confirmed figure first, then every pending figure after),
-      // which put Add Evacuee and Edit Sectoral & 4Ps side by side at
-      // the top with no visual link to the data each one actually
-      // edits.
+      // self-contained block with confirmed figures and pending figures
+      // together — mirroring the official printed EC Board form's own
+      // two-table layout. Add Evacuee (under Age & Sex) is the one way
+      // either table grows: it records the person's age/sex, sectoral
+      // details, and — for a new household — the head answers the
+      // Sectoral table's child-/single-headed rows count.
       child: ListView(
         padding: const EdgeInsets.all(16),
         children: [
@@ -293,7 +262,9 @@ class _EcBoardBody extends ConsumerWidget {
               filled: false,
             )
           else
-            _QuickDepartureOfflineNotice(label: l10n.ecBoardQuickDepartureTitle),
+            _QuickDepartureOfflineNotice(
+              label: l10n.ecBoardQuickDepartureTitle,
+            ),
           const Divider(height: 40),
 
           // ── Age & Sex Disaggregation ─────────────────────────
@@ -356,10 +327,9 @@ class _EcBoardBody extends ConsumerWidget {
                   overflow: TextOverflow.ellipsis,
                 ),
               ),
-              // Pushes only this queue — the Sectoral section's own
-              // copy further down pushes only its pending edit, and
-              // the AppBar's action is the one place that still pushes
-              // everything at once.
+              // Pushes only this queue (evacuees, including the sectoral
+              // details and household answers they carry); the AppBar's
+              // action is the one place that pushes everything at once.
               _syncNowButton(
                 l10n: l10n,
                 isSyncing: isSyncingEcBoardEntries,
@@ -425,16 +395,19 @@ class _EcBoardBody extends ConsumerWidget {
           const Divider(height: 40),
 
           // ── Sectoral Group & 4Ps ─────────────────────────────
+          // Read-only: nothing here is typed in. The server counts every
+          // row live from what Add Evacuee (above) records, so there is
+          // no action button of its own.
           _EcBoardSectionHeader(
             icon: Icons.diversity_3_outlined,
             title: l10n.ecBoardSectoralSectionTitle,
           ),
           const SizedBox(height: 14),
-          _EcBoardActionButton(
-            icon: Icons.groups_outlined,
-            label: l10n.ecBoardSectoralEditButton,
-            subtitle: l10n.staffWorkspaceRegisterFamilySubtitle,
-            onPressed: () => _openSectoralEdit(context, ref),
+          Text(
+            l10n.ecBoardSectoralLiveExplanation,
+            style: theme.textTheme.bodySmall?.copyWith(
+              color: theme.colorScheme.onSurfaceVariant,
+            ),
           ),
           const SizedBox(height: 20),
           Text(
@@ -447,59 +420,78 @@ class _EcBoardBody extends ConsumerWidget {
             evacuationEventId: selectedEventId,
           ),
           const SizedBox(height: 24),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Expanded(
-                child: Text(
-                  l10n.ecBoardPendingSectionTitle,
-                  style: theme.textTheme.titleMedium,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ),
-              _syncNowButton(
-                l10n: l10n,
-                isSyncing: isSyncingQuickCountEdit,
-                isOnline: isOnline,
-                onSync: onSyncQuickCountEdit,
-              ),
-            ],
+          // This device's not-yet-synced Add Evacuee entries, counted by
+          // the server's rule for the selected event — kept apart from
+          // the "last known" figures, never merged. They sync with the
+          // pending evacuees above (same queue, same Sync Now).
+          Text(
+            l10n.ecBoardPendingSectoralFromEntriesTitle,
+            style: theme.textTheme.titleMedium,
           ),
           const SizedBox(height: 4),
           Text(
-            l10n.ecBoardPendingSectionSubtitle,
+            l10n.ecBoardPendingSectoralFromEntriesSubtitle,
             style: theme.textTheme.bodySmall?.copyWith(
               color: theme.colorScheme.onSurfaceVariant,
             ),
           ),
           const SizedBox(height: 10),
-          pendingQuickCountEditAsync.when(
-            data: (pending) => pending == null
-                ? Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                    child: EmptyState(
-                      message: l10n.ecBoardPendingSectoralEmptyState,
-                    ),
-                  )
-                : _PendingSectoralCard(
-                    detail: pending,
-                    onTap: () => _openSectoralEdit(context, ref),
-                  ),
-            loading: () => const Padding(
-              padding: EdgeInsets.symmetric(vertical: 16),
-              child: Center(
-                child: SizedBox(
-                  width: 22,
-                  height: 22,
-                  child: CircularProgressIndicator(strokeWidth: 2),
-                ),
-              ),
+          entriesAsync.when(
+            data: (entries) => _PendingSectoralFromEntries(
+              entries: entries
+                  .where((e) => e.evacuationEventId == selectedEventId)
+                  .toList(),
             ),
+            loading: () => const SizedBox.shrink(),
             error: (error, stackTrace) => const SizedBox.shrink(),
           ),
         ],
       ),
+    );
+  }
+}
+
+class _PendingSectoralFromEntries extends StatelessWidget {
+  const _PendingSectoralFromEntries({required this.entries});
+
+  final List<PendingEcBoardEntrySummary> entries;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    final theme = Theme.of(context);
+
+    final counts = countPendingSectoral(entries);
+    if (counts.values.every((c) => c.male == 0 && c.female == 0)) {
+      return Padding(
+        padding: const EdgeInsets.symmetric(vertical: 16),
+        child: EmptyState(message: l10n.ecBoardPendingSectoralFromEntriesEmpty),
+      );
+    }
+
+    return Column(
+      children: [
+        // Same fixed row set every time (zero-filled), in the board's own
+        // sectoral order, like the age/sex breakdown above.
+        for (final group in sectoralGroupValues)
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 4),
+            child: Row(
+              children: [
+                Expanded(child: Text(localizedSectoralGroup(context, group))),
+                Text(
+                  l10n.ecBoardMaleFemaleCount(
+                    counts[group]!.male,
+                    counts[group]!.female,
+                  ),
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ],
+            ),
+          ),
+      ],
     );
   }
 }
@@ -709,13 +701,9 @@ class _AgeSexQuickCountSection extends ConsumerWidget {
 }
 
 /// The "Sectoral Group" half of the Last Known figures, plus the
-/// standalone 4Ps Beneficiary Families count — grouped here rather
-/// than with the Age & Sex table above because both are only ever
-/// edited from the same place (the Edit Sectoral & 4Ps form), and
-/// [count.updatedByName]/[count.updatedAt] are specifically about
-/// *this* figure, not the age/sex one. See
-/// [_AgeSexQuickCountSection]'s doc comment for why this is a
-/// separate widget from what used to be one combined section.
+/// standalone 4Ps Beneficiary Families count — a separate widget from
+/// the Age & Sex table because it is its own category on the printed
+/// form. All live, server-computed; see [EcBoardSectoralGroupCount].
 class _SectoralQuickCountSection extends ConsumerWidget {
   const _SectoralQuickCountSection({
     required this.centerId,
@@ -799,17 +787,6 @@ class _SectoralQuickCountSection extends ConsumerWidget {
                     ],
                   ),
                 ),
-            if (count.updatedAt != null) ...[
-              const SizedBox(height: 12),
-              if (count.updatedByName != null)
-                Text(
-                  l10n.ecBoardSectoralUpdatedBy(count.updatedByName!),
-                  style: theme.textTheme.bodySmall?.copyWith(
-                    color: theme.colorScheme.onSurfaceVariant,
-                  ),
-                ),
-              LastUpdatedLabel(timestamp: count.updatedAt),
-            ],
           ],
         );
       },
@@ -869,9 +846,7 @@ class _CumulativeNowStat extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: theme.colorScheme.surfaceContainerHighest.withValues(
-          alpha: 0.4,
-        ),
+        color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.4),
         borderRadius: BorderRadius.circular(12),
       ),
       child: Column(
@@ -1058,9 +1033,9 @@ class _PendingEntryTile extends ConsumerWidget {
 /// Staff Dashboard: "Works offline — syncs when you're ready" for
 /// Register a Family, "Online only — not queued offline" for Add
 /// Evacuation Center), reused verbatim here so staff learn it once and
-/// recognize it everywhere. [filled] distinguishes the two
-/// offline-capable actions (Add Evacuee, sectoral/4Ps — solid,
-/// primary-styled buttons) from the online-only one (Quick Departure —
+/// recognize it everywhere. [filled] distinguishes the
+/// offline-capable action (Add Evacuee — a solid,
+/// primary-styled button) from the online-only one (Quick Departure —
 /// outlined, deliberately a step down in visual weight from an action
 /// that isn't always available).
 class _EcBoardActionButton extends StatelessWidget {
@@ -1154,52 +1129,6 @@ class _QuickDepartureOfflineNotice extends StatelessWidget {
             ),
           ),
         ],
-      ),
-    );
-  }
-}
-
-/// This device's own not-yet-synced sectoral/4Ps edit — shown as a
-/// distinct card (matching the visual weight of a pending evacuee
-/// tile) rather than merged into the "Last Known" figures above, since
-/// this hasn't been confirmed by the server yet.
-class _PendingSectoralCard extends StatelessWidget {
-  const _PendingSectoralCard({required this.detail, required this.onTap});
-
-  final PendingQuickCountEditDetail detail;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context);
-    final colorScheme = Theme.of(context).colorScheme;
-    final summary = detail.summary;
-
-    return Card(
-      child: ListTile(
-        onTap: onTap,
-        leading: switch (summary.status) {
-          PendingRegistrationStatus.needsAttention => Icon(
-            Icons.error_outline,
-            color: colorScheme.error,
-          ),
-          PendingRegistrationStatus.syncing => SizedBox(
-            width: 24,
-            height: 24,
-            child: CircularProgressIndicator(
-              strokeWidth: 2,
-              color: colorScheme.primary,
-            ),
-          ),
-          PendingRegistrationStatus.pending => Icon(
-            Icons.cloud_off_outlined,
-            color: colorScheme.onSurfaceVariant,
-          ),
-        },
-        title: Text(l10n.ecBoardPendingSectoralCardTitle),
-        subtitle: Text(
-          summary.lastErrorMessage ?? l10n.ecBoardPendingSectoralCardSubtitle,
-        ),
       ),
     );
   }

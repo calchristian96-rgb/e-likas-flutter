@@ -1,17 +1,12 @@
 /// The 8 sectoral categories `EvacuationCenterQuickCount::SECTORAL_GROUPS`
 /// defines on the backend — confirmed directly against
 /// `app/Models/EvacuationCenterQuickCount.php` and
-/// `EvacuationCenterController::updateQuickCount()`'s validation rules
-/// on `elikas-backend-main (10)`.
+/// the live breakdown `EvacuationCenterQuickCountResource` returns.
 ///
-/// **Read-only in this app.** This is a manually-reported aggregate
-/// count per center+event (`PUT /evacuation-centers/{id}/quick-count`,
-/// a staff-web-dashboard action), never a per-evacuee field —
-/// `POST /evacuation-centers/{id}/evacuees` ("Add Evacuee")'s own
-/// validation rules were checked directly and do not accept any
-/// sector-related field at all. See `EcBoardQuickCount.sectoralGroups`'s
-/// doc comment for why that's a deliberate backend design choice, not
-/// a gap.
+/// **Read-only in this app**, and nowhere typed in: the backend counts
+/// every group live — the six per-person groups from each evacuee's Add
+/// Evacuee flags (see `PerPersonSectoralFlag`), child-/single-headed
+/// family from each household's head answers.
 enum SectoralGroup {
   pwd,
   childHeadedFamily,

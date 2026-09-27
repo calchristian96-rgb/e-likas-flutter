@@ -1,4 +1,5 @@
 import 'age_bracket.dart';
+import 'per_person_sectoral_flag.dart';
 
 /// 'existing' | 'new' — the only two `household_mode` values
 /// `POST /evacuation-centers/{id}/evacuees` accepts.
@@ -31,10 +32,7 @@ enum HouseholdMode {
 /// promotion already uses, just keyed by an EC Board entry's local id
 /// instead of a `PendingFamilyRegistrations` one.
 class EcBoardSubmitResult {
-  const EcBoardSubmitResult({
-    required this.evacueeId,
-    required this.familyId,
-  });
+  const EcBoardSubmitResult({required this.evacueeId, required this.familyId});
 
   final int evacueeId;
   final int familyId;
@@ -43,7 +41,8 @@ class EcBoardSubmitResult {
 /// A single Add Evacuee entry — one person's EC Information Board
 /// intake record. Deliberately far smaller than
 /// `FamilyRegistrationDraft`: this is a fast, single-evacuee counting
-/// tool (bracket + sex + which household), not a full registration.
+/// tool (bracket + sex + which household, plus the household's head
+/// answers when it's new), not a full registration.
 ///
 /// The household reference is split into two nullable ids rather than
 /// one, to correctly represent "existing household" pointing at a
@@ -67,6 +66,11 @@ class EcBoardEntryDraft {
     this.existingFamilyLocalId,
     this.newHouseholdHeadName,
     this.newHouseholdBarangayId,
+    this.sectoralFlags = const {},
+    this.headIsSelf = false,
+    this.isSingleHeaded,
+    this.headIsMinor,
+    this.headSex,
   });
 
   final int evacuationCenterId;
@@ -83,6 +87,46 @@ class EcBoardEntryDraft {
 
   final String? newHouseholdHeadName;
   final int? newHouseholdBarangayId;
+
+  /// The optional sectoral flags ticked for this one person. Anything
+  /// not in the set is "not recorded", not "no" — see
+  /// [PerPersonSectoralFlag]. Never required for [isSubmittable].
+  final Set<PerPersonSectoralFlag> sectoralFlags;
+
+  /// This person IS the household head — for a new household (the
+  /// form's default there), or for an existing one that has no head
+  /// linked yet (the real head arriving later; never offered, and never
+  /// honoured by the server, for a household that already has one).
+  /// Their own sex and age group then answer "head's sex" and "is the
+  /// head a minor?", so [headSex]/[headIsMinor] aren't asked.
+  final bool headIsSelf;
+
+  /// New household only: "Only one household head?" — null = not yet
+  /// known, never a guessed "no" (same for [headIsMinor]/[headSex]).
+  final bool? isSingleHeaded;
+
+  /// New household with someone else as head only.
+  final bool? headIsMinor;
+
+  /// New household with someone else as head only: 'male' | 'female'.
+  final String? headSex;
+
+  bool get _isNew => householdMode == HouseholdMode.new_;
+
+  /// The new household's head's sex by the server's own rule
+  /// (`Family::headSex()`): this person's when they're the head,
+  /// otherwise the [headSex] answer. Null for an existing household —
+  /// its answers were given when it was created.
+  String? get newHouseholdHeadSex =>
+      !_isNew ? null : (headIsSelf ? sex : headSex);
+
+  /// `Family::isChildHeaded()` for the household this creates — only
+  /// true when known to be (null/unknown never counts).
+  bool get createsChildHeadedHousehold =>
+      _isNew && (headIsSelf ? ageBracket?.isMinor : headIsMinor) == true;
+
+  /// `Family::isSingleHeaded()` for the household this creates.
+  bool get createsSingleHeadedHousehold => _isNew && isSingleHeaded == true;
 
   /// True once every backend-required field is present — same
   /// "cheap pre-check" role as `FamilyRegistrationDraft.isSubmittable`.
@@ -112,6 +156,9 @@ class EcBoardEntryDraft {
     return true;
   }
 
+  /// The three tri-state answers take a record so "set to not yet
+  /// known" (`(value: null)`) is distinguishable from "leave as is"
+  /// (omitted).
   EcBoardEntryDraft copyWith({
     int? evacuationEventId,
     String? sex,
@@ -123,6 +170,11 @@ class EcBoardEntryDraft {
     bool clearExistingFamilyLocalId = false,
     String? newHouseholdHeadName,
     int? newHouseholdBarangayId,
+    Set<PerPersonSectoralFlag>? sectoralFlags,
+    bool? headIsSelf,
+    ({bool? value})? isSingleHeaded,
+    ({bool? value})? headIsMinor,
+    ({String? value})? headSex,
   }) {
     return EcBoardEntryDraft(
       evacuationCenterId: evacuationCenterId,
@@ -139,21 +191,37 @@ class EcBoardEntryDraft {
       newHouseholdHeadName: newHouseholdHeadName ?? this.newHouseholdHeadName,
       newHouseholdBarangayId:
           newHouseholdBarangayId ?? this.newHouseholdBarangayId,
+      sectoralFlags: sectoralFlags ?? this.sectoralFlags,
+      headIsSelf: headIsSelf ?? this.headIsSelf,
+      isSingleHeaded: isSingleHeaded == null
+          ? this.isSingleHeaded
+          : isSingleHeaded.value,
+      headIsMinor: headIsMinor == null ? this.headIsMinor : headIsMinor.value,
+      headSex: headSex == null ? this.headSex : headSex.value,
     );
   }
 
   /// The real `POST /evacuation-centers/{id}/evacuees` body — only
-  /// ever called once [isReadyToSync] is true.
+  /// ever called once [isReadyToSync] is true. Exactly the fields the
+  /// web dashboard sends for the same answers.
   Map<String, dynamic> toJson() => {
     'evacuation_event_id': evacuationEventId,
     'sex': sex,
     'age_bracket': ageBracket!.wireValue,
     'household_mode': householdMode.wireValue,
-    if (householdMode == HouseholdMode.existing)
-      'family_id': existingFamilyRemoteId
-    else ...{
+    if (householdMode == HouseholdMode.existing) ...{
+      'family_id': existingFamilyRemoteId,
+      // Only ever set for a household with no head linked yet.
+      if (headIsSelf) 'head_is_self': true,
+    } else ...{
       'family_name': newHouseholdHeadName?.trim(),
       'barangay_id': newHouseholdBarangayId,
+      'head_is_self': headIsSelf,
+      'is_single_headed': isSingleHeaded,
+      if (!headIsSelf) ...{'head_sex': headSex, 'head_is_minor': headIsMinor},
     },
+    // Only ticked flags, as true — an unticked one is left out entirely,
+    // which the backend stores as "not recorded" (null).
+    for (final flag in sectoralFlags) flag.wireValue: true,
   };
 }

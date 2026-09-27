@@ -1,13 +1,13 @@
 import '../../../../core/network/staff_api_client.dart';
 import '../../domain/entities/age_bracket.dart';
-import '../../domain/entities/ec_board_entry_draft.dart' show EcBoardSubmitResult;
+import '../../domain/entities/ec_board_entry_draft.dart'
+    show EcBoardSubmitResult;
 import '../../domain/entities/ec_board_quick_count.dart';
 import '../../domain/entities/quick_departure_request.dart';
 import '../../domain/entities/sectoral_group.dart';
-import '../../domain/entities/sectoral_group_draft.dart';
 
-/// The four EC Information Board endpoints: `POST .../evacuees`,
-/// `GET`/`PUT .../quick-count`, and `POST .../quick-departure`.
+/// The three EC Information Board endpoints: `POST .../evacuees`,
+/// `GET .../quick-count`, and `POST .../quick-departure`.
 class EcBoardRemoteDataSource {
   EcBoardRemoteDataSource(this._client);
 
@@ -44,24 +44,6 @@ class EcBoardRemoteDataSource {
     final response = await _client.get(
       '/evacuation-centers/$centerId/quick-count',
       queryParameters: {'evacuation_event_id': evacuationEventId},
-    );
-    final envelope = response.data as Map<String, dynamic>;
-    final data = envelope['data'] as Map<String, dynamic>;
-    return _parseQuickCount(data);
-  }
-
-  /// `PUT /evacuation-centers/{id}/quick-count` — confirmed directly
-  /// against `EvacuationCenterController::updateQuickCount()`. Returns
-  /// the freshly-saved figures the same way [getQuickCount] does, so a
-  /// caller doesn't need a second GET to refresh its "last known" view
-  /// after a successful save.
-  Future<EcBoardQuickCount> updateQuickCount(
-    int centerId,
-    SectoralGroupDraft draft,
-  ) async {
-    final response = await _client.put(
-      '/evacuation-centers/$centerId/quick-count',
-      data: draft.toJson(),
     );
     final envelope = response.data as Map<String, dynamic>;
     final data = envelope['data'] as Map<String, dynamic>;

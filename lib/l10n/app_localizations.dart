@@ -2779,7 +2779,7 @@ abstract class AppLocalizations {
   /// No description provided for @ecBoardFieldAgeBracket.
   ///
   /// In en, this message translates to:
-  /// **'Age Bracket'**
+  /// **'Age group'**
   String get ecBoardFieldAgeBracket;
 
   /// No description provided for @ecBoardFieldHousehold.
@@ -2791,7 +2791,7 @@ abstract class AppLocalizations {
   /// No description provided for @ecBoardHouseholdExisting.
   ///
   /// In en, this message translates to:
-  /// **'Existing household'**
+  /// **'Already here'**
   String get ecBoardHouseholdExisting;
 
   /// No description provided for @ecBoardHouseholdNew.
@@ -2845,7 +2845,7 @@ abstract class AppLocalizations {
   /// No description provided for @ecBoardNewHouseholdHeadName.
   ///
   /// In en, this message translates to:
-  /// **'Head of Household Name'**
+  /// **'Household head\'s name'**
   String get ecBoardNewHouseholdHeadName;
 
   /// No description provided for @ecBoardSubmitButton.
@@ -2857,7 +2857,7 @@ abstract class AppLocalizations {
   /// No description provided for @ecBoardValidationBanner.
   ///
   /// In en, this message translates to:
-  /// **'Please complete sex, age bracket, and household before saving.'**
+  /// **'Please complete sex, age group, and household before saving.'**
   String get ecBoardValidationBanner;
 
   /// No description provided for @ecBoardSavedOfflineMessage.
@@ -2895,12 +2895,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Sectoral Group'**
   String get ecBoardSectoralSectionTitle;
-
-  /// No description provided for @ecBoardPendingSectoralEmptyState.
-  ///
-  /// In en, this message translates to:
-  /// **'No pending sectoral update on this device.'**
-  String get ecBoardPendingSectoralEmptyState;
 
   /// No description provided for @ecBoardLastKnownSectionTitle.
   ///
@@ -3016,18 +3010,6 @@ abstract class AppLocalizations {
   /// **'Senior Citizen'**
   String get ecBoardBracketSeniorCitizen;
 
-  /// No description provided for @ecBoardSectoralGroupsSectionTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Sectoral Groups'**
-  String get ecBoardSectoralGroupsSectionTitle;
-
-  /// No description provided for @ecBoardSectoralGroupsSectionSubtitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Staff-reported totals, entered separately from Add Evacuee.'**
-  String get ecBoardSectoralGroupsSectionSubtitle;
-
   /// No description provided for @ecBoardSectoralPwd.
   ///
   /// In en, this message translates to:
@@ -3076,17 +3058,47 @@ abstract class AppLocalizations {
   /// **'Indigenous Peoples'**
   String get ecBoardSectoralIndigenousPeoples;
 
+  /// Collapsed section on Add Evacuee for optionally tagging this one person's sectoral flags
+  ///
+  /// In en, this message translates to:
+  /// **'Sectoral details (optional)'**
+  String get ecBoardSectoralFlagsTitle;
+
+  /// No description provided for @ecBoardSectoralFlagsHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Tick only what you know. Leaving a box unticked records nothing — it doesn\'t mean \"no\".'**
+  String get ecBoardSectoralFlagsHelp;
+
+  /// Badge on the collapsed sectoral section showing how many flags are ticked
+  ///
+  /// In en, this message translates to:
+  /// **'{count} ticked'**
+  String ecBoardSectoralFlagsTicked(int count);
+
+  /// No description provided for @ecBoardPendingSectoralFromEntriesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Added on this device'**
+  String get ecBoardPendingSectoralFromEntriesTitle;
+
+  /// No description provided for @ecBoardPendingSectoralFromEntriesSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Not yet synced: sectoral details, and new households\' head answers, from this device\'s pending evacuees for this event. They sync with those evacuees.'**
+  String get ecBoardPendingSectoralFromEntriesSubtitle;
+
+  /// No description provided for @ecBoardPendingSectoralFromEntriesEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No sectoral details or household answers on this device\'s pending evacuees.'**
+  String get ecBoardPendingSectoralFromEntriesEmpty;
+
   /// No description provided for @ecBoardSyncNowExplanation.
   ///
   /// In en, this message translates to:
-  /// **'Sync Now sends your offline entries (new evacuees, sectoral updates) to the server.'**
+  /// **'Sync Now sends the evacuees you added offline — with their sectoral details and household answers — to the server.'**
   String get ecBoardSyncNowExplanation;
-
-  /// No description provided for @ecBoardSectoralEditButton.
-  ///
-  /// In en, this message translates to:
-  /// **'Edit Sectoral & 4Ps'**
-  String get ecBoardSectoralEditButton;
 
   /// No description provided for @ecBoardFamiliesLabel.
   ///
@@ -3117,60 +3129,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'4Ps Beneficiary Families'**
   String get ecBoardFourPsBeneficiaryFamilies;
-
-  /// Footer line under the sectoral breakdown naming who last saved it
-  ///
-  /// In en, this message translates to:
-  /// **'Last updated by {name}'**
-  String ecBoardSectoralUpdatedBy(String name);
-
-  /// No description provided for @ecBoardPendingSectoralCardTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Pending sectoral update'**
-  String get ecBoardPendingSectoralCardTitle;
-
-  /// No description provided for @ecBoardPendingSectoralCardSubtitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Not yet synced — tap to review or edit.'**
-  String get ecBoardPendingSectoralCardSubtitle;
-
-  /// No description provided for @ecBoardSectoralFormTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Sectoral & 4Ps Report'**
-  String get ecBoardSectoralFormTitle;
-
-  /// No description provided for @ecBoardSectoralFormSubtitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Manually-reported totals for this center and event — separate from Add Evacuee.'**
-  String get ecBoardSectoralFormSubtitle;
-
-  /// No description provided for @ecBoardSectoralFormFieldsHint.
-  ///
-  /// In en, this message translates to:
-  /// **'Enter the number of people in each category.'**
-  String get ecBoardSectoralFormFieldsHint;
-
-  /// No description provided for @ecBoardSectoralSaveButton.
-  ///
-  /// In en, this message translates to:
-  /// **'Save Sectoral & 4Ps'**
-  String get ecBoardSectoralSaveButton;
-
-  /// No description provided for @ecBoardSectoralSavedOfflineMessage.
-  ///
-  /// In en, this message translates to:
-  /// **'Saved offline. This will sync when you\'re back online.'**
-  String get ecBoardSectoralSavedOfflineMessage;
-
-  /// No description provided for @ecBoardSectoralSuccessMessage.
-  ///
-  /// In en, this message translates to:
-  /// **'Sectoral & 4Ps report updated successfully.'**
-  String get ecBoardSectoralSuccessMessage;
 
   /// No description provided for @ecBoardQuickDepartureTitle.
   ///
@@ -3237,6 +3195,354 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Quick Departure requires an internet connection, since it needs to check who\'s currently confirmed at this center.'**
   String get ecBoardQuickDepartureOfflineExplanation;
+
+  /// No description provided for @ecBoardAddEvacueeIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'Name and birthdate can be added later on the web dashboard\'s Evacuees page.'**
+  String get ecBoardAddEvacueeIntro;
+
+  /// No description provided for @ecBoardSectionWhoIsThisPerson.
+  ///
+  /// In en, this message translates to:
+  /// **'Who is this person?'**
+  String get ecBoardSectionWhoIsThisPerson;
+
+  /// No description provided for @ecBoardHeadNote.
+  ///
+  /// In en, this message translates to:
+  /// **'This person\'s age and sex will be used for the household head.'**
+  String get ecBoardHeadNote;
+
+  /// No description provided for @ecBoardThisPersonIsHead.
+  ///
+  /// In en, this message translates to:
+  /// **'This person is the household head'**
+  String get ecBoardThisPersonIsHead;
+
+  /// No description provided for @ecBoardNoHeadLinkedYet.
+  ///
+  /// In en, this message translates to:
+  /// **'This household has no head linked yet.'**
+  String get ecBoardNoHeadLinkedYet;
+
+  /// No description provided for @ecBoardSingleHeadedQuestion.
+  ///
+  /// In en, this message translates to:
+  /// **'Only one household head? (single-headed)'**
+  String get ecBoardSingleHeadedQuestion;
+
+  /// No description provided for @ecBoardAnswerNotYetKnown.
+  ///
+  /// In en, this message translates to:
+  /// **'Not yet known'**
+  String get ecBoardAnswerNotYetKnown;
+
+  /// No description provided for @ecBoardAnswerYes.
+  ///
+  /// In en, this message translates to:
+  /// **'Yes'**
+  String get ecBoardAnswerYes;
+
+  /// No description provided for @ecBoardAnswerNo.
+  ///
+  /// In en, this message translates to:
+  /// **'No'**
+  String get ecBoardAnswerNo;
+
+  /// No description provided for @ecBoardAnswerYesUnder18.
+  ///
+  /// In en, this message translates to:
+  /// **'Yes (under 18)'**
+  String get ecBoardAnswerYesUnder18;
+
+  /// No description provided for @ecBoardHeadSectionTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'About the actual household head'**
+  String get ecBoardHeadSectionTitle;
+
+  /// No description provided for @ecBoardHeadSectionSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Someone other than the person you\'re adding. Used until they\'re added and linked.'**
+  String get ecBoardHeadSectionSubtitle;
+
+  /// No description provided for @ecBoardHeadSexLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Head\'s sex'**
+  String get ecBoardHeadSexLabel;
+
+  /// No description provided for @ecBoardHeadIsMinorLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Head is a minor?'**
+  String get ecBoardHeadIsMinorLabel;
+
+  /// No description provided for @ecBoardWillBeRecordedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Will be recorded'**
+  String get ecBoardWillBeRecordedTitle;
+
+  /// No description provided for @ecBoardSummaryAdding.
+  ///
+  /// In en, this message translates to:
+  /// **'Adding 1 {sex}, {ageGroup}.'**
+  String ecBoardSummaryAdding(String sex, String ageGroup);
+
+  /// No description provided for @ecBoardSummaryChooseAgeSex.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose this person\'s age group and sex.'**
+  String get ecBoardSummaryChooseAgeSex;
+
+  /// No description provided for @ecBoardSummaryJoinsHousehold.
+  ///
+  /// In en, this message translates to:
+  /// **'Joins the household already here: {household}.'**
+  String ecBoardSummaryJoinsHousehold(String household);
+
+  /// No description provided for @ecBoardSummaryChooseHousehold.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose the household this person belongs to.'**
+  String get ecBoardSummaryChooseHousehold;
+
+  /// No description provided for @ecBoardSummaryBecomesHead.
+  ///
+  /// In en, this message translates to:
+  /// **'Becomes that household\'s head ({minor}).'**
+  String ecBoardSummaryBecomesHead(String minor);
+
+  /// No description provided for @ecBoardSummaryNewHousehold.
+  ///
+  /// In en, this message translates to:
+  /// **'New household: {name}, {barangay}.'**
+  String ecBoardSummaryNewHousehold(String name, String barangay);
+
+  /// No description provided for @ecBoardSummaryNoHeadName.
+  ///
+  /// In en, this message translates to:
+  /// **'(head\'s name not entered yet)'**
+  String get ecBoardSummaryNoHeadName;
+
+  /// No description provided for @ecBoardSummaryNoBarangay.
+  ///
+  /// In en, this message translates to:
+  /// **'no barangay chosen'**
+  String get ecBoardSummaryNoBarangay;
+
+  /// No description provided for @ecBoardSummaryHeadIsThisPerson.
+  ///
+  /// In en, this message translates to:
+  /// **'Head: this person ({minor}).'**
+  String ecBoardSummaryHeadIsThisPerson(String minor);
+
+  /// No description provided for @ecBoardSummaryHeadIsSomeoneElse.
+  ///
+  /// In en, this message translates to:
+  /// **'Head: someone else, {sex}, {minor}.'**
+  String ecBoardSummaryHeadIsSomeoneElse(String sex, String minor);
+
+  /// No description provided for @ecBoardSummarySexNotYetKnown.
+  ///
+  /// In en, this message translates to:
+  /// **'sex not yet known'**
+  String get ecBoardSummarySexNotYetKnown;
+
+  /// No description provided for @ecBoardSummaryMinorUnknown.
+  ///
+  /// In en, this message translates to:
+  /// **'minor or not: not yet known'**
+  String get ecBoardSummaryMinorUnknown;
+
+  /// No description provided for @ecBoardSummaryMinor.
+  ///
+  /// In en, this message translates to:
+  /// **'a minor'**
+  String get ecBoardSummaryMinor;
+
+  /// No description provided for @ecBoardSummaryNotMinor.
+  ///
+  /// In en, this message translates to:
+  /// **'not a minor'**
+  String get ecBoardSummaryNotMinor;
+
+  /// No description provided for @ecBoardSummarySingleHeaded.
+  ///
+  /// In en, this message translates to:
+  /// **'Single-headed: {answer}.'**
+  String ecBoardSummarySingleHeaded(String answer);
+
+  /// No description provided for @ecBoardSummaryAnswerUnknown.
+  ///
+  /// In en, this message translates to:
+  /// **'not yet known'**
+  String get ecBoardSummaryAnswerUnknown;
+
+  /// No description provided for @ecBoardSummaryAnswerYes.
+  ///
+  /// In en, this message translates to:
+  /// **'yes'**
+  String get ecBoardSummaryAnswerYes;
+
+  /// No description provided for @ecBoardSummaryAnswerNo.
+  ///
+  /// In en, this message translates to:
+  /// **'no'**
+  String get ecBoardSummaryAnswerNo;
+
+  /// No description provided for @ecBoardSummaryMale.
+  ///
+  /// In en, this message translates to:
+  /// **'male'**
+  String get ecBoardSummaryMale;
+
+  /// No description provided for @ecBoardSummaryFemale.
+  ///
+  /// In en, this message translates to:
+  /// **'female'**
+  String get ecBoardSummaryFemale;
+
+  /// No description provided for @ecBoardSummarySectoral.
+  ///
+  /// In en, this message translates to:
+  /// **'Sectoral: {flags}.'**
+  String ecBoardSummarySectoral(String flags);
+
+  /// No description provided for @ecBoardSummaryNoSectoral.
+  ///
+  /// In en, this message translates to:
+  /// **'No sectoral details.'**
+  String get ecBoardSummaryNoSectoral;
+
+  /// No description provided for @ecBoardSectoralLiveExplanation.
+  ///
+  /// In en, this message translates to:
+  /// **'Counted from each evacuee\'s sectoral details. Child- and single-headed families are counted once per household, by the head\'s sex, from the answers given when the household was added.'**
+  String get ecBoardSectoralLiveExplanation;
+
+  /// No description provided for @familyMemberDetailsPending.
+  ///
+  /// In en, this message translates to:
+  /// **'Member {index} — details pending'**
+  String familyMemberDetailsPending(int index);
+
+  /// No description provided for @familyMemberCheckedInAt.
+  ///
+  /// In en, this message translates to:
+  /// **'Checked in at {center}'**
+  String familyMemberCheckedInAt(String center);
+
+  /// No description provided for @familyMemberCheckedInUnspecified.
+  ///
+  /// In en, this message translates to:
+  /// **'Checked in at unspecified location'**
+  String get familyMemberCheckedInUnspecified;
+
+  /// No description provided for @familyMemberCheckedOut.
+  ///
+  /// In en, this message translates to:
+  /// **'Checked out'**
+  String get familyMemberCheckedOut;
+
+  /// No description provided for @familyMembersNeedConnection.
+  ///
+  /// In en, this message translates to:
+  /// **'Connect to the internet to see who\'s still checked in and to check someone out.'**
+  String get familyMembersNeedConnection;
+
+  /// No description provided for @familyHeadNotLinked.
+  ///
+  /// In en, this message translates to:
+  /// **'Head not yet linked. Counts use the answers given for the head ({answers}) until a member is linked. When the head arrives, add them with Add Evacuee → Already here and tick \"This person is the household head\".'**
+  String familyHeadNotLinked(String answers);
+
+  /// No description provided for @familyHeadNotLinkedNothingKnown.
+  ///
+  /// In en, this message translates to:
+  /// **'Head not yet linked. Nothing is known about the head yet until a member is linked. When the head arrives, add them with Add Evacuee → Already here and tick \"This person is the household head\".'**
+  String get familyHeadNotLinkedNothingKnown;
+
+  /// No description provided for @familyLegacyBulkEntryNotice.
+  ///
+  /// In en, this message translates to:
+  /// **'Legacy bulk entry — needs manual review. Anonymous people from an old headcount, not a real family.'**
+  String get familyLegacyBulkEntryNotice;
+
+  /// No description provided for @checkOutButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Check out'**
+  String get checkOutButton;
+
+  /// No description provided for @checkOutDialogTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Check out {name}'**
+  String checkOutDialogTitle(String name);
+
+  /// No description provided for @checkOutDialogSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Closes their stay at {center}, so they no longer count as here now.'**
+  String checkOutDialogSubtitle(String center);
+
+  /// No description provided for @checkOutTheirCurrentLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'their current location'**
+  String get checkOutTheirCurrentLocation;
+
+  /// No description provided for @checkOutReasonLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Reason'**
+  String get checkOutReasonLabel;
+
+  /// No description provided for @checkOutReturnedHome.
+  ///
+  /// In en, this message translates to:
+  /// **'Returned home'**
+  String get checkOutReturnedHome;
+
+  /// No description provided for @checkOutTransferred.
+  ///
+  /// In en, this message translates to:
+  /// **'Transferred elsewhere'**
+  String get checkOutTransferred;
+
+  /// No description provided for @checkOutReturnedHomeLower.
+  ///
+  /// In en, this message translates to:
+  /// **'returned home'**
+  String get checkOutReturnedHomeLower;
+
+  /// No description provided for @checkOutTransferredLower.
+  ///
+  /// In en, this message translates to:
+  /// **'transferred elsewhere'**
+  String get checkOutTransferredLower;
+
+  /// No description provided for @checkOutConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Check out {name} as {reason}? They\'ll no longer count as here now.'**
+  String checkOutConfirm(String name, String reason);
+
+  /// No description provided for @checkOutMemberPendingName.
+  ///
+  /// In en, this message translates to:
+  /// **'Member {index} (details pending)'**
+  String checkOutMemberPendingName(int index);
+
+  /// No description provided for @checkOutSucceeded.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} checked out.'**
+  String checkOutSucceeded(String name);
 }
 
 class _AppLocalizationsDelegate

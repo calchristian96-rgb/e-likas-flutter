@@ -4,7 +4,6 @@ import '../../../../core/database/staff_database.dart';
 import '../../domain/entities/ec_board_quick_count.dart';
 import '../models/cached_quick_count_codec.dart';
 import '../models/pending_ec_board_entry_model.dart';
-import '../models/pending_quick_count_edit_model.dart';
 
 /// Drift-backed CRUD over the EC Board offline queue, in the encrypted
 /// staff [StaffDatabase] — mirrors `PendingQueueLocalDataSource`
@@ -54,17 +53,30 @@ class EcBoardLocalDataSource {
   static PendingEcBoardEntriesCompanion _toCompanion(
     PendingEcBoardEntryModel m,
   ) {
+    // true when ticked, otherwise null ("not recorded") — never false.
+    Value<bool?> flag(String wire) =>
+        Value(m.sectoralFlags.contains(wire) ? true : null);
     return PendingEcBoardEntriesCompanion.insert(
       localId: m.localId,
       evacuationCenterId: m.evacuationCenterId,
       evacuationEventId: m.evacuationEventId,
       sex: m.sex,
       ageBracket: m.ageBracket,
+      isPwd: flag('is_pwd'),
+      isPregnant: flag('is_pregnant'),
+      isLactating: flag('is_lactating'),
+      isSoloParent: flag('is_solo_parent'),
+      isIndigenousPerson: flag('is_indigenous_person'),
+      isFourPsBeneficiary: flag('is_4ps_beneficiary'),
       householdMode: m.householdMode,
       existingFamilyRemoteId: Value(m.existingFamilyRemoteId),
       existingFamilyLocalId: Value(m.existingFamilyLocalId),
       newHouseholdHeadName: Value(m.newHouseholdHeadName),
       newHouseholdBarangayId: Value(m.newHouseholdBarangayId),
+      headIsSelf: Value(m.head.headIsSelf),
+      isSingleHeaded: Value(m.head.isSingleHeaded),
+      headIsMinor: Value(m.head.headIsMinor),
+      headSex: Value(m.head.headSex),
       householdLabel: m.householdLabel,
       syncStatus: m.syncStatus,
       attemptCount: Value(m.attemptCount),
@@ -98,92 +110,20 @@ class EcBoardLocalDataSource {
       createdAtEpochMs: row.createdAtEpochMs,
       updatedAtEpochMs: row.updatedAtEpochMs,
       ownerStaffId: row.ownerStaffId,
-    );
-  }
-
-  // --- PendingQuickCountEdits: one mutable row per (center, event,
-  // --- owner) — see that table's own doc comment.
-
-  Future<List<PendingQuickCountEditModel>> getAllQuickCountEdits() async {
-    final rows = await _db.select(_db.pendingQuickCountEdits).get();
-    return rows.map(_quickCountEditFromRow).toList();
-  }
-
-  Future<PendingQuickCountEditModel?> getQuickCountEdit({
-    required int centerId,
-    required int evacuationEventId,
-    required int ownerStaffId,
-  }) async {
-    final row =
-        await (_db.select(_db.pendingQuickCountEdits)..where(
-              (t) =>
-                  t.evacuationCenterId.equals(centerId) &
-                  t.evacuationEventId.equals(evacuationEventId) &
-                  t.ownerStaffId.equals(ownerStaffId),
-            ))
-            .getSingleOrNull();
-    return row == null ? null : _quickCountEditFromRow(row);
-  }
-
-  Future<void> putQuickCountEdit(PendingQuickCountEditModel model) async {
-    await _db
-        .into(_db.pendingQuickCountEdits)
-        .insertOnConflictUpdate(_quickCountEditToCompanion(model));
-  }
-
-  Future<void> deleteQuickCountEdit({
-    required int centerId,
-    required int evacuationEventId,
-    required int ownerStaffId,
-  }) async {
-    await (_db.delete(_db.pendingQuickCountEdits)..where(
-          (t) =>
-              t.evacuationCenterId.equals(centerId) &
-              t.evacuationEventId.equals(evacuationEventId) &
-              t.ownerStaffId.equals(ownerStaffId),
-        ))
-        .go();
-  }
-
-  static PendingQuickCountEditsCompanion _quickCountEditToCompanion(
-    PendingQuickCountEditModel m,
-  ) {
-    return PendingQuickCountEditsCompanion.insert(
-      evacuationCenterId: m.evacuationCenterId,
-      evacuationEventId: m.evacuationEventId,
-      ownerStaffId: m.ownerStaffId,
-      beneficiaries4ps: m.beneficiaries4ps,
-      sectoralGroupsJson: PendingQuickCountEditModel.encodeSectoralGroups(
-        m.sectoralGroups,
+      sectoralFlags: {
+        if (row.isPwd == true) 'is_pwd',
+        if (row.isPregnant == true) 'is_pregnant',
+        if (row.isLactating == true) 'is_lactating',
+        if (row.isSoloParent == true) 'is_solo_parent',
+        if (row.isIndigenousPerson == true) 'is_indigenous_person',
+        if (row.isFourPsBeneficiary == true) 'is_4ps_beneficiary',
+      },
+      head: (
+        headIsSelf: row.headIsSelf,
+        isSingleHeaded: row.isSingleHeaded,
+        headIsMinor: row.headIsMinor,
+        headSex: row.headSex,
       ),
-      syncStatus: m.syncStatus,
-      attemptCount: Value(m.attemptCount),
-      lastAttemptAtEpochMs: Value(m.lastAttemptAtEpochMs),
-      lastErrorCategory: Value(m.lastErrorCategory),
-      lastErrorMessage: Value(m.lastErrorMessage),
-      createdAtEpochMs: m.createdAtEpochMs,
-      updatedAtEpochMs: m.updatedAtEpochMs,
-    );
-  }
-
-  static PendingQuickCountEditModel _quickCountEditFromRow(
-    PendingQuickCountEditRow row,
-  ) {
-    return PendingQuickCountEditModel(
-      evacuationCenterId: row.evacuationCenterId,
-      evacuationEventId: row.evacuationEventId,
-      ownerStaffId: row.ownerStaffId,
-      beneficiaries4ps: row.beneficiaries4ps,
-      sectoralGroups: PendingQuickCountEditModel.decodeSectoralGroups(
-        row.sectoralGroupsJson,
-      ),
-      syncStatus: row.syncStatus,
-      attemptCount: row.attemptCount,
-      lastAttemptAtEpochMs: row.lastAttemptAtEpochMs,
-      lastErrorCategory: row.lastErrorCategory,
-      lastErrorMessage: row.lastErrorMessage,
-      createdAtEpochMs: row.createdAtEpochMs,
-      updatedAtEpochMs: row.updatedAtEpochMs,
     );
   }
 

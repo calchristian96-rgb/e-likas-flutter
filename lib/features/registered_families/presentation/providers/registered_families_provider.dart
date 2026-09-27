@@ -9,6 +9,7 @@ import '../../data/datasources/registered_families_local_datasource.dart';
 import '../../data/datasources/registered_families_remote_datasource.dart';
 import '../../data/repositories/registered_families_repository_impl.dart';
 import '../../data/services/registered_families_sync_timestamps.dart';
+import '../../domain/entities/family_record.dart';
 import '../../domain/entities/registered_family.dart';
 import '../../domain/entities/registered_families_snapshot.dart';
 import '../../domain/repositories/registered_families_repository.dart';
@@ -97,4 +98,28 @@ Future<List<RegisteredFamiliesGroup>> registeredFamiliesGrouped(Ref ref) async {
 @riverpod
 Future<List<RegisteredFamily>> registeredFamiliesCacheOnly(Ref ref) {
   return ref.watch(registeredFamiliesRepositoryProvider).getCachedOnly();
+}
+
+/// One family's live record for the detail sheet — members, who's still
+/// checked in, head link. Never cached (see `FamilyRecord`); throws a
+/// `NetworkFailure` offline, which the sheet explains.
+@riverpod
+Future<FamilyRecord> familyRecord(Ref ref, int familyId) async {
+  final result = await ref
+      .watch(registeredFamiliesRepositoryProvider)
+      .getRecord(familyId);
+  return switch (result) {
+    Success(:final value) => value,
+    Failed(:final failure) => throw failure,
+  };
+}
+
+/// Check out one member (online only). `keepAlive` for the same reason
+/// as `staffSyncNowProvider`: callers use it one-shot via `ref.read`.
+@Riverpod(keepAlive: true)
+Future<Result<void>> Function(int evacueeId, CheckOutReason reason)
+checkOutEvacuee(Ref ref) {
+  return (evacueeId, reason) => ref
+      .read(registeredFamiliesRepositoryProvider)
+      .checkOut(evacueeId, reason);
 }

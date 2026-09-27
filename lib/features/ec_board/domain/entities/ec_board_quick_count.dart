@@ -48,18 +48,13 @@ class EcBoardAgeGroupTotal {
 
 /// One row of `GET /evacuation-centers/{id}/quick-count`'s
 /// `sectoral_groups` breakdown — confirmed against
-/// `EvacuationCenterQuickCountResource` on the real backend. A
-/// manually-reported aggregate number (`PUT .../quick-count`) rather
-/// than something derived from individual evacuee records — `POST
-/// /evacuation-centers/{id}/evacuees` ("Add Evacuee") has no
-/// sector-related field in its validation rules at all, confirmed
-/// directly against the controller, and the backend's own docblock
-/// explains why: sectoral flags are only known once a family's full
-/// details are filled in, well after the fast headcount. Always all 8
-/// categories, zero-filled by the backend for any category with no
-/// reported count yet — never partial. Editable from this app via the
-/// sectoral/4Ps edit flow (see `SectoralGroupDraft`), same offline
-/// queue-then-sync pattern as Add Evacuee.
+/// `EvacuationCenterQuickCountResource` on the real backend. Always
+/// computed live by the server, never typed in: the six per-person
+/// groups from each current evacuee's own flags (see
+/// `PerPersonSectoralFlag`), and child-/single-headed family once per
+/// household from its head answers, by the head's sex (see
+/// `EcBoardEntryDraft.isSingleHeaded`). Always all 8 categories,
+/// zero-filled — never partial.
 class EcBoardSectoralGroupCount {
   const EcBoardSectoralGroupCount({
     required this.group,
@@ -109,11 +104,10 @@ class EcBoardQuickCount {
   final int personsCumulative;
   final int personsNow;
 
-  /// The standalone "4Ps Beneficiary Families" header count —
-  /// manually-reported family-level total, distinct from the
-  /// individual person-level male/female counts on the sectoral
-  /// table's own `four_ps_beneficiary` row. Editable via the same
-  /// sectoral/4Ps edit flow.
+  /// The standalone "4Ps Beneficiary Families" header count — live,
+  /// families here now with a 4Ps member, distinct from the per-person
+  /// male/female counts on the sectoral table's own
+  /// `four_ps_beneficiary` row.
   final int beneficiaries4ps;
 
   final List<EcBoardAgeGroupCount> ageGroups;
@@ -123,14 +117,15 @@ class EcBoardQuickCount {
   /// used directly instead of re-summing [ageGroups] client-side.
   final EcBoardAgeGroupTotal ageGroupsTotal;
 
-  /// Manually-reported aggregate — see [EcBoardSectoralGroupCount]'s
+  /// Live, server-computed — see [EcBoardSectoralGroupCount]'s
   /// doc comment.
   final List<EcBoardSectoralGroupCount> sectoralGroups;
 
-  /// Who last saved the sectoral/4Ps figures, and when — null when
-  /// nothing has ever been reported for this center+event yet (the
-  /// backend hands back a fresh, unsaved instance in that case rather
-  /// than 404ing).
+  /// The board row's own last write — null for a center+event with no
+  /// row yet (the backend hands back a fresh, unsaved instance rather
+  /// than 404ing). Not shown: nothing on the board is typed in anymore,
+  /// so "last updated by" would credit whoever last touched the row for
+  /// figures the server computes live.
   final String? updatedByName;
   final DateTime? updatedAt;
 

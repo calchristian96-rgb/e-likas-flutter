@@ -1,3 +1,20 @@
+/// Household head answers exactly as stored — every one nullable, so an
+/// entry queued before they existed reads as "not yet known" / not the
+/// head. See `EcBoardEntryDraft.headIsSelf`.
+typedef HeadAnswers = ({
+  bool? headIsSelf,
+  bool? isSingleHeaded,
+  bool? headIsMinor,
+  String? headSex,
+});
+
+const HeadAnswers noHeadAnswers = (
+  headIsSelf: null,
+  isSingleHeaded: null,
+  headIsMinor: null,
+  headSex: null,
+);
+
 /// Data-layer shape of one queued EC Board entry — the in-memory
 /// object `EcBoardLocalDataSource` reads/writes to Drift. Mirrors
 /// `PendingFamilyRegistrationModel`'s role exactly.
@@ -22,6 +39,8 @@ class PendingEcBoardEntryModel {
     required this.createdAtEpochMs,
     required this.updatedAtEpochMs,
     this.ownerStaffId,
+    this.sectoralFlags = const {},
+    this.head = noHeadAnswers,
   });
 
   final String localId;
@@ -44,6 +63,16 @@ class PendingEcBoardEntryModel {
   final int updatedAtEpochMs;
   final int? ownerStaffId;
 
+  /// Wire names (`is_pwd`, …) of the sectoral flags ticked for this
+  /// person — stored as six nullable bool columns (true or null), see
+  /// `PendingEcBoardEntries`.
+  final Set<String> sectoralFlags;
+
+  /// The household head answers, stored as four nullable columns (see
+  /// `PendingEcBoardEntries.headIsSelf`) — replaced as a whole on every
+  /// save, never merged.
+  final HeadAnswers head;
+
   PendingEcBoardEntryModel copyWith({
     int? evacuationEventId,
     String? sex,
@@ -65,6 +94,8 @@ class PendingEcBoardEntryModel {
     bool clearLastErrorMessage = false,
     int? updatedAtEpochMs,
     int? ownerStaffId,
+    Set<String>? sectoralFlags,
+    HeadAnswers? head,
   }) {
     return PendingEcBoardEntryModel(
       localId: localId,
@@ -95,6 +126,8 @@ class PendingEcBoardEntryModel {
       createdAtEpochMs: createdAtEpochMs,
       updatedAtEpochMs: updatedAtEpochMs ?? this.updatedAtEpochMs,
       ownerStaffId: ownerStaffId ?? this.ownerStaffId,
+      sectoralFlags: sectoralFlags ?? this.sectoralFlags,
+      head: head ?? this.head,
     );
   }
 }

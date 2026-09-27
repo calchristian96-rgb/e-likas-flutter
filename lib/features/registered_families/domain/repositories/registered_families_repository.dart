@@ -1,4 +1,5 @@
 import '../../../../core/error/result.dart';
+import '../entities/family_record.dart';
 import '../entities/registered_family.dart';
 import '../entities/registered_families_snapshot.dart';
 
@@ -21,4 +22,13 @@ abstract class RegisteredFamiliesRepository {
   /// (never throws) when nothing is cached yet or no session is
   /// resolved.
   Future<List<RegisteredFamily>> getCachedOnly();
+
+  /// Live only, never cached (see [FamilyRecord]) — a [NetworkFailure]
+  /// offline.
+  Future<Result<FamilyRecord>> getRecord(int familyId);
+
+  /// Online only, like the web's Check out — never queued: closing a
+  /// stay is a real, lasting change staff confirm against the current
+  /// record, not something to replay later from a stale one.
+  Future<Result<void>> checkOut(int evacueeId, CheckOutReason reason);
 }

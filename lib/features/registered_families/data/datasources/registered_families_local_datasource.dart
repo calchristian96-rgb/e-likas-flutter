@@ -62,6 +62,8 @@ class RegisteredFamiliesLocalDataSource {
       is4psBeneficiary: Value(m.is4psBeneficiary),
       createdAtEpochMs: Value(m.createdAtEpochMs),
       memberNamesNewlineJoined: Value(m.memberNames.join('\n')),
+      hasHeadLinked: Value(m.hasHeadLinked),
+      isLegacyBulkEntry: Value(m.isLegacyBulkEntry),
     );
   }
 
@@ -84,6 +86,8 @@ class RegisteredFamiliesLocalDataSource {
       memberNames: row.memberNamesNewlineJoined.isEmpty
           ? const []
           : row.memberNamesNewlineJoined.split('\n'),
+      hasHeadLinked: row.hasHeadLinked,
+      isLegacyBulkEntry: row.isLegacyBulkEntry,
     );
   }
 }

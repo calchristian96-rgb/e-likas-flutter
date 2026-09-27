@@ -1537,13 +1537,13 @@ class AppLocalizationsFil extends AppLocalizations {
   String get ecBoardFieldSex => 'Kasarian';
 
   @override
-  String get ecBoardFieldAgeBracket => 'Age Bracket';
+  String get ecBoardFieldAgeBracket => 'Age group';
 
   @override
   String get ecBoardFieldHousehold => 'Sambahayan';
 
   @override
-  String get ecBoardHouseholdExisting => 'Umiiral na sambahayan';
+  String get ecBoardHouseholdExisting => 'Narito na';
 
   @override
   String get ecBoardHouseholdNew => 'Bagong sambahayan';
@@ -1574,14 +1574,14 @@ class AppLocalizationsFil extends AppLocalizations {
       'Hindi pa naka-sync ang sambahayang ito. Awtomatikong maki-sync ang entry na ito kapag na-sync na ito.';
 
   @override
-  String get ecBoardNewHouseholdHeadName => 'Pangalan ng Puno ng Sambahayan';
+  String get ecBoardNewHouseholdHeadName => 'Pangalan ng puno ng sambahayan';
 
   @override
   String get ecBoardSubmitButton => 'I-save ang Evacuee';
 
   @override
   String get ecBoardValidationBanner =>
-      'Pakikumpleto ang kasarian, age bracket, at sambahayan bago i-save.';
+      'Pakikumpleto ang kasarian, age group, at sambahayan bago i-save.';
 
   @override
   String get ecBoardSavedOfflineMessage =>
@@ -1603,10 +1603,6 @@ class AppLocalizationsFil extends AppLocalizations {
 
   @override
   String get ecBoardSectoralSectionTitle => 'Sectoral Group';
-
-  @override
-  String get ecBoardPendingSectoralEmptyState =>
-      'Walang nakabinbing update sa sectoral sa device na ito.';
 
   @override
   String get ecBoardLastKnownSectionTitle => 'Huling Kilalang Breakdown';
@@ -1675,13 +1671,6 @@ class AppLocalizationsFil extends AppLocalizations {
   String get ecBoardBracketSeniorCitizen => 'Senior Citizen';
 
   @override
-  String get ecBoardSectoralGroupsSectionTitle => 'Mga Sektoral na Grupo';
-
-  @override
-  String get ecBoardSectoralGroupsSectionSubtitle =>
-      'Mga kabuuang iniulat ng staff, hiwalay na ipinasok mula sa Add Evacuee.';
-
-  @override
   String get ecBoardSectoralPwd => 'Taong May Kapansanan (PWD)';
 
   @override
@@ -1707,11 +1696,32 @@ class AppLocalizationsFil extends AppLocalizations {
   String get ecBoardSectoralIndigenousPeoples => 'Katutubong Mamamayan';
 
   @override
-  String get ecBoardSyncNowExplanation =>
-      'Ang I-sync Ngayon ay nagpapadala ng iyong mga offline entry (bagong evacuee, sectoral update) sa server.';
+  String get ecBoardSectoralFlagsTitle => 'Sectoral na detalye (opsyonal)';
 
   @override
-  String get ecBoardSectoralEditButton => 'I-edit ang Sectoral at 4Ps';
+  String get ecBoardSectoralFlagsHelp =>
+      'Lagyan ng tsek lang ang alam mo. Ang walang tsek ay hindi naitala — hindi ito nangangahulugang \"hindi\".';
+
+  @override
+  String ecBoardSectoralFlagsTicked(int count) {
+    return '$count ang may tsek';
+  }
+
+  @override
+  String get ecBoardPendingSectoralFromEntriesTitle =>
+      'Idinagdag sa device na ito';
+
+  @override
+  String get ecBoardPendingSectoralFromEntriesSubtitle =>
+      'Hindi pa naka-sync: mga sectoral na detalye, at mga sagot tungkol sa puno ng mga bagong sambahayan, mula sa mga nakabinbing evacuee ng device na ito para sa event na ito. Kasabay silang masi-sync ng mga evacuee na iyon.';
+
+  @override
+  String get ecBoardPendingSectoralFromEntriesEmpty =>
+      'Walang sectoral na detalye o sagot tungkol sa sambahayan sa mga nakabinbing evacuee ng device na ito.';
+
+  @override
+  String get ecBoardSyncNowExplanation =>
+      'Ang I-sync Ngayon ay nagpapadala sa server ng mga evacuee na idinagdag mo nang offline — kasama ang kanilang sectoral na detalye at mga sagot tungkol sa sambahayan.';
 
   @override
   String get ecBoardFamiliesLabel => 'Pamilya';
@@ -1730,40 +1740,6 @@ class AppLocalizationsFil extends AppLocalizations {
   @override
   String get ecBoardFourPsBeneficiaryFamilies =>
       '4Ps Beneficiary na mga Pamilya';
-
-  @override
-  String ecBoardSectoralUpdatedBy(String name) {
-    return 'Huling in-update ni $name';
-  }
-
-  @override
-  String get ecBoardPendingSectoralCardTitle => 'Nakabinbin na sectoral update';
-
-  @override
-  String get ecBoardPendingSectoralCardSubtitle =>
-      'Hindi pa naka-sync — i-tap para suriin o i-edit.';
-
-  @override
-  String get ecBoardSectoralFormTitle => 'Ulat ng Sectoral at 4Ps';
-
-  @override
-  String get ecBoardSectoralFormSubtitle =>
-      'Manu-manong naiuulat na kabuuan para sa center at event na ito — hiwalay sa Add Evacuee.';
-
-  @override
-  String get ecBoardSectoralFormFieldsHint =>
-      'Ilagay ang bilang ng tao sa bawat kategorya.';
-
-  @override
-  String get ecBoardSectoralSaveButton => 'I-save ang Sectoral at 4Ps';
-
-  @override
-  String get ecBoardSectoralSavedOfflineMessage =>
-      'Na-save offline. Mag-si-sync ito kapag online ka na.';
-
-  @override
-  String get ecBoardSectoralSuccessMessage =>
-      'Matagumpay na na-update ang ulat ng Sectoral at 4Ps.';
 
   @override
   String get ecBoardQuickDepartureTitle => 'Quick Departure';
@@ -1801,4 +1777,224 @@ class AppLocalizationsFil extends AppLocalizations {
   @override
   String get ecBoardQuickDepartureOfflineExplanation =>
       'Kailangan ng internet connection ang Quick Departure dahil kailangan nitong tingnan kung sino ang kasalukuyang nakumpirma sa center na ito.';
+
+  @override
+  String get ecBoardAddEvacueeIntro =>
+      'Maaaring idagdag ang pangalan at kaarawan sa ibang pagkakataon sa Evacuees page ng web dashboard.';
+
+  @override
+  String get ecBoardSectionWhoIsThisPerson => 'Sino ang taong ito?';
+
+  @override
+  String get ecBoardHeadNote =>
+      'Gagamitin ang edad at kasarian ng taong ito para sa puno ng sambahayan.';
+
+  @override
+  String get ecBoardThisPersonIsHead => 'Ang taong ito ang puno ng sambahayan';
+
+  @override
+  String get ecBoardNoHeadLinkedYet =>
+      'Wala pang naka-link na puno ang sambahayang ito.';
+
+  @override
+  String get ecBoardSingleHeadedQuestion =>
+      'Iisa lang ba ang puno ng sambahayan? (single-headed)';
+
+  @override
+  String get ecBoardAnswerNotYetKnown => 'Hindi pa alam';
+
+  @override
+  String get ecBoardAnswerYes => 'Oo';
+
+  @override
+  String get ecBoardAnswerNo => 'Hindi';
+
+  @override
+  String get ecBoardAnswerYesUnder18 => 'Oo (wala pang 18)';
+
+  @override
+  String get ecBoardHeadSectionTitle =>
+      'Tungkol sa tunay na puno ng sambahayan';
+
+  @override
+  String get ecBoardHeadSectionSubtitle =>
+      'Ibang tao sa idinaragdag mo. Gagamitin hanggang maidagdag at ma-link sila.';
+
+  @override
+  String get ecBoardHeadSexLabel => 'Kasarian ng puno';
+
+  @override
+  String get ecBoardHeadIsMinorLabel => 'Menor de edad ba ang puno?';
+
+  @override
+  String get ecBoardWillBeRecordedTitle => 'Itatala';
+
+  @override
+  String ecBoardSummaryAdding(String sex, String ageGroup) {
+    return 'Magdaragdag ng 1 $sex, $ageGroup.';
+  }
+
+  @override
+  String get ecBoardSummaryChooseAgeSex =>
+      'Piliin ang age group at kasarian ng taong ito.';
+
+  @override
+  String ecBoardSummaryJoinsHousehold(String household) {
+    return 'Sasali sa sambahayang narito na: $household.';
+  }
+
+  @override
+  String get ecBoardSummaryChooseHousehold =>
+      'Piliin ang sambahayan ng taong ito.';
+
+  @override
+  String ecBoardSummaryBecomesHead(String minor) {
+    return 'Magiging puno ng sambahayang iyon ($minor).';
+  }
+
+  @override
+  String ecBoardSummaryNewHousehold(String name, String barangay) {
+    return 'Bagong sambahayan: $name, $barangay.';
+  }
+
+  @override
+  String get ecBoardSummaryNoHeadName => '(wala pang pangalan ng puno)';
+
+  @override
+  String get ecBoardSummaryNoBarangay => 'walang napiling barangay';
+
+  @override
+  String ecBoardSummaryHeadIsThisPerson(String minor) {
+    return 'Puno: ang taong ito ($minor).';
+  }
+
+  @override
+  String ecBoardSummaryHeadIsSomeoneElse(String sex, String minor) {
+    return 'Puno: ibang tao, $sex, $minor.';
+  }
+
+  @override
+  String get ecBoardSummarySexNotYetKnown => 'hindi pa alam ang kasarian';
+
+  @override
+  String get ecBoardSummaryMinorUnknown =>
+      'menor de edad o hindi: hindi pa alam';
+
+  @override
+  String get ecBoardSummaryMinor => 'menor de edad';
+
+  @override
+  String get ecBoardSummaryNotMinor => 'hindi menor de edad';
+
+  @override
+  String ecBoardSummarySingleHeaded(String answer) {
+    return 'Single-headed: $answer.';
+  }
+
+  @override
+  String get ecBoardSummaryAnswerUnknown => 'hindi pa alam';
+
+  @override
+  String get ecBoardSummaryAnswerYes => 'oo';
+
+  @override
+  String get ecBoardSummaryAnswerNo => 'hindi';
+
+  @override
+  String get ecBoardSummaryMale => 'lalaki';
+
+  @override
+  String get ecBoardSummaryFemale => 'babae';
+
+  @override
+  String ecBoardSummarySectoral(String flags) {
+    return 'Sectoral: $flags.';
+  }
+
+  @override
+  String get ecBoardSummaryNoSectoral => 'Walang sectoral na detalye.';
+
+  @override
+  String get ecBoardSectoralLiveExplanation =>
+      'Binibilang mula sa sectoral na detalye ng bawat evacuee. Ang child- at single-headed na pamilya ay binibilang nang isang beses bawat sambahayan, ayon sa kasarian ng puno, mula sa mga sagot noong idinagdag ang sambahayan.';
+
+  @override
+  String familyMemberDetailsPending(int index) {
+    return 'Miyembro $index — kulang pa ang detalye';
+  }
+
+  @override
+  String familyMemberCheckedInAt(String center) {
+    return 'Naka-check in sa $center';
+  }
+
+  @override
+  String get familyMemberCheckedInUnspecified =>
+      'Naka-check in sa hindi tukoy na lugar';
+
+  @override
+  String get familyMemberCheckedOut => 'Naka-check out na';
+
+  @override
+  String get familyMembersNeedConnection =>
+      'Kumonekta sa internet para makita kung sino pa ang naka-check in at para mag-check out ng isang tao.';
+
+  @override
+  String familyHeadNotLinked(String answers) {
+    return 'Wala pang naka-link na puno. Ginagamit ng bilang ang mga sagot para sa puno ($answers) hanggang may ma-link na miyembro. Pagdating ng puno, idagdag sila sa Add Evacuee → Narito na at i-tsek ang \"Ang taong ito ang puno ng sambahayan\".';
+  }
+
+  @override
+  String get familyHeadNotLinkedNothingKnown =>
+      'Wala pang naka-link na puno. Wala pang alam tungkol sa puno hanggang may ma-link na miyembro. Pagdating ng puno, idagdag sila sa Add Evacuee → Narito na at i-tsek ang \"Ang taong ito ang puno ng sambahayan\".';
+
+  @override
+  String get familyLegacyBulkEntryNotice =>
+      'Lumang bulk entry — kailangang suriin nang mano-mano. Mga hindi kilalang tao mula sa lumang headcount, hindi tunay na pamilya.';
+
+  @override
+  String get checkOutButton => 'Check out';
+
+  @override
+  String checkOutDialogTitle(String name) {
+    return 'I-check out si $name';
+  }
+
+  @override
+  String checkOutDialogSubtitle(String center) {
+    return 'Isasara ang kanilang pananatili sa $center, kaya hindi na sila bibilangin bilang narito ngayon.';
+  }
+
+  @override
+  String get checkOutTheirCurrentLocation => 'kanilang kasalukuyang lugar';
+
+  @override
+  String get checkOutReasonLabel => 'Dahilan';
+
+  @override
+  String get checkOutReturnedHome => 'Umuwi na';
+
+  @override
+  String get checkOutTransferred => 'Lumipat sa ibang lugar';
+
+  @override
+  String get checkOutReturnedHomeLower => 'umuwi na';
+
+  @override
+  String get checkOutTransferredLower => 'lumipat sa ibang lugar';
+
+  @override
+  String checkOutConfirm(String name, String reason) {
+    return 'I-check out si $name bilang $reason? Hindi na sila bibilangin bilang narito ngayon.';
+  }
+
+  @override
+  String checkOutMemberPendingName(int index) {
+    return 'Miyembro $index (kulang pa ang detalye)';
+  }
+
+  @override
+  String checkOutSucceeded(String name) {
+    return 'Na-check out na si $name.';
+  }
 }

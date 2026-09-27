@@ -87,8 +87,8 @@ Future<PendingRegistrationDetail?> pendingRegistrationDetail(
 /// reaches this via a one-shot `ref.read(staffSyncNowProvider)()`,
 /// never `ref.watch`, so nothing keeps a plain autoDispose instance of
 /// this alive while the returned closure is still mid-flight — with
-/// three sequential network phases (family queue, EC Board queue,
-/// sectoral/4Ps queue) now chained through `service.run()`, that flight
+/// two sequential network phases (family queue, then EC Board queue)
+/// chained through `service.run()`, that flight
 /// is long enough that Riverpod could dispose this provider (and the
 /// `ref` the closure already closed over) before the closure reaches
 /// its own `ref.invalidate(...)` calls, throwing "Cannot use the Ref
@@ -112,7 +112,6 @@ Future<StaffSyncRunResult> Function() staffSyncNow(Ref ref) {
     ref.invalidate(ecBoardEntriesForCenterProvider);
     ref.invalidate(ecBoardCountsForCenterProvider);
     ref.invalidate(ecBoardQuickCountProvider);
-    ref.invalidate(pendingQuickCountEditProvider);
 
     // A registration that just synced here may now be a choosable
     // "existing household" on EC Board's Add Evacuee picker — refresh
@@ -162,9 +161,8 @@ Future<StaffSyncRunResult> Function() staffSyncFamilyRegistrationsOnly(
   };
 }
 
-/// EC Board's own "Sync Now" next to its Age & Sex pending table —
-/// pushes only the evacuee queue, not the unrelated sectoral/4Ps edit
-/// [staffSyncQuickCountEditOnlyProvider] covers. `keepAlive: true` for
+/// EC Board's own "Sync Now" next to its pending evacuees — pushes only
+/// the evacuee queue, not family registrations. `keepAlive: true` for
 /// the same reason as [staffSyncNowProvider].
 @Riverpod(keepAlive: true)
 Future<StaffSyncRunResult> Function() staffSyncEcBoardEntriesOnly(Ref ref) {
@@ -175,26 +173,12 @@ Future<StaffSyncRunResult> Function() staffSyncEcBoardEntriesOnly(Ref ref) {
     ref.invalidate(ecBoardEntriesForCenterProvider);
     ref.invalidate(ecBoardCountsForCenterProvider);
     if (result.processed > 0) {
+      // Every synced entry moves into the server's live figures (age/
+      // sex and sectoral alike), so the Last Known board is now stale.
+      ref.invalidate(ecBoardQuickCountProvider);
       ref.invalidate(registeredFamiliesProvider);
       ref.invalidate(registeredFamiliesCacheOnlyProvider);
     }
-    if (result.stoppedForAuth) ref.invalidate(staffAuthProvider);
-
-    return result;
-  };
-}
-
-/// EC Board's own "Sync Now" next to its Sectoral Group pending card —
-/// pushes only the pending sectoral/4Ps edit, not the unrelated
-/// evacuee queue [staffSyncEcBoardEntriesOnlyProvider] covers.
-@Riverpod(keepAlive: true)
-Future<StaffSyncRunResult> Function() staffSyncQuickCountEditOnly(Ref ref) {
-  return () async {
-    final service = ref.read(staffSyncServiceProvider);
-    final result = await service.syncQuickCountEditOnly();
-
-    ref.invalidate(ecBoardQuickCountProvider);
-    ref.invalidate(pendingQuickCountEditProvider);
     if (result.stoppedForAuth) ref.invalidate(staffAuthProvider);
 
     return result;

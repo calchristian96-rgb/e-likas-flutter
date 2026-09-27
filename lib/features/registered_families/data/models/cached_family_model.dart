@@ -29,6 +29,8 @@ class CachedFamilyModel {
     this.is4psBeneficiary = false,
     this.createdAtEpochMs,
     this.memberNames = const [],
+    this.hasHeadLinked = true,
+    this.isLegacyBulkEntry = false,
   });
 
   /// Derived from `ownerStaffId:familyId` via [fastHash] — a stable,
@@ -62,4 +64,6 @@ class CachedFamilyModel {
   final bool is4psBeneficiary;
   final int? createdAtEpochMs;
   final List<String> memberNames;
+  final bool hasHeadLinked;
+  final bool isLegacyBulkEntry;
 }

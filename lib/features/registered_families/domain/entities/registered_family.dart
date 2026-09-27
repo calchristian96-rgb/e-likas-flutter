@@ -18,6 +18,8 @@ class RegisteredFamily {
     this.is4psBeneficiary = false,
     this.createdAt,
     this.memberNames = const [],
+    this.hasHeadLinked = true,
+    this.isLegacyBulkEntry = false,
   });
 
   /// The backend's real `families.id` — used only to link back to the
@@ -59,4 +61,12 @@ class RegisteredFamily {
   /// backend enforces that scoping; this cache only ever holds what
   /// the authenticated `GET /families` response actually returned).
   final List<String> memberNames;
+
+  /// Whether a member is linked as this family's head — see
+  /// `CachedFamilies.hasHeadLinked`.
+  final bool hasHeadLinked;
+
+  /// A leftover bulk-entry household from the retired typed headcount
+  /// — see `CachedFamilies.isLegacyBulkEntry`.
+  final bool isLegacyBulkEntry;
 }

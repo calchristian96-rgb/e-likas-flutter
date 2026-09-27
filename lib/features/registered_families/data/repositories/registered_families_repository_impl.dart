@@ -3,6 +3,8 @@ import 'package:dio/dio.dart';
 import '../../../../core/connectivity/connectivity_service.dart';
 import '../../../../core/error/failure.dart';
 import '../../../../core/error/result.dart';
+import '../../../../core/network/staff_api_error_mapper.dart';
+import '../../domain/entities/family_record.dart';
 import '../../domain/entities/registered_family.dart';
 import '../../domain/entities/registered_families_snapshot.dart';
 import '../../domain/repositories/registered_families_repository.dart';
@@ -95,6 +97,74 @@ class RegisteredFamiliesRepositoryImpl implements RegisteredFamiliesRepository {
     return cachedModels.map(_toEntity).toList();
   }
 
+  @override
+  Future<Result<FamilyRecord>> getRecord(int familyId) async {
+    if (!await _connectivity.hasConnection) {
+      return const Failed(NetworkFailure('No connection.'));
+    }
+    try {
+      return Success(_toRecord(await _remote.fetchOne(familyId)));
+    } on DioException catch (e) {
+      return Failed(mapStaffDioError(e));
+    }
+  }
+
+  @override
+  Future<Result<void>> checkOut(int evacueeId, CheckOutReason reason) async {
+    if (!await _connectivity.hasConnection) {
+      return const Failed(NetworkFailure('No connection.'));
+    }
+    try {
+      await _remote.checkOut(evacueeId, reason.wireValue);
+      return const Success(null);
+    } on DioException catch (e) {
+      return Failed(mapStaffDioError(e));
+    }
+  }
+
+  FamilyRecord _toRecord(Map<String, dynamic> json) {
+    final head = json['head_of_family'] as Map<String, dynamic>?;
+    final members = (json['members'] as List? ?? [])
+        .cast<Map<String, dynamic>>();
+    return FamilyRecord(
+      id: json['id'] as int,
+      hasHeadLinked: head != null,
+      isLegacyBulkEntry: json['is_legacy_bulk_entry'] as bool? ?? false,
+      headSex: json['head_sex'] as String?,
+      isChildHeaded: json['is_child_headed'] as bool?,
+      members: [
+        for (final m in members) _toRecordMember(m, headId: head?['id']),
+      ],
+    );
+  }
+
+  FamilyRecordMember _toRecordMember(
+    Map<String, dynamic> json, {
+    required Object? headId,
+  }) {
+    // The open stay, if any — the most recent record with no date_out,
+    // exactly what `EvacueeController::checkOut` closes.
+    final records =
+        (json['evacuation_records'] as List? ?? [])
+            .cast<Map<String, dynamic>>()
+            .where((r) => r['date_out'] == null)
+            .toList()
+          ..sort(
+            (a, b) =>
+                '${b['date_in'] ?? ''}'.compareTo('${a['date_in'] ?? ''}'),
+          );
+    final open = records.firstOrNull;
+    final center = open?['evacuation_center'] as Map<String, dynamic>?;
+    return FamilyRecordMember(
+      id: json['id'] as int,
+      fullName: _collapseSpaces(json['full_name'] as String? ?? ''),
+      isPlaceholder: json['is_placeholder'] as bool? ?? false,
+      isHead: headId != null && json['id'] == headId,
+      hasOpenStay: open != null,
+      openStayCenterName: center?['name'] as String?,
+    );
+  }
+
   CachedFamilyModel _toCachedModel(
     Map<String, dynamic> json,
     int ownerStaffId,
@@ -113,7 +183,14 @@ class RegisteredFamiliesRepositoryImpl implements RegisteredFamiliesRepository {
       ownerStaffId: ownerStaffId,
       barangayId: barangay?['id'] as int?,
       barangayName: (barangay?['name'] as String?) ?? '',
-      headOfFamilyName: (headOfFamily?['full_name'] as String?) ?? '',
+      // The family's own `name` first — what an Add Evacuee household
+      // is labelled by, whose placeholder head has no name yet — then
+      // the linked head's, exactly as `FamilyResource` says to.
+      headOfFamilyName: _collapseSpaces(
+        (json['name'] as String?)?.trim().isNotEmpty == true
+            ? json['name'] as String
+            : (headOfFamily?['full_name'] as String?) ?? '',
+      ),
       homeAddress: json['home_address'] as String?,
       memberCount: (json['member_count'] as int?) ?? members.length,
       evacuationCenterName: evacuationCenter?['name'] as String?,
@@ -122,11 +199,18 @@ class RegisteredFamiliesRepositoryImpl implements RegisteredFamiliesRepository {
           ? null
           : DateTime.tryParse(createdAt)?.millisecondsSinceEpoch,
       memberNames: members
-          .map((m) => m['full_name'] as String? ?? '')
+          .map((m) => _collapseSpaces(m['full_name'] as String? ?? ''))
           .where((name) => name.isNotEmpty)
           .toList(),
+      hasHeadLinked: headOfFamily != null,
+      isLegacyBulkEntry: json['is_legacy_bulk_entry'] as bool? ?? false,
     );
   }
+
+  /// `full_name` joins first/middle/last with single spaces, so a blank
+  /// middle name leaves a double space ("Juan  Cruz").
+  static String _collapseSpaces(String name) =>
+      name.replaceAll(RegExp(r'\s+'), ' ').trim();
 
   RegisteredFamily _toEntity(CachedFamilyModel m) => RegisteredFamily(
     id: m.familyId,
@@ -141,5 +225,7 @@ class RegisteredFamiliesRepositoryImpl implements RegisteredFamiliesRepository {
         ? null
         : DateTime.fromMillisecondsSinceEpoch(m.createdAtEpochMs!),
     memberNames: m.memberNames,
+    hasHeadLinked: m.hasHeadLinked,
+    isLegacyBulkEntry: m.isLegacyBulkEntry,
   );
 }
