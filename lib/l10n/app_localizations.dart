@@ -1996,12 +1996,6 @@ abstract class AppLocalizations {
   /// **'Needs Attention'**
   String get staffWorkspaceNeedsAttentionCount;
 
-  /// No description provided for @staffWorkspaceFamilyRegistrationSection.
-  ///
-  /// In en, this message translates to:
-  /// **'Family Registration'**
-  String get staffWorkspaceFamilyRegistrationSection;
-
   /// No description provided for @staffWorkspaceEvacuationCentersSection.
   ///
   /// In en, this message translates to:
@@ -2032,23 +2026,47 @@ abstract class AppLocalizations {
   /// **'Pending Registrations'**
   String get staffWorkspacePendingRegistrations;
 
-  /// No description provided for @staffWorkspacePendingRegistrationsSubtitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Offline queue — review, edit, and sync'**
-  String get staffWorkspacePendingRegistrationsSubtitle;
-
   /// No description provided for @staffWorkspaceAllEvacuees.
   ///
   /// In en, this message translates to:
-  /// **'All Evacuees'**
+  /// **'Evacuees'**
   String get staffWorkspaceAllEvacuees;
 
   /// No description provided for @staffWorkspaceAllEvacueesSubtitle.
   ///
   /// In en, this message translates to:
-  /// **'Browse registered families'**
+  /// **'Synced families in your area'**
   String get staffWorkspaceAllEvacueesSubtitle;
+
+  /// No description provided for @registeredFamiliesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Registered Families'**
+  String get registeredFamiliesTitle;
+
+  /// No description provided for @registeredFamiliesWorkspaceSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'This device\'s saved records — synced or not'**
+  String get registeredFamiliesWorkspaceSubtitle;
+
+  /// No description provided for @registeredFamiliesSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Every family record saved on this device, from any barangay. Records from other barangays only appear here — Evacuees shows your own barangay\'s synced roster.'**
+  String get registeredFamiliesSubtitle;
+
+  /// No description provided for @registeredFamiliesNotSyncedSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Not yet synced'**
+  String get registeredFamiliesNotSyncedSection;
+
+  /// No description provided for @registeredFamiliesSyncedSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Synced'**
+  String get registeredFamiliesSyncedSection;
 
   /// No description provided for @staffWorkspaceSyncNow.
   ///
@@ -2097,12 +2115,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Working from a saved sign-in. Some actions need a connection.'**
   String get staffSessionOfflineBanner;
-
-  /// No description provided for @staffFamiliesPageTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Registered Families'**
-  String get staffFamiliesPageTitle;
 
   /// No description provided for @staffFamiliesEmptyState.
   ///

@@ -1,12 +1,14 @@
 import '../../../../core/error/result.dart';
 import '../entities/center_facility.dart';
 import '../entities/evacuation_center.dart';
+import '../entities/evacuation_centers_snapshot.dart';
 
 /// Contract the data layer implements. Domain and presentation depend
 /// on this abstraction only — never on Dio or Isar directly.
 abstract class EvacuationCentersRepository {
-  /// All evacuation centers, network-first with cache fallback.
-  Future<Result<List<EvacuationCenter>>> getAllCenters();
+  /// All evacuation centers, network-first with cache fallback — the
+  /// snapshot says which one it is.
+  Future<Result<EvacuationCentersSnapshot>> getAllCenters();
 
   /// One center's facilities checklist, live only — no offline cache,
   /// unlike [getAllCenters]/[getNearestCenters]. Used solely by the

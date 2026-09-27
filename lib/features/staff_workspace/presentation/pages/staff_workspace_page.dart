@@ -65,28 +65,15 @@ class _StaffWorkspaceBody extends ConsumerWidget {
           const SizedBox(height: 20),
           // Grouped by workflow rather than one flat list — mirrors
           // Settings' own sectioning. No standalone "Sync Now" action
-          // here: it used to push every pending queue at once with no
-          // indication that's what it did, easy to mistake for a
-          // scoped action given where it sat (right above Logout).
-          // Pending Registrations and EC Board — the two screens that
-          // actually have something to sync — each already have their
-          // own Sync Now exactly where that queue is visible.
-          _SectionLabel(title: l10n.staffWorkspaceFamilyRegistrationSection),
-          _WorkspaceAction(
-            icon: Icons.person_add_alt_1_outlined,
-            iconColor: theme.colorScheme.primary,
-            label: l10n.staffWorkspaceRegisterFamily,
-            subtitle: l10n.staffWorkspaceRegisterFamilySubtitle,
-            onTap: () => context.push('/settings/staff/register-family'),
-          ),
-          _WorkspaceAction(
-            icon: Icons.pending_actions_outlined,
-            iconColor: semantic.warning,
-            label: l10n.staffWorkspacePendingRegistrations,
-            subtitle: l10n.staffWorkspacePendingRegistrationsSubtitle,
-            onTap: () => context.push('/settings/staff/pending-registrations'),
-          ),
-          const SizedBox(height: 16),
+          // here: each screen with something to sync (EC Board,
+          // Registered Families) has its own, scoped to what it shows.
+          //
+          // "Register a Family" and "Pending Registrations" are no
+          // longer entries here — EC Board is the primary entry point,
+          // matching desktop/web. Both still exist, reachable by their
+          // direct routes: full registration from Registered Families'
+          // own button, and the pending queue as Registered Families'
+          // "Not yet synced" section.
           _SectionLabel(title: l10n.staffWorkspaceEvacuationCentersSection),
           // EC Board is its own top-level entry point (not reached via
           // Evacuation Centers management) — ahead of the management
@@ -121,6 +108,13 @@ class _StaffWorkspaceBody extends ConsumerWidget {
             label: l10n.staffWorkspaceAllEvacuees,
             subtitle: l10n.staffWorkspaceAllEvacueesSubtitle,
             onTap: () => context.push('/settings/staff/all-evacuees'),
+          ),
+          _WorkspaceAction(
+            icon: Icons.folder_shared_outlined,
+            iconColor: semantic.warning,
+            label: l10n.registeredFamiliesTitle,
+            subtitle: l10n.registeredFamiliesWorkspaceSubtitle,
+            onTap: () => context.push('/settings/staff/registered-families'),
           ),
           const SizedBox(height: 16),
           _WorkspaceAction(

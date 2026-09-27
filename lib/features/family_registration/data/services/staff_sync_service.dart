@@ -95,51 +95,83 @@ class StaffSyncService {
     }
     _running = true;
     try {
-      var processed = 0;
-      final queue = await _pendingQueueRepository.getPendingQueueInOrder();
+      final familyResult = await _runFamilyQueue();
+      if (familyResult.stoppedForAuth) return familyResult;
 
-      for (final item in queue) {
-        final localId = item.summary.localId;
-
-        // Checked before every single item, not just once at the
-        // start of the run — connectivity can drop mid-run on a real
-        // device, and there's no reason to attempt an item that's
-        // already known-doomed.
-        if (!await _connectivity.hasConnection) break;
-
-        await _pendingQueueRepository.markSyncing(localId);
-        final result = await _registrationRepository.submit(item.draft);
-
-        switch (result) {
-          case Success(:final value):
-            await _pendingQueueRepository.markSynced(localId);
-            await _promoteHouseholdReferences(
-              familyLocalId: localId,
-              remoteFamilyId: value,
-            );
-            processed++;
-          case Failed(:final failure):
-            if (failure is AuthFailure) {
-              await _pendingQueueRepository.markRetryLater(
-                localId,
-                message: failure.message,
-              );
-              return StaffSyncRunResult(
-                processed: processed,
-                stoppedForAuth: true,
-              );
-            }
-            await _applyFailure(localId, failure);
-        }
-      }
-
-      final ecResult = await _runEcBoardQueue(processed);
+      final ecResult = await _runEcBoardQueue(familyResult.processed);
       if (ecResult.stoppedForAuth) return ecResult;
 
       return _runQuickCountEditQueue(ecResult.processed);
     } finally {
       _running = false;
     }
+  }
+
+  /// Pushes only pending family registrations — used by Registered
+  /// Families' own "Sync Now" next to its "Not yet synced" section,
+  /// same "don't push what the staff member isn't looking at" reasoning
+  /// as [syncEcBoardEntriesOnly]. Still promotes any EC Board entry
+  /// that referenced a family synced here (a cheap local rewrite, not a
+  /// push) so that entry is ready the next time EC Board syncs.
+  Future<StaffSyncRunResult> syncFamilyRegistrationsOnly() async {
+    if (_running) {
+      return const StaffSyncRunResult(processed: 0, stoppedForAuth: false);
+    }
+    if (!await _connectivity.hasConnection) {
+      return const StaffSyncRunResult(
+        processed: 0,
+        stoppedForAuth: false,
+        wasOffline: true,
+      );
+    }
+    _running = true;
+    try {
+      return await _runFamilyQueue();
+    } finally {
+      _running = false;
+    }
+  }
+
+  Future<StaffSyncRunResult> _runFamilyQueue() async {
+    var processed = 0;
+    final queue = await _pendingQueueRepository.getPendingQueueInOrder();
+
+    for (final item in queue) {
+      final localId = item.summary.localId;
+
+      // Checked before every single item, not just once at the start
+      // of the run — connectivity can drop mid-run on a real device,
+      // and there's no reason to attempt an item that's already
+      // known-doomed.
+      if (!await _connectivity.hasConnection) break;
+
+      await _pendingQueueRepository.markSyncing(localId);
+      final result = await _registrationRepository.submit(item.draft);
+
+      switch (result) {
+        case Success(:final value):
+          await _pendingQueueRepository.markSynced(localId);
+          await _promoteHouseholdReferences(
+            familyLocalId: localId,
+            remoteFamilyId: value,
+          );
+          processed++;
+        case Failed(:final failure):
+          if (failure is AuthFailure) {
+            await _pendingQueueRepository.markRetryLater(
+              localId,
+              message: failure.message,
+            );
+            return StaffSyncRunResult(
+              processed: processed,
+              stoppedForAuth: true,
+            );
+          }
+          await _applyFailure(localId, failure);
+      }
+    }
+
+    return StaffSyncRunResult(processed: processed, stoppedForAuth: false);
   }
 
   /// Pushes only the EC Board evacuee queue — used by EC Board's own

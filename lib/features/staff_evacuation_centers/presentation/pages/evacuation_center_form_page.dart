@@ -229,7 +229,7 @@ class _EvacuationCenterFormBodyState
         // Every provider a resident/staff screen could be showing
         // stale center data from — refreshed rather than left to
         // silently disagree with what the server just confirmed.
-        ref.invalidate(allEvacuationCentersProvider);
+        ref.invalidate(allEvacuationCentersSnapshotProvider);
         if (_isEditing) {
           ref.invalidate(staffCenterDetailProvider(widget.editingCenter!.id));
         }

@@ -11,6 +11,7 @@ import '../../data/datasources/evacuation_centers_remote_datasource.dart';
 import '../../data/repositories/evacuation_centers_repository_impl.dart';
 import '../../domain/entities/center_facility.dart';
 import '../../domain/entities/evacuation_center.dart';
+import '../../domain/entities/evacuation_centers_snapshot.dart';
 import '../../domain/repositories/evacuation_centers_repository.dart';
 import '../../domain/usecases/get_all_evacuation_centers.dart';
 import '../../domain/usecases/get_nearest_evacuation_centers.dart';
@@ -31,15 +32,23 @@ EvacuationCentersRepository evacuationCentersRepository(Ref ref) {
   );
 }
 
-/// The full centers list — drives the Centers tab.
+/// The full centers list and whether it's the saved copy — for a screen
+/// that says so (see `OfflineBanner`). Invalidate this one to refresh:
+/// [allEvacuationCentersProvider] follows it.
 @riverpod
-Future<List<EvacuationCenter>> allEvacuationCenters(Ref ref) async {
+Future<EvacuationCentersSnapshot> allEvacuationCentersSnapshot(Ref ref) async {
   final repository = ref.watch(evacuationCentersRepositoryProvider);
   final result = await GetAllEvacuationCenters(repository).call();
   return switch (result) {
     Success(:final value) => value,
     Failed(:final failure) => throw failure,
   };
+}
+
+/// The full centers list — drives the Centers tab.
+@riverpod
+Future<List<EvacuationCenter>> allEvacuationCenters(Ref ref) async {
+  return (await ref.watch(allEvacuationCentersSnapshotProvider.future)).centers;
 }
 
 /// A single center for Center Details, found in the already-loaded
@@ -123,6 +132,6 @@ Future<void> centerPhotoRefresh(Ref ref, int centerId) async {
   final repository = ref.watch(evacuationCentersRepositoryProvider);
   final refreshed = await repository.refreshCenterPhotoIfMissing(centerId);
   if (refreshed) {
-    ref.invalidate(allEvacuationCentersProvider);
+    ref.invalidate(allEvacuationCentersSnapshotProvider);
   }
 }

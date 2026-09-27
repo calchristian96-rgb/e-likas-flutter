@@ -25,6 +25,7 @@ import '../../features/map/presentation/providers/map_provider.dart';
 import '../../features/family_registration/presentation/pages/family_registration_form_page.dart';
 import '../../features/family_registration/presentation/pages/pending_registration_detail_page.dart';
 import '../../features/family_registration/presentation/pages/pending_registrations_page.dart';
+import '../../features/registered_families/presentation/pages/registered_families_overview_page.dart';
 import '../../features/registered_families/presentation/pages/registered_families_page.dart';
 import '../../features/settings/presentation/pages/dev_settings_page.dart';
 import '../../features/settings/presentation/pages/offline_data_management_page.dart';
@@ -165,7 +166,7 @@ class _AppShellState extends ConsumerState<AppShell>
     // One refresh on the offline→online transition, not a loop: this
     // fires exactly once per transition because it's driven by
     // ref.listen's previous/next comparison, not a timer.
-    ref.invalidate(allEvacuationCentersProvider);
+    ref.invalidate(allEvacuationCentersSnapshotProvider);
     ref.invalidate(alertsSummaryProvider);
     ref.invalidate(alertsListProvider);
     ref.invalidate(mapDataProvider);
@@ -459,10 +460,17 @@ final GoRouter appRouter = GoRouter(
                         ),
                       ],
                     ),
+                    // "Evacuees" in the UI — the path is kept as-is so
+                    // any existing link still resolves.
                     GoRoute(
                       path: 'all-evacuees',
                       builder: (context, state) =>
                           const RegisteredFamiliesPage(),
+                    ),
+                    GoRoute(
+                      path: 'registered-families',
+                      builder: (context, state) =>
+                          const RegisteredFamiliesOverviewPage(),
                     ),
                     // Staff evacuation-center management (Part 2) —
                     // Edit is reached via Navigator.push from the

@@ -201,7 +201,8 @@ class _EvacuationCentersListPageState
                 error: (error, _) => _CenteredInScrollView(
                   child: ErrorState(
                     message: '${l10n.couldNotLoadCenters} — $error',
-                    onRetry: () => ref.invalidate(allEvacuationCentersProvider),
+                    onRetry: () =>
+                        ref.invalidate(allEvacuationCentersSnapshotProvider),
                   ),
                 ),
               ),

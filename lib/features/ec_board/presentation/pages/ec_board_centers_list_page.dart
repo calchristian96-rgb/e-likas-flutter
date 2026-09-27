@@ -120,7 +120,7 @@ class _EcBoardCentersListBodyState
               error: (error, stackTrace) => Center(
                 child: ErrorState(
                   message: l10n.couldNotLoadCenters,
-                  onRetry: () => ref.invalidate(allEvacuationCentersProvider),
+                  onRetry: () => ref.invalidate(allEvacuationCentersSnapshotProvider),
                 ),
               ),
             ),

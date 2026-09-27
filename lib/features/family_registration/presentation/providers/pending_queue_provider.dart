@@ -135,6 +135,33 @@ Future<StaffSyncRunResult> Function() staffSyncNow(Ref ref) {
   };
 }
 
+/// Registered Families' own "Sync Now" next to its "Not yet synced"
+/// section — pushes only pending family registrations, not EC Board's
+/// queues. `keepAlive: true` for the same reason as
+/// [staffSyncNowProvider].
+@Riverpod(keepAlive: true)
+Future<StaffSyncRunResult> Function() staffSyncFamilyRegistrationsOnly(
+  Ref ref,
+) {
+  return () async {
+    final service = ref.read(staffSyncServiceProvider);
+    final result = await service.syncFamilyRegistrationsOnly();
+
+    ref.invalidate(pendingQueueCountsProvider);
+    ref.invalidate(pendingRegistrationsProvider);
+    // A promoted EC Board household reference changes what EC Board's
+    // pending list shows, even though nothing there was pushed.
+    ref.invalidate(ecBoardEntriesForCenterProvider);
+    if (result.processed > 0) {
+      ref.invalidate(registeredFamiliesProvider);
+      ref.invalidate(registeredFamiliesCacheOnlyProvider);
+    }
+    if (result.stoppedForAuth) ref.invalidate(staffAuthProvider);
+
+    return result;
+  };
+}
+
 /// EC Board's own "Sync Now" next to its Age & Sex pending table —
 /// pushes only the evacuee queue, not the unrelated sectoral/4Ps edit
 /// [staffSyncQuickCountEditOnlyProvider] covers. `keepAlive: true` for

@@ -64,7 +64,7 @@ class OfflineDataOverview extends _$OfflineDataOverview {
   /// caller can show an honest partial-failure message rather than
   /// claiming full success.
   Future<bool> syncAll() async {
-    ref.invalidate(allEvacuationCentersProvider);
+    ref.invalidate(allEvacuationCentersSnapshotProvider);
     ref.invalidate(alertsSummaryProvider);
     ref.invalidate(alertsListProvider);
     ref.invalidate(mapDataProvider);
@@ -99,7 +99,7 @@ class OfflineDataOverview extends _$OfflineDataOverview {
     await ref.read(offlineCacheServiceProvider).clearAll();
     await ref.read(syncTimestampServiceProvider).clearAll();
 
-    ref.invalidate(allEvacuationCentersProvider);
+    ref.invalidate(allEvacuationCentersSnapshotProvider);
     ref.invalidate(alertsSummaryProvider);
     ref.invalidate(alertsListProvider);
     ref.invalidate(mapDataProvider);

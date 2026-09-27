@@ -38,10 +38,9 @@ List<EvacuationCenter> pinOwnBarangayFirst(
 /// center left over from elsewhere), or just [tileBuilder] applied
 /// straight down the list otherwise, so a session with no barangay
 /// (or a result set that's entirely one barangay) doesn't show a
-/// pointless single-group heading. Shared by every screen that lists
-/// centers barangay-pinned — the staff center-management list and EC
-/// Board's own center picker — so the grouping reads identically in
-/// both places.
+/// pointless single-group heading. Used by EC Board's citywide center
+/// picker — the one place staff reach other barangays' centers ("My
+/// Evacuation Centers" lists only their own barangay).
 List<Widget> buildBarangayGroupedCenterTiles({
   required List<EvacuationCenter> centers,
   required String? ownBarangayName,

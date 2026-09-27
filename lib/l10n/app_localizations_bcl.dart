@@ -1046,9 +1046,6 @@ class AppLocalizationsBcl extends AppLocalizations {
   String get staffWorkspaceNeedsAttentionCount => 'Needs Attention';
 
   @override
-  String get staffWorkspaceFamilyRegistrationSection => 'Family Registration';
-
-  @override
   String get staffWorkspaceEvacuationCentersSection => 'Evacuation Centers';
 
   @override
@@ -1065,14 +1062,28 @@ class AppLocalizationsBcl extends AppLocalizations {
   String get staffWorkspacePendingRegistrations => 'Pending Registrations';
 
   @override
-  String get staffWorkspacePendingRegistrationsSubtitle =>
-      'Offline queue — review, edit, and sync';
+  String get staffWorkspaceAllEvacuees => 'Evacuees';
 
   @override
-  String get staffWorkspaceAllEvacuees => 'All Evacuees';
+  String get staffWorkspaceAllEvacueesSubtitle =>
+      'Synced families in your area';
 
   @override
-  String get staffWorkspaceAllEvacueesSubtitle => 'Browse registered families';
+  String get registeredFamiliesTitle => 'Registered Families';
+
+  @override
+  String get registeredFamiliesWorkspaceSubtitle =>
+      'This device\'s saved records — synced or not';
+
+  @override
+  String get registeredFamiliesSubtitle =>
+      'Every family record saved on this device, from any barangay. Records from other barangays only appear here — Evacuees shows your own barangay\'s synced roster.';
+
+  @override
+  String get registeredFamiliesNotSyncedSection => 'Not yet synced';
+
+  @override
+  String get registeredFamiliesSyncedSection => 'Synced';
 
   @override
   String get staffWorkspaceSyncNow => 'Sync Now';
@@ -1101,9 +1112,6 @@ class AppLocalizationsBcl extends AppLocalizations {
   @override
   String get staffSessionOfflineBanner =>
       'Working from a saved sign-in. Some actions need a connection.';
-
-  @override
-  String get staffFamiliesPageTitle => 'Registered Families';
 
   @override
   String get staffFamiliesEmptyState => 'No families have been registered yet.';

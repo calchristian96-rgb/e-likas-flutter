@@ -5,6 +5,7 @@ import '../../../../core/sync/sync_timestamps.dart';
 import '../../../../core/utils/distance_calculator.dart';
 import '../../domain/entities/center_facility.dart';
 import '../../domain/entities/evacuation_center.dart';
+import '../../domain/entities/evacuation_centers_snapshot.dart';
 import '../../domain/repositories/evacuation_centers_repository.dart';
 import '../datasources/evacuation_centers_local_datasource.dart';
 import '../datasources/evacuation_centers_remote_datasource.dart';
@@ -27,13 +28,18 @@ class EvacuationCentersRepositoryImpl implements EvacuationCentersRepository {
   final SyncTimestampService _syncTimestamps;
 
   @override
-  Future<Result<List<EvacuationCenter>>> getAllCenters() async {
+  Future<Result<EvacuationCentersSnapshot>> getAllCenters() async {
     if (await _connectivity.hasConnection) {
       try {
         final models = await _remote.getAllCenters();
         await _local.cacheCenters(models);
         await _syncTimestamps.markSynced(SyncDomain.evacuationCenters);
-        return Success(models.map((m) => m.toEntity()).toList());
+        return Success(
+          EvacuationCentersSnapshot(
+            centers: models.map((m) => m.toEntity()).toList(),
+            isFromCache: false,
+          ),
+        );
       } catch (_) {
         // Network reported as available but the request still failed
         // — fall through to cache rather than surface an error the
@@ -44,7 +50,15 @@ class EvacuationCentersRepositoryImpl implements EvacuationCentersRepository {
     if (cached.isEmpty) {
       return const Failed(NetworkFailure('No centers available offline yet.'));
     }
-    return Success(cached.map((m) => m.toEntity()).toList());
+    return Success(
+      EvacuationCentersSnapshot(
+        centers: cached.map((m) => m.toEntity()).toList(),
+        isFromCache: true,
+        lastSyncedAt: await _syncTimestamps.getSynced(
+          SyncDomain.evacuationCenters,
+        ),
+      ),
+    );
   }
 
   @override

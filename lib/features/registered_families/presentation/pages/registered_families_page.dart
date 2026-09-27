@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../core/error/failure.dart';
@@ -12,12 +11,15 @@ import '../../domain/entities/registered_family.dart';
 import '../providers/registered_families_provider.dart';
 import '../widgets/registered_family_detail_sheet.dart';
 
-/// "Registered Families" — the actual `GET /families` roster this
-/// staff account is authorized to see (server-scoped, see
-/// `RegisteredFamiliesRepository`'s doc comment), cached for offline
-/// viewing. Deliberately named for what the data actually is (family
-/// units, each with a member count) rather than "All Evacuees," which
-/// would imply a flat per-person roster the backend doesn't return.
+/// "Evacuees" — the synced `GET /families` roster this staff account
+/// is authorized to see, cached for offline viewing. Already scoped to
+/// the staff member's own barangay for a barangay official: the
+/// backend force-applies `barangay_id` for that role
+/// (`FamilyController::index`, see `RegisteredFamiliesRemoteDataSource`),
+/// while admin/CSWD accounts deliberately see every barangay — so this
+/// page adds no client-side filter of its own, which would only break
+/// that citywide view. This device's own not-yet-synced records (any
+/// barangay) live on `RegisteredFamiliesOverviewPage` instead.
 class RegisteredFamiliesPage extends StatelessWidget {
   const RegisteredFamiliesPage({super.key});
 
@@ -49,7 +51,7 @@ class _RegisteredFamiliesBody extends ConsumerWidget {
     final groupedAsync = ref.watch(registeredFamiliesGroupedProvider);
 
     return Scaffold(
-      appBar: AppBar(title: Text(l10n.staffFamiliesPageTitle)),
+      appBar: AppBar(title: Text(l10n.staffWorkspaceAllEvacuees)),
       body: Column(
         children: [
           Padding(
@@ -57,16 +59,6 @@ class _RegisteredFamiliesBody extends ConsumerWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                // Always visible — online, offline, no cache, cache
-                // present, error, or mid-refresh — the registration
-                // form doesn't depend on this list ever having loaded.
-                FilledButton.icon(
-                  onPressed: () =>
-                      context.push('/settings/staff/register-family'),
-                  icon: const Icon(Icons.person_add_alt_1_outlined),
-                  label: Text(l10n.staffWorkspaceRegisterFamily),
-                ),
-                const SizedBox(height: 8),
                 _FreshnessLine(snapshotAsync: snapshotAsync, l10n: l10n),
               ],
             ),

@@ -1066,10 +1066,6 @@ class AppLocalizationsFil extends AppLocalizations {
   String get staffWorkspaceNeedsAttentionCount => 'Kailangan ng Aksyon';
 
   @override
-  String get staffWorkspaceFamilyRegistrationSection =>
-      'Pagpaparehistro ng Pamilya';
-
-  @override
   String get staffWorkspaceEvacuationCentersSection => 'Mga Evacuation Center';
 
   @override
@@ -1087,15 +1083,28 @@ class AppLocalizationsFil extends AppLocalizations {
       'Mga Naghihintay na Rehistrasyon';
 
   @override
-  String get staffWorkspacePendingRegistrationsSubtitle =>
-      'Offline na pila — suriin, i-edit, at i-sync';
-
-  @override
-  String get staffWorkspaceAllEvacuees => 'Lahat ng Evacuee';
+  String get staffWorkspaceAllEvacuees => 'Mga Evacuee';
 
   @override
   String get staffWorkspaceAllEvacueesSubtitle =>
-      'Tingnan ang mga rehistradong pamilya';
+      'Mga naka-sync na pamilya sa inyong lugar';
+
+  @override
+  String get registeredFamiliesTitle => 'Mga Rehistradong Pamilya';
+
+  @override
+  String get registeredFamiliesWorkspaceSubtitle =>
+      'Mga talaang naka-save sa device na ito — naka-sync man o hindi';
+
+  @override
+  String get registeredFamiliesSubtitle =>
+      'Lahat ng talaan ng pamilya na naka-save sa device na ito, mula sa kahit anong barangay. Dito lang lumalabas ang mga talaan mula sa ibang barangay — ang Mga Evacuee ay para sa naka-sync na talaan ng sarili mong barangay.';
+
+  @override
+  String get registeredFamiliesNotSyncedSection => 'Hindi pa naka-sync';
+
+  @override
+  String get registeredFamiliesSyncedSection => 'Naka-sync';
 
   @override
   String get staffWorkspaceSyncNow => 'I-sync Ngayon';
@@ -1124,9 +1133,6 @@ class AppLocalizationsFil extends AppLocalizations {
   @override
   String get staffSessionOfflineBanner =>
       'Gumagamit ng naka-save na sign-in. May mga aksyon na nangangailangan ng koneksyon.';
-
-  @override
-  String get staffFamiliesPageTitle => 'Mga Rehistradong Pamilya';
 
   @override
   String get staffFamiliesEmptyState => 'Wala pang nairehistrong pamilya.';
