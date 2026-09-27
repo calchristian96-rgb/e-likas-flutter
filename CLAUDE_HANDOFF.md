@@ -33,3 +33,20 @@ became its own tab) and one AppBar action added to Nearest Center.
 Next recommended task, per the approved plan: the full Alerts feature
 (list UI, details, Isar caching, pull-to-refresh) — everything the
 minimal Home slice deliberately deferred.
+
+## Known issues (pre-existing, not yet fixed)
+
+- **Settings → Connectivity row can stay on "Offline mode" while the app
+  is actually online.** Seen 2026-09-27 on a physical device: the app's
+  very first reachability probe failed (the backend link wasn't up yet),
+  and the row kept saying "Offline mode" even after later probes
+  succeeded and live data was loading. Probable cause, not yet
+  confirmed: the row watches `connectivityStatusProvider`
+  (`home_provider.dart`), i.e. `ConnectivityService.onConnectivityChanged`,
+  which only re-probes when the device's network changes; data screens
+  instead call `hasConnection()`, which re-probes on its own schedule.
+  So an early failed probe is never corrected for the row until the
+  network itself changes. Other widgets watching the same provider (the
+  Home status pill, EC Board's offline-only UI, Quick Departure's
+  offline notice) may be affected the same way. Deliberately left for
+  its own session — not part of the navigation/EC Board work.
