@@ -13,6 +13,8 @@ import '../../features/alerts/presentation/providers/alerts_summary_provider.dar
 import '../../features/alerts/presentation/widgets/alert_type_display.dart';
 import '../../features/ec_board/presentation/pages/ec_board_centers_list_page.dart';
 import '../../features/ec_board/presentation/pages/ec_board_page.dart';
+import '../../features/ec_board/presentation/providers/ec_board_provider.dart'
+    show ecBoardQuickCountProvider;
 import '../../features/emergency_hotlines/presentation/pages/emergency_hotlines_page.dart';
 import '../../features/evacuation_centers/presentation/pages/evacuation_center_details_page.dart';
 import '../../features/evacuation_centers/presentation/pages/evacuation_centers_list_page.dart';
@@ -170,6 +172,10 @@ class _AppShellState extends ConsumerState<AppShell>
     ref.invalidate(alertsSummaryProvider);
     ref.invalidate(alertsListProvider);
     ref.invalidate(mapDataProvider);
+    // An open EC Board's "Last Known" figures — a read from the server
+    // only. This device's pending entries are never synced from here;
+    // that only ever happens on a Sync Now tap.
+    ref.invalidate(ecBoardQuickCountProvider);
   }
 
   void _showNewAlertBanner(Alert alert) {
