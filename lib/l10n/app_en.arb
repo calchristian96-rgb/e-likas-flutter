@@ -605,25 +605,13 @@
   "ecBoardNoEventsAvailable": "No evacuation events are available yet.",
   "ecBoardAgeSexSectionTitle": "Age & Sex Disaggregation",
   "ecBoardSectoralSectionTitle": "Sectoral Group",
-  "ecBoardLastKnownSectionTitle": "Last Known Breakdown",
-  "ecBoardLastKnownSectionSubtitle": "Live count of evacuees already confirmed on the server.",
-  "ecBoardLastKnownUnavailable": "Could not load the last known breakdown.",
-  "ecBoardLastKnownEmpty": "No evacuees recorded for this center and event yet.",
   "ecBoardLastKnownFromCacheNotice": "Offline — showing the last confirmed figures saved on this device.",
-  "ecBoardUnclassifiedLabel": "Unclassified",
-  "ecBoardPendingSectionTitle": "This Device's Pending Entries",
-  "ecBoardPendingSectionSubtitle": "Not yet synced — kept separate from the confirmed count above.",
+  "ecBoardUnclassifiedLabel": "Not yet classified",
+  "ecBoardPendingSectionTitle": "Added on this device",
+  "ecBoardPendingSectionSubtitle": "Not yet synced, so shown here only — never added into the board's figures. Sync Now sends them, with their sectoral details and household answers.",
   "ecBoardSyncNowInlineButton": "Sync Now",
   "ecBoardPendingListEmpty": "No pending entries on this device.",
   "ecBoardTotalLabel": "Total",
-  "ecBoardMaleFemaleCount": "{male}M / {female}F",
-  "@ecBoardMaleFemaleCount": {
-    "description": "Compact male/female count pair shown next to each age bracket row",
-    "placeholders": {
-      "male": { "type": "int" },
-      "female": { "type": "int" }
-    }
-  },
   "ecBoardBracketInfant": "Infant (0-6 mo)",
   "ecBoardBracketToddler": "Toddler (7-24 mo)",
   "ecBoardBracketPreschooler": "Preschooler",
@@ -652,19 +640,7 @@
       "count": { "type": "int" }
     }
   },
-  "ecBoardPendingSectoralFromEntriesTitle": "Added on this device",
-  "ecBoardPendingSectoralFromEntriesSubtitle": "Not yet synced: sectoral details, and new households' head answers, from this device's pending evacuees for this event. They sync with those evacuees.",
-  "ecBoardPendingSectoralFromEntriesEmpty": "No sectoral details or household answers on this device's pending evacuees.",
 
-  "ecBoardSyncNowExplanation": "Sync Now sends the evacuees you added offline — with their sectoral details and household answers — to the server.",
-  "ecBoardFamiliesLabel": "Families",
-  "ecBoardPersonsLabel": "Persons",
-  "ecBoardNowLabel": "now",
-  "ecBoardCumulativeValue": "{count} cumulative",
-  "@ecBoardCumulativeValue": {
-    "description": "Small caption under a Now figure, e.g. '12 cumulative'",
-    "placeholders": { "count": { "type": "int" } }
-  },
   "ecBoardFourPsBeneficiaryFamilies": "4Ps Beneficiary Families",
 
 
@@ -752,5 +728,11 @@
   "checkOutMemberPendingName": "Member {index} (details pending)",
   "@checkOutMemberPendingName": { "placeholders": { "index": { "type": "int" } } },
   "checkOutSucceeded": "{name} checked out.",
-  "@checkOutSucceeded": { "placeholders": { "name": { "type": "String" } } }
+  "@checkOutSucceeded": { "placeholders": { "name": { "type": "String" } } },
+  "ecBoardHeaderCenter": "Evacuation center",
+  "ecBoardAsOf": "As of",
+  "ecBoardAsOfNotYetFetched": "Not yet fetched",
+  "ecBoardNotYetFetchedHelp": "This board hasn't been loaded on this device yet, so every figure shows a dash. Connect to the internet and try again.",
+  "ecBoardHeaderFamilies": "Families (Cum/Now)",
+  "ecBoardHeaderPersons": "Persons (Cum/Now)"
 }

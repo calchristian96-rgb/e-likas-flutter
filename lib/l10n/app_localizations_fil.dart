@@ -1605,34 +1605,18 @@ class AppLocalizationsFil extends AppLocalizations {
   String get ecBoardSectoralSectionTitle => 'Sectoral Group';
 
   @override
-  String get ecBoardLastKnownSectionTitle => 'Huling Kilalang Breakdown';
-
-  @override
-  String get ecBoardLastKnownSectionSubtitle =>
-      'Live na bilang ng mga evacuee na nakumpirma na sa server.';
-
-  @override
-  String get ecBoardLastKnownUnavailable =>
-      'Hindi na-load ang huling kilalang breakdown.';
-
-  @override
-  String get ecBoardLastKnownEmpty =>
-      'Wala pang naitalang evacuee para sa center at event na ito.';
-
-  @override
   String get ecBoardLastKnownFromCacheNotice =>
       'Offline — ipinapakita ang huling nakumpirmang bilang na naka-save sa device na ito.';
 
   @override
-  String get ecBoardUnclassifiedLabel => 'Hindi Naklasipika';
+  String get ecBoardUnclassifiedLabel => 'Hindi pa naka-uri';
 
   @override
-  String get ecBoardPendingSectionTitle =>
-      'Mga Nakabinbing Entry ng Device na Ito';
+  String get ecBoardPendingSectionTitle => 'Idinagdag sa device na ito';
 
   @override
   String get ecBoardPendingSectionSubtitle =>
-      'Hindi pa naka-sync — hiwalay sa nakumpirmang bilang sa itaas.';
+      'Hindi pa naka-sync, kaya dito lang ipinapakita — hindi kailanman idinadagdag sa mga numero ng board. Ipapadala ang mga ito ng I-sync Ngayon, kasama ang kanilang sectoral na detalye at mga sagot tungkol sa sambahayan.';
 
   @override
   String get ecBoardSyncNowInlineButton => 'I-sync Ngayon';
@@ -1643,11 +1627,6 @@ class AppLocalizationsFil extends AppLocalizations {
 
   @override
   String get ecBoardTotalLabel => 'Kabuuan';
-
-  @override
-  String ecBoardMaleFemaleCount(int male, int female) {
-    return '${male}L / ${female}B';
-  }
 
   @override
   String get ecBoardBracketInfant => 'Sanggol (0-6 buwan)';
@@ -1705,36 +1684,6 @@ class AppLocalizationsFil extends AppLocalizations {
   @override
   String ecBoardSectoralFlagsTicked(int count) {
     return '$count ang may tsek';
-  }
-
-  @override
-  String get ecBoardPendingSectoralFromEntriesTitle =>
-      'Idinagdag sa device na ito';
-
-  @override
-  String get ecBoardPendingSectoralFromEntriesSubtitle =>
-      'Hindi pa naka-sync: mga sectoral na detalye, at mga sagot tungkol sa puno ng mga bagong sambahayan, mula sa mga nakabinbing evacuee ng device na ito para sa event na ito. Kasabay silang masi-sync ng mga evacuee na iyon.';
-
-  @override
-  String get ecBoardPendingSectoralFromEntriesEmpty =>
-      'Walang sectoral na detalye o sagot tungkol sa sambahayan sa mga nakabinbing evacuee ng device na ito.';
-
-  @override
-  String get ecBoardSyncNowExplanation =>
-      'Ang I-sync Ngayon ay nagpapadala sa server ng mga evacuee na idinagdag mo nang offline — kasama ang kanilang sectoral na detalye at mga sagot tungkol sa sambahayan.';
-
-  @override
-  String get ecBoardFamiliesLabel => 'Pamilya';
-
-  @override
-  String get ecBoardPersonsLabel => 'Tao';
-
-  @override
-  String get ecBoardNowLabel => 'ngayon';
-
-  @override
-  String ecBoardCumulativeValue(int count) {
-    return '$count kumulatibo';
   }
 
   @override
@@ -1997,4 +1946,23 @@ class AppLocalizationsFil extends AppLocalizations {
   String checkOutSucceeded(String name) {
     return 'Na-check out na si $name.';
   }
+
+  @override
+  String get ecBoardHeaderCenter => 'Evacuation center';
+
+  @override
+  String get ecBoardAsOf => 'Hanggang';
+
+  @override
+  String get ecBoardAsOfNotYetFetched => 'Hindi pa nakukuha';
+
+  @override
+  String get ecBoardNotYetFetchedHelp =>
+      'Hindi pa naida-download ang board na ito sa device na ito, kaya gitling ang bawat numero. Kumonekta sa internet at subukan ulit.';
+
+  @override
+  String get ecBoardHeaderFamilies => 'Pamilya (Cum/Now)';
+
+  @override
+  String get ecBoardHeaderPersons => 'Tao (Cum/Now)';
 }

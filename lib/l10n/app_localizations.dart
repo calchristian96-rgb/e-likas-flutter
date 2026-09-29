@@ -2896,30 +2896,6 @@ abstract class AppLocalizations {
   /// **'Sectoral Group'**
   String get ecBoardSectoralSectionTitle;
 
-  /// No description provided for @ecBoardLastKnownSectionTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Last Known Breakdown'**
-  String get ecBoardLastKnownSectionTitle;
-
-  /// No description provided for @ecBoardLastKnownSectionSubtitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Live count of evacuees already confirmed on the server.'**
-  String get ecBoardLastKnownSectionSubtitle;
-
-  /// No description provided for @ecBoardLastKnownUnavailable.
-  ///
-  /// In en, this message translates to:
-  /// **'Could not load the last known breakdown.'**
-  String get ecBoardLastKnownUnavailable;
-
-  /// No description provided for @ecBoardLastKnownEmpty.
-  ///
-  /// In en, this message translates to:
-  /// **'No evacuees recorded for this center and event yet.'**
-  String get ecBoardLastKnownEmpty;
-
   /// No description provided for @ecBoardLastKnownFromCacheNotice.
   ///
   /// In en, this message translates to:
@@ -2929,19 +2905,19 @@ abstract class AppLocalizations {
   /// No description provided for @ecBoardUnclassifiedLabel.
   ///
   /// In en, this message translates to:
-  /// **'Unclassified'**
+  /// **'Not yet classified'**
   String get ecBoardUnclassifiedLabel;
 
   /// No description provided for @ecBoardPendingSectionTitle.
   ///
   /// In en, this message translates to:
-  /// **'This Device\'s Pending Entries'**
+  /// **'Added on this device'**
   String get ecBoardPendingSectionTitle;
 
   /// No description provided for @ecBoardPendingSectionSubtitle.
   ///
   /// In en, this message translates to:
-  /// **'Not yet synced — kept separate from the confirmed count above.'**
+  /// **'Not yet synced, so shown here only — never added into the board\'s figures. Sync Now sends them, with their sectoral details and household answers.'**
   String get ecBoardPendingSectionSubtitle;
 
   /// No description provided for @ecBoardSyncNowInlineButton.
@@ -2961,12 +2937,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Total'**
   String get ecBoardTotalLabel;
-
-  /// Compact male/female count pair shown next to each age bracket row
-  ///
-  /// In en, this message translates to:
-  /// **'{male}M / {female}F'**
-  String ecBoardMaleFemaleCount(int male, int female);
 
   /// No description provided for @ecBoardBracketInfant.
   ///
@@ -3075,54 +3045,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{count} ticked'**
   String ecBoardSectoralFlagsTicked(int count);
-
-  /// No description provided for @ecBoardPendingSectoralFromEntriesTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Added on this device'**
-  String get ecBoardPendingSectoralFromEntriesTitle;
-
-  /// No description provided for @ecBoardPendingSectoralFromEntriesSubtitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Not yet synced: sectoral details, and new households\' head answers, from this device\'s pending evacuees for this event. They sync with those evacuees.'**
-  String get ecBoardPendingSectoralFromEntriesSubtitle;
-
-  /// No description provided for @ecBoardPendingSectoralFromEntriesEmpty.
-  ///
-  /// In en, this message translates to:
-  /// **'No sectoral details or household answers on this device\'s pending evacuees.'**
-  String get ecBoardPendingSectoralFromEntriesEmpty;
-
-  /// No description provided for @ecBoardSyncNowExplanation.
-  ///
-  /// In en, this message translates to:
-  /// **'Sync Now sends the evacuees you added offline — with their sectoral details and household answers — to the server.'**
-  String get ecBoardSyncNowExplanation;
-
-  /// No description provided for @ecBoardFamiliesLabel.
-  ///
-  /// In en, this message translates to:
-  /// **'Families'**
-  String get ecBoardFamiliesLabel;
-
-  /// No description provided for @ecBoardPersonsLabel.
-  ///
-  /// In en, this message translates to:
-  /// **'Persons'**
-  String get ecBoardPersonsLabel;
-
-  /// No description provided for @ecBoardNowLabel.
-  ///
-  /// In en, this message translates to:
-  /// **'now'**
-  String get ecBoardNowLabel;
-
-  /// Small caption under a Now figure, e.g. '12 cumulative'
-  ///
-  /// In en, this message translates to:
-  /// **'{count} cumulative'**
-  String ecBoardCumulativeValue(int count);
 
   /// No description provided for @ecBoardFourPsBeneficiaryFamilies.
   ///
@@ -3543,6 +3465,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{name} checked out.'**
   String checkOutSucceeded(String name);
+
+  /// No description provided for @ecBoardHeaderCenter.
+  ///
+  /// In en, this message translates to:
+  /// **'Evacuation center'**
+  String get ecBoardHeaderCenter;
+
+  /// No description provided for @ecBoardAsOf.
+  ///
+  /// In en, this message translates to:
+  /// **'As of'**
+  String get ecBoardAsOf;
+
+  /// No description provided for @ecBoardAsOfNotYetFetched.
+  ///
+  /// In en, this message translates to:
+  /// **'Not yet fetched'**
+  String get ecBoardAsOfNotYetFetched;
+
+  /// No description provided for @ecBoardNotYetFetchedHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'This board hasn\'t been loaded on this device yet, so every figure shows a dash. Connect to the internet and try again.'**
+  String get ecBoardNotYetFetchedHelp;
+
+  /// No description provided for @ecBoardHeaderFamilies.
+  ///
+  /// In en, this message translates to:
+  /// **'Families (Cum/Now)'**
+  String get ecBoardHeaderFamilies;
+
+  /// No description provided for @ecBoardHeaderPersons.
+  ///
+  /// In en, this message translates to:
+  /// **'Persons (Cum/Now)'**
+  String get ecBoardHeaderPersons;
 }
 
 class _AppLocalizationsDelegate

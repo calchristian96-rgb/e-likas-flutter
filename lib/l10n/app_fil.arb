@@ -505,25 +505,13 @@
   "ecBoardNoEventsAvailable": "Wala pang available na evacuation event.",
   "ecBoardAgeSexSectionTitle": "Edad at Kasarian (Age & Sex)",
   "ecBoardSectoralSectionTitle": "Sectoral Group",
-  "ecBoardLastKnownSectionTitle": "Huling Kilalang Breakdown",
-  "ecBoardLastKnownSectionSubtitle": "Live na bilang ng mga evacuee na nakumpirma na sa server.",
-  "ecBoardLastKnownUnavailable": "Hindi na-load ang huling kilalang breakdown.",
-  "ecBoardLastKnownEmpty": "Wala pang naitalang evacuee para sa center at event na ito.",
   "ecBoardLastKnownFromCacheNotice": "Offline — ipinapakita ang huling nakumpirmang bilang na naka-save sa device na ito.",
-  "ecBoardUnclassifiedLabel": "Hindi Naklasipika",
-  "ecBoardPendingSectionTitle": "Mga Nakabinbing Entry ng Device na Ito",
-  "ecBoardPendingSectionSubtitle": "Hindi pa naka-sync — hiwalay sa nakumpirmang bilang sa itaas.",
+  "ecBoardUnclassifiedLabel": "Hindi pa naka-uri",
+  "ecBoardPendingSectionTitle": "Idinagdag sa device na ito",
+  "ecBoardPendingSectionSubtitle": "Hindi pa naka-sync, kaya dito lang ipinapakita — hindi kailanman idinadagdag sa mga numero ng board. Ipapadala ang mga ito ng I-sync Ngayon, kasama ang kanilang sectoral na detalye at mga sagot tungkol sa sambahayan.",
   "ecBoardSyncNowInlineButton": "I-sync Ngayon",
   "ecBoardPendingListEmpty": "Walang nakabinbing entry sa device na ito.",
   "ecBoardTotalLabel": "Kabuuan",
-  "ecBoardMaleFemaleCount": "{male}L / {female}B",
-  "@ecBoardMaleFemaleCount": {
-    "description": "Compact male/female count pair shown next to each age bracket row",
-    "placeholders": {
-      "male": { "type": "int" },
-      "female": { "type": "int" }
-    }
-  },
   "ecBoardBracketInfant": "Sanggol (0-6 buwan)",
   "ecBoardBracketToddler": "Toddler (7-24 buwan)",
   "ecBoardBracketPreschooler": "Preschooler",
@@ -543,15 +531,7 @@
   "ecBoardSectoralFlagsTitle": "Sectoral na detalye (opsyonal)",
   "ecBoardSectoralFlagsHelp": "Lagyan ng tsek lang ang alam mo. Ang walang tsek ay hindi naitala — hindi ito nangangahulugang \"hindi\".",
   "ecBoardSectoralFlagsTicked": "{count} ang may tsek",
-  "ecBoardPendingSectoralFromEntriesTitle": "Idinagdag sa device na ito",
-  "ecBoardPendingSectoralFromEntriesSubtitle": "Hindi pa naka-sync: mga sectoral na detalye, at mga sagot tungkol sa puno ng mga bagong sambahayan, mula sa mga nakabinbing evacuee ng device na ito para sa event na ito. Kasabay silang masi-sync ng mga evacuee na iyon.",
-  "ecBoardPendingSectoralFromEntriesEmpty": "Walang sectoral na detalye o sagot tungkol sa sambahayan sa mga nakabinbing evacuee ng device na ito.",
 
-  "ecBoardSyncNowExplanation": "Ang I-sync Ngayon ay nagpapadala sa server ng mga evacuee na idinagdag mo nang offline — kasama ang kanilang sectoral na detalye at mga sagot tungkol sa sambahayan.",
-  "ecBoardFamiliesLabel": "Pamilya",
-  "ecBoardPersonsLabel": "Tao",
-  "ecBoardNowLabel": "ngayon",
-  "ecBoardCumulativeValue": "{count} kumulatibo",
   "ecBoardFourPsBeneficiaryFamilies": "4Ps Beneficiary na mga Pamilya",
 
 
@@ -639,5 +619,11 @@
   "checkOutMemberPendingName": "Miyembro {index} (kulang pa ang detalye)",
   "@checkOutMemberPendingName": { "placeholders": { "index": { "type": "int" } } },
   "checkOutSucceeded": "Na-check out na si {name}.",
-  "@checkOutSucceeded": { "placeholders": { "name": { "type": "String" } } }
+  "@checkOutSucceeded": { "placeholders": { "name": { "type": "String" } } },
+  "ecBoardHeaderCenter": "Evacuation center",
+  "ecBoardAsOf": "Hanggang",
+  "ecBoardAsOfNotYetFetched": "Hindi pa nakukuha",
+  "ecBoardNotYetFetchedHelp": "Hindi pa naida-download ang board na ito sa device na ito, kaya gitling ang bawat numero. Kumonekta sa internet at subukan ulit.",
+  "ecBoardHeaderFamilies": "Pamilya (Cum/Now)",
+  "ecBoardHeaderPersons": "Tao (Cum/Now)"
 }

@@ -135,6 +135,7 @@ class EcBoardLocalDataSource {
     required int centerId,
     required int evacuationEventId,
     required EcBoardQuickCount count,
+    required DateTime cachedAt,
   }) async {
     await _db
         .into(_db.cachedQuickCounts)
@@ -143,7 +144,7 @@ class EcBoardLocalDataSource {
             evacuationCenterId: centerId,
             evacuationEventId: evacuationEventId,
             dataJson: CachedQuickCountCodec.encode(count),
-            cachedAtEpochMs: DateTime.now().millisecondsSinceEpoch,
+            cachedAtEpochMs: cachedAt.millisecondsSinceEpoch,
           ),
         );
   }
@@ -159,6 +160,11 @@ class EcBoardLocalDataSource {
                   t.evacuationEventId.equals(evacuationEventId),
             ))
             .getSingleOrNull();
-    return row == null ? null : CachedQuickCountCodec.decode(row.dataJson);
+    if (row == null) return null;
+    // The saved time is the "As of": how old these figures really are.
+    return CachedQuickCountCodec.decode(row.dataJson).stamped(
+      fetchedAt: DateTime.fromMillisecondsSinceEpoch(row.cachedAtEpochMs),
+      isFromCache: true,
+    );
   }
 }

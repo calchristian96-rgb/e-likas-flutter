@@ -238,16 +238,20 @@ class EcBoardRepositoryImpl implements EcBoardRepository {
     required int evacuationEventId,
   }) async {
     try {
-      final count = await _remote.getQuickCount(
+      final fetched = await _remote.getQuickCount(
         centerId: centerId,
         evacuationEventId: evacuationEventId,
       );
+      // One timestamp for both: the board's "As of" now, and the saved
+      // copy's age later when it's shown offline.
+      final fetchedAt = DateTime.now();
       await _local.cacheQuickCount(
         centerId: centerId,
         evacuationEventId: evacuationEventId,
-        count: count,
+        count: fetched,
+        cachedAt: fetchedAt,
       );
-      return Success(count);
+      return Success(fetched.stamped(fetchedAt: fetchedAt, isFromCache: false));
     } on DioException catch (e) {
       final cached = await _local.getCachedQuickCount(
         centerId: centerId,

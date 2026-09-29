@@ -1575,33 +1575,18 @@ class AppLocalizationsBcl extends AppLocalizations {
   String get ecBoardSectoralSectionTitle => 'Sectoral Group';
 
   @override
-  String get ecBoardLastKnownSectionTitle => 'Last Known Breakdown';
-
-  @override
-  String get ecBoardLastKnownSectionSubtitle =>
-      'Live count of evacuees already confirmed on the server.';
-
-  @override
-  String get ecBoardLastKnownUnavailable =>
-      'Could not load the last known breakdown.';
-
-  @override
-  String get ecBoardLastKnownEmpty =>
-      'No evacuees recorded for this center and event yet.';
-
-  @override
   String get ecBoardLastKnownFromCacheNotice =>
       'Offline — showing the last confirmed figures saved on this device.';
 
   @override
-  String get ecBoardUnclassifiedLabel => 'Unclassified';
+  String get ecBoardUnclassifiedLabel => 'Not yet classified';
 
   @override
-  String get ecBoardPendingSectionTitle => 'This Device\'s Pending Entries';
+  String get ecBoardPendingSectionTitle => 'Added on this device';
 
   @override
   String get ecBoardPendingSectionSubtitle =>
-      'Not yet synced — kept separate from the confirmed count above.';
+      'Not yet synced, so shown here only — never added into the board\'s figures. Sync Now sends them, with their sectoral details and household answers.';
 
   @override
   String get ecBoardSyncNowInlineButton => 'Sync Now';
@@ -1611,11 +1596,6 @@ class AppLocalizationsBcl extends AppLocalizations {
 
   @override
   String get ecBoardTotalLabel => 'Total';
-
-  @override
-  String ecBoardMaleFemaleCount(int male, int female) {
-    return '${male}M / ${female}F';
-  }
 
   @override
   String get ecBoardBracketInfant => 'Infant (0-6 mo)';
@@ -1672,35 +1652,6 @@ class AppLocalizationsBcl extends AppLocalizations {
   @override
   String ecBoardSectoralFlagsTicked(int count) {
     return '$count ticked';
-  }
-
-  @override
-  String get ecBoardPendingSectoralFromEntriesTitle => 'Added on this device';
-
-  @override
-  String get ecBoardPendingSectoralFromEntriesSubtitle =>
-      'Not yet synced: sectoral details, and new households\' head answers, from this device\'s pending evacuees for this event. They sync with those evacuees.';
-
-  @override
-  String get ecBoardPendingSectoralFromEntriesEmpty =>
-      'No sectoral details or household answers on this device\'s pending evacuees.';
-
-  @override
-  String get ecBoardSyncNowExplanation =>
-      'Sync Now sends the evacuees you added offline — with their sectoral details and household answers — to the server.';
-
-  @override
-  String get ecBoardFamiliesLabel => 'Families';
-
-  @override
-  String get ecBoardPersonsLabel => 'Persons';
-
-  @override
-  String get ecBoardNowLabel => 'now';
-
-  @override
-  String ecBoardCumulativeValue(int count) {
-    return '$count cumulative';
   }
 
   @override
@@ -1959,4 +1910,23 @@ class AppLocalizationsBcl extends AppLocalizations {
   String checkOutSucceeded(String name) {
     return '$name checked out.';
   }
+
+  @override
+  String get ecBoardHeaderCenter => 'Evacuation center';
+
+  @override
+  String get ecBoardAsOf => 'As of';
+
+  @override
+  String get ecBoardAsOfNotYetFetched => 'Not yet fetched';
+
+  @override
+  String get ecBoardNotYetFetchedHelp =>
+      'This board hasn\'t been loaded on this device yet, so every figure shows a dash. Connect to the internet and try again.';
+
+  @override
+  String get ecBoardHeaderFamilies => 'Families (Cum/Now)';
+
+  @override
+  String get ecBoardHeaderPersons => 'Persons (Cum/Now)';
 }

@@ -92,6 +92,7 @@ class EcBoardQuickCount {
     this.updatedByName,
     this.updatedAt,
     this.isFromCache = false,
+    this.fetchedAt,
   });
 
   /// Every family/person ever recorded arriving at this center for
@@ -135,4 +136,30 @@ class EcBoardQuickCount {
   /// same "the app couldn't reach the server to reconfirm this"
   /// signal `StaffSession.isFromCache` gives for a restored session.
   final bool isFromCache;
+
+  /// When these figures last arrived from the server — the board's
+  /// "As of". For a live fetch, the moment it succeeded; for the saved
+  /// copy, the moment that copy was saved (so offline it keeps saying
+  /// how old the figures are, never "now"). Null only for an instance
+  /// built without either (tests, or a copy saved before this existed).
+  final DateTime? fetchedAt;
+
+  /// The same figures, stamped with when they arrived and where from.
+  EcBoardQuickCount stamped({
+    required DateTime fetchedAt,
+    required bool isFromCache,
+  }) => EcBoardQuickCount(
+    familiesCumulative: familiesCumulative,
+    familiesNow: familiesNow,
+    personsCumulative: personsCumulative,
+    personsNow: personsNow,
+    beneficiaries4ps: beneficiaries4ps,
+    ageGroups: ageGroups,
+    ageGroupsTotal: ageGroupsTotal,
+    sectoralGroups: sectoralGroups,
+    updatedByName: updatedByName,
+    updatedAt: updatedAt,
+    isFromCache: isFromCache,
+    fetchedAt: fetchedAt,
+  );
 }
