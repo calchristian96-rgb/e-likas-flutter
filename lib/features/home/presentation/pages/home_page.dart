@@ -243,14 +243,9 @@ class _HomePageState extends ConsumerState<HomePage> {
   }
 }
 
-/// Premium navy header — logo, app name/tagline, location, connectivity
-/// pill, and a notifications shortcut over a subtle brand background.
-///
-/// The background image sits under a dark navy gradient overlay (see
-/// [_backgroundOpacity]) so header text always stays readable regardless
-/// of the artwork's own contrast; if the asset isn't present yet, the
-/// solid navy gradient alone stands in — same fallback pattern already
-/// used for the logo.
+/// Navy header — logo, app name/tagline, location, connectivity pill,
+/// and a notifications shortcut on plain logo navy, the same solid navy
+/// as the web dashboard's sidebar (no background artwork).
 class _BrandedHeader extends StatelessWidget {
   const _BrandedHeader({
     required this.isConnected,
@@ -267,7 +262,6 @@ class _BrandedHeader extends StatelessWidget {
 
   final AppLocalizations l10n;
 
-  static const double _backgroundOpacity = 0.28;
   static const Radius _cornerRadius = Radius.circular(26);
 
   @override
@@ -293,31 +287,10 @@ class _BrandedHeader extends StatelessWidget {
             bottomRight: _cornerRadius,
           ),
           child: DecoratedBox(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [semantic.navy, semantic.deepNavy],
-              ),
-            ),
+            decoration: BoxDecoration(color: semantic.navy),
             child: Stack(
               fit: StackFit.passthrough,
               children: [
-                Positioned.fill(
-                  child: Opacity(
-                    opacity: _backgroundOpacity,
-                    child: Image.asset(
-                      'assets/images/elikas_background.png',
-                      fit: BoxFit.cover,
-                      // No background artwork wired in yet: the navy
-                      // gradient above already reads as a finished header
-                      // on its own, so this silently yields to it rather
-                      // than showing a broken-image icon.
-                      errorBuilder: (context, error, stackTrace) =>
-                          const SizedBox.shrink(),
-                    ),
-                  ),
-                ),
                 SafeArea(
                   bottom: false,
                   child: Padding(

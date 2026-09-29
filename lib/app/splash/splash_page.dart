@@ -78,28 +78,11 @@ class _SplashPageState extends ConsumerState<SplashPage> {
       value: SystemUiOverlayStyle.light,
       child: Scaffold(
         backgroundColor: semantic.navy,
+        // Plain logo navy, no background artwork -- the same treatment as
+        // the web dashboard's sidebar and the native launch screen.
         body: Stack(
           fit: StackFit.expand,
           children: [
-            Image.asset(
-              'assets/images/elikas_background.png',
-              fit: BoxFit.cover,
-              // Falls back to a plain navy gradient if the artwork is ever
-              // missing, rather than a blank/broken-image screen — same
-              // reasoning as the logo's own fallback below.
-              errorBuilder: (context, error, stackTrace) => DecoratedBox(
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                    colors: [semantic.navy, semantic.deepNavy],
-                  ),
-                ),
-              ),
-            ),
-            // Dark navy overlay so the logo/text stay readable regardless
-            // of how bright or busy the background artwork is underneath.
-            Container(color: semantic.deepNavy.withValues(alpha: 0.68)),
             SafeArea(
               child: Padding(
                 padding: const EdgeInsets.symmetric(
