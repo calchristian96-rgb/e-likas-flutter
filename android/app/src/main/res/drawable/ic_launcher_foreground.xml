@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Adaptive-icon foreground layer: the real E-LIKAS logo
-     (res/drawable-nodpi/ic_launcher_logo.png, an unmodified copy of
-     assets/images/elikas_logo.png), inset so it sits inside the
-     OS mask's safe zone regardless of whether a given launcher crops
-     the icon to a circle, squircle, or rounded square. -->
+<!-- Adaptive-icon foreground layer: the E-LIKAS swirl on a white circle
+     (res/drawable-nodpi/ic_launcher_logo.png, made from the same mark as
+     assets/images/elikas_logo.png), inset so the circle stays inside
+     the OS mask's 66dp safe zone whether a launcher crops the icon to a
+     circle, squircle, or rounded square. Also the Android 12+ system
+     splash icon (values-v31/styles.xml), where it sits on navy. -->
 <inset xmlns:android="http://schemas.android.com/apk/res/android"
     android:drawable="@drawable/ic_launcher_logo"
-    android:insetLeft="14%"
-    android:insetTop="14%"
-    android:insetRight="14%"
-    android:insetBottom="14%" />
+    android:insetLeft="19%"
+    android:insetTop="19%"
+    android:insetRight="19%"
+    android:insetBottom="19%" />

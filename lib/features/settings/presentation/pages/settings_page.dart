@@ -200,13 +200,19 @@ class _SectionLabel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final semantic = Theme.of(context).extension<AppSemanticColors>()!;
+    final theme = Theme.of(context);
+    final semantic = theme.extension<AppSemanticColors>()!;
+    // Logo navy on the light page; on the dark page navy text would be
+    // near-invisible (under 2:1), so it takes the secondary text color.
+    final color = theme.brightness == Brightness.dark
+        ? theme.colorScheme.onSurfaceVariant
+        : semantic.navy;
     return Padding(
       padding: const EdgeInsets.fromLTRB(6, 0, 6, 8),
       child: Text(
         title.toUpperCase(),
-        style: Theme.of(context).textTheme.labelSmall?.copyWith(
-          color: semantic.navy,
+        style: theme.textTheme.labelSmall?.copyWith(
+          color: color,
           letterSpacing: 0.6,
         ),
       ),

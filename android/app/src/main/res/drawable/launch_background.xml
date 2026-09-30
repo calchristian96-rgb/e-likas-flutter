@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Native pre-Flutter launch screen: solid E-LIKAS navy with the real
-     logo centered, so there's no default-white/Flutter-mark flash
-     before lib/app/splash/splash_page.dart takes over on the engine's
-     first frame. Uses the exact same logo asset
-     (res/drawable-nodpi/ic_launcher_logo.png, copied unmodified from
-     assets/images/elikas_logo.png) as that Flutter splash screen. -->
+<!-- Native pre-Flutter launch screen: solid E-LIKAS navy with the
+     E-LIKAS swirl on a white circle centered, so there's no
+     default-white/Flutter-mark flash before
+     lib/app/splash/splash_page.dart (the same navy and the same mark on
+     a white circle) takes over on the engine's first frame. -->
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:drawable="@color/elikas_navy" />
     <item>
