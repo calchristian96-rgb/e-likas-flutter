@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Adaptive-icon background layer: plain white, so the launcher icon is
-     the E-LIKAS swirl on white -- the same treatment as the desktop
+     the E-LIKAS swirl on white, the same treatment as the desktop
      app's icon (the swirl's dark navy arms would vanish on navy). -->
 <shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
     <solid android:color="#FFFFFFFF" />
