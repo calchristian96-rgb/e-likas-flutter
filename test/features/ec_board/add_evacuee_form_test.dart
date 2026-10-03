@@ -122,7 +122,7 @@ void main() {
             centerId: 1,
             evacuationEventId: 7,
             editingLocalId: 'abc',
-            initialHouseholdLabel: 'Santos household',
+            initialHouseholdLabel: 'Santos family',
             initialDraft: EcBoardEntryDraft(
               evacuationCenterId: 1,
               evacuationEventId: 7,
@@ -147,14 +147,14 @@ void main() {
       expect(chip('Lactating').selected, isTrue);
       expect(chip('Pregnant').selected, isFalse);
       expect(
-        find.text('Joins the household already here: Santos household.'),
+        find.text('Joins the family already here: Santos family.'),
         findsOneWidget,
       );
     },
   );
 
   testWidgets(
-    'new household: this person is the head by default; unticking asks '
+    'new family: this person is the head by default; unticking asks '
     'about the actual head, and the read-back follows every answer',
     (tester) async {
       _tallPhone(tester);
@@ -165,17 +165,17 @@ void main() {
 
       await _tapVisible(tester, find.widgetWithText(ChoiceChip, 'Teenage'));
       await _tapVisible(tester, find.widgetWithText(ChoiceChip, 'Male'));
-      await _tapVisible(tester, find.text('New household'));
+      await _tapVisible(tester, find.text('New family'));
 
       final headTick = find.widgetWithText(
         CheckboxListTile,
-        'This person is the household head',
+        'This person is the family head',
       );
       expect(tester.widget<CheckboxListTile>(headTick).value, isTrue);
-      expect(find.text('About the actual household head'), findsNothing);
+      expect(find.text('About the actual family head'), findsNothing);
       expect(
         find.text(
-          "This person's age and sex will be used for the household head.",
+          "This person's age and sex will be used for the family head.",
         ),
         findsOneWidget,
       );
@@ -183,7 +183,7 @@ void main() {
       expect(find.text('Single-headed: not yet known.'), findsOneWidget);
 
       await _tapVisible(tester, headTick);
-      expect(find.text('About the actual household head'), findsOneWidget);
+      expect(find.text('About the actual family head'), findsOneWidget);
       expect(
         find.text(
           'Head: someone else, sex not yet known, minor or not: not yet known.',
@@ -193,7 +193,7 @@ void main() {
 
       // Head's sex → Female; head is a minor → No.
       final inset = find.ancestor(
-        of: find.text('About the actual household head'),
+        of: find.text('About the actual family head'),
         matching: find.byType(Container),
       );
       await _tapVisible(
@@ -218,7 +218,7 @@ void main() {
   );
 
   testWidgets(
-    'already here: a household with no head linked offers linking this '
+    'already here: a family with no head linked offers linking this '
     'person as its head',
     (tester) async {
       _tallPhone(tester);
@@ -245,21 +245,21 @@ void main() {
 
       final tick = find.widgetWithText(
         CheckboxListTile,
-        'This person is the household head',
+        'This person is the family head',
       );
       expect(tick, findsOneWidget);
       expect(tester.widget<CheckboxListTile>(tick).value, isTrue);
       expect(
-        find.text('This household has no head linked yet.'),
+        find.text('This family has no head linked yet.'),
         findsOneWidget,
       );
       expect(
-        find.text("Becomes that household's head (not a minor)."),
+        find.text("Becomes that family's head (not a minor)."),
         findsOneWidget,
       );
-      // The new-household questions never appear for Already here.
+      // The new-family questions never appear for Already here.
       expect(
-        find.text('Only one household head? (single-headed)'),
+        find.text('Only one family head? (single-headed)'),
         findsNothing,
       );
     },

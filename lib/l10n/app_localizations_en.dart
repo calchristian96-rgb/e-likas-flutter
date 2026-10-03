@@ -1512,22 +1512,22 @@ class AppLocalizationsEn extends AppLocalizations {
   String get ecBoardFieldAgeBracket => 'Age group';
 
   @override
-  String get ecBoardFieldHousehold => 'Household';
+  String get ecBoardFieldHousehold => 'Family';
 
   @override
   String get ecBoardHouseholdExisting => 'Already here';
 
   @override
-  String get ecBoardHouseholdNew => 'New household';
+  String get ecBoardHouseholdNew => 'New family';
 
   @override
-  String get ecBoardSelectHouseholdButton => 'Select household';
+  String get ecBoardSelectHouseholdButton => 'Select family';
 
   @override
   String get ecBoardHouseholdSearchHint => 'Search by head of family name';
 
   @override
-  String get ecBoardRefreshHouseholdsTooltip => 'Refresh household list';
+  String get ecBoardRefreshHouseholdsTooltip => 'Refresh family list';
 
   @override
   String get ecBoardHouseholdsUpToDate => 'Up to date';
@@ -1537,21 +1537,21 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get ecBoardPendingNewHouseholdBadge =>
-      'New household from this device — not yet synced';
+      'New family from this device — not yet synced';
 
   @override
   String get ecBoardPendingHouseholdNotice =>
-      'This household hasn\'t synced yet. This entry will sync automatically once it does.';
+      'This family hasn\'t synced yet. This entry will sync automatically once it does.';
 
   @override
-  String get ecBoardNewHouseholdHeadName => 'Household head\'s name';
+  String get ecBoardNewHouseholdHeadName => 'Family name';
 
   @override
   String get ecBoardSubmitButton => 'Save Evacuee';
 
   @override
   String get ecBoardValidationBanner =>
-      'Please complete sex, age group, and household before saving.';
+      'Please complete sex, age group, and family before saving.';
 
   @override
   String get ecBoardSavedOfflineMessage =>
@@ -1559,7 +1559,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get ecBoardSavedPendingHouseholdMessage =>
-      'Saved — waiting for the selected household to sync first.';
+      'Saved — waiting for the selected family to sync first.';
 
   @override
   String get ecBoardSuccessMessage => 'Evacuee added successfully.';
@@ -1586,7 +1586,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get ecBoardPendingSectionSubtitle =>
-      'Not yet synced, so shown here only — never added into the board\'s figures. Sync Now sends them, with their sectoral details and household answers.';
+      'Not yet synced, so shown here only — never added into the board\'s figures. Sync Now sends them, with their sectoral details and family answers.';
 
   @override
   String get ecBoardSyncNowInlineButton => 'Sync Now';
@@ -1703,17 +1703,17 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get ecBoardHeadNote =>
-      'This person\'s age and sex will be used for the household head.';
+      'This person\'s age and sex will be used for the family head.';
 
   @override
-  String get ecBoardThisPersonIsHead => 'This person is the household head';
+  String get ecBoardThisPersonIsHead => 'This person is the family head';
 
   @override
-  String get ecBoardNoHeadLinkedYet => 'This household has no head linked yet.';
+  String get ecBoardNoHeadLinkedYet => 'This family has no head linked yet.';
 
   @override
   String get ecBoardSingleHeadedQuestion =>
-      'Only one household head? (single-headed)';
+      'Only one family head? (single-headed)';
 
   @override
   String get ecBoardAnswerNotYetKnown => 'Not yet known';
@@ -1728,7 +1728,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get ecBoardAnswerYesUnder18 => 'Yes (under 18)';
 
   @override
-  String get ecBoardHeadSectionTitle => 'About the actual household head';
+  String get ecBoardHeadSectionTitle => 'About the actual family head';
 
   @override
   String get ecBoardHeadSectionSubtitle =>
@@ -1754,25 +1754,25 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String ecBoardSummaryJoinsHousehold(String household) {
-    return 'Joins the household already here: $household.';
+    return 'Joins the family already here: $household.';
   }
 
   @override
   String get ecBoardSummaryChooseHousehold =>
-      'Choose the household this person belongs to.';
+      'Choose the family this person belongs to.';
 
   @override
   String ecBoardSummaryBecomesHead(String minor) {
-    return 'Becomes that household\'s head ($minor).';
+    return 'Becomes that family\'s head ($minor).';
   }
 
   @override
   String ecBoardSummaryNewHousehold(String name, String barangay) {
-    return 'New household: $name, $barangay.';
+    return 'New family: $name, $barangay.';
   }
 
   @override
-  String get ecBoardSummaryNoHeadName => '(head\'s name not entered yet)';
+  String get ecBoardSummaryNoHeadName => '(family name not entered yet)';
 
   @override
   String get ecBoardSummaryNoBarangay => 'no barangay chosen';
@@ -1829,7 +1829,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get ecBoardSectoralLiveExplanation =>
-      'Counted from each evacuee\'s sectoral details. Child- and single-headed families are counted once per household, by the head\'s sex, from the answers given when the household was added.';
+      'Counted from each evacuee\'s sectoral details. Child- and single-headed families are counted once per family, by the head\'s sex, from the answers given when the family was added.';
 
   @override
   String familyMemberDetailsPending(int index) {
@@ -1854,12 +1854,12 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String familyHeadNotLinked(String answers) {
-    return 'Head not yet linked. Counts use the answers given for the head ($answers) until a member is linked. When the head arrives, add them with Add Evacuee → Already here and tick \"This person is the household head\".';
+    return 'Head not yet linked. Counts use the answers given for the head ($answers) until a member is linked. When the head arrives, add them with Add Evacuee → Already here and tick \"This person is the family head\".';
   }
 
   @override
   String get familyHeadNotLinkedNothingKnown =>
-      'Head not yet linked. Nothing is known about the head yet until a member is linked. When the head arrives, add them with Add Evacuee → Already here and tick \"This person is the household head\".';
+      'Head not yet linked. Nothing is known about the head yet until a member is linked. When the head arrives, add them with Add Evacuee → Already here and tick \"This person is the family head\".';
 
   @override
   String get familyLegacyBulkEntryNotice =>

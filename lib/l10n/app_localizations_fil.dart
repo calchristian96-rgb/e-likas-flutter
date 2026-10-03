@@ -1540,16 +1540,16 @@ class AppLocalizationsFil extends AppLocalizations {
   String get ecBoardFieldAgeBracket => 'Age group';
 
   @override
-  String get ecBoardFieldHousehold => 'Sambahayan';
+  String get ecBoardFieldHousehold => 'Pamilya';
 
   @override
   String get ecBoardHouseholdExisting => 'Narito na';
 
   @override
-  String get ecBoardHouseholdNew => 'Bagong sambahayan';
+  String get ecBoardHouseholdNew => 'Bagong pamilya';
 
   @override
-  String get ecBoardSelectHouseholdButton => 'Pumili ng sambahayan';
+  String get ecBoardSelectHouseholdButton => 'Pumili ng pamilya';
 
   @override
   String get ecBoardHouseholdSearchHint =>
@@ -1557,7 +1557,7 @@ class AppLocalizationsFil extends AppLocalizations {
 
   @override
   String get ecBoardRefreshHouseholdsTooltip =>
-      'I-refresh ang listahan ng sambahayan';
+      'I-refresh ang listahan ng pamilya';
 
   @override
   String get ecBoardHouseholdsUpToDate => 'Napapanahon';
@@ -1567,21 +1567,21 @@ class AppLocalizationsFil extends AppLocalizations {
 
   @override
   String get ecBoardPendingNewHouseholdBadge =>
-      'Bagong sambahayan mula sa device na ito — hindi pa naka-sync';
+      'Bagong pamilya mula sa device na ito — hindi pa naka-sync';
 
   @override
   String get ecBoardPendingHouseholdNotice =>
-      'Hindi pa naka-sync ang sambahayang ito. Awtomatikong maki-sync ang entry na ito kapag na-sync na ito.';
+      'Hindi pa naka-sync ang pamilyang ito. Awtomatikong maki-sync ang entry na ito kapag na-sync na ito.';
 
   @override
-  String get ecBoardNewHouseholdHeadName => 'Pangalan ng puno ng sambahayan';
+  String get ecBoardNewHouseholdHeadName => 'Pangalan ng pamilya';
 
   @override
   String get ecBoardSubmitButton => 'I-save ang Evacuee';
 
   @override
   String get ecBoardValidationBanner =>
-      'Pakikumpleto ang kasarian, age group, at sambahayan bago i-save.';
+      'Pakikumpleto ang kasarian, age group, at pamilya bago i-save.';
 
   @override
   String get ecBoardSavedOfflineMessage =>
@@ -1589,7 +1589,7 @@ class AppLocalizationsFil extends AppLocalizations {
 
   @override
   String get ecBoardSavedPendingHouseholdMessage =>
-      'Na-save — hinihintay munang maki-sync ang piniling sambahayan.';
+      'Na-save — hinihintay munang maki-sync ang piniling pamilya.';
 
   @override
   String get ecBoardSuccessMessage => 'Matagumpay na naidagdag ang evacuee.';
@@ -1616,7 +1616,7 @@ class AppLocalizationsFil extends AppLocalizations {
 
   @override
   String get ecBoardPendingSectionSubtitle =>
-      'Hindi pa naka-sync, kaya dito lang ipinapakita — hindi kailanman idinadagdag sa mga numero ng board. Ipapadala ang mga ito ng I-sync Ngayon, kasama ang kanilang sectoral na detalye at mga sagot tungkol sa sambahayan.';
+      'Hindi pa naka-sync, kaya dito lang ipinapakita — hindi kailanman idinadagdag sa mga numero ng board. Ipapadala ang mga ito ng I-sync Ngayon, kasama ang kanilang sectoral na detalye at mga sagot tungkol sa pamilya.';
 
   @override
   String get ecBoardSyncNowInlineButton => 'I-sync Ngayon';
@@ -1736,18 +1736,18 @@ class AppLocalizationsFil extends AppLocalizations {
 
   @override
   String get ecBoardHeadNote =>
-      'Gagamitin ang edad at kasarian ng taong ito para sa puno ng sambahayan.';
+      'Gagamitin ang edad at kasarian ng taong ito para sa puno ng pamilya.';
 
   @override
-  String get ecBoardThisPersonIsHead => 'Ang taong ito ang puno ng sambahayan';
+  String get ecBoardThisPersonIsHead => 'Ang taong ito ang puno ng pamilya';
 
   @override
   String get ecBoardNoHeadLinkedYet =>
-      'Wala pang naka-link na puno ang sambahayang ito.';
+      'Wala pang naka-link na puno ang pamilyang ito.';
 
   @override
   String get ecBoardSingleHeadedQuestion =>
-      'Iisa lang ba ang puno ng sambahayan? (single-headed)';
+      'Iisa lang ba ang puno ng pamilya? (single-headed)';
 
   @override
   String get ecBoardAnswerNotYetKnown => 'Hindi pa alam';
@@ -1762,8 +1762,7 @@ class AppLocalizationsFil extends AppLocalizations {
   String get ecBoardAnswerYesUnder18 => 'Oo (wala pang 18)';
 
   @override
-  String get ecBoardHeadSectionTitle =>
-      'Tungkol sa tunay na puno ng sambahayan';
+  String get ecBoardHeadSectionTitle => 'Tungkol sa tunay na puno ng pamilya';
 
   @override
   String get ecBoardHeadSectionSubtitle =>
@@ -1789,25 +1788,25 @@ class AppLocalizationsFil extends AppLocalizations {
 
   @override
   String ecBoardSummaryJoinsHousehold(String household) {
-    return 'Sasali sa sambahayang narito na: $household.';
+    return 'Sasali sa pamilyang narito na: $household.';
   }
 
   @override
   String get ecBoardSummaryChooseHousehold =>
-      'Piliin ang sambahayan ng taong ito.';
+      'Piliin ang pamilya ng taong ito.';
 
   @override
   String ecBoardSummaryBecomesHead(String minor) {
-    return 'Magiging puno ng sambahayang iyon ($minor).';
+    return 'Magiging puno ng pamilyang iyon ($minor).';
   }
 
   @override
   String ecBoardSummaryNewHousehold(String name, String barangay) {
-    return 'Bagong sambahayan: $name, $barangay.';
+    return 'Bagong pamilya: $name, $barangay.';
   }
 
   @override
-  String get ecBoardSummaryNoHeadName => '(wala pang pangalan ng puno)';
+  String get ecBoardSummaryNoHeadName => '(wala pang pangalan ng pamilya)';
 
   @override
   String get ecBoardSummaryNoBarangay => 'walang napiling barangay';
@@ -1865,7 +1864,7 @@ class AppLocalizationsFil extends AppLocalizations {
 
   @override
   String get ecBoardSectoralLiveExplanation =>
-      'Binibilang mula sa sectoral na detalye ng bawat evacuee. Ang child- at single-headed na pamilya ay binibilang nang isang beses bawat sambahayan, ayon sa kasarian ng puno, mula sa mga sagot noong idinagdag ang sambahayan.';
+      'Binibilang mula sa sectoral na detalye ng bawat evacuee. Ang child- at single-headed na pamilya ay binibilang nang isang beses bawat pamilya, ayon sa kasarian ng puno, mula sa mga sagot noong idinagdag ang pamilya.';
 
   @override
   String familyMemberDetailsPending(int index) {
@@ -1890,12 +1889,12 @@ class AppLocalizationsFil extends AppLocalizations {
 
   @override
   String familyHeadNotLinked(String answers) {
-    return 'Wala pang naka-link na puno. Ginagamit ng bilang ang mga sagot para sa puno ($answers) hanggang may ma-link na miyembro. Pagdating ng puno, idagdag sila sa Add Evacuee → Narito na at i-tsek ang \"Ang taong ito ang puno ng sambahayan\".';
+    return 'Wala pang naka-link na puno. Ginagamit ng bilang ang mga sagot para sa puno ($answers) hanggang may ma-link na miyembro. Pagdating ng puno, idagdag sila sa Add Evacuee → Narito na at i-tsek ang \"Ang taong ito ang puno ng pamilya\".';
   }
 
   @override
   String get familyHeadNotLinkedNothingKnown =>
-      'Wala pang naka-link na puno. Wala pang alam tungkol sa puno hanggang may ma-link na miyembro. Pagdating ng puno, idagdag sila sa Add Evacuee → Narito na at i-tsek ang \"Ang taong ito ang puno ng sambahayan\".';
+      'Wala pang naka-link na puno. Wala pang alam tungkol sa puno hanggang may ma-link na miyembro. Pagdating ng puno, idagdag sila sa Add Evacuee → Narito na at i-tsek ang \"Ang taong ito ang puno ng pamilya\".';
 
   @override
   String get familyLegacyBulkEntryNotice =>

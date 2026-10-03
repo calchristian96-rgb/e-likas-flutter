@@ -2785,7 +2785,7 @@ abstract class AppLocalizations {
   /// No description provided for @ecBoardFieldHousehold.
   ///
   /// In en, this message translates to:
-  /// **'Household'**
+  /// **'Family'**
   String get ecBoardFieldHousehold;
 
   /// No description provided for @ecBoardHouseholdExisting.
@@ -2797,13 +2797,13 @@ abstract class AppLocalizations {
   /// No description provided for @ecBoardHouseholdNew.
   ///
   /// In en, this message translates to:
-  /// **'New household'**
+  /// **'New family'**
   String get ecBoardHouseholdNew;
 
   /// No description provided for @ecBoardSelectHouseholdButton.
   ///
   /// In en, this message translates to:
-  /// **'Select household'**
+  /// **'Select family'**
   String get ecBoardSelectHouseholdButton;
 
   /// No description provided for @ecBoardHouseholdSearchHint.
@@ -2815,7 +2815,7 @@ abstract class AppLocalizations {
   /// No description provided for @ecBoardRefreshHouseholdsTooltip.
   ///
   /// In en, this message translates to:
-  /// **'Refresh household list'**
+  /// **'Refresh family list'**
   String get ecBoardRefreshHouseholdsTooltip;
 
   /// No description provided for @ecBoardHouseholdsUpToDate.
@@ -2833,19 +2833,19 @@ abstract class AppLocalizations {
   /// No description provided for @ecBoardPendingNewHouseholdBadge.
   ///
   /// In en, this message translates to:
-  /// **'New household from this device — not yet synced'**
+  /// **'New family from this device — not yet synced'**
   String get ecBoardPendingNewHouseholdBadge;
 
   /// No description provided for @ecBoardPendingHouseholdNotice.
   ///
   /// In en, this message translates to:
-  /// **'This household hasn\'t synced yet. This entry will sync automatically once it does.'**
+  /// **'This family hasn\'t synced yet. This entry will sync automatically once it does.'**
   String get ecBoardPendingHouseholdNotice;
 
   /// No description provided for @ecBoardNewHouseholdHeadName.
   ///
   /// In en, this message translates to:
-  /// **'Household head\'s name'**
+  /// **'Family name'**
   String get ecBoardNewHouseholdHeadName;
 
   /// No description provided for @ecBoardSubmitButton.
@@ -2857,7 +2857,7 @@ abstract class AppLocalizations {
   /// No description provided for @ecBoardValidationBanner.
   ///
   /// In en, this message translates to:
-  /// **'Please complete sex, age group, and household before saving.'**
+  /// **'Please complete sex, age group, and family before saving.'**
   String get ecBoardValidationBanner;
 
   /// No description provided for @ecBoardSavedOfflineMessage.
@@ -2869,7 +2869,7 @@ abstract class AppLocalizations {
   /// No description provided for @ecBoardSavedPendingHouseholdMessage.
   ///
   /// In en, this message translates to:
-  /// **'Saved — waiting for the selected household to sync first.'**
+  /// **'Saved — waiting for the selected family to sync first.'**
   String get ecBoardSavedPendingHouseholdMessage;
 
   /// No description provided for @ecBoardSuccessMessage.
@@ -2917,7 +2917,7 @@ abstract class AppLocalizations {
   /// No description provided for @ecBoardPendingSectionSubtitle.
   ///
   /// In en, this message translates to:
-  /// **'Not yet synced, so shown here only — never added into the board\'s figures. Sync Now sends them, with their sectoral details and household answers.'**
+  /// **'Not yet synced, so shown here only — never added into the board\'s figures. Sync Now sends them, with their sectoral details and family answers.'**
   String get ecBoardPendingSectionSubtitle;
 
   /// No description provided for @ecBoardSyncNowInlineButton.
@@ -3133,25 +3133,25 @@ abstract class AppLocalizations {
   /// No description provided for @ecBoardHeadNote.
   ///
   /// In en, this message translates to:
-  /// **'This person\'s age and sex will be used for the household head.'**
+  /// **'This person\'s age and sex will be used for the family head.'**
   String get ecBoardHeadNote;
 
   /// No description provided for @ecBoardThisPersonIsHead.
   ///
   /// In en, this message translates to:
-  /// **'This person is the household head'**
+  /// **'This person is the family head'**
   String get ecBoardThisPersonIsHead;
 
   /// No description provided for @ecBoardNoHeadLinkedYet.
   ///
   /// In en, this message translates to:
-  /// **'This household has no head linked yet.'**
+  /// **'This family has no head linked yet.'**
   String get ecBoardNoHeadLinkedYet;
 
   /// No description provided for @ecBoardSingleHeadedQuestion.
   ///
   /// In en, this message translates to:
-  /// **'Only one household head? (single-headed)'**
+  /// **'Only one family head? (single-headed)'**
   String get ecBoardSingleHeadedQuestion;
 
   /// No description provided for @ecBoardAnswerNotYetKnown.
@@ -3181,7 +3181,7 @@ abstract class AppLocalizations {
   /// No description provided for @ecBoardHeadSectionTitle.
   ///
   /// In en, this message translates to:
-  /// **'About the actual household head'**
+  /// **'About the actual family head'**
   String get ecBoardHeadSectionTitle;
 
   /// No description provided for @ecBoardHeadSectionSubtitle.
@@ -3223,31 +3223,31 @@ abstract class AppLocalizations {
   /// No description provided for @ecBoardSummaryJoinsHousehold.
   ///
   /// In en, this message translates to:
-  /// **'Joins the household already here: {household}.'**
+  /// **'Joins the family already here: {household}.'**
   String ecBoardSummaryJoinsHousehold(String household);
 
   /// No description provided for @ecBoardSummaryChooseHousehold.
   ///
   /// In en, this message translates to:
-  /// **'Choose the household this person belongs to.'**
+  /// **'Choose the family this person belongs to.'**
   String get ecBoardSummaryChooseHousehold;
 
   /// No description provided for @ecBoardSummaryBecomesHead.
   ///
   /// In en, this message translates to:
-  /// **'Becomes that household\'s head ({minor}).'**
+  /// **'Becomes that family\'s head ({minor}).'**
   String ecBoardSummaryBecomesHead(String minor);
 
   /// No description provided for @ecBoardSummaryNewHousehold.
   ///
   /// In en, this message translates to:
-  /// **'New household: {name}, {barangay}.'**
+  /// **'New family: {name}, {barangay}.'**
   String ecBoardSummaryNewHousehold(String name, String barangay);
 
   /// No description provided for @ecBoardSummaryNoHeadName.
   ///
   /// In en, this message translates to:
-  /// **'(head\'s name not entered yet)'**
+  /// **'(family name not entered yet)'**
   String get ecBoardSummaryNoHeadName;
 
   /// No description provided for @ecBoardSummaryNoBarangay.
@@ -3343,7 +3343,7 @@ abstract class AppLocalizations {
   /// No description provided for @ecBoardSectoralLiveExplanation.
   ///
   /// In en, this message translates to:
-  /// **'Counted from each evacuee\'s sectoral details. Child- and single-headed families are counted once per household, by the head\'s sex, from the answers given when the household was added.'**
+  /// **'Counted from each evacuee\'s sectoral details. Child- and single-headed families are counted once per family, by the head\'s sex, from the answers given when the family was added.'**
   String get ecBoardSectoralLiveExplanation;
 
   /// No description provided for @familyMemberDetailsPending.
@@ -3379,13 +3379,13 @@ abstract class AppLocalizations {
   /// No description provided for @familyHeadNotLinked.
   ///
   /// In en, this message translates to:
-  /// **'Head not yet linked. Counts use the answers given for the head ({answers}) until a member is linked. When the head arrives, add them with Add Evacuee → Already here and tick \"This person is the household head\".'**
+  /// **'Head not yet linked. Counts use the answers given for the head ({answers}) until a member is linked. When the head arrives, add them with Add Evacuee → Already here and tick \"This person is the family head\".'**
   String familyHeadNotLinked(String answers);
 
   /// No description provided for @familyHeadNotLinkedNothingKnown.
   ///
   /// In en, this message translates to:
-  /// **'Head not yet linked. Nothing is known about the head yet until a member is linked. When the head arrives, add them with Add Evacuee → Already here and tick \"This person is the household head\".'**
+  /// **'Head not yet linked. Nothing is known about the head yet until a member is linked. When the head arrives, add them with Add Evacuee → Already here and tick \"This person is the family head\".'**
   String get familyHeadNotLinkedNothingKnown;
 
   /// No description provided for @familyLegacyBulkEntryNotice.
