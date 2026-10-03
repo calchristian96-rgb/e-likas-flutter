@@ -3466,6 +3466,90 @@ abstract class AppLocalizations {
   /// **'{name} checked out.'**
   String checkOutSucceeded(String name);
 
+  /// No description provided for @checkOutOther.
+  ///
+  /// In en, this message translates to:
+  /// **'Others'**
+  String get checkOutOther;
+
+  /// No description provided for @checkOutOtherLower.
+  ///
+  /// In en, this message translates to:
+  /// **'departed for another reason'**
+  String get checkOutOtherLower;
+
+  /// No description provided for @markFamilyDepartedButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark family as departed'**
+  String get markFamilyDepartedButton;
+
+  /// No description provided for @markFamilyDepartedSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Checks out everyone ticked, with one reason for all of them. Members already checked out aren\'t listed.'**
+  String get markFamilyDepartedSubtitle;
+
+  /// No description provided for @markFamilyDepartedWho.
+  ///
+  /// In en, this message translates to:
+  /// **'Who is leaving'**
+  String get markFamilyDepartedWho;
+
+  /// No description provided for @markFamilyDepartedReasonHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Applies to everyone ticked above.'**
+  String get markFamilyDepartedReasonHelp;
+
+  /// No description provided for @markFamilyDepartedSubmit.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark {count} as departed'**
+  String markFamilyDepartedSubmit(int count);
+
+  /// No description provided for @markFamilyDepartedConfirmTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{Mark 1 member as departed?} other{Mark {count} members as departed?}}'**
+  String markFamilyDepartedConfirmTitle(int count);
+
+  /// No description provided for @markFamilyDepartedConfirmMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'They\'ll be recorded as {reason} and no longer count as here now.'**
+  String markFamilyDepartedConfirmMessage(String reason);
+
+  /// No description provided for @markFamilyDepartedConfirmButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark as departed'**
+  String get markFamilyDepartedConfirmButton;
+
+  /// No description provided for @markFamilyDepartedWorking.
+  ///
+  /// In en, this message translates to:
+  /// **'Marking…'**
+  String get markFamilyDepartedWorking;
+
+  /// No description provided for @markFamilyDepartedDone.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 member marked as departed.} other{{count} members marked as departed.}}'**
+  String markFamilyDepartedDone(int count);
+
+  /// No description provided for @markFamilyDepartedPartialTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'{done} of {total} marked as departed'**
+  String markFamilyDepartedPartialTitle(int done, int total);
+
+  /// No description provided for @markFamilyDepartedPartialBody.
+  ///
+  /// In en, this message translates to:
+  /// **'These weren\'t checked out:'**
+  String get markFamilyDepartedPartialBody;
+
   /// No description provided for @ecBoardHeaderCenter.
   ///
   /// In en, this message translates to:

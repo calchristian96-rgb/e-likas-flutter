@@ -53,14 +53,17 @@ class FamilyRecordMember {
   final String? openStayCenterName;
 }
 
-/// `POST /evacuees/{id}/check-out`'s two accepted `status` values —
-/// the same two Quick Departure uses.
+/// `POST /evacuees/{id}/check-out`'s accepted `status` values: the two
+/// Quick Departure uses, plus "Others" (`other`) for someone who left for
+/// another reason, the same three the web family page offers.
 enum CheckOutReason {
   returnedHome,
-  transferred;
+  transferred,
+  other;
 
   String get wireValue => switch (this) {
     CheckOutReason.returnedHome => 'returned_home',
     CheckOutReason.transferred => 'transferred',
+    CheckOutReason.other => 'other',
   };
 }

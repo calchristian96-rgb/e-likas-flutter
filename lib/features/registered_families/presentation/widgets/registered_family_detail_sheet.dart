@@ -109,6 +109,19 @@ class _RegisteredFamilyDetailSheet extends ConsumerWidget {
           const SizedBox(height: 6),
           ...recordAsync.when(
             data: (record) => [
+              // Only while someone is still checked in.
+              if (record.members.any((m) => m.hasOpenStay))
+                Align(
+                  alignment: AlignmentDirectional.centerStart,
+                  child: Padding(
+                    padding: const EdgeInsets.only(bottom: 8),
+                    child: OutlinedButton.icon(
+                      onPressed: () => _markFamilyDeparted(context, record),
+                      icon: const Icon(Icons.logout, size: 18),
+                      label: Text(l10n.markFamilyDepartedButton),
+                    ),
+                  ),
+                ),
               if (record.isLegacyBulkEntry)
                 _Notice(text: l10n.familyLegacyBulkEntryNotice)
               else if (!record.hasHeadLinked)
@@ -146,6 +159,83 @@ class _RegisteredFamilyDetailSheet extends ConsumerWidget {
         ],
       ),
     );
+  }
+
+  /// "Mark family as departed", the same as the web family page: pick who
+  /// is leaving (everyone still checked in, all ticked) and one reason,
+  /// confirm, then check each one out through the same single-person
+  /// check-out call, one at a time. One that fails doesn't undo the
+  /// others; failures are listed by name afterwards.
+  Future<void> _markFamilyDeparted(
+    BuildContext context,
+    FamilyRecord record,
+  ) async {
+    final l10n = AppLocalizations.of(context);
+    String nameOf(FamilyRecordMember member) => member.isPlaceholder
+        ? l10n.checkOutMemberPendingName(record.members.indexOf(member) + 1)
+        : member.fullName;
+
+    final batch = await showDialog<_DepartureBatch>(
+      context: context,
+      builder: (context) => _MarkFamilyDepartedDialog(
+        members: record.members.where((m) => m.hasOpenStay).toList(),
+        nameOf: nameOf,
+      ),
+    );
+    if (batch == null || !context.mounted) return;
+
+    // Through the container, not `ref`: the refresh below must still
+    // happen if the sheet is gone by the time the check-outs finish.
+    final container = ProviderScope.containerOf(context, listen: false);
+    final failed = await showDialog<List<(String, String)>>(
+      context: context,
+      builder: (context) => _MarkFamilyDepartedConfirmDialog(
+        batch: batch,
+        nameOf: nameOf,
+        checkOut: container.read(checkOutEvacueeProvider),
+      ),
+    );
+    if (failed == null) return;
+
+    final done = batch.members.length - failed.length;
+    container.invalidate(familyRecordProvider(family.id));
+    container.invalidate(registeredFamiliesProvider);
+    if (!context.mounted) return;
+
+    if (done > 0) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(l10n.markFamilyDepartedDone(done))),
+      );
+    }
+    if (failed.isNotEmpty) {
+      await showDialog<void>(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text(
+            l10n.markFamilyDepartedPartialTitle(done, batch.members.length),
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(l10n.markFamilyDepartedPartialBody),
+              const SizedBox(height: 8),
+              for (final (name, reason) in failed)
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 4),
+                  child: Text('$name: $reason'),
+                ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: Text(MaterialLocalizations.of(context).closeButtonLabel),
+            ),
+          ],
+        ),
+      );
+    }
   }
 
   /// The web family page's reminder, word for word: which answers the
@@ -266,12 +356,7 @@ class _MemberRow extends ConsumerWidget {
       context: context,
       builder: (context) => AlertDialog(
         content: Text(
-          l10n.checkOutConfirm(
-            name,
-            reason == CheckOutReason.transferred
-                ? l10n.checkOutTransferredLower
-                : l10n.checkOutReturnedHomeLower,
-          ),
+          l10n.checkOutConfirm(name, checkOutReasonLower(l10n, reason)),
         ),
         actions: [
           TextButton(
@@ -360,6 +445,11 @@ class _CheckOutDialogState extends State<_CheckOutDialog> {
                   value: CheckOutReason.transferred,
                   title: Text(l10n.checkOutTransferred),
                 ),
+                RadioListTile(
+                  contentPadding: EdgeInsets.zero,
+                  value: CheckOutReason.other,
+                  title: Text(l10n.checkOutOther),
+                ),
               ],
             ),
           ),
@@ -375,6 +465,208 @@ class _CheckOutDialogState extends State<_CheckOutDialog> {
           child: Text(l10n.checkOutButton),
         ),
       ],
+    );
+  }
+}
+
+/// "returned home" / "transferred elsewhere" / "departed for another
+/// reason", for the confirmation sentences.
+String checkOutReasonLower(AppLocalizations l10n, CheckOutReason reason) =>
+    switch (reason) {
+      CheckOutReason.returnedHome => l10n.checkOutReturnedHomeLower,
+      CheckOutReason.transferred => l10n.checkOutTransferredLower,
+      CheckOutReason.other => l10n.checkOutOtherLower,
+    };
+
+/// Who "Mark family as departed" checks out, and why.
+class _DepartureBatch {
+  const _DepartureBatch(this.members, this.reason);
+
+  final List<FamilyRecordMember> members;
+  final CheckOutReason reason;
+}
+
+class _MarkFamilyDepartedDialog extends StatefulWidget {
+  const _MarkFamilyDepartedDialog({
+    required this.members,
+    required this.nameOf,
+  });
+
+  /// Only members still checked in.
+  final List<FamilyRecordMember> members;
+  final String Function(FamilyRecordMember) nameOf;
+
+  @override
+  State<_MarkFamilyDepartedDialog> createState() =>
+      _MarkFamilyDepartedDialogState();
+}
+
+class _MarkFamilyDepartedDialogState extends State<_MarkFamilyDepartedDialog> {
+  late final Set<int> _ticked = widget.members.map((m) => m.id).toSet();
+  CheckOutReason _reason = CheckOutReason.returnedHome;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    final theme = Theme.of(context);
+    final muted = theme.textTheme.bodySmall?.copyWith(
+      color: theme.colorScheme.onSurfaceVariant,
+    );
+    return AlertDialog(
+      title: Text(l10n.markFamilyDepartedButton),
+      content: SingleChildScrollView(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(l10n.markFamilyDepartedSubtitle, style: muted),
+            const SizedBox(height: 16),
+            Text(l10n.markFamilyDepartedWho, style: theme.textTheme.labelLarge),
+            for (final member in widget.members)
+              CheckboxListTile(
+                contentPadding: EdgeInsets.zero,
+                controlAffinity: ListTileControlAffinity.leading,
+                value: _ticked.contains(member.id),
+                onChanged: (on) => setState(
+                  () => on == true
+                      ? _ticked.add(member.id)
+                      : _ticked.remove(member.id),
+                ),
+                title: Text(widget.nameOf(member)),
+                subtitle: Text(
+                  [
+                    if (member.isHead) l10n.staffRegHeadOfFamilyBadge,
+                    member.openStayCenterName != null
+                        ? l10n.familyMemberCheckedInAt(
+                            member.openStayCenterName!,
+                          )
+                        : l10n.familyMemberCheckedInUnspecified,
+                  ].join(' · '),
+                ),
+              ),
+            const SizedBox(height: 8),
+            Text(l10n.checkOutReasonLabel, style: theme.textTheme.labelLarge),
+            RadioGroup<CheckOutReason>(
+              groupValue: _reason,
+              onChanged: (value) => setState(() => _reason = value ?? _reason),
+              child: Column(
+                children: [
+                  for (final (reason, label) in [
+                    (CheckOutReason.returnedHome, l10n.checkOutReturnedHome),
+                    (CheckOutReason.transferred, l10n.checkOutTransferred),
+                    (CheckOutReason.other, l10n.checkOutOther),
+                  ])
+                    RadioListTile(
+                      contentPadding: EdgeInsets.zero,
+                      value: reason,
+                      title: Text(label),
+                    ),
+                ],
+              ),
+            ),
+            Text(l10n.markFamilyDepartedReasonHelp, style: muted),
+          ],
+        ),
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.of(context).pop(),
+          child: Text(l10n.cancel),
+        ),
+        FilledButton(
+          onPressed: _ticked.isEmpty
+              ? null
+              : () => Navigator.of(context).pop(
+                  _DepartureBatch(
+                    widget.members
+                        .where((m) => _ticked.contains(m.id))
+                        .toList(),
+                    _reason,
+                  ),
+                ),
+          child: Text(
+            _ticked.isEmpty
+                ? l10n.markFamilyDepartedConfirmButton
+                : l10n.markFamilyDepartedSubmit(_ticked.length),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+/// The confirm step, which also does the work, like the web's
+/// "Marking..." button: each ticked member goes through the single
+/// check-out call, one at a time, and the dialog can't be closed until
+/// they're all done. Pops with the ones that failed (name, why), or null
+/// when cancelled.
+class _MarkFamilyDepartedConfirmDialog extends StatefulWidget {
+  const _MarkFamilyDepartedConfirmDialog({
+    required this.batch,
+    required this.nameOf,
+    required this.checkOut,
+  });
+
+  final _DepartureBatch batch;
+  final String Function(FamilyRecordMember) nameOf;
+  final Future<Result<void>> Function(int evacueeId, CheckOutReason reason)
+  checkOut;
+
+  @override
+  State<_MarkFamilyDepartedConfirmDialog> createState() =>
+      _MarkFamilyDepartedConfirmDialogState();
+}
+
+class _MarkFamilyDepartedConfirmDialogState
+    extends State<_MarkFamilyDepartedConfirmDialog> {
+  bool _working = false;
+
+  Future<void> _run() async {
+    final l10n = AppLocalizations.of(context);
+    setState(() => _working = true);
+    final failed = <(String, String)>[];
+    for (final member in widget.batch.members) {
+      final result = await widget.checkOut(member.id, widget.batch.reason);
+      if (result case Failed(:final failure)) {
+        failed.add((
+          widget.nameOf(member),
+          failure is NetworkFailure
+              ? l10n.familyMembersNeedConnection
+              : failure.message,
+        ));
+      }
+    }
+    if (mounted) Navigator.of(context).pop(failed);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    final count = widget.batch.members.length;
+    return PopScope(
+      canPop: !_working,
+      child: AlertDialog(
+        title: Text(l10n.markFamilyDepartedConfirmTitle(count)),
+        content: Text(
+          l10n.markFamilyDepartedConfirmMessage(
+            checkOutReasonLower(l10n, widget.batch.reason),
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: _working ? null : () => Navigator.of(context).pop(),
+            child: Text(l10n.cancel),
+          ),
+          FilledButton(
+            onPressed: _working ? null : _run,
+            child: Text(
+              _working
+                  ? l10n.markFamilyDepartedWorking
+                  : l10n.markFamilyDepartedConfirmButton,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

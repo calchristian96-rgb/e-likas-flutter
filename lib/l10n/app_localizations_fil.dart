@@ -1947,6 +1947,72 @@ class AppLocalizationsFil extends AppLocalizations {
   }
 
   @override
+  String get checkOutOther => 'Iba pa';
+
+  @override
+  String get checkOutOtherLower => 'umalis dahil sa ibang dahilan';
+
+  @override
+  String get markFamilyDepartedButton => 'Markahang umalis ang pamilya';
+
+  @override
+  String get markFamilyDepartedSubtitle =>
+      'Iche-check out ang lahat ng naka-tsek, iisang dahilan para sa lahat. Hindi na nakalista ang mga naka-check out na.';
+
+  @override
+  String get markFamilyDepartedWho => 'Sino ang aalis';
+
+  @override
+  String get markFamilyDepartedReasonHelp =>
+      'Para sa lahat ng naka-tsek sa itaas.';
+
+  @override
+  String markFamilyDepartedSubmit(int count) {
+    return 'Markahang umalis ang $count';
+  }
+
+  @override
+  String markFamilyDepartedConfirmTitle(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Markahang umalis ang $count miyembro?',
+      one: 'Markahang umalis ang 1 miyembro?',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String markFamilyDepartedConfirmMessage(String reason) {
+    return 'Itatala sila bilang $reason at hindi na bibilangin bilang narito ngayon.';
+  }
+
+  @override
+  String get markFamilyDepartedConfirmButton => 'Markahang umalis';
+
+  @override
+  String get markFamilyDepartedWorking => 'Minamarkahan…';
+
+  @override
+  String markFamilyDepartedDone(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Namarkahang umalis ang $count miyembro.',
+      one: 'Namarkahang umalis ang 1 miyembro.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String markFamilyDepartedPartialTitle(int done, int total) {
+    return '$done sa $total ang namarkahang umalis';
+  }
+
+  @override
+  String get markFamilyDepartedPartialBody => 'Hindi na-check out ang mga ito:';
+
+  @override
   String get ecBoardHeaderCenter => 'Evacuation center';
 
   @override

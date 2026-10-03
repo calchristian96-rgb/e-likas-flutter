@@ -1912,6 +1912,72 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get checkOutOther => 'Others';
+
+  @override
+  String get checkOutOtherLower => 'departed for another reason';
+
+  @override
+  String get markFamilyDepartedButton => 'Mark family as departed';
+
+  @override
+  String get markFamilyDepartedSubtitle =>
+      'Checks out everyone ticked, with one reason for all of them. Members already checked out aren\'t listed.';
+
+  @override
+  String get markFamilyDepartedWho => 'Who is leaving';
+
+  @override
+  String get markFamilyDepartedReasonHelp =>
+      'Applies to everyone ticked above.';
+
+  @override
+  String markFamilyDepartedSubmit(int count) {
+    return 'Mark $count as departed';
+  }
+
+  @override
+  String markFamilyDepartedConfirmTitle(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Mark $count members as departed?',
+      one: 'Mark 1 member as departed?',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String markFamilyDepartedConfirmMessage(String reason) {
+    return 'They\'ll be recorded as $reason and no longer count as here now.';
+  }
+
+  @override
+  String get markFamilyDepartedConfirmButton => 'Mark as departed';
+
+  @override
+  String get markFamilyDepartedWorking => 'Marking…';
+
+  @override
+  String markFamilyDepartedDone(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count members marked as departed.',
+      one: '1 member marked as departed.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String markFamilyDepartedPartialTitle(int done, int total) {
+    return '$done of $total marked as departed';
+  }
+
+  @override
+  String get markFamilyDepartedPartialBody => 'These weren\'t checked out:';
+
+  @override
   String get ecBoardHeaderCenter => 'Evacuation center';
 
   @override
