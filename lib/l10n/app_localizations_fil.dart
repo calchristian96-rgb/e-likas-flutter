@@ -1818,6 +1818,19 @@ class AppLocalizationsFil extends AppLocalizations {
   }
 
   @override
+  String ecBoardEventClosedName(String name) {
+    return '$name (sarado)';
+  }
+
+  @override
+  String get ecBoardClosedEventNote =>
+      'Sarado na ang event na ito. Hindi na maaaring magdagdag ng evacuee rito.';
+
+  @override
+  String get ecBoardClosedEventWaitingNote =>
+      'Hindi na maisi-sync ang mga entry na naghihintay pa sa teleponong ito para rito. Suriin ang mga ito, saka burahin sa teleponong ito.';
+
+  @override
   String ecBoardSummaryHeadIsThisPerson(String minor) {
     return 'Puno: ang taong ito ($minor).';
   }

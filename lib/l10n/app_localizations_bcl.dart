@@ -1782,6 +1782,19 @@ class AppLocalizationsBcl extends AppLocalizations {
   }
 
   @override
+  String ecBoardEventClosedName(String name) {
+    return '$name (closed)';
+  }
+
+  @override
+  String get ecBoardClosedEventNote =>
+      'This event is closed. Evacuees can no longer be added to it.';
+
+  @override
+  String get ecBoardClosedEventWaitingNote =>
+      'Entries still waiting on this phone for it can\'t sync. Check them, then delete them from this phone.';
+
+  @override
   String ecBoardSummaryHeadIsThisPerson(String minor) {
     return 'Head: this person ($minor).';
   }

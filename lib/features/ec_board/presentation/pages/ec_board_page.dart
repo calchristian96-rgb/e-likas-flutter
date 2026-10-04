@@ -201,6 +201,31 @@ class _EcBoardBody extends ConsumerWidget {
       ecBoardQuickCountProvider(centerId, selectedEventId),
     );
     final center = ref.watch(centerByIdProvider(centerId)).value;
+    // A closed event takes no new evacuees (the server refuses them). It
+    // stays on this board's event list only while entries for it are
+    // still waiting on this phone -- they can't sync any more, so they
+    // must stay reachable to be checked and deleted.
+    final waitingEventIds = {
+      for (final entry
+          in entriesAsync.value ?? const <PendingEcBoardEntrySummary>[])
+        entry.evacuationEventId,
+    };
+    final narrowed = [
+      for (final event in events)
+        if (event.isOpen ||
+            waitingEventIds.contains(event.id) ||
+            event.id == selectedEventId)
+          event,
+    ];
+    // With no open event and nothing waiting, every event stays
+    // selectable, as before, so past boards can still be looked at.
+    final shown = events.any((e) => e.isOpen || waitingEventIds.contains(e.id))
+        ? narrowed
+        : events;
+    final selectedEvent = events
+        .where((e) => e.id == selectedEventId)
+        .firstOrNull;
+    final selectedClosed = selectedEvent != null && !selectedEvent.isOpen;
 
     return RefreshIndicator(
       onRefresh: () async {
@@ -215,17 +240,22 @@ class _EcBoardBody extends ConsumerWidget {
       child: ListView(
         padding: const EdgeInsets.all(16),
         children: [
-          _EcBoardActionButton(
-            icon: Icons.person_add_alt_1_outlined,
-            label: l10n.ecBoardAddEvacueeTitle,
-            subtitle: l10n.staffWorkspaceRegisterFamilySubtitle,
-            onPressed: () => _openAddEvacuee(context, ref),
-          ),
+          if (selectedClosed)
+            _ClosedEventNote(
+              entriesWaiting: waitingEventIds.contains(selectedEventId),
+            )
+          else
+            _EcBoardActionButton(
+              icon: Icons.person_add_alt_1_outlined,
+              label: l10n.ecBoardAddEvacueeTitle,
+              subtitle: l10n.staffWorkspaceRegisterFamilySubtitle,
+              onPressed: () => _openAddEvacuee(context, ref),
+            ),
           const SizedBox(height: 16),
           _BoardSheet(
             barangayName: center?.barangay,
             centerName: center?.name,
-            events: events,
+            events: shown,
             selectedEventId: selectedEventId,
             onEventChanged: onEventChanged,
             countAsync: countAsync,
@@ -1065,12 +1095,9 @@ class _EventSelector extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
-    final openEvents = events.where((e) => e.isOpen).toList();
-    // Falls back to every event only when none are open — same
-    // fallback `_ensureEventSelected` already applies to the *default*
-    // selection, so a center with no currently-open event still has
-    // something selectable rather than an empty dropdown.
-    final selectable = openEvents.isNotEmpty ? openEvents : events;
+    // Already narrowed by the board (open events, and a closed one only
+    // while entries for it wait on this phone); a closed one says so.
+    final selectable = events;
     return DropdownButtonFormField<int>(
       initialValue: value,
       isExpanded: true,
@@ -1084,7 +1111,9 @@ class _EventSelector extends StatelessWidget {
           DropdownMenuItem(
             value: event.id,
             child: Text(
-              event.name,
+              event.isOpen
+                  ? event.name
+                  : l10n.ecBoardEventClosedName(event.name),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
             ),
@@ -1093,6 +1122,47 @@ class _EventSelector extends StatelessWidget {
       onChanged: (id) {
         if (id != null) onChanged(id);
       },
+    );
+  }
+}
+
+/// In place of Add Evacuee while a closed event is selected: why there's
+/// nothing to add, and what to do with entries still waiting for it.
+class _ClosedEventNote extends StatelessWidget {
+  const _ClosedEventNote({required this.entriesWaiting});
+
+  final bool entriesWaiting;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    final theme = Theme.of(context);
+    final warning =
+        theme.extension<AppSemanticColors>()?.warning ??
+        theme.colorScheme.error;
+    return Container(
+      key: const ValueKey('closed-event-note'),
+      padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
+      decoration: BoxDecoration(
+        color: warning.withValues(alpha: 0.10),
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(color: warning.withValues(alpha: 0.35)),
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Icon(Icons.lock_outline, size: 18, color: warning),
+          const SizedBox(width: 8),
+          Expanded(
+            child: Text(
+              entriesWaiting
+                  ? '${l10n.ecBoardClosedEventNote} ${l10n.ecBoardClosedEventWaitingNote}'
+                  : l10n.ecBoardClosedEventNote,
+              style: theme.textTheme.bodySmall?.copyWith(color: warning),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -1193,4 +1263,3 @@ class _EcBoardActionButton extends StatelessWidget {
     );
   }
 }
-

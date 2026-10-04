@@ -3250,6 +3250,24 @@ abstract class AppLocalizations {
   /// **'This center is in {barangay}. Add only people who are staying at this center.'**
   String ecBoardOtherBarangayNote(String barangay);
 
+  /// No description provided for @ecBoardEventClosedName.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} (closed)'**
+  String ecBoardEventClosedName(String name);
+
+  /// No description provided for @ecBoardClosedEventNote.
+  ///
+  /// In en, this message translates to:
+  /// **'This event is closed. Evacuees can no longer be added to it.'**
+  String get ecBoardClosedEventNote;
+
+  /// No description provided for @ecBoardClosedEventWaitingNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Entries still waiting on this phone for it can\'t sync. Check them, then delete them from this phone.'**
+  String get ecBoardClosedEventWaitingNote;
+
   /// No description provided for @ecBoardSummaryHeadIsThisPerson.
   ///
   /// In en, this message translates to:
