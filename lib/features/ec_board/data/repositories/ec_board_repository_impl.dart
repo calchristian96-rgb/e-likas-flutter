@@ -7,6 +7,7 @@ import '../../../family_registration/domain/entities/pending_registration_status
 import '../../domain/entities/age_bracket.dart';
 import '../../domain/entities/ec_board_entry_draft.dart';
 import '../../domain/entities/ec_board_quick_count.dart';
+import '../../domain/entities/family_here.dart';
 import '../../domain/entities/pending_ec_board_entry.dart';
 import '../../domain/entities/per_person_sectoral_flag.dart';
 import '../../domain/entities/quick_departure_request.dart';
@@ -229,6 +230,23 @@ class EcBoardRepositoryImpl implements EcBoardRepository {
           updatedAtEpochMs: DateTime.now().millisecondsSinceEpoch,
         ),
       );
+    }
+  }
+
+  @override
+  Future<Result<List<FamilyHere>>> getFamiliesHere({
+    required int centerId,
+    required int evacuationEventId,
+  }) async {
+    try {
+      return Success(
+        await _remote.getFamiliesHere(
+          centerId: centerId,
+          evacuationEventId: evacuationEventId,
+        ),
+      );
+    } on DioException catch (e) {
+      return Failed(mapStaffDioError(e));
     }
   }
 

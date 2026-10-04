@@ -1833,6 +1833,23 @@ class AppLocalizationsFil extends AppLocalizations {
       'Piliin ang barangay na tinitirhan ng pamilya.';
 
   @override
+  String ecBoardFamilyHereGeneric(int id, String barangay, int count) {
+    return 'Pamilya #$id · $barangay · $count narito';
+  }
+
+  @override
+  String ecBoardFamilyNumber(int id) {
+    return 'Pamilya #$id';
+  }
+
+  @override
+  String get ecBoardNoFamiliesHere => 'Walang pamilya rito sa ngayon.';
+
+  @override
+  String get ecBoardFamiliesHereOffline =>
+      'Offline: ipinapakita ang mga pamilyang naka-save sa teleponong ito. Ang pamilyang umalis na sa center na ito ay tatanggihan pagka-sync.';
+
+  @override
   String ecBoardSummaryHeadIsThisPerson(String minor) {
     return 'Puno: ang taong ito ($minor).';
   }

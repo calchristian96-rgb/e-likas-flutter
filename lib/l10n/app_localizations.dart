@@ -3286,6 +3286,30 @@ abstract class AppLocalizations {
   /// **'Choose the family\'s home barangay.'**
   String get ecBoardHomeBarangayRequired;
 
+  /// No description provided for @ecBoardFamilyHereGeneric.
+  ///
+  /// In en, this message translates to:
+  /// **'Family #{id} · {barangay} · {count} here'**
+  String ecBoardFamilyHereGeneric(int id, String barangay, int count);
+
+  /// No description provided for @ecBoardFamilyNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Family #{id}'**
+  String ecBoardFamilyNumber(int id);
+
+  /// No description provided for @ecBoardNoFamiliesHere.
+  ///
+  /// In en, this message translates to:
+  /// **'No families here right now.'**
+  String get ecBoardNoFamiliesHere;
+
+  /// No description provided for @ecBoardFamiliesHereOffline.
+  ///
+  /// In en, this message translates to:
+  /// **'Offline: showing the families saved on this phone. One that has left this center will be refused when it syncs.'**
+  String get ecBoardFamiliesHereOffline;
+
   /// No description provided for @ecBoardSummaryHeadIsThisPerson.
   ///
   /// In en, this message translates to:

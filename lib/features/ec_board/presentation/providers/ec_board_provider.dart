@@ -9,6 +9,7 @@ import '../../data/datasources/ec_board_remote_datasource.dart';
 import '../../data/repositories/ec_board_repository_impl.dart';
 import '../../domain/entities/ec_board_entry_draft.dart';
 import '../../domain/entities/ec_board_quick_count.dart';
+import '../../domain/entities/family_here.dart';
 import '../../domain/entities/pending_ec_board_entry.dart';
 import '../../domain/entities/quick_departure_request.dart';
 import '../../domain/repositories/ec_board_repository.dart';
@@ -80,6 +81,29 @@ Future<EcBoardQuickCount> ecBoardQuickCount(
   final result = await ref
       .watch(ecBoardRepositoryProvider)
       .getQuickCount(centerId: centerId, evacuationEventId: evacuationEventId);
+  return switch (result) {
+    Success(:final value) => value,
+    Failed(:final failure) => throw failure,
+  };
+}
+
+/// Add Evacuee's "Already here": the families with someone checked in at
+/// this center for this event right now, straight from the server --
+/// the same list the web dashboard offers, and the only families the
+/// server accepts there. Fails (e.g. offline) rather than showing a
+/// guess; the picker falls back to this device's saved families then.
+@riverpod
+Future<List<FamilyHere>> ecBoardFamiliesHere(
+  Ref ref,
+  int centerId,
+  int evacuationEventId,
+) async {
+  final result = await ref
+      .watch(ecBoardRepositoryProvider)
+      .getFamiliesHere(
+        centerId: centerId,
+        evacuationEventId: evacuationEventId,
+      );
   return switch (result) {
     Success(:final value) => value,
     Failed(:final failure) => throw failure,

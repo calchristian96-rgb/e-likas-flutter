@@ -17,6 +17,7 @@ import '../../../registered_families/domain/entities/registered_family.dart';
 import '../../../registered_families/presentation/providers/registered_families_provider.dart';
 import '../../domain/entities/age_bracket.dart';
 import '../../domain/entities/ec_board_entry_draft.dart';
+import '../../domain/entities/family_here.dart';
 import '../../domain/entities/pending_ec_board_entry.dart';
 import '../../domain/entities/per_person_sectoral_flag.dart';
 import '../../domain/entities/sectoral_group.dart';
@@ -1137,14 +1138,22 @@ class _HouseholdPickerSheetState extends ConsumerState<_HouseholdPickerSheet> {
     // "dependOnInheritedWidgetOfExactType... was called before
     // initState() completed".
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (mounted) ref.invalidate(registeredFamiliesProvider);
+      if (mounted) ref.invalidate(_hereProvider);
     });
   }
 
+  /// The families here right now, from the server -- the web form's
+  /// "Already here" list and the only ones the server accepts.
+  EcBoardFamiliesHereProvider get _hereProvider => ecBoardFamiliesHereProvider(
+    widget.centerId,
+    widget.evacuationEventId,
+  );
+
   Future<void> _refreshSynced() async {
+    ref.invalidate(_hereProvider);
     ref.invalidate(registeredFamiliesProvider);
     try {
-      await ref.read(registeredFamiliesProvider.future);
+      await ref.read(_hereProvider.future);
     } catch (_) {
       // The error state below already handles this — this callback
       // just needs to let the pull-to-refresh spinner finish.
@@ -1155,7 +1164,11 @@ class _HouseholdPickerSheetState extends ConsumerState<_HouseholdPickerSheet> {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     final theme = Theme.of(context);
-    final syncedAsync = ref.watch(registeredFamiliesProvider);
+    final hereAsync = ref.watch(_hereProvider);
+    // Offline (or the server out of reach): this device's saved families
+    // stand in, said as much -- one no longer here is refused at sync.
+    final offline = hereAsync.error is NetworkFailure;
+    final syncedAsync = offline ? ref.watch(registeredFamiliesProvider) : null;
     final pendingAsync = ref.watch(pendingRegistrationsProvider);
     final pendingNewHouseholdsAsync = ref.watch(
       ecBoardPendingNewHouseholdsProvider(
@@ -1189,7 +1202,7 @@ class _HouseholdPickerSheetState extends ConsumerState<_HouseholdPickerSheet> {
                     ),
                   ),
                   IconButton(
-                    icon: syncedAsync.isLoading
+                    icon: hereAsync.isLoading
                         ? const SizedBox(
                             width: 18,
                             height: 18,
@@ -1197,11 +1210,28 @@ class _HouseholdPickerSheetState extends ConsumerState<_HouseholdPickerSheet> {
                           )
                         : const Icon(Icons.refresh),
                     tooltip: l10n.ecBoardRefreshHouseholdsTooltip,
-                    onPressed: syncedAsync.isLoading ? null : _refreshSynced,
+                    onPressed: hereAsync.isLoading ? null : _refreshSynced,
                   ),
                 ],
               ),
-              _SyncedFreshnessLine(syncedAsync: syncedAsync, l10n: l10n),
+              if (syncedAsync != null) ...[
+                _SyncedFreshnessLine(syncedAsync: syncedAsync, l10n: l10n),
+                Text(
+                  l10n.ecBoardFamiliesHereOffline,
+                  style: theme.textTheme.bodySmall?.copyWith(
+                    color: theme.colorScheme.onSurfaceVariant,
+                  ),
+                ),
+              ] else if (hereAsync.hasValue)
+                Padding(
+                  padding: const EdgeInsets.only(top: 2, bottom: 4),
+                  child: Text(
+                    l10n.ecBoardHouseholdsUpToDate,
+                    style: theme.textTheme.bodySmall?.copyWith(
+                      color: theme.colorScheme.onSurfaceVariant,
+                    ),
+                  ),
+                ),
               const SizedBox(height: 4),
               TextField(
                 decoration: InputDecoration(
@@ -1267,11 +1297,29 @@ class _HouseholdPickerSheetState extends ConsumerState<_HouseholdPickerSheet> {
                               ),
                             ),
                           ),
-                      ...switch (syncedAsync) {
-                        AsyncData(:final value) => _filteredSynced(
+                      ...switch ((hereAsync, syncedAsync)) {
+                        (AsyncData(:final value), _) => [
+                          ..._filteredHere(value).map(_hereTile),
+                          if (value.isEmpty)
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                vertical: 16,
+                              ),
+                              child: Text(
+                                l10n.ecBoardNoFamiliesHere,
+                                textAlign: TextAlign.center,
+                                style: theme.textTheme.bodyMedium?.copyWith(
+                                  color: theme.colorScheme.onSurfaceVariant,
+                                ),
+                              ),
+                            ),
+                        ],
+                        // Offline: this device's saved families instead.
+                        (_, AsyncData(:final value)) => _filteredSynced(
                           value.families,
-                        ).map(_syncedTile),
-                        AsyncError(:final error) => [
+                        ).map(_syncedTile).toList(),
+                        (_, AsyncError(:final error)) ||
+                        (AsyncError(:final error), null) => [
                           Padding(
                             padding: const EdgeInsets.symmetric(vertical: 16),
                             child: ErrorState(
@@ -1291,6 +1339,45 @@ class _HouseholdPickerSheetState extends ConsumerState<_HouseholdPickerSheet> {
         );
       },
     );
+  }
+
+  /// As on the web form: a named family by its name, another barangay's
+  /// by "Family #N · (its barangay) · X here".
+  String _hereLabel(FamilyHere item) {
+    final l10n = AppLocalizations.of(context);
+    if (item.isGeneric) {
+      return l10n.ecBoardFamilyHereGeneric(
+        item.id,
+        item.barangayName ?? l10n.staffFamiliesUnknownBarangay,
+        item.hereCount ?? 0,
+      );
+    }
+    return item.name ?? l10n.ecBoardFamilyNumber(item.id);
+  }
+
+  ListTile _hereTile(FamilyHere item) {
+    final l10n = AppLocalizations.of(context);
+    final label = _hereLabel(item);
+    return ListTile(
+      leading: const Icon(Icons.check_circle_outline),
+      title: Text(label),
+      subtitle: item.isGeneric
+          ? null
+          : Text(item.barangayName ?? l10n.staffFamiliesUnknownBarangay),
+      onTap: () => Navigator.of(context).pop(
+        _HouseholdPick(
+          label: label,
+          remoteFamilyId: item.id,
+          headLinked: item.headLinked,
+        ),
+      ),
+    );
+  }
+
+  List<FamilyHere> _filteredHere(List<FamilyHere> items) {
+    if (_query.isEmpty) return items;
+    final q = _query.toLowerCase();
+    return items.where((i) => _hereLabel(i).toLowerCase().contains(q)).toList();
   }
 
   ListTile _syncedTile(RegisteredFamily item) {

@@ -2,6 +2,7 @@ import '../../../../core/error/result.dart';
 import '../../../family_registration/domain/entities/pending_registration_status.dart';
 import '../entities/ec_board_entry_draft.dart';
 import '../entities/ec_board_quick_count.dart';
+import '../entities/family_here.dart';
 import '../entities/pending_ec_board_entry.dart';
 import '../entities/quick_departure_request.dart';
 
@@ -87,6 +88,14 @@ abstract class EcBoardRepository {
   Future<void> promoteHouseholdReference({
     required String familyLocalId,
     required int remoteFamilyId,
+  });
+
+  /// The families here right now (see [FamilyHere]) -- live only, never
+  /// cached: whether a family is still here changes with every arrival
+  /// and departure.
+  Future<Result<List<FamilyHere>>> getFamiliesHere({
+    required int centerId,
+    required int evacuationEventId,
   });
 
   /// One center+event's live breakdown. Network-first: a successful

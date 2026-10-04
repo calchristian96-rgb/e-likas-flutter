@@ -3,6 +3,7 @@ import '../../domain/entities/age_bracket.dart';
 import '../../domain/entities/ec_board_entry_draft.dart'
     show EcBoardSubmitResult;
 import '../../domain/entities/ec_board_quick_count.dart';
+import '../../domain/entities/family_here.dart';
 import '../../domain/entities/quick_departure_request.dart';
 import '../../domain/entities/sectoral_group.dart';
 
@@ -35,6 +36,24 @@ class EcBoardRemoteDataSource {
       evacueeId: envelope['evacuee_id'] as int,
       familyId: data['id'] as int,
     );
+  }
+
+  /// `GET /evacuation-centers/{id}/families` -- the families with someone
+  /// checked in at this center for this event right now, as the server
+  /// lets this account see them (see [FamilyHere]).
+  Future<List<FamilyHere>> getFamiliesHere({
+    required int centerId,
+    required int evacuationEventId,
+  }) async {
+    final response = await _client.get(
+      '/evacuation-centers/$centerId/families',
+      queryParameters: {'evacuation_event_id': evacuationEventId},
+    );
+    final envelope = response.data as Map<String, dynamic>;
+    return [
+      for (final item in envelope['data'] as List? ?? const [])
+        FamilyHere.fromJson(item as Map<String, dynamic>),
+    ];
   }
 
   Future<EcBoardQuickCount> getQuickCount({

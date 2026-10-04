@@ -1797,6 +1797,23 @@ class AppLocalizationsEn extends AppLocalizations {
       'Choose the family\'s home barangay.';
 
   @override
+  String ecBoardFamilyHereGeneric(int id, String barangay, int count) {
+    return 'Family #$id · $barangay · $count here';
+  }
+
+  @override
+  String ecBoardFamilyNumber(int id) {
+    return 'Family #$id';
+  }
+
+  @override
+  String get ecBoardNoFamiliesHere => 'No families here right now.';
+
+  @override
+  String get ecBoardFamiliesHereOffline =>
+      'Offline: showing the families saved on this phone. One that has left this center will be refused when it syncs.';
+
+  @override
   String ecBoardSummaryHeadIsThisPerson(String minor) {
     return 'Head: this person ($minor).';
   }
