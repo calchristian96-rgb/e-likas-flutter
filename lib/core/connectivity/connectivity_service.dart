@@ -133,8 +133,8 @@ class ConnectivityService {
   /// Every repository's existing "try network, fall back to cache" logic
   /// calls this exactly as before. Its result also corrects
   /// [onConnectivityChanged] when they disagree — otherwise an early
-  /// failed probe left every status display (Settings, Home, Sync Now,
-  /// EC Board's Quick Departure) stuck on "offline" while data kept
+  /// failed probe left every status display (Settings, Home, Sync Now)
+  /// stuck on "offline" while data kept
   /// loading live, until the network interface happened to change.
   Future<bool> get hasConnection async {
     final hasInterface = await _hasNetworkInterface();

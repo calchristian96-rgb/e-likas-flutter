@@ -535,17 +535,6 @@
   "ecBoardFourPsBeneficiaryFamilies": "4Ps Beneficiary na mga Pamilya",
 
 
-  "ecBoardQuickDepartureTitle": "Quick Departure",
-  "ecBoardQuickDepartureSubtitle": "Markahan ang mga taong umalis sa center na ito, ayon sa age bracket, kasarian, at bilang.",
-  "ecBoardQuickDepartureQuantity": "Bilang",
-  "ecBoardQuickDepartureStatus": "Katayuan",
-  "ecBoardQuickDepartureReturnedHome": "Umuwi na",
-  "ecBoardQuickDepartureTransferred": "Nailipat",
-  "ecBoardQuickDepartureSubmitButton": "Markahan bilang Umalis",
-  "ecBoardQuickDepartureValidationBanner": "Piliin ang kasarian, age bracket, bilang, at katayuan.",
-  "ecBoardQuickDepartureSuccessMessage": "Naitala bilang umalis.",
-  "ecBoardQuickDepartureOfflineMessage": "Kailangan ng internet connection para sa Quick Departure.",
-  "ecBoardQuickDepartureOfflineExplanation": "Kailangan ng internet connection ang Quick Departure dahil kailangan nitong tingnan kung sino ang kasalukuyang nakumpirma sa center na ito.",
   "ecBoardAddEvacueeIntro": "Maaaring idagdag ang pangalan at kaarawan sa ibang pagkakataon sa Evacuees page ng web dashboard.",
   "ecBoardSectionWhoIsThisPerson": "Sino ang taong ito?",
   "ecBoardHeadNote": "Gagamitin ang edad at kasarian ng taong ito para sa puno ng pamilya.",

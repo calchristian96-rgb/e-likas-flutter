@@ -11,7 +11,6 @@ import '../../domain/entities/ec_board_entry_draft.dart';
 import '../../domain/entities/ec_board_quick_count.dart';
 import '../../domain/entities/family_here.dart';
 import '../../domain/entities/pending_ec_board_entry.dart';
-import '../../domain/entities/quick_departure_request.dart';
 import '../../domain/repositories/ec_board_repository.dart';
 
 part 'ec_board_provider.g.dart';
@@ -119,17 +118,4 @@ Future<Result<EcBoardSubmitResult>> Function(EcBoardEntryDraft draft)
 ecBoardSubmit(Ref ref) {
   final repository = ref.watch(ecBoardRepositoryProvider);
   return (draft) => repository.submit(draft);
-}
-
-/// The single Quick Departure submission path (`POST
-/// /evacuation-centers/{id}/quick-departure`) — **online-only, never
-/// queued**, so unlike [ecBoardSubmit] there
-/// is no offline fallback branch for a caller to reach for; the form
-/// itself must confirm connectivity before ever calling this (see
-/// `QuickDepartureRequest`'s doc comment for why).
-@riverpod
-Future<Result<String>> Function(QuickDepartureRequest request)
-ecBoardQuickDeparture(Ref ref) {
-  final repository = ref.watch(ecBoardRepositoryProvider);
-  return (request) => repository.quickDeparture(request);
 }

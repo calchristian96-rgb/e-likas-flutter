@@ -4,7 +4,6 @@ import '../entities/ec_board_entry_draft.dart';
 import '../entities/ec_board_quick_count.dart';
 import '../entities/family_here.dart';
 import '../entities/pending_ec_board_entry.dart';
-import '../entities/quick_departure_request.dart';
 
 class EcBoardQueueCounts {
   const EcBoardQueueCounts({
@@ -115,13 +114,4 @@ abstract class EcBoardRepository {
   /// [EcBoardSubmitResult]'s doc comment for why both ids it carries
   /// matter, not just the evacuee's.
   Future<Result<EcBoardSubmitResult>> submit(EcBoardEntryDraft draft);
-
-  /// `POST /evacuation-centers/{id}/quick-departure` —
-  /// **deliberately never queued offline**; see
-  /// [QuickDepartureRequest]'s doc comment for why. Callers must check
-  /// connectivity themselves before ever presenting this action, same
-  /// as the UI-level guard already does. Returns the backend's own
-  /// confirmation message (e.g. "3 evacuee(s) marked as departed.")
-  /// on success.
-  Future<Result<String>> quickDeparture(QuickDepartureRequest request);
 }

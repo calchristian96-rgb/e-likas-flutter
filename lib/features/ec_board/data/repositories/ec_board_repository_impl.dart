@@ -10,7 +10,6 @@ import '../../domain/entities/ec_board_quick_count.dart';
 import '../../domain/entities/family_here.dart';
 import '../../domain/entities/pending_ec_board_entry.dart';
 import '../../domain/entities/per_person_sectoral_flag.dart';
-import '../../domain/entities/quick_departure_request.dart';
 import '../../domain/repositories/ec_board_repository.dart';
 import '../datasources/ec_board_local_datasource.dart';
 import '../datasources/ec_board_remote_datasource.dart';
@@ -288,16 +287,6 @@ class EcBoardRepositoryImpl implements EcBoardRepository {
         draft.toJson(),
       );
       return Success(result);
-    } on DioException catch (e) {
-      return Failed(mapStaffDioError(e));
-    }
-  }
-
-  @override
-  Future<Result<String>> quickDeparture(QuickDepartureRequest request) async {
-    try {
-      final message = await _remote.quickDeparture(request);
-      return Success(message);
     } on DioException catch (e) {
       return Failed(mapStaffDioError(e));
     }

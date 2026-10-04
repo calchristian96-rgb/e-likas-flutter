@@ -226,6 +226,17 @@ void main() {
     expect(find.textContaining('Offline — showing'), findsOneWidget);
   });
 
+  testWidgets('the board has Add Evacuee and no Quick Departure, online '
+      'or not', (tester) async {
+    await _pump(
+      tester,
+      count: () async => throw const NetworkFailure('offline'),
+    );
+    expect(find.text('Add Evacuee'), findsWidgets);
+    expect(find.textContaining('Quick Departure'), findsNothing);
+    expect(find.textContaining('Mark as Departed'), findsNothing);
+  });
+
   testWidgets('a board never fetched says so and shows dashes, not zeros', (
     tester,
   ) async {

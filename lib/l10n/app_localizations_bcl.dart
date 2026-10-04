@@ -1658,43 +1658,6 @@ class AppLocalizationsBcl extends AppLocalizations {
   String get ecBoardFourPsBeneficiaryFamilies => '4Ps Beneficiary Families';
 
   @override
-  String get ecBoardQuickDepartureTitle => 'Quick Departure';
-
-  @override
-  String get ecBoardQuickDepartureSubtitle =>
-      'Mark people currently at this center as departed, by age bracket, sex, and quantity.';
-
-  @override
-  String get ecBoardQuickDepartureQuantity => 'Quantity';
-
-  @override
-  String get ecBoardQuickDepartureStatus => 'Status';
-
-  @override
-  String get ecBoardQuickDepartureReturnedHome => 'Returned home';
-
-  @override
-  String get ecBoardQuickDepartureTransferred => 'Transferred';
-
-  @override
-  String get ecBoardQuickDepartureSubmitButton => 'Mark as Departed';
-
-  @override
-  String get ecBoardQuickDepartureValidationBanner =>
-      'Please select sex, age bracket, quantity, and status.';
-
-  @override
-  String get ecBoardQuickDepartureSuccessMessage => 'Marked as departed.';
-
-  @override
-  String get ecBoardQuickDepartureOfflineMessage =>
-      'Quick Departure requires an internet connection.';
-
-  @override
-  String get ecBoardQuickDepartureOfflineExplanation =>
-      'Quick Departure requires an internet connection, since it needs to check who\'s currently confirmed at this center.';
-
-  @override
   String get ecBoardAddEvacueeIntro =>
       'Name and birthdate can be added later on the web dashboard\'s Evacuees page.';
 

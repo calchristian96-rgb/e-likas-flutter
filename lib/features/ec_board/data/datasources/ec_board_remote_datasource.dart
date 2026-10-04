@@ -4,11 +4,10 @@ import '../../domain/entities/ec_board_entry_draft.dart'
     show EcBoardSubmitResult;
 import '../../domain/entities/ec_board_quick_count.dart';
 import '../../domain/entities/family_here.dart';
-import '../../domain/entities/quick_departure_request.dart';
 import '../../domain/entities/sectoral_group.dart';
 
-/// The three EC Information Board endpoints: `POST .../evacuees`,
-/// `GET .../quick-count`, and `POST .../quick-departure`.
+/// The EC Information Board endpoints: `POST .../evacuees`,
+/// `GET .../families` and `GET .../quick-count`.
 class EcBoardRemoteDataSource {
   EcBoardRemoteDataSource(this._client);
 
@@ -67,21 +66,6 @@ class EcBoardRemoteDataSource {
     final envelope = response.data as Map<String, dynamic>;
     final data = envelope['data'] as Map<String, dynamic>;
     return _parseQuickCount(data);
-  }
-
-  /// `POST /evacuation-centers/{id}/quick-departure` — the response
-  /// carries only a `message` (e.g. "3 evacuee(s) marked as
-  /// departed."), no `data` payload, so that confirmation message is
-  /// returned directly rather than this trying to hand back a partial
-  /// `EcBoardQuickCount`; the caller re-fetches [getQuickCount] itself
-  /// to see the updated "Now" figures.
-  Future<String> quickDeparture(QuickDepartureRequest request) async {
-    final response = await _client.post(
-      '/evacuation-centers/${request.evacuationCenterId}/quick-departure',
-      data: request.toJson(),
-    );
-    final envelope = response.data as Map<String, dynamic>;
-    return envelope['message'] as String? ?? '';
   }
 
   static EcBoardQuickCount _parseQuickCount(Map<String, dynamic> data) {

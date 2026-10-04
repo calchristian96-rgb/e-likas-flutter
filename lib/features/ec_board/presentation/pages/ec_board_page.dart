@@ -26,7 +26,6 @@ import '../providers/ec_board_provider.dart';
 import 'add_evacuee_form_page.dart'
     show AddEvacueeFormPage, localizedAgeBracket, localizedSectoralGroup;
 import 'pending_ec_entry_detail_page.dart';
-import 'quick_departure_form_page.dart';
 
 /// EC Information Board for one center — reached from
 /// `StaffEvacuationCenterDetailPage`. Shows two deliberately separate
@@ -193,18 +192,6 @@ class _EcBoardBody extends ConsumerWidget {
     ref.invalidate(ecBoardQuickCountProvider(centerId, selectedEventId));
   }
 
-  Future<void> _openQuickDeparture(BuildContext context, WidgetRef ref) async {
-    await Navigator.of(context).push<void>(
-      MaterialPageRoute(
-        builder: (_) => QuickDepartureFormPage(
-          centerId: centerId,
-          evacuationEventId: selectedEventId,
-        ),
-      ),
-    );
-    ref.invalidate(ecBoardQuickCountProvider(centerId, selectedEventId));
-  }
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context);
@@ -222,8 +209,9 @@ class _EcBoardBody extends ConsumerWidget {
       },
       // Add Evacuee first (the everyday action), then the board as one
       // sheet in the official template's order, then this device's
-      // not-yet-synced additions kept apart from it, and Quick Departure
-      // — used far less often — last.
+      // not-yet-synced additions kept apart from it. Departures are
+      // recorded on the family's record (Registered Families), not here
+      // -- the board no longer has Quick Departure, as on the web.
       child: ListView(
         padding: const EdgeInsets.all(16),
         children: [
@@ -254,19 +242,6 @@ class _EcBoardBody extends ConsumerWidget {
             isSyncing: isSyncingEcBoardEntries,
             onSync: onSyncEcBoardEntries,
           ),
-          const SizedBox(height: 24),
-          if (isOnline)
-            _EcBoardActionButton(
-              icon: Icons.exit_to_app_outlined,
-              label: l10n.ecBoardQuickDepartureTitle,
-              subtitle: l10n.staffAddEvacuationCenterSubtitle,
-              onPressed: () => _openQuickDeparture(context, ref),
-              filled: false,
-            )
-          else
-            _QuickDepartureOfflineNotice(
-              label: l10n.ecBoardQuickDepartureTitle,
-            ),
         ],
       ),
     );
@@ -1181,25 +1156,19 @@ class _PendingEntryTile extends ConsumerWidget {
 /// Staff Dashboard: "Works offline — syncs when you're ready" for
 /// Register a Family, "Online only — not queued offline" for Add
 /// Evacuation Center), reused verbatim here so staff learn it once and
-/// recognize it everywhere. [filled] distinguishes the
-/// offline-capable action (Add Evacuee — a solid,
-/// primary-styled button) from the online-only one (Quick Departure —
-/// outlined, deliberately a step down in visual weight from an action
-/// that isn't always available).
+/// recognize it everywhere.
 class _EcBoardActionButton extends StatelessWidget {
   const _EcBoardActionButton({
     required this.icon,
     required this.label,
     required this.subtitle,
     required this.onPressed,
-    this.filled = true,
   });
 
   final IconData icon;
   final String label;
   final String subtitle;
   final VoidCallback onPressed;
-  final bool filled;
 
   @override
   Widget build(BuildContext context) {
@@ -1207,17 +1176,11 @@ class _EcBoardActionButton extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        filled
-            ? FilledButton.icon(
-                onPressed: onPressed,
-                icon: Icon(icon),
-                label: Text(label),
-              )
-            : OutlinedButton.icon(
-                onPressed: onPressed,
-                icon: Icon(icon),
-                label: Text(label),
-              ),
+        FilledButton.icon(
+          onPressed: onPressed,
+          icon: Icon(icon),
+          label: Text(label),
+        ),
         const SizedBox(height: 4),
         Text(
           subtitle,
@@ -1231,53 +1194,3 @@ class _EcBoardActionButton extends StatelessWidget {
   }
 }
 
-/// Shown instead of the Quick Departure button while offline —
-/// deliberately not just that same button greyed out: a disabled
-/// button with no context reads as "temporarily broken," while this
-/// explains the actual reason (see `QuickDepartureRequest`'s doc
-/// comment) so staff understand it's a deliberate safety choice, not a
-/// bug or an oversight.
-class _QuickDepartureOfflineNotice extends StatelessWidget {
-  const _QuickDepartureOfflineNotice({required this.label});
-
-  final String label;
-
-  @override
-  Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context);
-    final theme = Theme.of(context);
-    final warning =
-        theme.extension<AppSemanticColors>()?.warning ?? Colors.amber.shade800;
-    return Container(
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        color: warning.withValues(alpha: 0.12),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: warning.withValues(alpha: 0.4)),
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Icon(Icons.cloud_off_outlined, color: warning),
-          const SizedBox(width: 10),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  label,
-                  style: theme.textTheme.titleSmall?.copyWith(color: warning),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  l10n.ecBoardQuickDepartureOfflineExplanation,
-                  style: theme.textTheme.bodySmall,
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}

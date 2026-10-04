@@ -1691,43 +1691,6 @@ class AppLocalizationsFil extends AppLocalizations {
       '4Ps Beneficiary na mga Pamilya';
 
   @override
-  String get ecBoardQuickDepartureTitle => 'Quick Departure';
-
-  @override
-  String get ecBoardQuickDepartureSubtitle =>
-      'Markahan ang mga taong umalis sa center na ito, ayon sa age bracket, kasarian, at bilang.';
-
-  @override
-  String get ecBoardQuickDepartureQuantity => 'Bilang';
-
-  @override
-  String get ecBoardQuickDepartureStatus => 'Katayuan';
-
-  @override
-  String get ecBoardQuickDepartureReturnedHome => 'Umuwi na';
-
-  @override
-  String get ecBoardQuickDepartureTransferred => 'Nailipat';
-
-  @override
-  String get ecBoardQuickDepartureSubmitButton => 'Markahan bilang Umalis';
-
-  @override
-  String get ecBoardQuickDepartureValidationBanner =>
-      'Piliin ang kasarian, age bracket, bilang, at katayuan.';
-
-  @override
-  String get ecBoardQuickDepartureSuccessMessage => 'Naitala bilang umalis.';
-
-  @override
-  String get ecBoardQuickDepartureOfflineMessage =>
-      'Kailangan ng internet connection para sa Quick Departure.';
-
-  @override
-  String get ecBoardQuickDepartureOfflineExplanation =>
-      'Kailangan ng internet connection ang Quick Departure dahil kailangan nitong tingnan kung sino ang kasalukuyang nakumpirma sa center na ito.';
-
-  @override
   String get ecBoardAddEvacueeIntro =>
       'Maaaring idagdag ang pangalan at kaarawan sa ibang pagkakataon sa Evacuees page ng web dashboard.';
 

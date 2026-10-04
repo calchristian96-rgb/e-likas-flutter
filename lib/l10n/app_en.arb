@@ -644,17 +644,6 @@
   "ecBoardFourPsBeneficiaryFamilies": "4Ps Beneficiary Families",
 
 
-  "ecBoardQuickDepartureTitle": "Quick Departure",
-  "ecBoardQuickDepartureSubtitle": "Mark people currently at this center as departed, by age bracket, sex, and quantity.",
-  "ecBoardQuickDepartureQuantity": "Quantity",
-  "ecBoardQuickDepartureStatus": "Status",
-  "ecBoardQuickDepartureReturnedHome": "Returned home",
-  "ecBoardQuickDepartureTransferred": "Transferred",
-  "ecBoardQuickDepartureSubmitButton": "Mark as Departed",
-  "ecBoardQuickDepartureValidationBanner": "Please select sex, age bracket, quantity, and status.",
-  "ecBoardQuickDepartureSuccessMessage": "Marked as departed.",
-  "ecBoardQuickDepartureOfflineMessage": "Quick Departure requires an internet connection.",
-  "ecBoardQuickDepartureOfflineExplanation": "Quick Departure requires an internet connection, since it needs to check who's currently confirmed at this center.",
   "ecBoardAddEvacueeIntro": "Name and birthdate can be added later on the web dashboard's Evacuees page.",
   "ecBoardSectionWhoIsThisPerson": "Who is this person?",
   "ecBoardHeadNote": "This person's age and sex will be used for the family head.",
