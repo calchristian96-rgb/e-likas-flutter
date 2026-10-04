@@ -1809,7 +1809,28 @@ class AppLocalizationsFil extends AppLocalizations {
   String get ecBoardSummaryNoHeadName => '(wala pang pangalan ng pamilya)';
 
   @override
-  String get ecBoardSummaryNoBarangay => 'walang napiling barangay';
+  String get ecBoardSummaryNoBarangay =>
+      '(hindi pa napipili ang barangay na tinitirhan)';
+
+  @override
+  String get ecBoardHomeBarangayLabel => 'Barangay na tinitirhan';
+
+  @override
+  String get ecBoardHomeBarangayHint =>
+      'Piliin ang barangay na tinitirhan ng pamilya...';
+
+  @override
+  String get ecBoardHomeBarangayHelp =>
+      'Kung saan nakatira ang pamilya -- hindi kailangang kung saan ang center na ito.';
+
+  @override
+  String ecBoardHomeBarangaySameAsCenter(String barangay) {
+    return 'Kapareho ng center na ito ($barangay)';
+  }
+
+  @override
+  String get ecBoardHomeBarangayRequired =>
+      'Piliin ang barangay na tinitirhan ng pamilya.';
 
   @override
   String ecBoardSummaryHeadIsThisPerson(String minor) {

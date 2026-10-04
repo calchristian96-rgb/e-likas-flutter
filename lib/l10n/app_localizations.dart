@@ -3253,8 +3253,38 @@ abstract class AppLocalizations {
   /// No description provided for @ecBoardSummaryNoBarangay.
   ///
   /// In en, this message translates to:
-  /// **'no barangay chosen'**
+  /// **'(home barangay not chosen yet)'**
   String get ecBoardSummaryNoBarangay;
+
+  /// No description provided for @ecBoardHomeBarangayLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Home barangay'**
+  String get ecBoardHomeBarangayLabel;
+
+  /// No description provided for @ecBoardHomeBarangayHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose the family\'s home barangay...'**
+  String get ecBoardHomeBarangayHint;
+
+  /// No description provided for @ecBoardHomeBarangayHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Where the family lives -- not necessarily where this center is.'**
+  String get ecBoardHomeBarangayHelp;
+
+  /// No description provided for @ecBoardHomeBarangaySameAsCenter.
+  ///
+  /// In en, this message translates to:
+  /// **'Same as this center ({barangay})'**
+  String ecBoardHomeBarangaySameAsCenter(String barangay);
+
+  /// No description provided for @ecBoardHomeBarangayRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose the family\'s home barangay.'**
+  String get ecBoardHomeBarangayRequired;
 
   /// No description provided for @ecBoardSummaryHeadIsThisPerson.
   ///

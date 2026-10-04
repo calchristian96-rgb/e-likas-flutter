@@ -56,6 +56,10 @@ class _AddEvacueeFormPageState extends ConsumerState<AddEvacueeFormPage> {
   bool _submitting = false;
   bool _dirty = false;
 
+  /// Set when a save is tried for a new family with no home barangay
+  /// chosen, so the field says so; cleared once one is picked.
+  bool _barangayMissing = false;
+
   /// Whether the chosen "Already here" household has no head linked yet
   /// — the only case "This person is the household head" is offered
   /// there (the real head arriving later). Never offered otherwise: the
@@ -220,7 +224,21 @@ class _AddEvacueeFormPageState extends ConsumerState<AddEvacueeFormPage> {
     final householdLabel = _householdLabel;
 
     if (!_draft.isSubmittable || householdLabel == null) {
-      _showSnack(l10n.ecBoardValidationBanner, isError: true);
+      final barangayMissing =
+          _isNew && _draft.newHouseholdBarangayId == null;
+      setState(() => _barangayMissing = barangayMissing);
+      // Only the home barangay missing: say exactly that, in the
+      // server's words; otherwise the general reminder.
+      final onlyBarangayMissing =
+          barangayMissing &&
+          householdLabel != null &&
+          _draft.copyWith(newHouseholdBarangayId: 0).isSubmittable;
+      _showSnack(
+        onlyBarangayMissing
+            ? l10n.ecBoardHomeBarangayRequired
+            : l10n.ecBoardValidationBanner,
+        isError: true,
+      );
       return;
     }
 
@@ -539,11 +557,16 @@ class _AddEvacueeFormPageState extends ConsumerState<AddEvacueeFormPage> {
                               ),
                             ),
                         ] else ...[
-                          _BarangayDropdown(
+                          _HomeBarangayField(
+                            centerId: widget.centerId,
                             value: _draft.newHouseholdBarangayId,
-                            onChanged: (id) => _update(
-                              (d) => d.copyWith(newHouseholdBarangayId: id),
-                            ),
+                            showRequired: _barangayMissing,
+                            onChanged: (id) {
+                              _barangayMissing = false;
+                              _update(
+                                (d) => d.copyWith(newHouseholdBarangayId: id),
+                              );
+                            },
                           ),
                           const SizedBox(height: 12),
                           TextFormField(
@@ -801,28 +824,84 @@ class _HeadOfHouseholdInset extends StatelessWidget {
   }
 }
 
-class _BarangayDropdown extends ConsumerWidget {
-  const _BarangayDropdown({required this.value, required this.onChanged});
+/// A new family's home barangay -- where the family lives, which decides
+/// whose family it is on the server (Evacuees page, DROMIC report); the
+/// same field as the web dashboard's Add Evacuee. No default on purpose:
+/// people from other barangays stay at this center too, so it is always
+/// a conscious choice. "Same as this center" makes the common case one
+/// tap.
+class _HomeBarangayField extends ConsumerWidget {
+  const _HomeBarangayField({
+    required this.centerId,
+    required this.value,
+    required this.showRequired,
+    required this.onChanged,
+  });
 
+  final int centerId;
   final int? value;
+  final bool showRequired;
   final ValueChanged<int?> onChanged;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context);
     final theme = Theme.of(context);
-    return ref
-        .watch(barangaysProvider)
-        .when(
-          data: (barangays) => DropdownButtonFormField<int>(
+    final barangays = ref.watch(barangaysProvider);
+    final centerBarangayId = (ref.watch(evacuationCentersLookupProvider).value ??
+            const <EvacuationCenterLookup>[])
+        .where((c) => c.id == centerId)
+        .map((c) => c.barangayId)
+        .firstOrNull;
+    final centerBarangay = (barangays.value ?? const <Barangay>[])
+        .where((b) => b.id == centerBarangayId)
+        .firstOrNull;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Wrap(
+          alignment: WrapAlignment.spaceBetween,
+          crossAxisAlignment: WrapCrossAlignment.center,
+          spacing: 8,
+          runSpacing: 4,
+          children: [
+            Text(
+              l10n.ecBoardHomeBarangayLabel,
+              style: theme.textTheme.labelLarge,
+            ),
+            if (centerBarangay != null)
+              OutlinedButton(
+                key: const ValueKey('home-barangay-same-as-center'),
+                style: OutlinedButton.styleFrom(
+                  visualDensity: VisualDensity.compact,
+                  padding: const EdgeInsets.symmetric(horizontal: 12),
+                ),
+                onPressed: () => onChanged(centerBarangay.id),
+                child: Text(
+                  l10n.ecBoardHomeBarangaySameAsCenter(centerBarangay.name),
+                ),
+              ),
+          ],
+        ),
+        const SizedBox(height: 6),
+        barangays.when(
+          data: (items) => DropdownButtonFormField<int>(
+            // Rebuilt when "Same as this center" sets the value.
+            key: ValueKey(value),
             initialValue: value,
             isExpanded: true,
+            hint: Text(l10n.ecBoardHomeBarangayHint),
             decoration: InputDecoration(
-              labelText: l10n.staffRegFieldBarangay,
               border: const OutlineInputBorder(),
+              helperText: l10n.ecBoardHomeBarangayHelp,
+              helperMaxLines: 2,
+              errorText: showRequired && value == null
+                  ? l10n.ecBoardHomeBarangayRequired
+                  : null,
             ),
             items: [
-              for (final barangay in barangays)
+              for (final barangay in items)
                 DropdownMenuItem(
                   value: barangay.id,
                   child: Text(
@@ -833,7 +912,7 @@ class _BarangayDropdown extends ConsumerWidget {
                 ),
             ],
             selectedItemBuilder: (context) => [
-              for (final barangay in barangays)
+              for (final barangay in items)
                 Text(
                   barangay.name,
                   maxLines: 1,
@@ -847,7 +926,9 @@ class _BarangayDropdown extends ConsumerWidget {
             l10n.staffRegLookupUnavailable,
             style: TextStyle(color: theme.colorScheme.error),
           ),
-        );
+        ),
+      ],
+    );
   }
 }
 

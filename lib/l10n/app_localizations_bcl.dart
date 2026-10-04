@@ -1775,7 +1775,26 @@ class AppLocalizationsBcl extends AppLocalizations {
   String get ecBoardSummaryNoHeadName => '(family name not entered yet)';
 
   @override
-  String get ecBoardSummaryNoBarangay => 'no barangay chosen';
+  String get ecBoardSummaryNoBarangay => '(home barangay not chosen yet)';
+
+  @override
+  String get ecBoardHomeBarangayLabel => 'Home barangay';
+
+  @override
+  String get ecBoardHomeBarangayHint => 'Choose the family\'s home barangay...';
+
+  @override
+  String get ecBoardHomeBarangayHelp =>
+      'Where the family lives -- not necessarily where this center is.';
+
+  @override
+  String ecBoardHomeBarangaySameAsCenter(String barangay) {
+    return 'Same as this center ($barangay)';
+  }
+
+  @override
+  String get ecBoardHomeBarangayRequired =>
+      'Choose the family\'s home barangay.';
 
   @override
   String ecBoardSummaryHeadIsThisPerson(String minor) {
