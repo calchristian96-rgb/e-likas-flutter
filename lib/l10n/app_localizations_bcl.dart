@@ -1814,6 +1814,11 @@ class AppLocalizationsBcl extends AppLocalizations {
       'Offline: showing the families saved on this phone. One that has left this center will be refused when it syncs.';
 
   @override
+  String ecBoardOtherBarangayNote(String barangay) {
+    return 'This center is in $barangay. Add only people who are staying at this center.';
+  }
+
+  @override
   String ecBoardSummaryHeadIsThisPerson(String minor) {
     return 'Head: this person ($minor).';
   }

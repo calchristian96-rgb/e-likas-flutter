@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
+import '../../../../app/theme/app_theme.dart';
 import '../../../../core/connectivity/connectivity_service.dart';
 import '../../../../core/error/failure.dart';
 import '../../../../core/error/result.dart';
@@ -15,6 +16,7 @@ import '../../../family_registration/presentation/providers/pending_queue_provid
 import '../../../registered_families/domain/entities/registered_families_snapshot.dart';
 import '../../../registered_families/domain/entities/registered_family.dart';
 import '../../../registered_families/presentation/providers/registered_families_provider.dart';
+import '../../../staff_auth/presentation/providers/staff_auth_provider.dart';
 import '../../domain/entities/age_bracket.dart';
 import '../../domain/entities/ec_board_entry_draft.dart';
 import '../../domain/entities/family_here.dart';
@@ -448,6 +450,7 @@ class _AddEvacueeFormPageState extends ConsumerState<AddEvacueeFormPage> {
                         color: theme.colorScheme.onSurfaceVariant,
                       ),
                     ),
+                    _OtherBarangayNote(centerId: widget.centerId),
                     const SizedBox(height: 12),
                     _FormSection(
                       title: l10n.ecBoardSectionWhoIsThisPerson,
@@ -818,6 +821,66 @@ class _HeadOfHouseholdInset extends StatelessWidget {
               (false, l10n.ecBoardAnswerNo),
             ],
             onChanged: onHeadIsMinorChanged,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// Only for a barangay official at a center in ANOTHER barangay: a
+/// reminder, never a block, that only people staying at this center
+/// belong here -- the same note as the web dashboard's Add Evacuee.
+class _OtherBarangayNote extends ConsumerWidget {
+  const _OtherBarangayNote({required this.centerId});
+
+  final int centerId;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final session = ref.watch(staffAuthProvider).value;
+    final center = (ref.watch(evacuationCentersLookupProvider).value ??
+            const <EvacuationCenterLookup>[])
+        .where((c) => c.id == centerId)
+        .firstOrNull;
+    if (session == null ||
+        !session.isBarangayOfficial ||
+        session.barangayId == null ||
+        center == null ||
+        center.barangayId == session.barangayId) {
+      return const SizedBox.shrink();
+    }
+    final barangayName = (ref.watch(barangaysProvider).value ??
+            const <Barangay>[])
+        .where((b) => b.id == center.barangayId)
+        .map((b) => b.name)
+        .firstOrNull;
+    if (barangayName == null) return const SizedBox.shrink();
+
+    final l10n = AppLocalizations.of(context);
+    final theme = Theme.of(context);
+    final amber =
+        theme.extension<AppSemanticColors>()?.warning ??
+        theme.colorScheme.error;
+    return Container(
+      key: const ValueKey('other-barangay-note'),
+      margin: const EdgeInsets.only(top: 12),
+      padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
+      decoration: BoxDecoration(
+        color: amber.withValues(alpha: 0.10),
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(color: amber.withValues(alpha: 0.35)),
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Icon(Icons.place_outlined, size: 18, color: amber),
+          const SizedBox(width: 8),
+          Expanded(
+            child: Text(
+              l10n.ecBoardOtherBarangayNote(barangayName),
+              style: theme.textTheme.bodySmall?.copyWith(color: amber),
+            ),
           ),
         ],
       ),

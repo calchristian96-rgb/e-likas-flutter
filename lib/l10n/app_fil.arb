@@ -585,6 +585,8 @@
   "@ecBoardFamilyNumber": {"placeholders": {"id": {"type": "int"}}},
   "ecBoardNoFamiliesHere": "Walang pamilya rito sa ngayon.",
   "ecBoardFamiliesHereOffline": "Offline: ipinapakita ang mga pamilyang naka-save sa teleponong ito. Ang pamilyang umalis na sa center na ito ay tatanggihan pagka-sync.",
+  "ecBoardOtherBarangayNote": "Nasa {barangay} ang center na ito. Idagdag lamang ang mga taong nananatili sa center na ito.",
+  "@ecBoardOtherBarangayNote": {"placeholders": {"barangay": {"type": "String"}}},
   "ecBoardSummaryHeadIsThisPerson": "Puno: ang taong ito ({minor}).",
   "@ecBoardSummaryHeadIsThisPerson": { "placeholders": { "minor": { "type": "String" } } },
   "ecBoardSummaryHeadIsSomeoneElse": "Puno: ibang tao, {sex}, {minor}.",

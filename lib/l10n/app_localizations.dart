@@ -3310,6 +3310,12 @@ abstract class AppLocalizations {
   /// **'Offline: showing the families saved on this phone. One that has left this center will be refused when it syncs.'**
   String get ecBoardFamiliesHereOffline;
 
+  /// No description provided for @ecBoardOtherBarangayNote.
+  ///
+  /// In en, this message translates to:
+  /// **'This center is in {barangay}. Add only people who are staying at this center.'**
+  String ecBoardOtherBarangayNote(String barangay);
+
   /// No description provided for @ecBoardSummaryHeadIsThisPerson.
   ///
   /// In en, this message translates to:

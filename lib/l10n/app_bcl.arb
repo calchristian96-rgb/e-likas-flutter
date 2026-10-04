@@ -1177,6 +1177,8 @@
   "@ecBoardNoFamiliesHere": {"description": "PENDING Bikol (Ligao) local-language review — English fallback shown until reviewed. Staff-only screen, not resident-facing."},
   "ecBoardFamiliesHereOffline": "Offline: showing the families saved on this phone. One that has left this center will be refused when it syncs.",
   "@ecBoardFamiliesHereOffline": {"description": "PENDING Bikol (Ligao) local-language review — English fallback shown until reviewed. Staff-only screen, not resident-facing."},
+  "ecBoardOtherBarangayNote": "This center is in {barangay}. Add only people who are staying at this center.",
+  "@ecBoardOtherBarangayNote": {"description": "PENDING Bikol (Ligao) local-language review — English fallback shown until reviewed. Staff-only screen, not resident-facing.", "placeholders": {"barangay": {"type": "String"}}},
   "ecBoardSummaryHeadIsThisPerson": "Head: this person ({minor}).",
   "@ecBoardSummaryHeadIsThisPerson": { "description": "PENDING Bikol (Ligao) local-language review — English fallback shown until reviewed.", "placeholders": { "minor": { "type": "String" } } },
   "ecBoardSummaryHeadIsSomeoneElse": "Head: someone else, {sex}, {minor}.",

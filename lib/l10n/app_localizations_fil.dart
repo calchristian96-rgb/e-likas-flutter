@@ -1850,6 +1850,11 @@ class AppLocalizationsFil extends AppLocalizations {
       'Offline: ipinapakita ang mga pamilyang naka-save sa teleponong ito. Ang pamilyang umalis na sa center na ito ay tatanggihan pagka-sync.';
 
   @override
+  String ecBoardOtherBarangayNote(String barangay) {
+    return 'Nasa $barangay ang center na ito. Idagdag lamang ang mga taong nananatili sa center na ito.';
+  }
+
+  @override
   String ecBoardSummaryHeadIsThisPerson(String minor) {
     return 'Puno: ang taong ito ($minor).';
   }

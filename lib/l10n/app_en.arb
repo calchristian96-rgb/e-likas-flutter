@@ -694,6 +694,8 @@
   "@ecBoardFamilyNumber": {"placeholders": {"id": {"type": "int"}}},
   "ecBoardNoFamiliesHere": "No families here right now.",
   "ecBoardFamiliesHereOffline": "Offline: showing the families saved on this phone. One that has left this center will be refused when it syncs.",
+  "ecBoardOtherBarangayNote": "This center is in {barangay}. Add only people who are staying at this center.",
+  "@ecBoardOtherBarangayNote": {"placeholders": {"barangay": {"type": "String"}}},
   "ecBoardSummaryHeadIsThisPerson": "Head: this person ({minor}).",
   "@ecBoardSummaryHeadIsThisPerson": { "placeholders": { "minor": { "type": "String" } } },
   "ecBoardSummaryHeadIsSomeoneElse": "Head: someone else, {sex}, {minor}.",
