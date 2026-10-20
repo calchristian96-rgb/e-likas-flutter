@@ -11,6 +11,7 @@ import '../../features/alerts/presentation/pages/alert_details_page.dart';
 import '../../features/alerts/presentation/pages/alerts_page.dart';
 import '../../features/alerts/presentation/providers/alerts_summary_provider.dart';
 import '../../features/alerts/presentation/widgets/alert_type_display.dart';
+import '../../features/app_update/presentation/update_prompt.dart';
 import '../../features/ec_board/presentation/pages/ec_board_centers_list_page.dart';
 import '../../features/ec_board/presentation/pages/ec_board_page.dart';
 import '../../features/ec_board/presentation/providers/ec_board_provider.dart'
@@ -81,6 +82,11 @@ class _AppShellState extends ConsumerState<AppShell>
     super.initState();
     WidgetsBinding.instance.addObserver(this);
     _startPolling();
+    // Once per cold start, after the first frame so it can never delay
+    // startup. Silent unless there is an update to offer.
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) runAutomaticUpdateCheck(context, ref, coldStart: true);
+    });
   }
 
   @override
@@ -105,6 +111,8 @@ class _AppShellState extends ConsumerState<AppShell>
         ref.read(connectivityServiceProvider).refreshNow();
         _refreshAlertsNow();
         _startPolling();
+        // Throttled to once per 6 h inside the repository.
+        runAutomaticUpdateCheck(context, ref, coldStart: false);
       case AppLifecycleState.inactive:
       case AppLifecycleState.paused:
       case AppLifecycleState.detached:

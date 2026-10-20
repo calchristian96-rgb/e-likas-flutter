@@ -11,6 +11,8 @@ import '../../../../core/localization/app_theme_mode.dart';
 import '../../../../core/localization/language_selector_sheet.dart';
 import '../../../../core/localization/theme_mode_selector_sheet.dart';
 import '../../../../l10n/app_localizations.dart';
+import '../../../app_update/presentation/providers/app_update_providers.dart';
+import '../../../app_update/presentation/update_prompt.dart';
 import '../../../home/presentation/providers/home_provider.dart';
 import '../../../staff_auth/presentation/providers/staff_auth_provider.dart';
 import '../../../staff_auth/presentation/widgets/staff_identity_card.dart';
@@ -38,6 +40,17 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
   // an accidental unlock. A no-op entirely in a release build: the row
   // itself gets no onTap at all in that case (see build() below), so
   // this counter is never even incremented.
+  bool _checkingForUpdate = false;
+
+  Future<void> _checkForUpdates() async {
+    setState(() => _checkingForUpdate = true);
+    try {
+      await runManualUpdateCheck(context, ref);
+    } finally {
+      if (mounted) setState(() => _checkingForUpdate = false);
+    }
+  }
+
   int _aboutTapCount = 0;
   Timer? _aboutTapResetTimer;
 
@@ -71,6 +84,8 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
     final isConnected = ref.watch(connectivityStatusProvider).value ?? false;
     final staffSession = ref.watch(staffAuthProvider).value;
     final notificationsEnabled = ref.watch(notificationPreferenceProvider);
+    final updatesSupported = ref.watch(updateSupportedProvider);
+    final installed = ref.watch(installedAppInfoProvider).value;
 
     return Scaffold(
       appBar: AppBar(title: Text(l10n.settingsTitle)),
@@ -185,6 +200,23 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                 // even begin to count there.
                 onTap: kReleaseMode ? null : _handleAboutTap,
               ),
+              if (updatesSupported) ...[
+                const _RowDivider(),
+                _SettingsRow(
+                  icon: Icons.system_update_outlined,
+                  iconColor: theme.colorScheme.primary,
+                  title: l10n.settingsCheckForUpdates,
+                  subtitle: _checkingForUpdate
+                      ? l10n.updateChecking
+                      : installed == null
+                      ? null
+                      : l10n.settingsVersionBuild(
+                          installed.version,
+                          '${installed.build}',
+                        ),
+                  onTap: _checkingForUpdate ? null : _checkForUpdates,
+                ),
+              ],
             ],
           ),
         ],

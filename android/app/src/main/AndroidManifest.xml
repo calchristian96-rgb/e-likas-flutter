@@ -32,6 +32,11 @@
             android:value="2" />
     </application>
     <uses-permission android:name="android.permission.INTERNET"/>
+    <!-- In-app updater (lib/features/app_update/): lets Android show its
+         own "install unknown apps" prompt for E-LIKAS when the verified
+         update APK is handed to the package installer. open_filex
+         supplies the FileProvider that shares the cached APK. -->
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES"/>
     <!-- Foreground-only location, for the Nearest Center feature
          (LocationService / geolocator). No background/always-on
          tracking anywhere in the app, so ACCESS_BACKGROUND_LOCATION is

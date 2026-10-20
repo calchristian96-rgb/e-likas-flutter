@@ -15,6 +15,23 @@ val keystoreProperties = Properties()
 val keystorePropertiesFile = rootProject.file("key.properties")
 if (keystorePropertiesFile.exists()) {
     keystoreProperties.load(FileInputStream(keystorePropertiesFile))
+} else {
+    // Loud on purpose, but only when a release build is actually being
+    // run: an APK signed with the debug key can never update a
+    // release-signed install (Android rejects the signature change), so
+    // it must not be distributed.
+    gradle.taskGraph.whenReady {
+        if (allTasks.any { it.name.endsWith("Release") }) {
+            logger.warn(
+                "\n" +
+                    "**************************************************************\n" +
+                    "* WARNING: android/key.properties is missing.\n" +
+                    "* This release build is signed with the DEBUG key.\n" +
+                    "* Do NOT distribute it: it cannot update release-signed installs.\n" +
+                    "**************************************************************\n",
+            )
+        }
+    }
 }
 
 android {
