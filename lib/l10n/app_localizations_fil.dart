@@ -1005,6 +1005,88 @@ class AppLocalizationsFil extends AppLocalizations {
   String get hazardOverlayAttribution => 'MGB via GeoRiskPH';
 
   @override
+  String get updateAvailableTitle => 'May bagong update';
+
+  @override
+  String get updateRequiredTitle => 'Kailangan ng update';
+
+  @override
+  String updateVersionReady(String version) {
+    return 'Handa na ang bersyon $version';
+  }
+
+  @override
+  String get updateRequiredBody =>
+      'Luma na ang bersyong ito ng E-LIKAS. Paki-update para manatiling tama ang inyong mga alerto at impormasyon sa evacuation.';
+
+  @override
+  String updateSizeWifi(String size) {
+    return '$size MB · Mas mainam ang Wi-Fi';
+  }
+
+  @override
+  String get updateWifiRecommended => 'Mas mainam ang Wi-Fi';
+
+  @override
+  String get updateWhatsNew => 'Ano ang bago';
+
+  @override
+  String get updateLater => 'Mamaya';
+
+  @override
+  String get updateNow => 'I-update na';
+
+  @override
+  String get updateDownloading => 'Dina-download ang update…';
+
+  @override
+  String get updateVerifying => 'Sinusuri ang na-download…';
+
+  @override
+  String get updateReadyToInstall =>
+      'Na-verify ang download. Binubuksan ang installer…';
+
+  @override
+  String get updateInstallHint =>
+      'Kung hihingin ng Android na payagan ang pag-install mula sa E-LIKAS, i-on ito, bumalik, at pindutin ang Install.';
+
+  @override
+  String get updateInstall => 'I-install';
+
+  @override
+  String get updateCancel => 'Kanselahin';
+
+  @override
+  String get updateFailedTitle => 'Hindi nagtagumpay ang update';
+
+  @override
+  String get updateFailedBody =>
+      'Hindi ma-download ang update o hindi ito pumasa sa safety check. Tingnan ang inyong koneksyon at subukan muli.';
+
+  @override
+  String get updateTryAgain => 'Subukan muli';
+
+  @override
+  String get updateOpenInBrowser => 'Buksan sa browser';
+
+  @override
+  String get settingsCheckForUpdates => 'Tingnan kung may update';
+
+  @override
+  String settingsVersionBuild(String version, String build) {
+    return 'Bersyon $version (build $build)';
+  }
+
+  @override
+  String get updateChecking => 'Sinusuri…';
+
+  @override
+  String get updateUpToDate => 'Napapanahon na ang E-LIKAS.';
+
+  @override
+  String get updateCheckFailed => 'Hindi masuri ang mga update sa ngayon.';
+
+  @override
   String get normalMonitoringTitle => 'Normal na Pagmomonitor';
 
   @override

@@ -986,6 +986,88 @@ class AppLocalizationsBcl extends AppLocalizations {
   String get hazardOverlayAttribution => 'MGB via GeoRiskPH';
 
   @override
+  String get updateAvailableTitle => 'Update available';
+
+  @override
+  String get updateRequiredTitle => 'Update required';
+
+  @override
+  String updateVersionReady(String version) {
+    return 'Version $version is ready';
+  }
+
+  @override
+  String get updateRequiredBody =>
+      'This version of E-LIKAS is out of date. Please update so your alerts and evacuation information stay accurate.';
+
+  @override
+  String updateSizeWifi(String size) {
+    return '$size MB · Wi-Fi recommended';
+  }
+
+  @override
+  String get updateWifiRecommended => 'Wi-Fi recommended';
+
+  @override
+  String get updateWhatsNew => 'What\'s new';
+
+  @override
+  String get updateLater => 'Later';
+
+  @override
+  String get updateNow => 'Update now';
+
+  @override
+  String get updateDownloading => 'Downloading update…';
+
+  @override
+  String get updateVerifying => 'Checking the download…';
+
+  @override
+  String get updateReadyToInstall =>
+      'Download verified. Opening the installer…';
+
+  @override
+  String get updateInstallHint =>
+      'If Android asks you to allow installs from E-LIKAS, turn it on, then come back and tap Install.';
+
+  @override
+  String get updateInstall => 'Install';
+
+  @override
+  String get updateCancel => 'Cancel';
+
+  @override
+  String get updateFailedTitle => 'Update failed';
+
+  @override
+  String get updateFailedBody =>
+      'The update could not be downloaded or did not pass the safety check. Check your connection and try again.';
+
+  @override
+  String get updateTryAgain => 'Try again';
+
+  @override
+  String get updateOpenInBrowser => 'Open in browser';
+
+  @override
+  String get settingsCheckForUpdates => 'Check for updates';
+
+  @override
+  String settingsVersionBuild(String version, String build) {
+    return 'Version $version (build $build)';
+  }
+
+  @override
+  String get updateChecking => 'Checking…';
+
+  @override
+  String get updateUpToDate => 'E-LIKAS is up to date.';
+
+  @override
+  String get updateCheckFailed => 'Could not check for updates right now.';
+
+  @override
   String get normalMonitoringTitle => 'Normal Monitoring';
 
   @override

@@ -1882,6 +1882,150 @@ abstract class AppLocalizations {
   /// **'MGB via GeoRiskPH'**
   String get hazardOverlayAttribution;
 
+  /// Dialog title when an optional app update is available
+  ///
+  /// In en, this message translates to:
+  /// **'Update available'**
+  String get updateAvailableTitle;
+
+  /// Dialog title when the installed version is below the minimum supported build
+  ///
+  /// In en, this message translates to:
+  /// **'Update required'**
+  String get updateRequiredTitle;
+
+  /// Dialog headline naming the new version
+  ///
+  /// In en, this message translates to:
+  /// **'Version {version} is ready'**
+  String updateVersionReady(String version);
+
+  /// Body text when an update is required
+  ///
+  /// In en, this message translates to:
+  /// **'This version of E-LIKAS is out of date. Please update so your alerts and evacuation information stay accurate.'**
+  String get updateRequiredBody;
+
+  /// Download size line in the update dialog
+  ///
+  /// In en, this message translates to:
+  /// **'{size} MB · Wi-Fi recommended'**
+  String updateSizeWifi(String size);
+
+  /// Shown when the manifest gives no download size
+  ///
+  /// In en, this message translates to:
+  /// **'Wi-Fi recommended'**
+  String get updateWifiRecommended;
+
+  /// Heading above the release notes
+  ///
+  /// In en, this message translates to:
+  /// **'What\'s new'**
+  String get updateWhatsNew;
+
+  /// Dismiss button in the update dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Later'**
+  String get updateLater;
+
+  /// Start-download button in the update dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Update now'**
+  String get updateNow;
+
+  /// Progress dialog title
+  ///
+  /// In en, this message translates to:
+  /// **'Downloading update…'**
+  String get updateDownloading;
+
+  /// Shown while the SHA-256 is verified
+  ///
+  /// In en, this message translates to:
+  /// **'Checking the download…'**
+  String get updateVerifying;
+
+  /// Shown once the file passed verification
+  ///
+  /// In en, this message translates to:
+  /// **'Download verified. Opening the installer…'**
+  String get updateReadyToInstall;
+
+  /// Hint about the Android install-unknown-apps permission
+  ///
+  /// In en, this message translates to:
+  /// **'If Android asks you to allow installs from E-LIKAS, turn it on, then come back and tap Install.'**
+  String get updateInstallHint;
+
+  /// Re-open the Android installer for the verified file
+  ///
+  /// In en, this message translates to:
+  /// **'Install'**
+  String get updateInstall;
+
+  /// Cancel the running download
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get updateCancel;
+
+  /// Error dialog title
+  ///
+  /// In en, this message translates to:
+  /// **'Update failed'**
+  String get updateFailedTitle;
+
+  /// Error dialog body after the automatic retry also failed
+  ///
+  /// In en, this message translates to:
+  /// **'The update could not be downloaded or did not pass the safety check. Check your connection and try again.'**
+  String get updateFailedBody;
+
+  /// Retry the download
+  ///
+  /// In en, this message translates to:
+  /// **'Try again'**
+  String get updateTryAgain;
+
+  /// Fall back to downloading the APK in the browser
+  ///
+  /// In en, this message translates to:
+  /// **'Open in browser'**
+  String get updateOpenInBrowser;
+
+  /// Settings row title
+  ///
+  /// In en, this message translates to:
+  /// **'Check for updates'**
+  String get settingsCheckForUpdates;
+
+  /// Settings row subtitle with the installed version
+  ///
+  /// In en, this message translates to:
+  /// **'Version {version} (build {build})'**
+  String settingsVersionBuild(String version, String build);
+
+  /// Settings row subtitle while a manual check runs
+  ///
+  /// In en, this message translates to:
+  /// **'Checking…'**
+  String get updateChecking;
+
+  /// Snackbar after a manual check finds nothing newer
+  ///
+  /// In en, this message translates to:
+  /// **'E-LIKAS is up to date.'**
+  String get updateUpToDate;
+
+  /// Snackbar when a manual check fails
+  ///
+  /// In en, this message translates to:
+  /// **'Could not check for updates right now.'**
+  String get updateCheckFailed;
+
   /// No description provided for @normalMonitoringTitle.
   ///
   /// In en, this message translates to:
