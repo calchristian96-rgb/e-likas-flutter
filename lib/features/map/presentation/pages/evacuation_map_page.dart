@@ -26,6 +26,7 @@ import '../../../evacuation_centers/presentation/widgets/center_status_display.d
 import '../../../home/presentation/providers/home_provider.dart';
 import '../../domain/entities/hazard_area.dart';
 import '../providers/map_provider.dart';
+import '../widgets/hazard_overlay_layer.dart';
 import '../widgets/hazard_polygon_layer.dart';
 import '../widgets/map_base_layer.dart';
 
@@ -119,6 +120,19 @@ class _MapViewState extends ConsumerState<_MapView> {
   bool _showMyLocation = true;
   MapBaseLayer _baseLayer = MapBaseLayer.street;
 
+  /// Online-only MGB susceptibility overlays — independent of
+  /// [_showHazards] (which only governs the data-driven polygons). Both
+  /// on by default, like the web map. A bumped generation re-creates
+  /// that overlay's layer (a retry); trackers and the failed set are
+  /// reset with it. The failed set is a notifier so an already-open
+  /// sheet can show the failure line without a map rebuild.
+  final Set<String> _activeOverlayIds = {for (final o in hazardOverlays) o.id};
+  final Map<String, int> _overlayGeneration = {};
+  final Map<String, TileFailureTracker> _overlayTrackers = {
+    for (final o in hazardOverlays) o.id: TileFailureTracker(),
+  };
+  final ValueNotifier<Set<String>> _failedOverlayIds = ValueNotifier(const {});
+
   /// Opt-*out* sets, not opt-in: empty means "show everything currently
   /// known" by default, so newly-appeared statuses/hazard types (e.g.
   /// after reconnecting and fetching fresher data than what was cached)
@@ -134,7 +148,37 @@ class _MapViewState extends ConsumerState<_MapView> {
   void dispose() {
     _searchController.dispose();
     _searchFocusNode.dispose();
+    _failedOverlayIds.dispose();
     super.dispose();
+  }
+
+  void _restartOverlay(String id) {
+    _overlayGeneration[id] = (_overlayGeneration[id] ?? 0) + 1;
+    _overlayTrackers[id]?.reset();
+    if (_failedOverlayIds.value.contains(id)) {
+      _failedOverlayIds.value = {..._failedOverlayIds.value}..remove(id);
+    }
+  }
+
+  void _setOverlayActive(HazardOverlay overlay, bool active) {
+    setState(() {
+      _restartOverlay(overlay.id);
+      if (active) {
+        _activeOverlayIds.add(overlay.id);
+      } else {
+        _activeOverlayIds.remove(overlay.id);
+      }
+    });
+  }
+
+  /// Tile errors never throw or interrupt the map; only the transition
+  /// to failed is recorded (stale errors from a replaced layer are
+  /// ignored via [generation]).
+  void _onOverlayTileError(String id, int generation) {
+    if (!mounted || (_overlayGeneration[id] ?? 0) != generation) return;
+    if (_overlayTrackers[id]?.recordError() ?? false) {
+      _failedOverlayIds.value = {..._failedOverlayIds.value, id};
+    }
   }
 
   List<String> get _availableStatuses {
@@ -257,6 +301,13 @@ class _MapViewState extends ConsumerState<_MapView> {
       _showCenters = true;
       _showHazards = true;
       _showMyLocation = true;
+      for (final o in hazardOverlays) {
+        if (!_activeOverlayIds.contains(o.id) ||
+            _failedOverlayIds.value.contains(o.id)) {
+          _restartOverlay(o.id);
+        }
+        _activeOverlayIds.add(o.id);
+      }
     });
   }
 
@@ -322,7 +373,27 @@ class _MapViewState extends ConsumerState<_MapView> {
             // Shared with the staff center location picker (Part 2) —
             // see `map_base_layer.dart`.
             mapBaseTileLayer(_baseLayer),
-            MapAttribution(baseLayer: _baseLayer),
+            // MGB susceptibility WMS overlays: above the base map, below
+            // the hazard polygons and markers; no tap handling.
+            for (final overlay in hazardOverlays)
+              if (_activeOverlayIds.contains(overlay.id))
+                buildHazardOverlayLayer(
+                  overlay,
+                  key: ValueKey(
+                    '${overlay.id}-${_overlayGeneration[overlay.id] ?? 0}',
+                  ),
+                  onTileError: () => _onOverlayTileError(
+                    overlay.id,
+                    _overlayGeneration[overlay.id] ?? 0,
+                  ),
+                ),
+            MapAttribution(
+              baseLayer: _baseLayer,
+              overlayAttributions: hazardOverlayAttributions(
+                l10n,
+                _activeOverlayIds,
+              ),
+            ),
             PolygonLayer(polygons: buildHazardPolygons(visibleHazards)),
             MarkerLayer(
               markers: [
@@ -594,6 +665,10 @@ class _MapViewState extends ConsumerState<_MapView> {
                     ),
                     const SizedBox(height: 18),
                   ],
+                  HazardOverlayLegendSections(
+                    activeIds: _activeOverlayIds,
+                    failedIds: _failedOverlayIds,
+                  ),
                   _LegendEntry(
                     color: theme.colorScheme.primary,
                     label: l10n.yourLocationLegend,
@@ -759,6 +834,15 @@ class _MapViewState extends ConsumerState<_MapView> {
                             },
                           ),
                       ],
+                      const Divider(height: 28),
+                      HazardOverlaySection(
+                        activeIds: _activeOverlayIds,
+                        failedIds: _failedOverlayIds,
+                        onChanged: (overlay, value) {
+                          _setOverlayActive(overlay, value);
+                          setSheetState(() {});
+                        },
+                      ),
                       const Divider(height: 28),
                       SwitchListTile(
                         contentPadding: EdgeInsets.zero,
