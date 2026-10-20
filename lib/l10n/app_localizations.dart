@@ -1834,6 +1834,54 @@ abstract class AppLocalizations {
   /// **'Esri World Imagery'**
   String get mapAttributionEsri;
 
+  /// Layers sheet section heading for the online-only MGB flood and landslide susceptibility overlays
+  ///
+  /// In en, this message translates to:
+  /// **'Hazard susceptibility (MGB)'**
+  String get hazardOverlaysSectionTitle;
+
+  /// Switch label and legend heading for the MGB flood susceptibility overlay
+  ///
+  /// In en, this message translates to:
+  /// **'Flood susceptibility'**
+  String get hazardOverlayFloodName;
+
+  /// Switch label and legend heading for the MGB rain-induced landslide susceptibility overlay
+  ///
+  /// In en, this message translates to:
+  /// **'Rain-induced landslide susceptibility'**
+  String get hazardOverlayLandslideName;
+
+  /// Static note under the susceptibility switches in the Layers sheet
+  ///
+  /// In en, this message translates to:
+  /// **'Hazard susceptibility layers need an internet connection — they aren\'t saved for offline use.'**
+  String get hazardOverlaysOnlineNotice;
+
+  /// Source, as-of date and caveat shown under the flood susceptibility switch and in the legend
+  ///
+  /// In en, this message translates to:
+  /// **'Flood susceptibility: Mines and Geosciences Bureau via GeoRiskPH (service metadata: as of July 2018). Susceptibility, not a flood forecast.'**
+  String get hazardOverlayFloodNote;
+
+  /// Source, date and caveat shown under the landslide susceptibility switch and in the legend
+  ///
+  /// In en, this message translates to:
+  /// **'Rain-induced landslide susceptibility only: Mines and Geosciences Bureau via GeoRiskPH (service metadata: dated 2012). Susceptibility, not a landslide forecast. Lahar is not mapped.'**
+  String get hazardOverlayLandslideNote;
+
+  /// Shown in the Layers sheet and Legend when an overlay's tiles keep failing to load
+  ///
+  /// In en, this message translates to:
+  /// **'{layer} could not be loaded from GeoRiskPH right now. Switch it off and on to retry.'**
+  String hazardOverlayLoadFailed(String layer);
+
+  /// Map attribution for the susceptibility overlays; tapping opens georisk.gov.ph
+  ///
+  /// In en, this message translates to:
+  /// **'MGB via GeoRiskPH'**
+  String get hazardOverlayAttribution;
+
   /// No description provided for @normalMonitoringTitle.
   ///
   /// In en, this message translates to:

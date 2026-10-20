@@ -956,6 +956,36 @@ class AppLocalizationsBcl extends AppLocalizations {
   String get mapAttributionEsri => 'Esri World Imagery';
 
   @override
+  String get hazardOverlaysSectionTitle => 'Hazard susceptibility (MGB)';
+
+  @override
+  String get hazardOverlayFloodName => 'Flood susceptibility';
+
+  @override
+  String get hazardOverlayLandslideName =>
+      'Rain-induced landslide susceptibility';
+
+  @override
+  String get hazardOverlaysOnlineNotice =>
+      'Hazard susceptibility layers need an internet connection — they aren\'t saved for offline use.';
+
+  @override
+  String get hazardOverlayFloodNote =>
+      'Flood susceptibility: Mines and Geosciences Bureau via GeoRiskPH (service metadata: as of July 2018). Susceptibility, not a flood forecast.';
+
+  @override
+  String get hazardOverlayLandslideNote =>
+      'Rain-induced landslide susceptibility only: Mines and Geosciences Bureau via GeoRiskPH (service metadata: dated 2012). Susceptibility, not a landslide forecast. Lahar is not mapped.';
+
+  @override
+  String hazardOverlayLoadFailed(String layer) {
+    return '$layer could not be loaded from GeoRiskPH right now. Switch it off and on to retry.';
+  }
+
+  @override
+  String get hazardOverlayAttribution => 'MGB via GeoRiskPH';
+
+  @override
   String get normalMonitoringTitle => 'Normal Monitoring';
 
   @override

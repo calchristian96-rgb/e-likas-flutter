@@ -975,6 +975,36 @@ class AppLocalizationsFil extends AppLocalizations {
   String get mapAttributionEsri => 'Esri World Imagery';
 
   @override
+  String get hazardOverlaysSectionTitle => 'Panganib sa Hazard (MGB)';
+
+  @override
+  String get hazardOverlayFloodName => 'Panganib sa baha';
+
+  @override
+  String get hazardOverlayLandslideName =>
+      'Panganib sa landslide dulot ng ulan';
+
+  @override
+  String get hazardOverlaysOnlineNotice =>
+      'Kailangan ng internet connection ang mga layer na ito — hindi sila naka-save para sa offline na paggamit.';
+
+  @override
+  String get hazardOverlayFloodNote =>
+      'Panganib sa baha: Mines and Geosciences Bureau via GeoRiskPH (ayon sa service: noong Hulyo 2018). Antas ng panganib ito, hindi hula sa baha.';
+
+  @override
+  String get hazardOverlayLandslideNote =>
+      'Landslide dulot ng ulan lamang: Mines and Geosciences Bureau via GeoRiskPH (ayon sa service: may petsang 2012). Antas ng panganib ito, hindi hula sa landslide. Hindi kasama sa mapa ang lahar.';
+
+  @override
+  String hazardOverlayLoadFailed(String layer) {
+    return 'Hindi ma-load ang $layer mula sa GeoRiskPH sa ngayon. I-off at i-on ito para subukan muli.';
+  }
+
+  @override
+  String get hazardOverlayAttribution => 'MGB via GeoRiskPH';
+
+  @override
   String get normalMonitoringTitle => 'Normal na Pagmomonitor';
 
   @override
