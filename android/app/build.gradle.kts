@@ -22,7 +22,7 @@ if (keystorePropertiesFile.exists()) {
     // it must not be distributed.
     gradle.taskGraph.whenReady {
         if (allTasks.any { it.name.endsWith("Release") }) {
-            logger.warn(
+            logger.error(
                 "\n" +
                     "**************************************************************\n" +
                     "* WARNING: android/key.properties is missing.\n" +
