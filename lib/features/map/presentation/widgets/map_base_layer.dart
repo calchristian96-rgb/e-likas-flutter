@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../l10n/app_localizations.dart';
 
@@ -33,12 +34,26 @@ TileLayer mapBaseTileLayer(MapBaseLayer baseLayer) {
   );
 }
 
+/// An extra attribution line for an overlay layer; tapping it opens [url].
+class MapOverlayAttribution {
+  const MapOverlayAttribution({required this.text, required this.url});
+
+  final String text;
+  final String url;
+}
+
 /// Attribution for whichever [baseLayer] is currently active — never
-/// mislabels Esri imagery as OpenStreetMap or vice versa.
+/// mislabels Esri imagery as OpenStreetMap or vice versa. Overlay
+/// attributions are optional; the staff picker passes none.
 class MapAttribution extends StatelessWidget {
-  const MapAttribution({super.key, required this.baseLayer});
+  const MapAttribution({
+    super.key,
+    required this.baseLayer,
+    this.overlayAttributions = const [],
+  });
 
   final MapBaseLayer baseLayer;
+  final List<MapOverlayAttribution> overlayAttributions;
 
   @override
   Widget build(BuildContext context) {
@@ -50,9 +65,21 @@ class MapAttribution extends StatelessWidget {
           TextSourceAttribution(l10n.mapAttributionOpenStreetMap)
         else
           TextSourceAttribution(l10n.mapAttributionEsri),
+        for (final overlay in overlayAttributions)
+          TextSourceAttribution(
+            overlay.text,
+            onTap: () => _openUrl(overlay.url),
+          ),
       ],
     );
   }
+}
+
+/// Never throws — an attribution link that can't open is just ignored.
+Future<void> _openUrl(String url) async {
+  try {
+    await launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication);
+  } catch (_) {}
 }
 
 /// The compact "Base Map: Street / Satellite" control — used in the
