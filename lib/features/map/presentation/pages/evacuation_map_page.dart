@@ -116,17 +116,17 @@ class _MapViewState extends ConsumerState<_MapView> {
   bool _locating = false;
 
   bool _showCenters = true;
-  bool _showHazards = true;
+  bool _showHazards = false;
   bool _showMyLocation = true;
   MapBaseLayer _baseLayer = MapBaseLayer.street;
 
   /// Online-only MGB susceptibility overlays — independent of
   /// [_showHazards] (which only governs the data-driven polygons). Both
-  /// on by default, like the web map. A bumped generation re-creates
+  /// start off, like the web map. A bumped generation re-creates
   /// that overlay's layer (a retry); trackers and the failed set are
   /// reset with it. The failed set is a notifier so an already-open
   /// sheet can show the failure line without a map rebuild.
-  final Set<String> _activeOverlayIds = {for (final o in hazardOverlays) o.id};
+  final Set<String> _activeOverlayIds = <String>{};
   final Map<String, int> _overlayGeneration = {};
   final Map<String, TileFailureTracker> _overlayTrackers = {
     for (final o in hazardOverlays) o.id: TileFailureTracker(),
@@ -299,15 +299,12 @@ class _MapViewState extends ConsumerState<_MapView> {
       _excludedStatuses.clear();
       _excludedHazardTypes.clear();
       _showCenters = true;
-      _showHazards = true;
+      _showHazards = false;
       _showMyLocation = true;
       for (final o in hazardOverlays) {
-        if (!_activeOverlayIds.contains(o.id) ||
-            _failedOverlayIds.value.contains(o.id)) {
-          _restartOverlay(o.id);
-        }
-        _activeOverlayIds.add(o.id);
+        _restartOverlay(o.id);
       }
+      _activeOverlayIds.clear();
     });
   }
 
