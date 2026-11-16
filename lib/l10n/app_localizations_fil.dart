@@ -2376,4 +2376,99 @@ class AppLocalizationsFil extends AppLocalizations {
   String showAllCount(int count) {
     return 'Show all $count';
   }
+
+  @override
+  String get returningFamiliesTitle => 'Returning families';
+
+  @override
+  String get returningFamiliesOfflineButton =>
+      'Returning families (needs a connection)';
+
+  @override
+  String get returningFamiliesNeedsConnection =>
+      'Returning families need an internet connection.';
+
+  @override
+  String get returningFamiliesNoPastEvents =>
+      'No family of your barangay from a past event can be entered here.';
+
+  @override
+  String get returningFamiliesPastEvent => 'Past event';
+
+  @override
+  String get returningFamiliesSearchHint => 'Family or member name';
+
+  @override
+  String get returningFamiliesNone => 'No family found.';
+
+  @override
+  String get returningFamilyAlreadyIn => 'Already in this event';
+
+  @override
+  String get returningFamilyWhoArrived => 'Who arrived?';
+
+  @override
+  String returningFamilyUnnamed(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count members without a name are not listed.',
+      one: '1 member without a name is not listed.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get returningMemberCheckedIn => 'Already checked in this event';
+
+  @override
+  String returningMemberAge(int age) {
+    return '$age years';
+  }
+
+  @override
+  String get returningMemberAgeGroup => 'Age group (no birthdate on record)';
+
+  @override
+  String get returningMemberStillPregnant => 'Pregnant now';
+
+  @override
+  String get returningMemberStillLactating => 'Lactating now';
+
+  @override
+  String returningFamilyEnroll(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Enter $count people',
+      one: 'Enter 1 person',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String returningFamilyDone(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count people entered',
+      one: '1 person entered',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get returningFamilyDuplicateTitle => 'Same family?';
+
+  @override
+  String get returningFamilyDuplicateBody =>
+      'A family that may be the same one is already in this event.';
+
+  @override
+  String returningFamilyLinkTo(String name, String center, int count) {
+    return 'Same family, link it: $name · $center · $count members';
+  }
+
+  @override
+  String get returningFamilyDifferent => 'Different family, add as new';
 }

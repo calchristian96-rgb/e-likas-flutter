@@ -9,6 +9,9 @@ import '../../../../core/widgets/empty_state.dart';
 import '../../../../core/widgets/error_state.dart';
 import '../../../../core/widgets/sync_now_action.dart';
 import '../../../../l10n/app_localizations.dart';
+import '../../../re_enrollment/returning_families_page.dart';
+import '../../../staff_auth/domain/entities/staff_session.dart';
+import '../../../staff_auth/presentation/providers/staff_auth_provider.dart';
 import '../../../family_registration/data/services/staff_sync_service.dart'
     show StaffSyncRunResult;
 import '../../../family_registration/domain/entities/lookup_entities.dart';
@@ -194,6 +197,22 @@ class _EcBoardBody extends ConsumerWidget {
     ref.invalidate(ecBoardQuickCountProvider(centerId, selectedEventId));
   }
 
+  Future<void> _openReturningFamilies(
+    BuildContext context,
+    WidgetRef ref,
+  ) async {
+    final added = await Navigator.of(context).push<bool>(
+      MaterialPageRoute(
+        builder: (_) =>
+            ReturningFamiliesPage(centerId: centerId, eventId: selectedEventId),
+      ),
+    );
+    if (added == true) {
+      ref.invalidate(ecBoardQuickCountProvider(centerId, selectedEventId));
+      ref.invalidate(ecBoardFamiliesHereProvider(centerId, selectedEventId));
+    }
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context);
@@ -253,6 +272,29 @@ class _EcBoardBody extends ConsumerWidget {
               subtitle: l10n.staffWorkspaceRegisterFamilySubtitle,
               onPressed: () => _openAddEvacuee(context, ref),
             ),
+          // Returning families (backend step 10): online only.
+          if (!selectedClosed &&
+              (ref
+                      .watch(staffAuthProvider)
+                      .value
+                      ?.can(StaffPermission.reEnroll) ??
+                  false)) ...[
+            const SizedBox(height: 8),
+            OutlinedButton.icon(
+              style: OutlinedButton.styleFrom(
+                minimumSize: const Size.fromHeight(48),
+              ),
+              onPressed: isOnline
+                  ? () => _openReturningFamilies(context, ref)
+                  : null,
+              icon: const Icon(Icons.history),
+              label: Text(
+                isOnline
+                    ? l10n.returningFamiliesTitle
+                    : l10n.returningFamiliesOfflineButton,
+              ),
+            ),
+          ],
           const SizedBox(height: 16),
           _BoardSheet(
             barangayName: center?.barangay,

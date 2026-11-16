@@ -25,20 +25,25 @@ class FakeStaffApi extends StaffApiClient {
     if (outcome is DioExceptionType) {
       throw DioException(requestOptions: options, type: outcome);
     }
-    final status = outcome as int;
-    final body = status < 300
-        ? (getBodies[key] ?? {'success': true, 'data': <String, dynamic>{}})
-        : {
-            'success': false,
-            'message': 'Refused ($status)',
-            'errors': status == 422
-                ? {
-                    'family_id': [
-                      'This family already got its box in this round.',
-                    ],
-                  }
-                : null,
-          };
+    // An outcome can also be (status, body) for a scripted answer body.
+    final (status, scriptedBody) = outcome is (int, Object?)
+        ? outcome
+        : (outcome as int, null);
+    final body =
+        scriptedBody ??
+        (status < 300
+            ? (getBodies[key] ?? {'success': true, 'data': <String, dynamic>{}})
+            : {
+                'success': false,
+                'message': 'Refused ($status)',
+                'errors': status == 422
+                    ? {
+                        'family_id': [
+                          'This family already got its box in this round.',
+                        ],
+                      }
+                    : null,
+              });
     final response = Response(
       requestOptions: options,
       statusCode: status,

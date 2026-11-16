@@ -4113,6 +4113,132 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Show all {count}'**
   String showAllCount(int count);
+
+  /// No description provided for @returningFamiliesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Returning families'**
+  String get returningFamiliesTitle;
+
+  /// No description provided for @returningFamiliesOfflineButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Returning families (needs a connection)'**
+  String get returningFamiliesOfflineButton;
+
+  /// No description provided for @returningFamiliesNeedsConnection.
+  ///
+  /// In en, this message translates to:
+  /// **'Returning families need an internet connection.'**
+  String get returningFamiliesNeedsConnection;
+
+  /// No description provided for @returningFamiliesNoPastEvents.
+  ///
+  /// In en, this message translates to:
+  /// **'No family of your barangay from a past event can be entered here.'**
+  String get returningFamiliesNoPastEvents;
+
+  /// No description provided for @returningFamiliesPastEvent.
+  ///
+  /// In en, this message translates to:
+  /// **'Past event'**
+  String get returningFamiliesPastEvent;
+
+  /// No description provided for @returningFamiliesSearchHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Family or member name'**
+  String get returningFamiliesSearchHint;
+
+  /// No description provided for @returningFamiliesNone.
+  ///
+  /// In en, this message translates to:
+  /// **'No family found.'**
+  String get returningFamiliesNone;
+
+  /// No description provided for @returningFamilyAlreadyIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Already in this event'**
+  String get returningFamilyAlreadyIn;
+
+  /// No description provided for @returningFamilyWhoArrived.
+  ///
+  /// In en, this message translates to:
+  /// **'Who arrived?'**
+  String get returningFamilyWhoArrived;
+
+  /// No description provided for @returningFamilyUnnamed.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 member without a name is not listed.} other{{count} members without a name are not listed.}}'**
+  String returningFamilyUnnamed(int count);
+
+  /// No description provided for @returningMemberCheckedIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Already checked in this event'**
+  String get returningMemberCheckedIn;
+
+  /// No description provided for @returningMemberAge.
+  ///
+  /// In en, this message translates to:
+  /// **'{age} years'**
+  String returningMemberAge(int age);
+
+  /// No description provided for @returningMemberAgeGroup.
+  ///
+  /// In en, this message translates to:
+  /// **'Age group (no birthdate on record)'**
+  String get returningMemberAgeGroup;
+
+  /// No description provided for @returningMemberStillPregnant.
+  ///
+  /// In en, this message translates to:
+  /// **'Pregnant now'**
+  String get returningMemberStillPregnant;
+
+  /// No description provided for @returningMemberStillLactating.
+  ///
+  /// In en, this message translates to:
+  /// **'Lactating now'**
+  String get returningMemberStillLactating;
+
+  /// No description provided for @returningFamilyEnroll.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{Enter 1 person} other{Enter {count} people}}'**
+  String returningFamilyEnroll(int count);
+
+  /// No description provided for @returningFamilyDone.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 person entered} other{{count} people entered}}'**
+  String returningFamilyDone(int count);
+
+  /// No description provided for @returningFamilyDuplicateTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Same family?'**
+  String get returningFamilyDuplicateTitle;
+
+  /// No description provided for @returningFamilyDuplicateBody.
+  ///
+  /// In en, this message translates to:
+  /// **'A family that may be the same one is already in this event.'**
+  String get returningFamilyDuplicateBody;
+
+  /// No description provided for @returningFamilyLinkTo.
+  ///
+  /// In en, this message translates to:
+  /// **'Same family, link it: {name} · {center} · {count} members'**
+  String returningFamilyLinkTo(String name, String center, int count);
+
+  /// No description provided for @returningFamilyDifferent.
+  ///
+  /// In en, this message translates to:
+  /// **'Different family, add as new'**
+  String get returningFamilyDifferent;
 }
 
 class _AppLocalizationsDelegate
