@@ -37,6 +37,7 @@ import '../../features/staff_evacuation_centers/presentation/pages/evacuation_ce
 import '../../features/staff_evacuation_centers/presentation/pages/staff_evacuation_center_detail_page.dart';
 import '../../features/staff_evacuation_centers/presentation/pages/staff_evacuation_centers_list_page.dart';
 import '../../features/settings/presentation/pages/settings_page.dart';
+import '../../features/barangay_status/staff/barangay_page.dart';
 import '../../features/box_relief/relief_page.dart';
 import '../../features/box_relief/round_families_page.dart';
 import '../../features/outbox/presentation/sync_page.dart';
@@ -557,6 +558,14 @@ final GoRouter appRouter = GoRouter(
                   ),
                 ),
               ],
+            ),
+          ],
+        ),
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
+              path: '/staff/barangay',
+              builder: (context, state) => const StaffBarangayPage(),
             ),
           ],
         ),

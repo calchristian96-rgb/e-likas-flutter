@@ -1014,5 +1014,15 @@
   "reliefVoidReason": "Reason (required)",
   "reliefGiveSummary": "Box for {family}, round {round}",
   "@reliefGiveSummary": {"placeholders":{"family":{"type":"String"},"round":{"type":"int"}}},
-  "reliefVoidSummary": "Void box for {family}"
+  "reliefVoidSummary": "Void box for {family}",
+
+  "staffTabBarangay": "Barangay",
+  "barangayStatusNeedsConnection": "The barangay status needs a connection the first time.",
+  "barangayStatusSetBy": "Set by {name}, {when}",
+  "barangayStatusReadOnly": "The event is closed. The status can only be changed during an open event.",
+  "barangayStatusCswdOrder": "Under \"{status}\", ordered by CSWD. Only CSWD can change it.",
+  "barangayStatusChange": "Change status",
+  "barangayStatusNote": "Note (optional; required to update the same status)",
+  "barangayStatusSave": "Save status",
+  "barangayStatusSaved": "Marked \"{status}\" (sent when online)."
 }

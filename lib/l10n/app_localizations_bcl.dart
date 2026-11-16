@@ -2670,4 +2670,40 @@ class AppLocalizationsBcl extends AppLocalizations {
   String reliefVoidSummary(Object family) {
     return 'Void box for $family';
   }
+
+  @override
+  String get staffTabBarangay => 'Barangay';
+
+  @override
+  String get barangayStatusNeedsConnection =>
+      'The barangay status needs a connection the first time.';
+
+  @override
+  String barangayStatusSetBy(Object name, Object when) {
+    return 'Set by $name, $when';
+  }
+
+  @override
+  String get barangayStatusReadOnly =>
+      'The event is closed. The status can only be changed during an open event.';
+
+  @override
+  String barangayStatusCswdOrder(Object status) {
+    return 'Under \"$status\", ordered by CSWD. Only CSWD can change it.';
+  }
+
+  @override
+  String get barangayStatusChange => 'Change status';
+
+  @override
+  String get barangayStatusNote =>
+      'Note (optional; required to update the same status)';
+
+  @override
+  String get barangayStatusSave => 'Save status';
+
+  @override
+  String barangayStatusSaved(Object status) {
+    return 'Marked \"$status\" (sent when online).';
+  }
 }

@@ -4635,6 +4635,60 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Void box for {family}'**
   String reliefVoidSummary(Object family);
+
+  /// No description provided for @staffTabBarangay.
+  ///
+  /// In en, this message translates to:
+  /// **'Barangay'**
+  String get staffTabBarangay;
+
+  /// No description provided for @barangayStatusNeedsConnection.
+  ///
+  /// In en, this message translates to:
+  /// **'The barangay status needs a connection the first time.'**
+  String get barangayStatusNeedsConnection;
+
+  /// No description provided for @barangayStatusSetBy.
+  ///
+  /// In en, this message translates to:
+  /// **'Set by {name}, {when}'**
+  String barangayStatusSetBy(Object name, Object when);
+
+  /// No description provided for @barangayStatusReadOnly.
+  ///
+  /// In en, this message translates to:
+  /// **'The event is closed. The status can only be changed during an open event.'**
+  String get barangayStatusReadOnly;
+
+  /// No description provided for @barangayStatusCswdOrder.
+  ///
+  /// In en, this message translates to:
+  /// **'Under \"{status}\", ordered by CSWD. Only CSWD can change it.'**
+  String barangayStatusCswdOrder(Object status);
+
+  /// No description provided for @barangayStatusChange.
+  ///
+  /// In en, this message translates to:
+  /// **'Change status'**
+  String get barangayStatusChange;
+
+  /// No description provided for @barangayStatusNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Note (optional; required to update the same status)'**
+  String get barangayStatusNote;
+
+  /// No description provided for @barangayStatusSave.
+  ///
+  /// In en, this message translates to:
+  /// **'Save status'**
+  String get barangayStatusSave;
+
+  /// No description provided for @barangayStatusSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Marked \"{status}\" (sent when online).'**
+  String barangayStatusSaved(Object status);
 }
 
 class _AppLocalizationsDelegate
