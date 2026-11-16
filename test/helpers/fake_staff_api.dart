@@ -38,9 +38,7 @@ class FakeStaffApi extends StaffApiClient {
                 'message': 'Refused ($status)',
                 'errors': status == 422
                     ? {
-                        'family_id': [
-                          'This family already got its box in this round.',
-                        ],
+                        'quantity': ['Refused for this test.'],
                       }
                     : null,
               });

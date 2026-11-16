@@ -183,9 +183,12 @@ class OutboxRepository {
         await _markAttempt(action, error: failure.message);
         return _Outcome.retryLater;
       }
-      if (action.kind.alreadyDoneOnRepeat &&
-          action.attemptCount > 0 &&
-          status == 422) {
+      // Only on a retry (the first attempt may have got through), and
+      // only for the refusal that says exactly that; any other refusal
+      // is a failed action shown in Sync.
+      if (action.attemptCount > 0 &&
+          (action.kind.alreadyHappened?.matches(status, e.response?.data) ??
+              false)) {
         return _Outcome.done;
       }
       await _markAttention(action, _message(failure, e));

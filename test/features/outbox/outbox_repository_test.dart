@@ -76,7 +76,7 @@ void main() {
     expect((await r.run()).needAttention, 1);
     final row = (await r.getAll()).single;
     expect(row.needsAttention, isTrue);
-    expect(row.lastErrorMessage, contains('already got its box'));
+    expect(row.lastErrorMessage, contains('Refused for this test.'));
     await r.run();
     expect(api.calls, hasLength(1));
   });
@@ -90,7 +90,16 @@ void main() {
         'POST /box-relief/rounds/3/handouts',
         DioExceptionType.receiveTimeout,
       );
-      api.answer('POST /box-relief/rounds/3/handouts', 422);
+      api.answer('POST /box-relief/rounds/3/handouts', (
+        422,
+        {
+          'success': false,
+          'message': 'This family already got its box for Round 1.',
+          'errors': {
+            'family_id': ['This family already got its box for Round 1.'],
+          },
+        },
+      ));
       await r.run();
       expect((await r.getAll()).single.needsAttention, isTrue);
       await r.retry(a.localId);

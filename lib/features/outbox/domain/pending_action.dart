@@ -18,19 +18,68 @@ enum PendingActionKind {
     return null;
   }
 
-  /// A retry of these can be refused only because the first attempt
-  /// already got through (the box was already given, the person already
-  /// checked out, the status already set, the same count already sent):
-  /// such a refusal means the job is done, not that it needs attention.
-  bool get alreadyDoneOnRepeat => switch (this) {
-    checkOut ||
-    boxHandout ||
-    boxHandoutVoid ||
-    dispatchConfirm ||
-    barangayStatus ||
-    countSubmission => true,
-    shortfallRequest || centerLocation || facilityRequest => false,
+  /// The one refusal that means "this already happened" for this kind:
+  /// the HTTP status, the error key it is reported under (null = the
+  /// top-level message), and a phrase of the backend's own message.
+  /// Taken from the backend code (BoxReliefService, EvacueeController,
+  /// GisSituationController, BarangayCountSubmissionController). Null:
+  /// no refusal of this kind means it already happened.
+  AlreadyHappened? get alreadyHappened => switch (this) {
+    // "This family already got its box for Round N."
+    boxHandout => const AlreadyHappened(
+      422,
+      'family_id',
+      'already got its box',
+    ),
+    // "This record was already voided."
+    boxHandoutVoid => const AlreadyHappened(422, 'reason', 'already voided'),
+    // "This delivery was already confirmed."
+    dispatchConfirm => const AlreadyHappened(
+      422,
+      'confirmed_quantity',
+      'already confirmed',
+    ),
+    // "{Barangay} is already marked "{status}". Add a note ..."
+    barangayStatus => const AlreadyHappened(422, 'status', 'is already marked'),
+    // "This count is already waiting for CSWD, and nothing has changed ..."
+    countSubmission => const AlreadyHappened(
+      422,
+      null,
+      'already waiting for CSWD',
+    ),
+    // Checked out already: the server answers 404 "This evacuee has no
+    // active evacuation record to close out."
+    checkOut => const AlreadyHappened(404, null, 'no active evacuation record'),
+    shortfallRequest || centerLocation || facilityRequest => null,
   };
+}
+
+/// A refusal that means the action already happened (see
+/// [PendingActionKind.alreadyHappened]).
+class AlreadyHappened {
+  const AlreadyHappened(this.status, this.errorKey, this.phrase);
+
+  final int status;
+
+  /// The `errors` key the message is under; null for `message` itself.
+  final String? errorKey;
+
+  /// Matched case-insensitively inside the backend's message.
+  final String phrase;
+
+  bool matches(int? status, Object? body) {
+    if (status != this.status || body is! Map) return false;
+    final List<Object?> messages;
+    if (errorKey == null) {
+      messages = [body['message']];
+    } else {
+      final errors = body['errors'];
+      final list = errors is Map ? errors[errorKey] : null;
+      messages = list is List ? list : [list];
+    }
+    final p = phrase.toLowerCase();
+    return messages.any((m) => m is String && m.toLowerCase().contains(p));
+  }
 }
 
 enum PendingActionStatus {
