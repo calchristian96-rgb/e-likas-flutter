@@ -251,3 +251,37 @@ class CachedQuickCounts extends Table {
   @override
   Set<Column> get primaryKey => {evacuationCenterId, evacuationEventId};
 }
+
+/// Schema 9 (C15): one offline queue for the field actions that are a
+/// single request each: check-out, box handouts and confirmations,
+/// barangay status, a center's GPS location, facility requests, final
+/// counts and shortfall requests. Each row is the request itself
+/// (method, path, JSON body), sent in order once online; a row leaves
+/// the table when the server accepts it.
+@DataClassName('PendingActionRow')
+class PendingActions extends Table {
+  TextColumn get localId => text()();
+
+  /// `PendingActionKind.name`, for display, grouping and the
+  /// "already done" rule.
+  TextColumn get kind => text()();
+  TextColumn get method => text()();
+  TextColumn get path => text()();
+  TextColumn get bodyJson => text()();
+
+  /// What the row means, shown while it waits ("Box for Reyes family").
+  TextColumn get summary => text()();
+
+  /// Groups rows for one screen or record, e.g. `round:3:family:548`.
+  TextColumn get subjectKey => text().nullable()();
+
+  /// pending | needs_attention
+  TextColumn get status => text()();
+  IntColumn get attemptCount => integer().withDefault(const Constant(0))();
+  TextColumn get lastErrorMessage => text().nullable()();
+  IntColumn get createdAtEpochMs => integer()();
+  IntColumn get ownerStaffId => integer()();
+
+  @override
+  Set<Column> get primaryKey => {localId};
+}

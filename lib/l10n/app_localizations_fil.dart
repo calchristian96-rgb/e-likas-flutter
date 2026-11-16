@@ -2269,4 +2269,82 @@ class AppLocalizationsFil extends AppLocalizations {
 
   @override
   String get staffModeButton => 'Staff Mode';
+
+  @override
+  String get syncTitle => 'Sync';
+
+  @override
+  String get syncNow => 'Sync now';
+
+  @override
+  String get syncAllDone => 'Everything is synced';
+
+  @override
+  String syncWaitingCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count waiting to sync',
+      one: '1 waiting to sync',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String syncAttentionCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count need a look',
+      one: '1 needs a look',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String syncSentMessage(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count sent.',
+      one: '1 sent.',
+      zero: 'Nothing new to send.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get syncNeedsAttention => 'Needs a look';
+
+  @override
+  String get syncWaiting => 'Waiting to sync';
+
+  @override
+  String get syncFamilyRegistrations => 'Family registrations';
+
+  @override
+  String get syncTryAgain => 'Try again';
+
+  @override
+  String get syncDiscardTitle => 'Discard this action?';
+
+  @override
+  String syncDiscardBody(Object summary) {
+    return '\"$summary\" will not be sent. This cannot be undone.';
+  }
+
+  @override
+  String get syncDiscardConfirm => 'Discard';
+
+  @override
+  String get syncDiscarded => 'Action discarded';
+
+  @override
+  String get syncCouldNotRead => 'Could not read the queue on this device.';
+
+  @override
+  String get moreActions => 'More actions';
+
+  @override
+  String get staffSyncRow => 'Sync';
 }

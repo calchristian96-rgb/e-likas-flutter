@@ -37,6 +37,7 @@ import '../../features/staff_evacuation_centers/presentation/pages/evacuation_ce
 import '../../features/staff_evacuation_centers/presentation/pages/staff_evacuation_center_detail_page.dart';
 import '../../features/staff_evacuation_centers/presentation/pages/staff_evacuation_centers_list_page.dart';
 import '../../features/settings/presentation/pages/settings_page.dart';
+import '../../features/outbox/presentation/sync_page.dart';
 import '../../features/staff_shell/staff_shell.dart';
 import '../../features/staff_workspace/presentation/pages/staff_workspace_page.dart';
 import '../../l10n/app_localizations.dart';
@@ -476,6 +477,10 @@ final GoRouter appRouter = GoRouter(
               path: '/staff/more',
               builder: (context, state) => const StaffWorkspacePage(),
               routes: [
+                GoRoute(
+                  path: 'sync',
+                  builder: (context, state) => const SyncPage(),
+                ),
                 GoRoute(
                   path: 'register-family',
                   builder: (context, state) =>

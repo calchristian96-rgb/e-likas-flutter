@@ -30,6 +30,7 @@ part 'staff_database.g.dart';
     PendingFamilyRegistrations,
     PendingEcBoardEntries,
     CachedQuickCounts,
+    PendingActions,
   ],
 )
 class StaffDatabase extends _$StaffDatabase {
@@ -52,7 +53,7 @@ class StaffDatabase extends _$StaffDatabase {
   StaffDatabase.forExecutor(super.executor);
 
   @override
-  int get schemaVersion => 8;
+  int get schemaVersion => 9;
 
   /// Schema 2 adds `PendingEcBoardEntries` (EC Information Board's
   /// offline queue); schema 3 added a typed sectoral/4Ps edit queue,
@@ -119,6 +120,10 @@ class StaffDatabase extends _$StaffDatabase {
         // Demo events (backend map-api.md, is_demo).
         final e = lookupEvacuationEvents;
         await _addMissingColumns(m, e, [e.isDemo]);
+      }
+      if (from < 9) {
+        // The offline action queue (C15).
+        await m.createTable(pendingActions);
       }
     },
   );

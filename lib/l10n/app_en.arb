@@ -877,5 +877,26 @@
   "staffTabMore": "More",
   "staffTabResidentApp": "Resident app",
   "staffSignInButton": "Staff sign in",
-  "staffModeButton": "Staff Mode"
+  "staffModeButton": "Staff Mode",
+
+  "syncTitle": "Sync",
+  "syncNow": "Sync now",
+  "syncAllDone": "Everything is synced",
+  "syncWaitingCount": "{count, plural, =1{1 waiting to sync} other{{count} waiting to sync}}",
+  "@syncWaitingCount": {"placeholders":{"count":{"type":"int"}}},
+  "syncAttentionCount": "{count, plural, =1{1 needs a look} other{{count} need a look}}",
+  "@syncAttentionCount": {"placeholders":{"count":{"type":"int"}}},
+  "syncSentMessage": "{count, plural, =0{Nothing new to send.} =1{1 sent.} other{{count} sent.}}",
+  "@syncSentMessage": {"placeholders":{"count":{"type":"int"}}},
+  "syncNeedsAttention": "Needs a look",
+  "syncWaiting": "Waiting to sync",
+  "syncFamilyRegistrations": "Family registrations",
+  "syncTryAgain": "Try again",
+  "syncDiscardTitle": "Discard this action?",
+  "syncDiscardBody": "\"{summary}\" will not be sent. This cannot be undone.",
+  "syncDiscardConfirm": "Discard",
+  "syncDiscarded": "Action discarded",
+  "syncCouldNotRead": "Could not read the queue on this device.",
+  "moreActions": "More actions",
+  "staffSyncRow": "Sync"
 }

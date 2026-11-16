@@ -3975,6 +3975,108 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Staff Mode'**
   String get staffModeButton;
+
+  /// No description provided for @syncTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Sync'**
+  String get syncTitle;
+
+  /// No description provided for @syncNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Sync now'**
+  String get syncNow;
+
+  /// No description provided for @syncAllDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Everything is synced'**
+  String get syncAllDone;
+
+  /// No description provided for @syncWaitingCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 waiting to sync} other{{count} waiting to sync}}'**
+  String syncWaitingCount(int count);
+
+  /// No description provided for @syncAttentionCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 needs a look} other{{count} need a look}}'**
+  String syncAttentionCount(int count);
+
+  /// No description provided for @syncSentMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{Nothing new to send.} =1{1 sent.} other{{count} sent.}}'**
+  String syncSentMessage(int count);
+
+  /// No description provided for @syncNeedsAttention.
+  ///
+  /// In en, this message translates to:
+  /// **'Needs a look'**
+  String get syncNeedsAttention;
+
+  /// No description provided for @syncWaiting.
+  ///
+  /// In en, this message translates to:
+  /// **'Waiting to sync'**
+  String get syncWaiting;
+
+  /// No description provided for @syncFamilyRegistrations.
+  ///
+  /// In en, this message translates to:
+  /// **'Family registrations'**
+  String get syncFamilyRegistrations;
+
+  /// No description provided for @syncTryAgain.
+  ///
+  /// In en, this message translates to:
+  /// **'Try again'**
+  String get syncTryAgain;
+
+  /// No description provided for @syncDiscardTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Discard this action?'**
+  String get syncDiscardTitle;
+
+  /// No description provided for @syncDiscardBody.
+  ///
+  /// In en, this message translates to:
+  /// **'\"{summary}\" will not be sent. This cannot be undone.'**
+  String syncDiscardBody(Object summary);
+
+  /// No description provided for @syncDiscardConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Discard'**
+  String get syncDiscardConfirm;
+
+  /// No description provided for @syncDiscarded.
+  ///
+  /// In en, this message translates to:
+  /// **'Action discarded'**
+  String get syncDiscarded;
+
+  /// No description provided for @syncCouldNotRead.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not read the queue on this device.'**
+  String get syncCouldNotRead;
+
+  /// No description provided for @moreActions.
+  ///
+  /// In en, this message translates to:
+  /// **'More actions'**
+  String get moreActions;
+
+  /// No description provided for @staffSyncRow.
+  ///
+  /// In en, this message translates to:
+  /// **'Sync'**
+  String get staffSyncRow;
 }
 
 class _AppLocalizationsDelegate

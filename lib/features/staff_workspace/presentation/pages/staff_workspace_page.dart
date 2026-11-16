@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../app/theme/app_theme.dart';
 import '../../../../l10n/app_localizations.dart';
+import '../../../outbox/presentation/outbox_providers.dart';
 import '../../../staff_auth/domain/entities/staff_session.dart';
 import '../../../staff_auth/presentation/providers/staff_auth_provider.dart';
 import '../../../staff_auth/presentation/widgets/staff_auth_guard.dart';
@@ -62,7 +63,26 @@ class _StaffWorkspaceBody extends ConsumerWidget {
         children: [
           if (session.isFromCache) _OfflineSessionBanner(l10n: l10n),
           StaffIdentityCard(session: session),
-          const SizedBox(height: 20),
+          const SizedBox(height: 16),
+          // What this device still has to send (C15): the answer first.
+          if (session.isFieldOfficial) ...[
+            _WorkspaceAction(
+              icon: Icons.sync,
+              iconColor: theme.colorScheme.primary,
+              label: l10n.staffSyncRow,
+              subtitle: switch (ref.watch(syncSummaryProvider).value) {
+                null => '…',
+                final s when s.isEmpty => l10n.syncAllDone,
+                final s when s.needAttention > 0 =>
+                  '${l10n.syncWaitingCount(s.waiting)} · '
+                      '${l10n.syncAttentionCount(s.needAttention)}',
+                final s => l10n.syncWaitingCount(s.waiting),
+              },
+              onTap: () => context.push('/staff/more/sync'),
+            ),
+            const SizedBox(height: 8),
+          ],
+          const SizedBox(height: 8),
           // Grouped by workflow rather than one flat list — mirrors
           // Settings' own sectioning. No standalone "Sync Now" action
           // here: each screen with something to sync (EC Board,

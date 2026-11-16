@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../l10n/app_localizations.dart';
+import '../outbox/presentation/outbox_providers.dart';
 import '../staff_auth/domain/entities/staff_session.dart';
 import '../staff_auth/presentation/widgets/staff_auth_guard.dart';
 
@@ -72,7 +73,8 @@ class StaffShell extends StatelessWidget {
           });
         }
         return Scaffold(
-          body: navigationShell,
+          // Syncs on open, on reconnect and on resume (C15).
+          body: StaffAutoSync(child: navigationShell),
           bottomNavigationBar: NavigationBar(
             selectedIndex: selected,
             onDestinationSelected: (i) {
