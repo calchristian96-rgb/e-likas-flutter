@@ -837,5 +837,10 @@
   "ecBoardAsOfNotYetFetched": "Not yet fetched",
   "ecBoardNotYetFetchedHelp": "This board hasn't been loaded on this device yet, so every figure shows a dash. Connect to the internet and try again.",
   "ecBoardHeaderFamilies": "Families (Cum/Now)",
-  "ecBoardHeaderPersons": "Persons (Cum/Now)"
+  "ecBoardHeaderPersons": "Persons (Cum/Now)",
+
+  "staffUseTheWebTitle": "Use the web",
+  "staffUseTheWebBody": "Administrator accounts manage users, logs and backups on the E-LIKAS website. The mobile app is for barangay field work and CSWD monitoring.",
+  "staffOpenWebsite": "Open the E-LIKAS website",
+  "staffSignOut": "Sign out"
 }

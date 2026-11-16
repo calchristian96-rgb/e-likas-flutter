@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/widgets/error_state.dart';
 import '../../domain/entities/staff_session.dart';
 import '../pages/staff_login_page.dart';
+import '../pages/use_the_web_page.dart';
 import '../providers/staff_auth_provider.dart';
 
 /// Gate for every staff screen beyond the login page itself
@@ -29,6 +30,11 @@ class StaffAuthGuard extends ConsumerWidget {
     return authState.when(
       data: (session) {
         if (session == null) return const StaffLoginPage();
+        // The administrator has no operational permission: every staff
+        // screen would only answer 403. Send them to the web instead.
+        if (!session.hasOperationsAccess) {
+          return UseTheWebPage(session: session);
+        }
         return builder(context, session);
       },
       loading: () =>

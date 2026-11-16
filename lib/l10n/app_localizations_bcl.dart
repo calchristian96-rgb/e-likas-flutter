@@ -2124,4 +2124,17 @@ class AppLocalizationsBcl extends AppLocalizations {
 
   @override
   String get ecBoardHeaderPersons => 'Persons (Cum/Now)';
+
+  @override
+  String get staffUseTheWebTitle => 'Use the web';
+
+  @override
+  String get staffUseTheWebBody =>
+      'Administrator accounts manage users, logs and backups on the E-LIKAS website. The mobile app is for barangay field work and CSWD monitoring.';
+
+  @override
+  String get staffOpenWebsite => 'Open the E-LIKAS website';
+
+  @override
+  String get staffSignOut => 'Sign out';
 }

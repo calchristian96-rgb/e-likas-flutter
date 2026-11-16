@@ -29,6 +29,7 @@ const _official = StaffSession(
   roleDisplayName: 'Barangay Official',
   barangayId: 13,
   barangayName: 'Binatagan',
+  permissions: {'operations.access'},
 );
 
 EvacuationCenter _center(int id, String name, String barangay, int occupancy) =>
@@ -140,6 +141,7 @@ void main() {
           email: 'c@example.com',
           role: 'cswd_personnel',
           roleDisplayName: 'CSWD Personnel',
+          permissions: {'operations.access', 'scope.all_barangays'},
         ),
       ),
     );

@@ -3789,6 +3789,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Persons (Cum/Now)'**
   String get ecBoardHeaderPersons;
+
+  /// No description provided for @staffUseTheWebTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Use the web'**
+  String get staffUseTheWebTitle;
+
+  /// No description provided for @staffUseTheWebBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Administrator accounts manage users, logs and backups on the E-LIKAS website. The mobile app is for barangay field work and CSWD monitoring.'**
+  String get staffUseTheWebBody;
+
+  /// No description provided for @staffOpenWebsite.
+  ///
+  /// In en, this message translates to:
+  /// **'Open the E-LIKAS website'**
+  String get staffOpenWebsite;
+
+  /// No description provided for @staffSignOut.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign out'**
+  String get staffSignOut;
 }
 
 class _AppLocalizationsDelegate

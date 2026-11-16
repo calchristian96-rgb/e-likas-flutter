@@ -71,7 +71,9 @@ class StaffAuthRepositoryImpl implements StaffAuthRepository {
       return Success(session);
     } on DioException catch (e) {
       final failure = mapStaffDioError(e);
-      if (failure is AuthFailure) {
+      // 403 from /auth/me: the account is no longer active. The backend
+      // asks apps to treat it as signed out (AuthController::me).
+      if (failure is AuthFailure || failure is ForbiddenFailure) {
         // The token itself was rejected — nothing left to restore.
         await _tokenStorage.clearSession();
         return Failed(failure);

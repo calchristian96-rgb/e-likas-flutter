@@ -30,6 +30,7 @@ StaffSession _session(String role, int? barangayId) => StaffSession(
   roleDisplayName: role,
   barangayId: barangayId,
   barangayName: barangayId == 4 ? 'Bacong' : null,
+  permissions: StaffPermission.legacyForRole(role),
 );
 
 Widget _app(StaffSession session, int centerId) => ProviderScope(
