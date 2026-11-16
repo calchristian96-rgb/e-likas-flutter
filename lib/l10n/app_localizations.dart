@@ -3945,6 +3945,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No map location yet. Ask your barangay for directions.'**
   String get centerNoMapLocationYet;
+
+  /// No description provided for @staffTabCenters.
+  ///
+  /// In en, this message translates to:
+  /// **'Centers'**
+  String get staffTabCenters;
+
+  /// No description provided for @staffTabMore.
+  ///
+  /// In en, this message translates to:
+  /// **'More'**
+  String get staffTabMore;
+
+  /// No description provided for @staffTabResidentApp.
+  ///
+  /// In en, this message translates to:
+  /// **'Resident app'**
+  String get staffTabResidentApp;
+
+  /// No description provided for @staffSignInButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Staff sign in'**
+  String get staffSignInButton;
+
+  /// No description provided for @staffModeButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Staff Mode'**
+  String get staffModeButton;
 }
 
 class _AppLocalizationsDelegate

@@ -46,7 +46,7 @@ class _StaffWorkspaceBody extends ConsumerWidget {
     );
     if (confirmed != true) return;
     await ref.read(staffAuthProvider.notifier).logout();
-    if (context.mounted) context.go('/settings');
+    if (context.mounted) context.go('/home');
   }
 
   @override
@@ -74,48 +74,41 @@ class _StaffWorkspaceBody extends ConsumerWidget {
           // direct routes: full registration from Registered Families'
           // own button, and the pending queue as Registered Families'
           // "Not yet synced" section.
-          _SectionLabel(title: l10n.staffWorkspaceEvacuationCentersSection),
-          // EC Board is its own top-level entry point (not reached via
-          // Evacuation Centers management) — ahead of the management
-          // actions below since it's the primary fast-entry workflow
-          // for staff already at a center.
-          _WorkspaceAction(
-            icon: Icons.fact_check_outlined,
-            iconColor: theme.colorScheme.primary,
-            label: l10n.ecBoardTitle,
-            subtitle: l10n.ecBoardWorkspaceActionSubtitle,
-            onTap: () => context.push('/settings/staff/ec-board'),
-          ),
-          _WorkspaceAction(
-            icon: Icons.add_business_outlined,
-            iconColor: semantic.navy,
-            label: l10n.staffAddEvacuationCenter,
-            subtitle: l10n.staffAddEvacuationCenterSubtitle,
-            onTap: () => context.push('/settings/staff/evacuation-centers/add'),
-          ),
-          _WorkspaceAction(
-            icon: Icons.home_work_outlined,
-            iconColor: theme.colorScheme.tertiary,
-            label: l10n.staffManageEvacuationCenters,
-            subtitle: l10n.staffManageEvacuationCentersSubtitle,
-            onTap: () => context.push('/settings/staff/evacuation-centers'),
-          ),
-          const SizedBox(height: 16),
-          _SectionLabel(title: l10n.staffWorkspaceRecordsSection),
-          _WorkspaceAction(
-            icon: Icons.groups_outlined,
-            iconColor: semantic.success,
-            label: l10n.staffWorkspaceAllEvacuees,
-            subtitle: l10n.staffWorkspaceAllEvacueesSubtitle,
-            onTap: () => context.push('/settings/staff/all-evacuees'),
-          ),
-          _WorkspaceAction(
-            icon: Icons.folder_shared_outlined,
-            iconColor: semantic.warning,
-            label: l10n.registeredFamiliesTitle,
-            subtitle: l10n.registeredFamiliesWorkspaceSubtitle,
-            onTap: () => context.push('/settings/staff/registered-families'),
-          ),
+          // The EC Board is Staff Mode's first tab. Field work below is
+          // for barangay officials only; CSWD monitors from its own tab.
+          if (session.isFieldOfficial) ...[
+            _SectionLabel(title: l10n.staffWorkspaceEvacuationCentersSection),
+            _WorkspaceAction(
+              icon: Icons.add_business_outlined,
+              iconColor: semantic.navy,
+              label: l10n.staffAddEvacuationCenter,
+              subtitle: l10n.staffAddEvacuationCenterSubtitle,
+              onTap: () => context.push('/staff/more/evacuation-centers/add'),
+            ),
+            _WorkspaceAction(
+              icon: Icons.home_work_outlined,
+              iconColor: theme.colorScheme.tertiary,
+              label: l10n.staffManageEvacuationCenters,
+              subtitle: l10n.staffManageEvacuationCentersSubtitle,
+              onTap: () => context.push('/staff/more/evacuation-centers'),
+            ),
+            const SizedBox(height: 16),
+            _SectionLabel(title: l10n.staffWorkspaceRecordsSection),
+            _WorkspaceAction(
+              icon: Icons.groups_outlined,
+              iconColor: semantic.success,
+              label: l10n.staffWorkspaceAllEvacuees,
+              subtitle: l10n.staffWorkspaceAllEvacueesSubtitle,
+              onTap: () => context.push('/staff/more/all-evacuees'),
+            ),
+            _WorkspaceAction(
+              icon: Icons.folder_shared_outlined,
+              iconColor: semantic.warning,
+              label: l10n.registeredFamiliesTitle,
+              subtitle: l10n.registeredFamiliesWorkspaceSubtitle,
+              onTap: () => context.push('/staff/more/registered-families'),
+            ),
+          ],
           const SizedBox(height: 16),
           _WorkspaceAction(
             icon: Icons.logout_outlined,
@@ -187,7 +180,6 @@ class _OfflineSessionBanner extends StatelessWidget {
     );
   }
 }
-
 
 class _WorkspaceAction extends StatelessWidget {
   const _WorkspaceAction({

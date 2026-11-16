@@ -122,7 +122,7 @@ class _EcBoardCenterTile extends StatelessWidget {
       margin: EdgeInsets.zero,
       child: ListTile(
         minVerticalPadding: 12,
-        onTap: () => context.push('/settings/staff/ec-board/${center.id}'),
+        onTap: () => context.push('/staff/centers/${center.id}'),
         leading: Icon(
           Icons.fact_check_outlined,
           color: theme.colorScheme.primary,

@@ -158,7 +158,7 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                   iconColor: semantic.navy,
                   title: l10n.settingsStaffAccess,
                   subtitle: l10n.settingsStaffAccessSubtitle,
-                  onTap: () => context.push('/settings/staff'),
+                  onTap: () => context.push('/staff'),
                 ),
               ],
             )
@@ -172,7 +172,7 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                   iconColor: theme.colorScheme.tertiary,
                   title: l10n.staffDashboardTitle,
                   subtitle: l10n.staffDashboardSubtitle,
-                  onTap: () => context.push('/settings/staff'),
+                  onTap: () => context.push('/staff'),
                 ),
               ],
             ),

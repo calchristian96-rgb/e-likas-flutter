@@ -150,7 +150,7 @@ class _StaffCenterTile extends StatelessWidget {
       child: InkWell(
         borderRadius: BorderRadius.circular(12),
         onTap: () =>
-            context.push('/settings/staff/evacuation-centers/${center.id}'),
+            context.push('/staff/more/evacuation-centers/${center.id}'),
         child: Padding(
           padding: const EdgeInsets.all(16),
           child: Column(

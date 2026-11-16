@@ -102,7 +102,7 @@ class _BodyState extends ConsumerState<_Body> {
             // Dashboard entry — EC Board's Add Evacuee is the primary
             // fast-entry path, this is for recording a whole household.
             FilledButton.icon(
-              onPressed: () => context.push('/settings/staff/register-family'),
+              onPressed: () => context.push('/staff/more/register-family'),
               icon: const Icon(Icons.person_add_alt_1_outlined),
               label: Text(l10n.staffWorkspaceRegisterFamily),
             ),
@@ -235,7 +235,7 @@ class _PendingTile extends StatelessWidget {
       margin: EdgeInsets.zero,
       child: ListTile(
         onTap: () => context.push(
-          '/settings/staff/pending-registrations/${summary.localId}',
+          '/staff/more/pending-registrations/${summary.localId}',
         ),
         leading: switch (summary.status) {
           PendingRegistrationStatus.needsAttention => Icon(

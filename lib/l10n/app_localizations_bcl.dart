@@ -2218,4 +2218,19 @@ class AppLocalizationsBcl extends AppLocalizations {
   @override
   String get centerNoMapLocationYet =>
       'No map location yet. Ask your barangay for directions.';
+
+  @override
+  String get staffTabCenters => 'Centers';
+
+  @override
+  String get staffTabMore => 'More';
+
+  @override
+  String get staffTabResidentApp => 'Resident app';
+
+  @override
+  String get staffSignInButton => 'Staff sign in';
+
+  @override
+  String get staffModeButton => 'Staff Mode';
 }

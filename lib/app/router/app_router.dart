@@ -37,7 +37,7 @@ import '../../features/staff_evacuation_centers/presentation/pages/evacuation_ce
 import '../../features/staff_evacuation_centers/presentation/pages/staff_evacuation_center_detail_page.dart';
 import '../../features/staff_evacuation_centers/presentation/pages/staff_evacuation_centers_list_page.dart';
 import '../../features/settings/presentation/pages/settings_page.dart';
-import '../../features/staff_auth/presentation/pages/staff_login_page.dart';
+import '../../features/staff_shell/staff_shell.dart';
 import '../../features/staff_workspace/presentation/pages/staff_workspace_page.dart';
 import '../../l10n/app_localizations.dart';
 import '../splash/splash_page.dart';
@@ -339,6 +339,8 @@ class _InvalidLinkPage extends StatelessWidget {
 
 final GoRouter appRouter = GoRouter(
   initialLocation: '/splash',
+  // Staff screens moved from Settings into Staff Mode (C14).
+  redirect: (context, state) => redirectOldStaffPath(state.uri.path),
   routes: [
     // Outside the shell, same as /centers below — the bottom nav has
     // nothing to show yet at this point, and this route is never
@@ -415,14 +417,9 @@ final GoRouter appRouter = GoRouter(
         ),
         StatefulShellBranch(
           routes: [
-            // Settings is now a permanent bottom-nav destination too
-            // (previously reached only from a Home Quick Action, which
-            // has been removed since it would now duplicate this tab).
-            // The whole existing subtree — Offline Data Management and
-            // the entire Staff Access module — nests under it exactly
-            // as before, so back navigation and every existing deep
-            // path (e.g. `/settings/staff/register-family`) keep
-            // working unchanged.
+            // Settings: offline data and the hidden developer screen.
+            // Staff screens live in Staff Mode (/staff); old
+            // /settings/staff links redirect there.
             GoRoute(
               path: '/settings',
               builder: (context, state) => const SettingsPage(),
@@ -442,119 +439,95 @@ final GoRouter appRouter = GoRouter(
                   path: 'dev',
                   builder: (context, state) => const DevSettingsPage(),
                 ),
-                // Barangay Staff Access subtree — additive, no
-                // interaction with the resident routes/branches above.
-                // Everything past `staff/login` is gated by
-                // StaffAuthGuard inside each page itself rather than a
-                // router-level redirect (see that widget's doc
-                // comment for why), so a logged-out resident who
-                // somehow lands on e.g. `staff/workspace` sees the
-                // login screen in place of it rather than the
-                // workspace content.
+              ],
+            ),
+          ],
+        ),
+      ],
+    ),
+    // Staff Mode: its own screens and bottom tabs (C14), entered from
+    // "Staff sign in" on Home or Settings. Every page inside is gated by
+    // StaffAuthGuard (sign in / "Use the web").
+    GoRoute(path: '/staff', redirect: (context, state) => '/staff/centers'),
+    StatefulShellRoute.indexedStack(
+      builder: (context, state, navigationShell) =>
+          StaffShell(navigationShell: navigationShell),
+      branches: [
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
+              path: '/staff/centers',
+              builder: (context, state) => const EcBoardCentersListPage(),
+              routes: [
                 GoRoute(
-                  path: 'staff',
-                  builder: (context, state) => const StaffWorkspacePage(),
+                  path: ':id',
+                  builder: (context, state) {
+                    final id = int.tryParse(state.pathParameters['id'] ?? '');
+                    return EcBoardPage(centerId: id ?? 0);
+                  },
+                ),
+              ],
+            ),
+          ],
+        ),
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
+              path: '/staff/more',
+              builder: (context, state) => const StaffWorkspacePage(),
+              routes: [
+                GoRoute(
+                  path: 'register-family',
+                  builder: (context, state) =>
+                      const FamilyRegistrationFormPage(),
+                ),
+                GoRoute(
+                  path: 'pending-registrations',
+                  builder: (context, state) => const PendingRegistrationsPage(),
                   routes: [
                     GoRoute(
-                      path: 'login',
-                      builder: (context, state) => const StaffLoginPage(),
+                      path: ':localId',
+                      builder: (context, state) =>
+                          PendingRegistrationDetailPage(
+                            localId: state.pathParameters['localId']!,
+                          ),
+                    ),
+                  ],
+                ),
+                GoRoute(
+                  path: 'all-evacuees',
+                  builder: (context, state) => const RegisteredFamiliesPage(),
+                ),
+                GoRoute(
+                  path: 'registered-families',
+                  builder: (context, state) =>
+                      const RegisteredFamiliesOverviewPage(),
+                ),
+                GoRoute(
+                  path: 'evacuation-centers',
+                  builder: (context, state) =>
+                      const StaffEvacuationCentersListPage(),
+                  routes: [
+                    GoRoute(
+                      path: 'add',
+                      builder: (context, state) =>
+                          const EvacuationCenterFormPage(),
                     ),
                     GoRoute(
-                      path: 'register-family',
-                      builder: (context, state) =>
-                          const FamilyRegistrationFormPage(),
-                    ),
-                    GoRoute(
-                      path: 'pending-registrations',
-                      builder: (context, state) =>
-                          const PendingRegistrationsPage(),
-                      routes: [
-                        GoRoute(
-                          path: ':localId',
-                          builder: (context, state) =>
-                              PendingRegistrationDetailPage(
-                                localId: state.pathParameters['localId']!,
-                              ),
-                        ),
-                      ],
-                    ),
-                    // "Evacuees" in the UI — the path is kept as-is so
-                    // any existing link still resolves.
-                    GoRoute(
-                      path: 'all-evacuees',
-                      builder: (context, state) =>
-                          const RegisteredFamiliesPage(),
-                    ),
-                    GoRoute(
-                      path: 'registered-families',
-                      builder: (context, state) =>
-                          const RegisteredFamiliesOverviewPage(),
-                    ),
-                    // Staff evacuation-center management (Part 2) —
-                    // Edit is reached via Navigator.push from the
-                    // detail page rather than a named route here,
-                    // same pattern PendingRegistrationDetailPage uses
-                    // for its own edit flow (it needs the already-
-                    // fetched center object, not a re-fetch keyed by
-                    // a route param). EC Board itself is NOT nested
-                    // under here (see the standalone `ec-board` route
-                    // below) — opening the board has nothing to do
-                    // with managing a center's own details.
-                    GoRoute(
-                      path: 'evacuation-centers',
-                      builder: (context, state) =>
-                          const StaffEvacuationCentersListPage(),
-                      routes: [
-                        GoRoute(
-                          path: 'add',
-                          builder: (context, state) =>
-                              const EvacuationCenterFormPage(),
-                        ),
-                        GoRoute(
-                          path: ':id',
-                          builder: (context, state) {
-                            final id = int.tryParse(
-                              state.pathParameters['id'] ?? '',
-                            );
-                            if (id == null) {
-                              final l10n = AppLocalizations.of(context);
-                              return _InvalidLinkPage(
-                                title: l10n.centerDetailsTitle,
-                                message: l10n.invalidCenterLink,
-                              );
-                            }
-                            return StaffEvacuationCenterDetailPage(
-                              centerId: id,
-                            );
-                          },
-                        ),
-                      ],
-                    ),
-                    // EC Information Board — its own top-level entry
-                    // point straight from the Staff Workspace, not
-                    // reached via Evacuation Centers management at
-                    // all: `ec-board` lists centers (barangay-pinned,
-                    // same as the management list) and `ec-board/:id`
-                    // is the board itself. Add Evacuee/pending-entry
-                    // detail are still reached via Navigator.push from
-                    // the board (same "already has what it needs in
-                    // memory" reasoning as the center edit flow above),
-                    // so only these two need named routes.
-                    GoRoute(
-                      path: 'ec-board',
-                      builder: (context, state) =>
-                          const EcBoardCentersListPage(),
-                      routes: [
-                        GoRoute(
-                          path: ':id',
-                          builder: (context, state) {
-                            final id = int.tryParse(
-                              state.pathParameters['id'] ?? '',
-                            );
-                            return EcBoardPage(centerId: id ?? 0);
-                          },
-                        ),
-                      ],
+                      path: ':id',
+                      builder: (context, state) {
+                        final id = int.tryParse(
+                          state.pathParameters['id'] ?? '',
+                        );
+                        if (id == null) {
+                          final l10n = AppLocalizations.of(context);
+                          return _InvalidLinkPage(
+                            title: l10n.centerDetailsTitle,
+                            message: l10n.invalidCenterLink,
+                          );
+                        }
+                        return StaffEvacuationCenterDetailPage(centerId: id);
+                      },
                     ),
                   ],
                 ),

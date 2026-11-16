@@ -871,5 +871,11 @@
   "drillNotice": "DRILL - This is a simulation for demonstration, not a real emergency.",
 
   "centersInYourBarangay": "Centers in Brgy. {barangay}",
-  "centerNoMapLocationYet": "No map location yet. Ask your barangay for directions."
+  "centerNoMapLocationYet": "No map location yet. Ask your barangay for directions.",
+
+  "staffTabCenters": "Centers",
+  "staffTabMore": "More",
+  "staffTabResidentApp": "Resident app",
+  "staffSignInButton": "Staff sign in",
+  "staffModeButton": "Staff Mode"
 }

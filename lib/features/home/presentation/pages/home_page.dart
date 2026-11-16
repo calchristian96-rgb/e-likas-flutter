@@ -18,6 +18,7 @@ import '../../../alerts/presentation/providers/alerts_summary_provider.dart';
 import '../../../barangay_status/presentation/barangay_status_card.dart';
 import '../../../evacuation_centers/presentation/providers/evacuation_centers_provider.dart';
 import '../../../settings/presentation/providers/offline_data_provider.dart';
+import '../../../staff_auth/presentation/providers/staff_auth_provider.dart';
 import '../../domain/dashboard_summary.dart';
 import '../providers/home_provider.dart';
 import '../widgets/emergency_status_card.dart';
@@ -310,9 +311,7 @@ class _BrandedHeader extends StatelessWidget {
                               ),
                             ),
                             const SizedBox(width: 8),
-                            _NotificationButton(
-                              tooltip: l10n.viewAlertsTooltip,
-                            ),
+                            const _StaffSignInButton(),
                           ],
                         ),
                         const SizedBox(height: 14),
@@ -430,24 +429,29 @@ class _LogoBadge extends StatelessWidget {
   }
 }
 
-class _NotificationButton extends StatelessWidget {
-  const _NotificationButton({required this.tooltip});
-
-  final String tooltip;
+/// The way into Staff Mode, in plain sight on the resident app (C14):
+/// "Staff sign in", or "Staff Mode" once signed in. 48 dp tall.
+class _StaffSignInButton extends ConsumerWidget {
+  const _StaffSignInButton();
 
   @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: 44,
-      height: 44,
-      child: IconButton(
-        onPressed: () => context.go('/alerts'),
-        tooltip: tooltip,
-        icon: const Icon(Icons.notifications_none_rounded, color: Colors.white),
-        style: IconButton.styleFrom(
-          backgroundColor: Colors.white.withValues(alpha: 0.12),
-          shape: const CircleBorder(),
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context);
+    final signedIn = ref.watch(staffAuthProvider).value != null;
+    return TextButton.icon(
+      onPressed: () => context.go('/staff'),
+      icon: const Icon(Icons.badge_outlined, color: Colors.white, size: 20),
+      label: Text(
+        signedIn ? l10n.staffModeButton : l10n.staffSignInButton,
+        style: const TextStyle(
+          color: Colors.white,
+          fontWeight: FontWeight.w600,
         ),
+      ),
+      style: TextButton.styleFrom(
+        minimumSize: const Size(48, 48),
+        backgroundColor: Colors.white.withValues(alpha: 0.12),
+        padding: const EdgeInsets.symmetric(horizontal: 12),
       ),
     );
   }

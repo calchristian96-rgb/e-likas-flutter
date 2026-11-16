@@ -69,7 +69,7 @@ class _PendingRegistrationsBodyState
               // Always visible — online, offline, empty queue,
               // populated queue, or a sync error — registering a new
               // family never depends on this list's own load state.
-              onPressed: () => context.push('/settings/staff/register-family'),
+              onPressed: () => context.push('/staff/more/register-family'),
               icon: const Icon(Icons.person_add_alt_1_outlined),
               label: Text(l10n.staffWorkspaceRegisterFamily),
             ),
@@ -122,7 +122,7 @@ class _PendingRegistrationTile extends StatelessWidget {
     return Card(
       child: ListTile(
         onTap: () => context.push(
-          '/settings/staff/pending-registrations/${summary.localId}',
+          '/staff/more/pending-registrations/${summary.localId}',
         ),
         leading: _StatusIcon(status: summary.status),
         title: Text(
