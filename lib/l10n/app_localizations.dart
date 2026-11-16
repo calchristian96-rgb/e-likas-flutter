@@ -4821,6 +4821,150 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Full registrations are no longer started on the phone; families are entered on the EC Board. Sync or fix the ones below. This screen goes away once they are done.'**
   String get pendingRegistrationsRetiring;
+
+  /// No description provided for @monitoringTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Monitoring'**
+  String get monitoringTitle;
+
+  /// No description provided for @staffTabMonitoring.
+  ///
+  /// In en, this message translates to:
+  /// **'Monitoring'**
+  String get staffTabMonitoring;
+
+  /// No description provided for @monitoringOverview.
+  ///
+  /// In en, this message translates to:
+  /// **'Overview'**
+  String get monitoringOverview;
+
+  /// No description provided for @monitoringCenters.
+  ///
+  /// In en, this message translates to:
+  /// **'Centers'**
+  String get monitoringCenters;
+
+  /// No description provided for @monitoringBarangays.
+  ///
+  /// In en, this message translates to:
+  /// **'Barangays'**
+  String get monitoringBarangays;
+
+  /// No description provided for @monitoringRequests.
+  ///
+  /// In en, this message translates to:
+  /// **'Requests'**
+  String get monitoringRequests;
+
+  /// No description provided for @monitoringPersons.
+  ///
+  /// In en, this message translates to:
+  /// **'Persons'**
+  String get monitoringPersons;
+
+  /// No description provided for @monitoringFamilies.
+  ///
+  /// In en, this message translates to:
+  /// **'Families'**
+  String get monitoringFamilies;
+
+  /// No description provided for @monitoringInside.
+  ///
+  /// In en, this message translates to:
+  /// **'Inside centers'**
+  String get monitoringInside;
+
+  /// No description provided for @monitoringCentersInUse.
+  ///
+  /// In en, this message translates to:
+  /// **'Centers in use'**
+  String get monitoringCentersInUse;
+
+  /// No description provided for @monitoringArrivedLastHour.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} arrived in the last hour'**
+  String monitoringArrivedLastHour(int count);
+
+  /// No description provided for @monitoringNeedsAttention.
+  ///
+  /// In en, this message translates to:
+  /// **'Needs attention'**
+  String get monitoringNeedsAttention;
+
+  /// No description provided for @monitoringNothingUrgent.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing needs attention now.'**
+  String get monitoringNothingUrgent;
+
+  /// No description provided for @monitoringCentersSummary.
+  ///
+  /// In en, this message translates to:
+  /// **'{inUse} of {total} centers in use · {noCapacity} without capacity'**
+  String monitoringCentersSummary(int inUse, int total, int noCapacity);
+
+  /// No description provided for @monitoringShort.
+  ///
+  /// In en, this message translates to:
+  /// **'Short: {items}'**
+  String monitoringShort(Object items);
+
+  /// No description provided for @monitoringNoChecklist.
+  ///
+  /// In en, this message translates to:
+  /// **'No facilities checklist'**
+  String get monitoringNoChecklist;
+
+  /// No description provided for @monitoringInsideNoCapacity.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} inside · capacity not set'**
+  String monitoringInsideNoCapacity(int count);
+
+  /// No description provided for @monitoringNotNormal.
+  ///
+  /// In en, this message translates to:
+  /// **'Not normal'**
+  String get monitoringNotNormal;
+
+  /// No description provided for @monitoringAllNormal.
+  ///
+  /// In en, this message translates to:
+  /// **'Every barangay is normal.'**
+  String get monitoringAllNormal;
+
+  /// No description provided for @monitoringLatestChanges.
+  ///
+  /// In en, this message translates to:
+  /// **'Latest changes'**
+  String get monitoringLatestChanges;
+
+  /// No description provided for @monitoringNoRequests.
+  ///
+  /// In en, this message translates to:
+  /// **'No request is waiting.'**
+  String get monitoringNoRequests;
+
+  /// No description provided for @monitoringWaited.
+  ///
+  /// In en, this message translates to:
+  /// **'{hours}h {minutes}m'**
+  String monitoringWaited(int hours, int minutes);
+
+  /// No description provided for @monitoringNeedsConnection.
+  ///
+  /// In en, this message translates to:
+  /// **'Monitoring needs a connection the first time.'**
+  String get monitoringNeedsConnection;
+
+  /// No description provided for @monitoringUpdated.
+  ///
+  /// In en, this message translates to:
+  /// **'Updated {age}'**
+  String monitoringUpdated(Object age);
 }
 
 class _AppLocalizationsDelegate

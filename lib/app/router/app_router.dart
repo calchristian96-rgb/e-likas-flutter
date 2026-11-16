@@ -37,6 +37,7 @@ import '../../features/barangay_status/staff/barangay_page.dart';
 import '../../features/box_relief/relief_page.dart';
 import '../../features/count_submissions/final_count_card.dart';
 import '../../features/box_relief/round_families_page.dart';
+import '../../features/monitoring/monitoring_page.dart';
 import '../../features/outbox/presentation/sync_page.dart';
 import '../../features/staff_shell/staff_shell.dart';
 import '../../features/staff_workspace/presentation/pages/staff_workspace_page.dart';
@@ -547,6 +548,14 @@ final GoRouter appRouter = GoRouter(
               path: '/staff/barangay',
               builder: (context, state) =>
                   const StaffBarangayPage(extraSections: [FinalCountCard()]),
+            ),
+          ],
+        ),
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
+              path: '/staff/monitoring',
+              builder: (context, state) => const MonitoringPage(),
             ),
           ],
         ),

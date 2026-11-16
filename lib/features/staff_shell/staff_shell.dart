@@ -51,6 +51,13 @@ final staffTabs = <StaffTab>[
         s.isFieldOfficial && s.can(StaffPermission.situationUpdate),
   ),
   StaffTab(
+    branch: 4,
+    icon: Icons.monitor_heart_outlined,
+    selectedIcon: Icons.monitor_heart,
+    label: (l10n) => l10n.staffTabMonitoring,
+    visibleTo: (s) => s.isCityMonitor && s.can(StaffPermission.monitoring),
+  ),
+  StaffTab(
     branch: 1,
     icon: Icons.more_horiz,
     selectedIcon: Icons.more_horiz,

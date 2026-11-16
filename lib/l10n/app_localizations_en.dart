@@ -2794,4 +2794,89 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get pendingRegistrationsRetiring =>
       'Full registrations are no longer started on the phone; families are entered on the EC Board. Sync or fix the ones below. This screen goes away once they are done.';
+
+  @override
+  String get monitoringTitle => 'Monitoring';
+
+  @override
+  String get staffTabMonitoring => 'Monitoring';
+
+  @override
+  String get monitoringOverview => 'Overview';
+
+  @override
+  String get monitoringCenters => 'Centers';
+
+  @override
+  String get monitoringBarangays => 'Barangays';
+
+  @override
+  String get monitoringRequests => 'Requests';
+
+  @override
+  String get monitoringPersons => 'Persons';
+
+  @override
+  String get monitoringFamilies => 'Families';
+
+  @override
+  String get monitoringInside => 'Inside centers';
+
+  @override
+  String get monitoringCentersInUse => 'Centers in use';
+
+  @override
+  String monitoringArrivedLastHour(int count) {
+    return '$count arrived in the last hour';
+  }
+
+  @override
+  String get monitoringNeedsAttention => 'Needs attention';
+
+  @override
+  String get monitoringNothingUrgent => 'Nothing needs attention now.';
+
+  @override
+  String monitoringCentersSummary(int inUse, int total, int noCapacity) {
+    return '$inUse of $total centers in use · $noCapacity without capacity';
+  }
+
+  @override
+  String monitoringShort(Object items) {
+    return 'Short: $items';
+  }
+
+  @override
+  String get monitoringNoChecklist => 'No facilities checklist';
+
+  @override
+  String monitoringInsideNoCapacity(int count) {
+    return '$count inside · capacity not set';
+  }
+
+  @override
+  String get monitoringNotNormal => 'Not normal';
+
+  @override
+  String get monitoringAllNormal => 'Every barangay is normal.';
+
+  @override
+  String get monitoringLatestChanges => 'Latest changes';
+
+  @override
+  String get monitoringNoRequests => 'No request is waiting.';
+
+  @override
+  String monitoringWaited(int hours, int minutes) {
+    return '${hours}h ${minutes}m';
+  }
+
+  @override
+  String get monitoringNeedsConnection =>
+      'Monitoring needs a connection the first time.';
+
+  @override
+  String monitoringUpdated(Object age) {
+    return 'Updated $age';
+  }
 }
