@@ -3927,6 +3927,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{barangay}: {status}'**
   String barangayStatusTapped(Object barangay, Object status);
+
+  /// No description provided for @drillNotice.
+  ///
+  /// In en, this message translates to:
+  /// **'DRILL - This is a simulation for demonstration, not a real emergency.'**
+  String get drillNotice;
 }
 
 class _AppLocalizationsDelegate

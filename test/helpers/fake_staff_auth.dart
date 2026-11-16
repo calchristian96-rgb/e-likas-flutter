@@ -1,3 +1,4 @@
+import 'package:elikas_mobile/app/theme/app_theme.dart';
 import 'package:elikas_mobile/core/error/failure.dart';
 import 'package:elikas_mobile/core/error/result.dart';
 import 'package:elikas_mobile/features/staff_auth/domain/entities/staff_session.dart';
@@ -88,6 +89,7 @@ Widget testApp(Widget home, {List<Override> overrides = const []}) =>
     ProviderScope(
       overrides: overrides,
       child: MaterialApp(
+        theme: AppTheme.light,
         localizationsDelegates: AppLocalizations.localizationsDelegates,
         supportedLocales: AppLocalizations.supportedLocales,
         home: home,

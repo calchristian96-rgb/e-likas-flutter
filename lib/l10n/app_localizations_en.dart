@@ -2205,4 +2205,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String barangayStatusTapped(Object barangay, Object status) {
     return '$barangay: $status';
   }
+
+  @override
+  String get drillNotice =>
+      'DRILL - This is a simulation for demonstration, not a real emergency.';
 }

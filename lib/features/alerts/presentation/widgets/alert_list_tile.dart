@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../core/widgets/accent_card.dart';
+import '../../../../core/widgets/demo_badge.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../domain/entities/alert.dart';
 import 'alert_type_display.dart';
@@ -68,6 +69,10 @@ class AlertListTile extends StatelessWidget {
                   ],
                   Row(
                     children: [
+                      if (alert.isDrill) ...[
+                        const DemoBadge(drill: true),
+                        const SizedBox(width: 8),
+                      ],
                       Expanded(
                         child: Text(
                           alert.title,

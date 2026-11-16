@@ -25,6 +25,7 @@ class AlertModel {
     this.senderName,
     this.recipientSummary,
     this.severity,
+    this.isDrill = false,
   });
 
   /// The backend's own numeric id, doubling as the Drift primary key.
@@ -40,6 +41,9 @@ class AlertModel {
   /// defaulted: unlike [alertType]/[status], there's no single severity
   /// value that's safe to assume when the field is missing.
   final String? severity;
+
+  /// Sent for a demo event shown publicly as a drill (`is_drill`).
+  final bool isDrill;
 
   /// `dateSent` as epoch milliseconds **in UTC**, or null when the API
   /// sent no parsable date. See the class doc comment for why this
@@ -70,6 +74,7 @@ class AlertModel {
       alertType: (json['alert_type'] as String?) ?? 'advisory',
       status: (json['status'] as String?) ?? 'sent',
       severity: json['severity'] as String?,
+      isDrill: json['is_drill'] as bool? ?? false,
       dateSentUtcMs: _parseDateToUtcMs(json['date_sent'] ?? json['created_at']),
       evacuationEventName: _nestedOrFlat(
         json,
@@ -95,6 +100,7 @@ class AlertModel {
       alertType: alertType,
       status: status,
       severity: severity,
+      isDrill: isDrill,
       dateSent: dateSentUtcMs == null
           ? null
           : DateTime.fromMillisecondsSinceEpoch(

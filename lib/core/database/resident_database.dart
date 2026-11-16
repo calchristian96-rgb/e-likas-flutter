@@ -22,15 +22,17 @@ class ResidentDatabase extends _$ResidentDatabase {
   ResidentDatabase.forExecutor(super.executor);
 
   @override
-  int get schemaVersion => 2;
+  int get schemaVersion => 3;
 
-  /// Schema 2 adds [BarangayStatuses]. Everything here is regenerable
-  /// from the public API, but an upgrade still keeps the cached rows.
+  /// Schema 2 adds [BarangayStatuses]; schema 3 adds `alerts.is_drill`.
+  /// Everything here is regenerable from the public API, but an upgrade
+  /// still keeps the cached rows.
   @override
   MigrationStrategy get migration => MigrationStrategy(
     onCreate: (m) => m.createAll(),
     onUpgrade: (m, from, to) async {
       if (from < 2) await m.createTable(barangayStatuses);
+      if (from < 3) await m.addColumn(alerts, alerts.isDrill);
     },
   );
 }

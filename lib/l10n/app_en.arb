@@ -866,5 +866,7 @@
 
   "showBarangayStatus": "Barangay status",
   "barangayBoundariesAttribution": "Barangay boundaries: PSA-NAMRIA via HDX (CC BY-IGO)",
-  "barangayStatusTapped": "{barangay}: {status}"
+  "barangayStatusTapped": "{barangay}: {status}",
+
+  "drillNotice": "DRILL - This is a simulation for demonstration, not a real emergency."
 }

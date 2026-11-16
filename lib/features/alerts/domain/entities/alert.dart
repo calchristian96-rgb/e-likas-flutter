@@ -29,6 +29,7 @@ class Alert {
     this.senderName,
     this.recipientSummary,
     this.severity,
+    this.isDrill = false,
   });
 
   final int id;
@@ -40,6 +41,9 @@ class Alert {
   /// One of `mandatory`, `advisory`, `info`, `all_clear`, straight from
   /// the backend's `severity` field. Nullable — see [AlertModel].
   final String? severity;
+
+  /// Sent for a demo event shown publicly as a drill (`is_drill`).
+  final bool isDrill;
 
   /// Nullable defensively — every alert this endpoint returns should
   /// have one (the API only returns `status=sent` alerts), but a

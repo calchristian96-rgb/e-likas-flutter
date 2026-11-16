@@ -58,6 +58,9 @@ class Alerts extends Table {
   TextColumn get senderName => text().nullable()();
   TextColumn get recipientSummary => text().nullable()();
 
+  /// Schema 3: sent for a demo event shown publicly as a drill.
+  BoolColumn get isDrill => boolean().withDefault(const Constant(false))();
+
   @override
   Set<Column> get primaryKey => {id};
 }

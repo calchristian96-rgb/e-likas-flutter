@@ -59,6 +59,7 @@ class AlertsLocalDatasource {
       alertType: m.alertType,
       status: m.status,
       severity: Value(m.severity),
+      isDrill: Value(m.isDrill),
       dateSentUtcMs: Value(m.dateSentUtcMs),
       evacuationEventName: Value(m.evacuationEventName),
       senderName: Value(m.senderName),
@@ -78,6 +79,7 @@ class AlertsLocalDatasource {
       senderName: row.senderName,
       recipientSummary: row.recipientSummary,
       severity: row.severity,
+      isDrill: row.isDrill,
     );
   }
 }

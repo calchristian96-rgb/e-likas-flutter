@@ -2242,4 +2242,7 @@ class AppLocalizationsFil extends AppLocalizations {
   String barangayStatusTapped(Object barangay, Object status) {
     return '$barangay: $status';
   }
+
+  @override
+  String get drillNotice => 'PAGSASANAY - Hindi ito totoong emergency.';
 }

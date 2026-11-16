@@ -208,7 +208,9 @@ class _AppShellState extends ConsumerState<AppShell>
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              _newAlertHeadline(alert.severity, l10n),
+              alert.isDrill
+                  ? '${l10n.drillBadge}: ${_newAlertHeadline(alert.severity, l10n)}'
+                  : _newAlertHeadline(alert.severity, l10n),
               style: TextStyle(fontWeight: FontWeight.w700, color: color),
             ),
             const SizedBox(height: 2),
