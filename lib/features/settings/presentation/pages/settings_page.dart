@@ -13,6 +13,8 @@ import '../../../../core/localization/theme_mode_selector_sheet.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../app_update/presentation/providers/app_update_providers.dart';
 import '../../../app_update/presentation/update_prompt.dart';
+import '../../../barangay_status/presentation/barangay_picker_sheet.dart';
+import '../../../barangay_status/presentation/barangay_status_providers.dart';
 import '../../../home/presentation/providers/home_provider.dart';
 import '../../../staff_auth/presentation/providers/staff_auth_provider.dart';
 import '../../../staff_auth/presentation/widgets/staff_identity_card.dart';
@@ -86,6 +88,7 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
     final notificationsEnabled = ref.watch(notificationPreferenceProvider);
     final updatesSupported = ref.watch(updateSupportedProvider);
     final installed = ref.watch(installedAppInfoProvider).value;
+    final residentBarangay = ref.watch(residentBarangayProvider);
 
     return Scaffold(
       appBar: AppBar(title: Text(l10n.settingsTitle)),
@@ -140,6 +143,14 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
           _SectionLabel(title: l10n.settingsSectionPreferences),
           _SettingsCard(
             children: [
+              _SettingsRow(
+                icon: Icons.location_city_outlined,
+                iconColor: theme.colorScheme.primary,
+                title: l10n.residentBarangayTitle,
+                subtitle: residentBarangay?.name ?? l10n.residentBarangayNotSet,
+                onTap: () => showBarangayPickerSheet(context),
+              ),
+              const _RowDivider(),
               _SettingsRow(
                 icon: Icons.language,
                 iconColor: theme.colorScheme.primary,

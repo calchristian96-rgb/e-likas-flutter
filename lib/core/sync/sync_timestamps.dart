@@ -9,7 +9,7 @@ part 'sync_timestamps.g.dart';
 /// cached into the same [EvacuationCenterModel] collection
 /// [evacuationCenters] already covers, so a separate timestamp for it
 /// would just duplicate this one.
-enum SyncDomain { alerts, evacuationCenters, hazardMap }
+enum SyncDomain { alerts, evacuationCenters, hazardMap, barangayStatus }
 
 const _keyPrefix = 'elikas.sync.';
 

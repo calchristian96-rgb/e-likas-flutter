@@ -851,5 +851,11 @@
   "staffOwnCentersEmpty": "No evacuation centers in your barangay yet",
 
   "demoBadge": "DEMO",
-  "drillBadge": "DRILL"
+  "drillBadge": "DRILL",
+
+  "residentBarangayTitle": "Your barangay",
+  "residentBarangayNotSet": "Not chosen yet",
+  "residentBarangayPickerTitle": "Choose your barangay",
+  "residentBarangaySearchHint": "Search barangays",
+  "residentBarangayListUnavailable": "The barangay list needs an internet connection the first time."
 }

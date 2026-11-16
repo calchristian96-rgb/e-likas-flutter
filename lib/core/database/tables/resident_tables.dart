@@ -80,3 +80,21 @@ class HazardAreas extends Table {
   @override
   Set<Column> get primaryKey => {id};
 }
+
+/// Schema 2: each barangay's status in the current event, words only,
+/// from `GET /public/gis/barangay-status` (backend map-api.md). Also the
+/// barangay list the resident picks their own barangay from.
+@DataClassName('BarangayStatusRow')
+class BarangayStatuses extends Table {
+  IntColumn get id => integer()();
+  TextColumn get name => text()();
+  TextColumn get psgcCode => text().nullable()();
+
+  /// normal | watch | flooding_reported | preemptive_evacuation |
+  /// forced_evacuation
+  TextColumn get status => text()();
+  TextColumn get label => text()();
+
+  @override
+  Set<Column> get primaryKey => {id};
+}

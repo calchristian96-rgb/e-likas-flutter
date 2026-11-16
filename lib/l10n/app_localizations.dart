@@ -3855,6 +3855,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'DRILL'**
   String get drillBadge;
+
+  /// No description provided for @residentBarangayTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your barangay'**
+  String get residentBarangayTitle;
+
+  /// No description provided for @residentBarangayNotSet.
+  ///
+  /// In en, this message translates to:
+  /// **'Not chosen yet'**
+  String get residentBarangayNotSet;
+
+  /// No description provided for @residentBarangayPickerTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose your barangay'**
+  String get residentBarangayPickerTitle;
+
+  /// No description provided for @residentBarangaySearchHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Search barangays'**
+  String get residentBarangaySearchHint;
+
+  /// No description provided for @residentBarangayListUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'The barangay list needs an internet connection the first time.'**
+  String get residentBarangayListUnavailable;
 }
 
 class _AppLocalizationsDelegate

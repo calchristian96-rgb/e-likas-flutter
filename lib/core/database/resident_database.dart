@@ -12,7 +12,9 @@ part 'resident_database.g.dart';
 /// data has nothing sensitive in it (public evacuation-center/alert/
 /// hazard data, fully regenerable from the API), same as the Isar
 /// instance it replaces.
-@DriftDatabase(tables: [EvacuationCenters, Alerts, HazardAreas])
+@DriftDatabase(
+  tables: [EvacuationCenters, Alerts, HazardAreas, BarangayStatuses],
+)
 class ResidentDatabase extends _$ResidentDatabase {
   ResidentDatabase() : super(openSqlCipherDatabase('elikas_resident.sqlite'));
 
@@ -20,7 +22,17 @@ class ResidentDatabase extends _$ResidentDatabase {
   ResidentDatabase.forExecutor(super.executor);
 
   @override
-  int get schemaVersion => 1;
+  int get schemaVersion => 2;
+
+  /// Schema 2 adds [BarangayStatuses]. Everything here is regenerable
+  /// from the public API, but an upgrade still keeps the cached rows.
+  @override
+  MigrationStrategy get migration => MigrationStrategy(
+    onCreate: (m) => m.createAll(),
+    onUpgrade: (m, from, to) async {
+      if (from < 2) await m.createTable(barangayStatuses);
+    },
+  );
 }
 
 @Riverpod(keepAlive: true)

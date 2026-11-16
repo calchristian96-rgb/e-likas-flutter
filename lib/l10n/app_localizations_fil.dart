@@ -2197,4 +2197,20 @@ class AppLocalizationsFil extends AppLocalizations {
 
   @override
   String get drillBadge => 'DRILL';
+
+  @override
+  String get residentBarangayTitle => 'Your barangay';
+
+  @override
+  String get residentBarangayNotSet => 'Not chosen yet';
+
+  @override
+  String get residentBarangayPickerTitle => 'Choose your barangay';
+
+  @override
+  String get residentBarangaySearchHint => 'Search barangays';
+
+  @override
+  String get residentBarangayListUnavailable =>
+      'The barangay list needs an internet connection the first time.';
 }
