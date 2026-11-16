@@ -4689,6 +4689,126 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Marked \"{status}\" (sent when online).'**
   String barangayStatusSaved(Object status);
+
+  /// No description provided for @finalCountTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Final count'**
+  String get finalCountTitle;
+
+  /// No description provided for @finalCountFigures.
+  ///
+  /// In en, this message translates to:
+  /// **'{families} families · {persons} persons'**
+  String finalCountFigures(int families, int persons);
+
+  /// No description provided for @finalCountInsideOutside.
+  ///
+  /// In en, this message translates to:
+  /// **'{inside} inside centers · {outside} outside'**
+  String finalCountInsideOutside(int inside, int outside);
+
+  /// No description provided for @finalCountNoStay.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} with no stay recorded'**
+  String finalCountNoStay(int count);
+
+  /// No description provided for @finalCountNotSubmitted.
+  ///
+  /// In en, this message translates to:
+  /// **'Not submitted yet'**
+  String get finalCountNotSubmitted;
+
+  /// No description provided for @finalCountWaiting.
+  ///
+  /// In en, this message translates to:
+  /// **'Submitted, waiting for CSWD'**
+  String get finalCountWaiting;
+
+  /// No description provided for @finalCountReturned.
+  ///
+  /// In en, this message translates to:
+  /// **'Returned by CSWD'**
+  String get finalCountReturned;
+
+  /// No description provided for @finalCountValidated.
+  ///
+  /// In en, this message translates to:
+  /// **'Validated: {families} families (the relief need)'**
+  String finalCountValidated(int families);
+
+  /// No description provided for @finalCountChanged.
+  ///
+  /// In en, this message translates to:
+  /// **'The count has changed since the last submission.'**
+  String get finalCountChanged;
+
+  /// No description provided for @finalCountSubmit.
+  ///
+  /// In en, this message translates to:
+  /// **'Submit final count'**
+  String get finalCountSubmit;
+
+  /// No description provided for @finalCountSubmitUpdated.
+  ///
+  /// In en, this message translates to:
+  /// **'Submit updated count'**
+  String get finalCountSubmitUpdated;
+
+  /// No description provided for @finalCountSubmitTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Submit this final count?'**
+  String get finalCountSubmitTitle;
+
+  /// No description provided for @finalCountComputedNote.
+  ///
+  /// In en, this message translates to:
+  /// **'The system computes these numbers from the families registered in this event; they are not typed in.'**
+  String get finalCountComputedNote;
+
+  /// No description provided for @finalCountNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Note for CSWD (optional)'**
+  String get finalCountNote;
+
+  /// No description provided for @finalCountSummary.
+  ///
+  /// In en, this message translates to:
+  /// **'Final count: {families} families, {persons} persons'**
+  String finalCountSummary(int families, int persons);
+
+  /// No description provided for @reliefShortfallTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Request more boxes for round {round}'**
+  String reliefShortfallTitle(int round);
+
+  /// No description provided for @reliefShortfallSend.
+  ///
+  /// In en, this message translates to:
+  /// **'Send request'**
+  String get reliefShortfallSend;
+
+  /// No description provided for @reliefShortfallAsk.
+  ///
+  /// In en, this message translates to:
+  /// **'Request up to {count} more boxes'**
+  String reliefShortfallAsk(int count);
+
+  /// No description provided for @reliefShortfallRow.
+  ///
+  /// In en, this message translates to:
+  /// **'Requested {count} more: {status}'**
+  String reliefShortfallRow(int count, String status);
+
+  /// No description provided for @reliefShortfallSummary.
+  ///
+  /// In en, this message translates to:
+  /// **'Request {count} more boxes, round {round}'**
+  String reliefShortfallSummary(int count, int round);
 }
 
 class _AppLocalizationsDelegate

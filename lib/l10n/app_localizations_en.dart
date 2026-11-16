@@ -2706,4 +2706,84 @@ class AppLocalizationsEn extends AppLocalizations {
   String barangayStatusSaved(Object status) {
     return 'Marked \"$status\" (sent when online).';
   }
+
+  @override
+  String get finalCountTitle => 'Final count';
+
+  @override
+  String finalCountFigures(int families, int persons) {
+    return '$families families · $persons persons';
+  }
+
+  @override
+  String finalCountInsideOutside(int inside, int outside) {
+    return '$inside inside centers · $outside outside';
+  }
+
+  @override
+  String finalCountNoStay(int count) {
+    return '$count with no stay recorded';
+  }
+
+  @override
+  String get finalCountNotSubmitted => 'Not submitted yet';
+
+  @override
+  String get finalCountWaiting => 'Submitted, waiting for CSWD';
+
+  @override
+  String get finalCountReturned => 'Returned by CSWD';
+
+  @override
+  String finalCountValidated(int families) {
+    return 'Validated: $families families (the relief need)';
+  }
+
+  @override
+  String get finalCountChanged =>
+      'The count has changed since the last submission.';
+
+  @override
+  String get finalCountSubmit => 'Submit final count';
+
+  @override
+  String get finalCountSubmitUpdated => 'Submit updated count';
+
+  @override
+  String get finalCountSubmitTitle => 'Submit this final count?';
+
+  @override
+  String get finalCountComputedNote =>
+      'The system computes these numbers from the families registered in this event; they are not typed in.';
+
+  @override
+  String get finalCountNote => 'Note for CSWD (optional)';
+
+  @override
+  String finalCountSummary(int families, int persons) {
+    return 'Final count: $families families, $persons persons';
+  }
+
+  @override
+  String reliefShortfallTitle(int round) {
+    return 'Request more boxes for round $round';
+  }
+
+  @override
+  String get reliefShortfallSend => 'Send request';
+
+  @override
+  String reliefShortfallAsk(int count) {
+    return 'Request up to $count more boxes';
+  }
+
+  @override
+  String reliefShortfallRow(int count, String status) {
+    return 'Requested $count more: $status';
+  }
+
+  @override
+  String reliefShortfallSummary(int count, int round) {
+    return 'Request $count more boxes, round $round';
+  }
 }

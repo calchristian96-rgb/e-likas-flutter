@@ -39,6 +39,7 @@ import '../../features/staff_evacuation_centers/presentation/pages/staff_evacuat
 import '../../features/settings/presentation/pages/settings_page.dart';
 import '../../features/barangay_status/staff/barangay_page.dart';
 import '../../features/box_relief/relief_page.dart';
+import '../../features/count_submissions/final_count_card.dart';
 import '../../features/box_relief/round_families_page.dart';
 import '../../features/outbox/presentation/sync_page.dart';
 import '../../features/staff_shell/staff_shell.dart';
@@ -565,7 +566,8 @@ final GoRouter appRouter = GoRouter(
           routes: [
             GoRoute(
               path: '/staff/barangay',
-              builder: (context, state) => const StaffBarangayPage(),
+              builder: (context, state) =>
+                  const StaffBarangayPage(extraSections: [FinalCountCard()]),
             ),
           ],
         ),

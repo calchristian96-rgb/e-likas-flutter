@@ -114,6 +114,14 @@ class ReliefPage extends ConsumerWidget {
                       ],
                     ),
                   ],
+                  if (round != null)
+                    _ShortfallSection(
+                      round: round,
+                      canRequest: boxes.canRequestShortfall,
+                      queued: queued.any(
+                        (a) => a.subjectKey == 'shortfall:${round.id}',
+                      ),
+                    ),
                   if (waiting.isNotEmpty) ...[
                     const SizedBox(height: 24),
                     Text(
@@ -334,6 +342,120 @@ class _ConfirmDialogState extends State<_ConfirmDialog> {
           child: Text(l10n.reliefConfirm),
         ),
       ],
+    );
+  }
+}
+
+/// The round's shortfall (C23b): the requests already made, and "Request
+/// N more boxes" up to what the server allows (`can_request`), queued.
+class _ShortfallSection extends ConsumerWidget {
+  const _ShortfallSection({
+    required this.round,
+    required this.canRequest,
+    required this.queued,
+  });
+
+  final BoxRound round;
+  final bool canRequest;
+  final bool queued;
+
+  Future<void> _request(BuildContext context, WidgetRef ref) async {
+    final l10n = AppLocalizations.of(context);
+    final max = round.figures.canRequest;
+    var quantity = max;
+    final ok = await showDialog<bool>(
+      context: context,
+      builder: (context) => StatefulBuilder(
+        builder: (context, setState) => AlertDialog(
+          title: Text(l10n.reliefShortfallTitle(round.roundNumber)),
+          content: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              IconButton.outlined(
+                tooltip: l10n.decrease,
+                onPressed: quantity > 1
+                    ? () => setState(() => quantity--)
+                    : null,
+                icon: const Icon(Icons.remove),
+              ),
+              SizedBox(
+                width: 64,
+                child: Text(
+                  '$quantity',
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.headlineSmall,
+                ),
+              ),
+              IconButton.outlined(
+                tooltip: l10n.increase,
+                onPressed: quantity < max
+                    ? () => setState(() => quantity++)
+                    : null,
+                icon: const Icon(Icons.add),
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(false),
+              child: Text(l10n.cancel),
+            ),
+            FilledButton(
+              onPressed: () => Navigator.of(context).pop(true),
+              child: Text(l10n.reliefShortfallSend),
+            ),
+          ],
+        ),
+      ),
+    );
+    if (ok != true) return;
+    await enqueueStaffAction(
+      ref,
+      kind: PendingActionKind.shortfallRequest,
+      method: 'POST',
+      path: '/box-relief/rounds/${round.id}/shortfall-requests',
+      body: {'quantity': quantity},
+      summary: l10n.reliefShortfallSummary(quantity, round.roundNumber),
+      subjectKey: 'shortfall:${round.id}',
+    );
+  }
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context);
+    final theme = Theme.of(context);
+    final requests = round.shortfallRequests;
+    if (requests.isEmpty && !queued && round.figures.canRequest <= 0) {
+      return const SizedBox.shrink();
+    }
+    return Padding(
+      padding: const EdgeInsets.only(top: 16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          for (final r in requests)
+            Text(
+              l10n.reliefShortfallRow(r.quantity, switch (r.status) {
+                'approved' => l10n.requestStatusApproved,
+                'rejected' => l10n.requestStatusRejected,
+                'fulfilled' => l10n.requestStatusFulfilled,
+                _ => l10n.requestStatusWaiting,
+              }),
+              style: theme.textTheme.bodyMedium,
+            ),
+          if (queued) Text(l10n.syncWaiting, style: theme.textTheme.bodySmall),
+          if (canRequest && !queued && round.figures.canRequest > 0) ...[
+            const SizedBox(height: 8),
+            OutlinedButton(
+              style: OutlinedButton.styleFrom(
+                minimumSize: const Size.fromHeight(48),
+              ),
+              onPressed: () => _request(context, ref),
+              child: Text(l10n.reliefShortfallAsk(round.figures.canRequest)),
+            ),
+          ],
+        ],
+      ),
     );
   }
 }
