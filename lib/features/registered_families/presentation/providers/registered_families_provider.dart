@@ -2,8 +2,11 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../core/connectivity/connectivity_service.dart';
 import '../../../../core/database/staff_database.dart';
+import '../../../../core/error/failure.dart';
 import '../../../../core/error/result.dart';
 import '../../../../core/network/staff_api_client.dart';
+import '../../../outbox/domain/pending_action.dart';
+import '../../../outbox/presentation/outbox_providers.dart';
 import '../../../staff_auth/presentation/providers/staff_auth_provider.dart';
 import '../../data/datasources/registered_families_local_datasource.dart';
 import '../../data/datasources/registered_families_remote_datasource.dart';
@@ -114,12 +117,32 @@ Future<FamilyRecord> familyRecord(Ref ref, int familyId) async {
   };
 }
 
-/// Check out one member (online only). `keepAlive` for the same reason
-/// as `staffSyncNowProvider`: callers use it one-shot via `ref.read`.
+/// Check out one member. Online it is sent at once; with no connection
+/// (C17) it is queued in the offline action queue and sent by the next
+/// sync, so a departure recorded at the center is never lost.
+/// `keepAlive` for the same reason as `staffSyncNowProvider`: callers
+/// use it one-shot via `ref.read`.
 @Riverpod(keepAlive: true)
 Future<Result<void>> Function(int evacueeId, CheckOutReason reason)
 checkOutEvacuee(Ref ref) {
-  return (evacueeId, reason) => ref
-      .read(registeredFamiliesRepositoryProvider)
-      .checkOut(evacueeId, reason);
+  return (evacueeId, reason) async {
+    final result = await ref
+        .read(registeredFamiliesRepositoryProvider)
+        .checkOut(evacueeId, reason);
+    if (result case Failed(failure: NetworkFailure())) {
+      await ref
+          .read(outboxRepositoryProvider)
+          .enqueue(
+            kind: PendingActionKind.checkOut,
+            method: 'POST',
+            path: '/evacuees/$evacueeId/check-out',
+            body: {'status': reason.wireValue},
+            summary: 'Check-out of evacuee #$evacueeId',
+            subjectKey: 'evacuee:$evacueeId',
+          );
+      ref.read(outboxRevisionProvider.notifier).bump();
+      return const Success(null);
+    }
+    return result;
+  };
 }

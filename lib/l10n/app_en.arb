@@ -901,5 +901,12 @@
   "staffSyncRow": "Sync",
 
   "purokOptionalLabel": "Purok (optional)",
-  "purokNone": "No purok"
+  "purokNone": "No purok",
+
+  "ecBoardFamiliesHereTitle": "Families here now",
+  "ecBoardFamiliesHereEmpty": "No family is checked in here for this event.",
+  "ecBoardFamilyMembers": "{count, plural, =1{1 member} other{{count} members}}",
+  "@ecBoardFamilyMembers": {"placeholders":{"count":{"type":"int"}}},
+  "showAllCount": "Show all {count}",
+  "@showAllCount": {"placeholders":{"count":{"type":"int"}}}
 }

@@ -4089,6 +4089,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No purok'**
   String get purokNone;
+
+  /// No description provided for @ecBoardFamiliesHereTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Families here now'**
+  String get ecBoardFamiliesHereTitle;
+
+  /// No description provided for @ecBoardFamiliesHereEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No family is checked in here for this event.'**
+  String get ecBoardFamiliesHereEmpty;
+
+  /// No description provided for @ecBoardFamilyMembers.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 member} other{{count} members}}'**
+  String ecBoardFamilyMembers(int count);
+
+  /// No description provided for @showAllCount.
+  ///
+  /// In en, this message translates to:
+  /// **'Show all {count}'**
+  String showAllCount(int count);
 }
 
 class _AppLocalizationsDelegate

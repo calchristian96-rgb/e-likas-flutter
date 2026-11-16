@@ -2317,4 +2317,27 @@ class AppLocalizationsBcl extends AppLocalizations {
 
   @override
   String get purokNone => 'No purok';
+
+  @override
+  String get ecBoardFamiliesHereTitle => 'Families here now';
+
+  @override
+  String get ecBoardFamiliesHereEmpty =>
+      'No family is checked in here for this event.';
+
+  @override
+  String ecBoardFamilyMembers(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count members',
+      one: '1 member',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String showAllCount(int count) {
+    return 'Show all $count';
+  }
 }

@@ -24,6 +24,7 @@ import '../../domain/entities/ec_board_quick_count.dart';
 import '../../domain/entities/pending_ec_board_entry.dart';
 import '../../domain/entities/sectoral_group.dart';
 import '../providers/ec_board_provider.dart';
+import '../widgets/families_here_section.dart';
 import 'add_evacuee_form_page.dart'
     show AddEvacueeFormPage, localizedAgeBracket, localizedSectoralGroup;
 import 'pending_ec_entry_detail_page.dart';
@@ -273,6 +274,13 @@ class _EcBoardBody extends ConsumerWidget {
             isSyncing: isSyncingEcBoardEntries,
             onSync: onSyncEcBoardEntries,
           ),
+          if (!selectedClosed) ...[
+            const SizedBox(height: 24),
+            FamiliesHereSection(
+              centerId: centerId,
+              evacuationEventId: selectedEventId,
+            ),
+          ],
         ],
       ),
     );
