@@ -7,7 +7,6 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../app/theme/app_theme.dart';
-import '../../../../core/error/failure.dart';
 import '../../../../core/utils/data_freshness_formatter.dart';
 import '../../../../core/utils/philippine_time.dart';
 import '../../../../core/widgets/connectivity_badge.dart';
@@ -22,13 +21,9 @@ import '../../../settings/presentation/providers/offline_data_provider.dart';
 import '../../domain/dashboard_summary.dart';
 import '../providers/home_provider.dart';
 import '../widgets/emergency_status_card.dart';
-import '../widgets/home_stats_section.dart';
-import '../widgets/latest_alert_card.dart';
 import '../widgets/nearest_center_preview.dart';
 import '../widgets/quick_action_card.dart';
-import '../widgets/safety_tips_section.dart';
 import '../widgets/section_header.dart';
-import '../widgets/weather_unavailable_placeholder.dart';
 import '../widgets/welcome_section.dart';
 
 class HomePage extends ConsumerStatefulWidget {
@@ -178,9 +173,10 @@ class _HomePageState extends ConsumerState<HomePage> {
                         physics: const AlwaysScrollableScrollPhysics(),
                         padding: const EdgeInsets.fromLTRB(16, 16, 16, 24),
                         children: [
+                          // Answer first (web design rule 2): is this a
+                          // drill, how urgent is it, my barangay, where
+                          // to go. Nothing decorative.
                           const DrillNotice(),
-                          WelcomeSection(now: _now),
-                          const SizedBox(height: 16),
                           AnimatedSwitcher(
                             duration: const Duration(milliseconds: 250),
                             child: EmergencyStatusCard(
@@ -194,41 +190,17 @@ class _HomePageState extends ConsumerState<HomePage> {
                           ),
                           const SizedBox(height: 16),
                           const BarangayStatusCard(),
-                          const SizedBox(height: 16),
-                          const WeatherUnavailablePlaceholder(),
-                          const SizedBox(height: 20),
-                          SectionHeader(title: l10n.dashboardSummary),
-                          const SizedBox(height: 10),
-                          HomeStatsSection(
-                            totalCenters: centersAsync.value?.length,
-                            alertCount: alertsAsync.value?.count,
-                            freshness: freshness,
-                            isLoading:
-                                centersAsync.isLoading && alertsAsync.isLoading,
-                          ),
-                          const SizedBox(height: 20),
+                          const SizedBox(height: 24),
+                          const NearestCenterPreview(),
+                          const SizedBox(height: 24),
                           SectionHeader(title: l10n.quickActions),
-                          const SizedBox(height: 10),
+                          const SizedBox(height: 8),
                           _QuickActionsGrid(
                             l10n: l10n,
                             onRefresh: _handleQuickRefresh,
                             isRefreshing: _isQuickRefreshing,
                           ),
-                          const SizedBox(height: 20),
-                          const NearestCenterPreview(),
-                          const SizedBox(height: 20),
-                          LatestAlertCard(
-                            isLoading: alertsAsync.isLoading,
-                            alert: alertsAsync.value?.latest,
-                            errorMessage: alertsAsync.hasError
-                                ? _describeError(alertsAsync.error)
-                                : null,
-                            onRetry: () =>
-                                ref.invalidate(alertsSummaryProvider),
-                          ),
-                          const SizedBox(height: 20),
-                          SafetyTipsSection(title: l10n.safetyTips),
-                          const SizedBox(height: 20),
+                          const SizedBox(height: 24),
                           _LastUpdatedFooter(
                             lastUpdated: _lastUpdated,
                             freshness: freshness,
@@ -672,13 +644,4 @@ class _QuickActionsGrid extends StatelessWidget {
       },
     );
   }
-}
-
-/// Prefers a [Failure]'s own readable `.message` — the same field
-/// every other error surface in the app already shows (see
-/// NearestCenterPage's own error handling) — over a raw exception's
-/// `.toString()`.
-String _describeError(Object? error) {
-  if (error is Failure) return error.message;
-  return error.toString();
 }
