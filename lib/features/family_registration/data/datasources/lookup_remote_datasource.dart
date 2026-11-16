@@ -30,7 +30,11 @@ class LookupRemoteDataSource {
   }
 
   Future<List<LookupEvacuationCenterModel>> getEvacuationCenters() async {
-    final response = await _client.get('/evacuation-centers');
+    // Rejected ones too, so an official sees why a center is unusable.
+    final response = await _client.get(
+      '/evacuation-centers',
+      queryParameters: {'include_rejected': 1},
+    );
     final data = (response.data as Map<String, dynamic>)['data'] as List;
     return data
         .map(

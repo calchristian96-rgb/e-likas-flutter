@@ -35,6 +35,14 @@ class LookupEvacuationCenters extends Table {
   IntColumn get barangayId => integer()();
   TextColumn get status => text()();
 
+  /// Schema 7 (center approval, backend step 7): approved | pending
+  /// ("Unverified") | rejected; whether an edit waits for CSWD.
+  TextColumn get approvalStatus =>
+      text().withDefault(const Constant('approved'))();
+  BoolColumn get hasPendingChange =>
+      boolean().withDefault(const Constant(false))();
+  TextColumn get rejectionReason => text().nullable()();
+
   @override
   Set<Column> get primaryKey => {id};
 }

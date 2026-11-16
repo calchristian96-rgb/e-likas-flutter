@@ -34,10 +34,27 @@ class EvacuationCenterLookup {
     required this.name,
     required this.barangayId,
     required this.status,
+    this.approvalStatus = 'approved',
+    this.hasPendingChange = false,
+    this.rejectionReason,
   });
 
   final int id;
   final String name;
   final int barangayId;
   final String status;
+
+  /// approved | pending (shown as "Unverified") | rejected.
+  final String approvalStatus;
+
+  /// An edit (for example a new location) waits for CSWD.
+  final bool hasPendingChange;
+  final String? rejectionReason;
+
+  bool get isApproved => approvalStatus == 'approved';
+  bool get isPending => approvalStatus == 'pending';
+  bool get isRejected => approvalStatus == 'rejected';
+
+  /// The EC Board, check-ins and relief refuse a rejected center (422).
+  bool get isUsable => !isRejected;
 }

@@ -2137,4 +2137,21 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get staffSignOut => 'Sign out';
+
+  @override
+  String get centerApprovalUnverified => 'Unverified';
+
+  @override
+  String get centerApprovalRejected => 'Rejected';
+
+  @override
+  String get centerApprovalEditWaiting => 'Edit waiting for CSWD';
+
+  @override
+  String get centerRejectedNotUsable =>
+      'Rejected by CSWD. Not usable on the EC Board.';
+
+  @override
+  String get staffOwnCentersEmpty =>
+      'No evacuation centers in your barangay yet';
 }

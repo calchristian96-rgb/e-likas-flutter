@@ -197,7 +197,7 @@ void main() {
               .customSelect('PRAGMA user_version')
               .getSingle()
               .then((r) => r.data['user_version']),
-          6,
+          db.schemaVersion,
         );
       },
     );

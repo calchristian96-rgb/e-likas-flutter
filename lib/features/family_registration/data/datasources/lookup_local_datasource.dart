@@ -82,6 +82,9 @@ class LookupLocalDataSource {
           name: row.name,
           barangayId: row.barangayId,
           status: row.status,
+          approvalStatus: row.approvalStatus,
+          hasPendingChange: row.hasPendingChange,
+          rejectionReason: row.rejectionReason,
         ),
     ];
   }
@@ -99,6 +102,9 @@ class LookupLocalDataSource {
               name: item.name,
               barangayId: item.barangayId,
               status: item.status,
+              approvalStatus: Value(item.approvalStatus),
+              hasPendingChange: Value(item.hasPendingChange),
+              rejectionReason: Value(item.rejectionReason),
             ),
         ]);
       });

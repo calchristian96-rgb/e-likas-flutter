@@ -842,5 +842,11 @@
   "staffUseTheWebTitle": "Use the web",
   "staffUseTheWebBody": "Administrator accounts manage users, logs and backups on the E-LIKAS website. The mobile app is for barangay field work and CSWD monitoring.",
   "staffOpenWebsite": "Open the E-LIKAS website",
-  "staffSignOut": "Sign out"
+  "staffSignOut": "Sign out",
+
+  "centerApprovalUnverified": "Unverified",
+  "centerApprovalRejected": "Rejected",
+  "centerApprovalEditWaiting": "Edit waiting for CSWD",
+  "centerRejectedNotUsable": "Rejected by CSWD. Not usable on the EC Board.",
+  "staffOwnCentersEmpty": "No evacuation centers in your barangay yet"
 }

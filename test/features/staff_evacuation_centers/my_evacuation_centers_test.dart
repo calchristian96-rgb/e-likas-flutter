@@ -7,6 +7,8 @@ import 'package:elikas_mobile/core/localization/framework_localizations_fallback
 import 'package:elikas_mobile/features/evacuation_centers/domain/entities/evacuation_center.dart';
 import 'package:elikas_mobile/features/evacuation_centers/domain/entities/evacuation_centers_snapshot.dart';
 import 'package:elikas_mobile/features/evacuation_centers/presentation/providers/evacuation_centers_provider.dart';
+import 'package:elikas_mobile/features/family_registration/domain/entities/lookup_entities.dart';
+import 'package:elikas_mobile/features/family_registration/presentation/providers/lookup_providers.dart';
 import 'package:elikas_mobile/features/staff_auth/domain/entities/staff_session.dart';
 import 'package:elikas_mobile/features/staff_auth/presentation/providers/staff_auth_provider.dart';
 import 'package:elikas_mobile/features/staff_evacuation_centers/presentation/pages/staff_evacuation_centers_list_page.dart';
@@ -52,27 +54,58 @@ final _centers = [
   _center(3, 'Baligang Hall', 'Baligang', 40),
 ];
 
-Widget _app(EvacuationCentersSnapshot snapshot, {StaffSession? session}) =>
-    ProviderScope(
-      overrides: [
-        staffAuthProvider.overrideWith(() => _SignedIn(session ?? _official)),
-        allEvacuationCentersSnapshotProvider.overrideWith(
-          (ref) async => snapshot,
+Widget _app(
+  EvacuationCentersSnapshot snapshot, {
+  StaffSession? session,
+}) => ProviderScope(
+  overrides: [
+    staffAuthProvider.overrideWith(() => _SignedIn(session ?? _official)),
+    allEvacuationCentersSnapshotProvider.overrideWith((ref) async => snapshot),
+    // The staff list: own barangay by id, including one Unverified
+    // center residents cannot see yet.
+    evacuationCentersLookupProvider.overrideWith(
+      (ref) async => const [
+        EvacuationCenterLookup(
+          id: 1,
+          name: 'Binatagan Covered Court',
+          barangayId: 13,
+          status: 'active',
+        ),
+        EvacuationCenterLookup(
+          id: 2,
+          name: 'Binatagan Chapel',
+          barangayId: 13,
+          status: 'active',
+        ),
+        EvacuationCenterLookup(
+          id: 3,
+          name: 'Baligang Hall',
+          barangayId: 9,
+          status: 'active',
+        ),
+        EvacuationCenterLookup(
+          id: 4,
+          name: 'Binatagan New Gym',
+          barangayId: 13,
+          status: 'on_standby',
+          approvalStatus: 'pending',
         ),
       ],
-      child: MaterialApp(
-        theme: AppTheme.light,
-        locale: const Locale('en'),
-        supportedLocales: AppLocalizations.supportedLocales,
-        localizationsDelegates: const [
-          AppLocalizations.delegate,
-          FallbackMaterialLocalizationsDelegate(),
-          FallbackCupertinoLocalizationsDelegate(),
-          FallbackWidgetsLocalizationsDelegate(),
-        ],
-        home: const StaffEvacuationCentersListPage(),
-      ),
-    );
+    ),
+  ],
+  child: MaterialApp(
+    theme: AppTheme.light,
+    locale: const Locale('en'),
+    supportedLocales: AppLocalizations.supportedLocales,
+    localizationsDelegates: const [
+      AppLocalizations.delegate,
+      FallbackMaterialLocalizationsDelegate(),
+      FallbackCupertinoLocalizationsDelegate(),
+      FallbackWidgetsLocalizationsDelegate(),
+    ],
+    home: const StaffEvacuationCentersListPage(),
+  ),
+);
 
 void main() {
   testWidgets(
@@ -89,6 +122,9 @@ void main() {
       expect(find.text('Baligang Hall'), findsNothing);
       expect(find.text('14 / 100 (14%)'), findsOneWidget);
       expect(find.text('3 / 100 (3%)'), findsOneWidget);
+      // Own barangay's Unverified center: listed, with its badge.
+      expect(find.text('Binatagan New Gym'), findsOneWidget);
+      expect(find.text('Unverified'), findsOneWidget);
       // No barangay step or grouping labels.
       expect(find.text('Your barangay'), findsNothing);
       expect(find.textContaining('Offline'), findsNothing);

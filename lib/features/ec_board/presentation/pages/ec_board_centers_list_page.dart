@@ -5,46 +5,33 @@ import 'package:go_router/go_router.dart';
 import '../../../../core/widgets/error_state.dart';
 import '../../../../core/widgets/search_field.dart';
 import '../../../../l10n/app_localizations.dart';
-import '../../../evacuation_centers/domain/entities/evacuation_center.dart';
-import '../../../evacuation_centers/presentation/providers/evacuation_centers_provider.dart';
 import '../../../evacuation_centers/presentation/widgets/center_status_display.dart';
-import '../../../evacuation_centers/presentation/widgets/pin_own_barangay_first.dart';
-import '../../../staff_auth/domain/entities/staff_session.dart';
+import '../../../family_registration/presentation/providers/lookup_providers.dart';
 import '../../../staff_auth/presentation/widgets/staff_auth_guard.dart';
+import '../../../staff_evacuation_centers/presentation/providers/own_centers_provider.dart';
+import '../../../staff_evacuation_centers/presentation/widgets/approval_badge.dart';
 
-/// EC Board's own top-level entry point — a dedicated barangay-pinned
-/// center picker reached straight from the Staff Workspace, so opening
-/// the board no longer requires a detour through "My Evacuation
-/// Centers" management first. Deliberately a separate page from
-/// [StaffEvacuationCentersListPage] rather than a shared one: that
-/// page's "Add a center" action and edit-permission framing belong to
-/// center *management*, which has nothing to do with why someone
-/// opens EC Board (to record evacuees), even though both screens list
-/// the same centers the same barangay-pinned way.
+/// EC Board's center picker: the official's own barangay's centers
+/// only (backend: officials see their own barangay), matched by id.
+/// Unverified centers are usable and say so; rejected ones are left
+/// out, since the server refuses them on the board (422).
 class EcBoardCentersListPage extends StatelessWidget {
   const EcBoardCentersListPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return StaffAuthGuard(
-      builder: (context, session) =>
-          _EcBoardCentersListBody(session: session),
-    );
+    return StaffAuthGuard(builder: (context, session) => const _Body());
   }
 }
 
-class _EcBoardCentersListBody extends ConsumerStatefulWidget {
-  const _EcBoardCentersListBody({required this.session});
-
-  final StaffSession session;
+class _Body extends ConsumerStatefulWidget {
+  const _Body();
 
   @override
-  ConsumerState<_EcBoardCentersListBody> createState() =>
-      _EcBoardCentersListBodyState();
+  ConsumerState<_Body> createState() => _BodyState();
 }
 
-class _EcBoardCentersListBodyState
-    extends ConsumerState<_EcBoardCentersListBody> {
+class _BodyState extends ConsumerState<_Body> {
   final _searchController = TextEditingController();
   String _searchQuery = '';
 
@@ -54,37 +41,17 @@ class _EcBoardCentersListBodyState
     super.dispose();
   }
 
-  List<EvacuationCenter> _visibleCenters(List<EvacuationCenter> centers) {
-    final query = _searchQuery.trim().toLowerCase();
-    if (query.isEmpty) return centers;
-    return centers.where((center) {
-      return center.name.toLowerCase().contains(query) ||
-          (center.barangay?.toLowerCase().contains(query) ?? false);
-    }).toList();
-  }
-
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
-    final theme = Theme.of(context);
-    final centersAsync = ref.watch(allEvacuationCentersProvider);
+    final centersAsync = ref.watch(ownCentersProvider);
 
     return Scaffold(
       appBar: AppBar(title: Text(l10n.ecBoardTitle)),
       body: Column(
         children: [
-          if (widget.session.isBarangayOfficial)
-            Padding(
-              padding: const EdgeInsets.fromLTRB(16, 12, 16, 8),
-              child: Text(
-                l10n.staffCentersCitywideNotice,
-                style: theme.textTheme.bodySmall?.copyWith(
-                  color: theme.colorScheme.onSurfaceVariant,
-                ),
-              ),
-            ),
           Padding(
-            padding: const EdgeInsets.fromLTRB(16, 12, 16, 8),
+            padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
             child: SearchField(
               controller: _searchController,
               hintText: l10n.searchCentersHint,
@@ -95,24 +62,34 @@ class _EcBoardCentersListBodyState
           Expanded(
             child: centersAsync.when(
               data: (centers) {
-                if (centers.isEmpty) {
-                  return Center(child: Text(l10n.noEvacuationCenters));
-                }
-                final visible = _visibleCenters(centers);
+                final usable = centers.where((c) => c.center.isUsable);
+                final query = _searchQuery.trim().toLowerCase();
+                final visible = [
+                  for (final c in usable)
+                    if (query.isEmpty || c.name.toLowerCase().contains(query))
+                      c,
+                ];
                 if (visible.isEmpty) {
-                  return Center(child: Text(l10n.noCentersMatchFilter));
-                }
-                return ListView(
-                  padding: const EdgeInsets.fromLTRB(16, 4, 16, 16),
-                  children: buildBarangayGroupedCenterTiles(
-                    centers: visible,
-                    ownBarangayName: widget.session.barangayName,
-                    ownGroupLabel: l10n.centersYourBarangaySection,
-                    othersGroupLabel: l10n.centersOtherBarangaysSection,
-                    tileBuilder: (center) => _EcBoardCenterTile(
-                      center: center,
+                  return Center(
+                    child: Text(
+                      query.isEmpty
+                          ? l10n.staffOwnCentersEmpty
+                          : l10n.noCentersMatchFilter,
                     ),
-                    spacer: const SizedBox(height: 8),
+                  );
+                }
+                return RefreshIndicator(
+                  onRefresh: () async {
+                    ref.invalidate(evacuationCentersLookupProvider);
+                    await ref.read(ownCentersProvider.future);
+                  },
+                  child: ListView.separated(
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    padding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
+                    itemCount: visible.length,
+                    separatorBuilder: (_, _) => const SizedBox(height: 8),
+                    itemBuilder: (context, i) =>
+                        _EcBoardCenterTile(center: visible[i]),
                   ),
                 );
               },
@@ -120,7 +97,8 @@ class _EcBoardCentersListBodyState
               error: (error, stackTrace) => Center(
                 child: ErrorState(
                   message: l10n.couldNotLoadCenters,
-                  onRetry: () => ref.invalidate(allEvacuationCentersSnapshotProvider),
+                  onRetry: () =>
+                      ref.invalidate(evacuationCentersLookupProvider),
                 ),
               ),
             ),
@@ -134,34 +112,34 @@ class _EcBoardCentersListBodyState
 class _EcBoardCenterTile extends StatelessWidget {
   const _EcBoardCenterTile({required this.center});
 
-  final EvacuationCenter center;
+  final OwnCenter center;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final statusColor = centerStatusColor(context, center);
-
+    final public = center.public;
     return Card(
       margin: EdgeInsets.zero,
       child: ListTile(
-        onTap: () =>
-            context.push('/settings/staff/ec-board/${center.id}'),
-        leading: CircleAvatar(
-          backgroundColor: statusColor.withValues(alpha: 0.12),
-          child: Icon(Icons.fact_check_outlined, color: statusColor),
+        minVerticalPadding: 12,
+        onTap: () => context.push('/settings/staff/ec-board/${center.id}'),
+        leading: Icon(
+          Icons.fact_check_outlined,
+          color: theme.colorScheme.primary,
         ),
         title: Text(center.name),
-        subtitle: Text(
-          center.displayLocation.isNotEmpty
-              ? center.displayLocation
-              : localizedCenterType(context, center.type),
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
+        subtitle: Wrap(
+          spacing: 8,
+          runSpacing: 4,
+          crossAxisAlignment: WrapCrossAlignment.center,
+          children: [
+            Text(localizedCenterStatus(context, center.center.status)),
+            if (public?.hasOccupancyData ?? false)
+              Text('${public!.currentOccupancy} / ${public.capacityPersons}'),
+            ApprovalBadge(center: center.center),
+          ],
         ),
-        trailing: Text(
-          localizedCenterStatus(context, center.status),
-          style: theme.textTheme.bodySmall,
-        ),
+        trailing: const Icon(Icons.chevron_right),
       ),
     );
   }

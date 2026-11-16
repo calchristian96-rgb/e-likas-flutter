@@ -52,7 +52,7 @@ class StaffDatabase extends _$StaffDatabase {
   StaffDatabase.forExecutor(super.executor);
 
   @override
-  int get schemaVersion => 6;
+  int get schemaVersion => 7;
 
   /// Schema 2 adds `PendingEcBoardEntries` (EC Information Board's
   /// offline queue); schema 3 added a typed sectoral/4Ps edit queue,
@@ -103,6 +103,16 @@ class StaffDatabase extends _$StaffDatabase {
           t.isSingleHeaded,
           t.headIsMinor,
           t.headSex,
+        ]);
+      }
+      if (from < 7) {
+        // Center approval (backend step 7). Existing rows read as
+        // approved until the next lookup refresh replaces them.
+        final c = lookupEvacuationCenters;
+        await _addMissingColumns(m, c, [
+          c.approvalStatus,
+          c.hasPendingChange,
+          c.rejectionReason,
         ]);
       }
     },

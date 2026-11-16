@@ -3813,6 +3813,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Sign out'**
   String get staffSignOut;
+
+  /// No description provided for @centerApprovalUnverified.
+  ///
+  /// In en, this message translates to:
+  /// **'Unverified'**
+  String get centerApprovalUnverified;
+
+  /// No description provided for @centerApprovalRejected.
+  ///
+  /// In en, this message translates to:
+  /// **'Rejected'**
+  String get centerApprovalRejected;
+
+  /// No description provided for @centerApprovalEditWaiting.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit waiting for CSWD'**
+  String get centerApprovalEditWaiting;
+
+  /// No description provided for @centerRejectedNotUsable.
+  ///
+  /// In en, this message translates to:
+  /// **'Rejected by CSWD. Not usable on the EC Board.'**
+  String get centerRejectedNotUsable;
+
+  /// No description provided for @staffOwnCentersEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No evacuation centers in your barangay yet'**
+  String get staffOwnCentersEmpty;
 }
 
 class _AppLocalizationsDelegate

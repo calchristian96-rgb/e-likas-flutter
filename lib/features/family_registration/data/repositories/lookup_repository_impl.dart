@@ -110,5 +110,8 @@ class LookupRepositoryImpl implements LookupRepository {
     name: m.name as String,
     barangayId: m.barangayId as int,
     status: m.status as String,
+    approvalStatus: m.approvalStatus as String,
+    hasPendingChange: m.hasPendingChange as bool,
+    rejectionReason: m.rejectionReason as String?,
   );
 }
