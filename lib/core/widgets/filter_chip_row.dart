@@ -27,7 +27,7 @@ class FilterChipRow<T> extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return SizedBox(
-      height: 40,
+      height: 48,
       child: ListView.separated(
         scrollDirection: Axis.horizontal,
         itemCount: options.length,
@@ -41,7 +41,6 @@ class FilterChipRow<T> extends StatelessWidget {
             selected: isSelected,
             onSelected: (_) => onSelected(option),
             showCheckmark: false,
-            visualDensity: VisualDensity.compact,
             backgroundColor: theme.cardColor,
             selectedColor: color.withValues(alpha: 0.14),
             side: BorderSide(

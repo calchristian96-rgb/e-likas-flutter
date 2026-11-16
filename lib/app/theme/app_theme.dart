@@ -181,8 +181,8 @@ class AppTheme {
       borderRadius: BorderRadius.circular(8),
     );
     const buttonPadding = EdgeInsets.symmetric(horizontal: 16, vertical: 10);
-    // 44 logical px: the minimum comfortable touch target height.
-    const buttonMinSize = Size(64, 44);
+    // 48 dp: the touch target for field use (E27).
+    const buttonMinSize = Size(64, 48);
     final buttonText = textTheme.labelLarge?.copyWith(
       fontSize: 14,
       fontWeight: FontWeight.w600,

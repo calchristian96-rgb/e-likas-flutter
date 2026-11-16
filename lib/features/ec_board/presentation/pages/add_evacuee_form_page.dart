@@ -990,7 +990,7 @@ class _HomeBarangayField extends ConsumerWidget {
               OutlinedButton(
                 key: const ValueKey('home-barangay-same-as-center'),
                 style: OutlinedButton.styleFrom(
-                  visualDensity: VisualDensity.compact,
+                  minimumSize: const Size(48, 48),
                   padding: const EdgeInsets.symmetric(horizontal: 12),
                 ),
                 onPressed: () => onChanged(centerBarangay.id),

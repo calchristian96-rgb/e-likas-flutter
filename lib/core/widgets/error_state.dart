@@ -46,7 +46,7 @@ class ErrorState extends StatelessWidget {
               onPressed: onRetry,
               icon: const Icon(Icons.refresh, size: 18),
               label: const Text('Retry'),
-              style: TextButton.styleFrom(minimumSize: const Size(44, 44)),
+              style: TextButton.styleFrom(minimumSize: const Size(48, 48)),
             ),
           ],
         ],

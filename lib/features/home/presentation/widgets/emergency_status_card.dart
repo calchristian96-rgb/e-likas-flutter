@@ -318,7 +318,7 @@ class EmergencyStatusCard extends StatelessWidget {
               onPressed: () => context.push('/alerts/${alert.id}'),
               style: TextButton.styleFrom(
                 padding: const EdgeInsets.symmetric(horizontal: 8),
-                minimumSize: const Size(44, 36),
+                minimumSize: const Size(48, 48),
                 foregroundColor: color,
               ),
               child: Text(l10n.viewAlert),
@@ -350,7 +350,7 @@ class EmergencyStatusCard extends StatelessWidget {
               onPressed: () => context.push('/alerts/${alert.id}'),
               style: TextButton.styleFrom(
                 padding: const EdgeInsets.symmetric(horizontal: 8),
-                minimumSize: const Size(44, 36),
+                minimumSize: const Size(48, 48),
                 foregroundColor: color,
               ),
               child: Text(l10n.viewAlert),
@@ -367,7 +367,7 @@ class EmergencyStatusCard extends StatelessWidget {
               onPressed: () => context.push('/alerts/${alert.id}'),
               style: TextButton.styleFrom(
                 padding: const EdgeInsets.symmetric(horizontal: 8),
-                minimumSize: const Size(44, 36),
+                minimumSize: const Size(48, 48),
                 foregroundColor: color,
               ),
               child: Text(l10n.viewDetails),
@@ -448,9 +448,8 @@ class _EmergencyActionStrip extends StatelessWidget {
             icon: Icon(action.icon, size: 16),
             label: Text(action.label),
             style: OutlinedButton.styleFrom(
-              visualDensity: VisualDensity.compact,
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-              minimumSize: const Size(44, 36),
+              minimumSize: const Size(48, 48),
               foregroundColor: color,
               side: BorderSide(color: color.withValues(alpha: 0.4)),
             ),

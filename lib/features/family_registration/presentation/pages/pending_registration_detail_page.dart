@@ -291,21 +291,32 @@ class _DetailBody extends ConsumerWidget {
           style: FilledButton.styleFrom(minimumSize: const Size.fromHeight(48)),
         ),
         const SizedBox(height: 8),
-        OutlinedButton.icon(
-          onPressed: busy || isSyncing ? null : onDelete,
-          icon: busy
-              ? const SizedBox(
-                  width: 16,
-                  height: 16,
-                  child: CircularProgressIndicator(strokeWidth: 2),
+        // Destructive actions live in "..." and ask first (web rule 5).
+        Align(
+          alignment: Alignment.centerRight,
+          child: busy
+              ? const Padding(
+                  padding: EdgeInsets.all(14),
+                  child: SizedBox(
+                    width: 20,
+                    height: 20,
+                    child: CircularProgressIndicator(strokeWidth: 2),
+                  ),
                 )
-              : const Icon(Icons.delete_outline),
-          label: Text(l10n.staffPendingDetailDeleteButton),
-          style: OutlinedButton.styleFrom(
-            minimumSize: const Size.fromHeight(48),
-            foregroundColor: theme.colorScheme.error,
-            side: BorderSide(color: theme.colorScheme.error),
-          ),
+              : PopupMenuButton<String>(
+                  tooltip: l10n.moreActions,
+                  enabled: !isSyncing,
+                  onSelected: (_) => onDelete(),
+                  itemBuilder: (context) => [
+                    PopupMenuItem(
+                      value: 'delete',
+                      child: Text(
+                        l10n.staffPendingDetailDeleteButton,
+                        style: TextStyle(color: theme.colorScheme.error),
+                      ),
+                    ),
+                  ],
+                ),
         ),
         const SizedBox(height: 24),
       ],
