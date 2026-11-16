@@ -4239,6 +4239,78 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Different family, add as new'**
   String get returningFamilyDifferent;
+
+  /// No description provided for @centerLocationTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Location on the map'**
+  String get centerLocationTitle;
+
+  /// No description provided for @centerLocationOnMap.
+  ///
+  /// In en, this message translates to:
+  /// **'On the map'**
+  String get centerLocationOnMap;
+
+  /// No description provided for @centerLocationWaitingForCswd.
+  ///
+  /// In en, this message translates to:
+  /// **'A location you sent is waiting for CSWD.'**
+  String get centerLocationWaitingForCswd;
+
+  /// No description provided for @centerLocationWaitingToSync.
+  ///
+  /// In en, this message translates to:
+  /// **'A location is saved on this phone and will be sent when online.'**
+  String get centerLocationWaitingToSync;
+
+  /// No description provided for @centerLocationSetFromPhone.
+  ///
+  /// In en, this message translates to:
+  /// **'Set location from this phone'**
+  String get centerLocationSetFromPhone;
+
+  /// No description provided for @centerLocationConfirmTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Use this location?'**
+  String get centerLocationConfirmTitle;
+
+  /// No description provided for @centerLocationAccuracy.
+  ///
+  /// In en, this message translates to:
+  /// **'Accurate to about {meters} m'**
+  String centerLocationAccuracy(int meters);
+
+  /// No description provided for @centerLocationLowAccuracy.
+  ///
+  /// In en, this message translates to:
+  /// **'Low accuracy. Step outside or wait a moment, then try again.'**
+  String get centerLocationLowAccuracy;
+
+  /// No description provided for @centerLocationGoesToCswd.
+  ///
+  /// In en, this message translates to:
+  /// **'Stand at the center\'s entrance. CSWD approves the location before it appears on the map.'**
+  String get centerLocationGoesToCswd;
+
+  /// No description provided for @centerLocationSend.
+  ///
+  /// In en, this message translates to:
+  /// **'Send to CSWD'**
+  String get centerLocationSend;
+
+  /// No description provided for @centerLocationSummary.
+  ///
+  /// In en, this message translates to:
+  /// **'Location of {center}'**
+  String centerLocationSummary(Object center);
+
+  /// No description provided for @centerLocationQueued.
+  ///
+  /// In en, this message translates to:
+  /// **'Location sent for CSWD approval (or kept until you are online).'**
+  String get centerLocationQueued;
 }
 
 class _AppLocalizationsDelegate

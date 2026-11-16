@@ -4,6 +4,7 @@ import '../../../evacuation_centers/domain/entities/evacuation_center.dart';
 import '../../../evacuation_centers/presentation/providers/evacuation_centers_provider.dart';
 import '../../../family_registration/domain/entities/lookup_entities.dart';
 import '../../../family_registration/presentation/providers/lookup_providers.dart';
+import '../../../outbox/presentation/outbox_providers.dart';
 import '../../../staff_auth/presentation/providers/staff_auth_provider.dart';
 
 /// One of the signed-in official's centers: the staff row (which knows
@@ -28,6 +29,12 @@ class OwnCenter {
 final ownCentersProvider = FutureProvider.autoDispose<List<OwnCenter>>((
   ref,
 ) async {
+  // A location sent from this phone changes the badges ("Edit waiting
+  // for CSWD"): refetch the staff list after each sync.
+  ref.listen(
+    outboxRevisionProvider,
+    (_, _) => ref.invalidate(evacuationCentersLookupProvider),
+  );
   final session = await ref.watch(staffAuthProvider.future);
   final lookups = await ref.watch(evacuationCentersLookupProvider.future);
   var publicCenters = const <EvacuationCenter>[];

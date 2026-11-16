@@ -2435,4 +2435,49 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get returningFamilyDifferent => 'Different family, add as new';
+
+  @override
+  String get centerLocationTitle => 'Location on the map';
+
+  @override
+  String get centerLocationOnMap => 'On the map';
+
+  @override
+  String get centerLocationWaitingForCswd =>
+      'A location you sent is waiting for CSWD.';
+
+  @override
+  String get centerLocationWaitingToSync =>
+      'A location is saved on this phone and will be sent when online.';
+
+  @override
+  String get centerLocationSetFromPhone => 'Set location from this phone';
+
+  @override
+  String get centerLocationConfirmTitle => 'Use this location?';
+
+  @override
+  String centerLocationAccuracy(int meters) {
+    return 'Accurate to about $meters m';
+  }
+
+  @override
+  String get centerLocationLowAccuracy =>
+      'Low accuracy. Step outside or wait a moment, then try again.';
+
+  @override
+  String get centerLocationGoesToCswd =>
+      'Stand at the center\'s entrance. CSWD approves the location before it appears on the map.';
+
+  @override
+  String get centerLocationSend => 'Send to CSWD';
+
+  @override
+  String centerLocationSummary(Object center) {
+    return 'Location of $center';
+  }
+
+  @override
+  String get centerLocationQueued =>
+      'Location sent for CSWD approval (or kept until you are online).';
 }

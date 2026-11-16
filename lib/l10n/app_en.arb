@@ -935,5 +935,19 @@
   "returningFamilyDuplicateBody": "A family that may be the same one is already in this event.",
   "returningFamilyLinkTo": "Same family, link it: {name} · {center} · {count} members",
   "@returningFamilyLinkTo": {"placeholders":{"name":{"type":"String"},"center":{"type":"String"},"count":{"type":"int"}}},
-  "returningFamilyDifferent": "Different family, add as new"
+  "returningFamilyDifferent": "Different family, add as new",
+
+  "centerLocationTitle": "Location on the map",
+  "centerLocationOnMap": "On the map",
+  "centerLocationWaitingForCswd": "A location you sent is waiting for CSWD.",
+  "centerLocationWaitingToSync": "A location is saved on this phone and will be sent when online.",
+  "centerLocationSetFromPhone": "Set location from this phone",
+  "centerLocationConfirmTitle": "Use this location?",
+  "centerLocationAccuracy": "Accurate to about {meters} m",
+  "@centerLocationAccuracy": {"placeholders":{"meters":{"type":"int"}}},
+  "centerLocationLowAccuracy": "Low accuracy. Step outside or wait a moment, then try again.",
+  "centerLocationGoesToCswd": "Stand at the center's entrance. CSWD approves the location before it appears on the map.",
+  "centerLocationSend": "Send to CSWD",
+  "centerLocationSummary": "Location of {center}",
+  "centerLocationQueued": "Location sent for CSWD approval (or kept until you are online)."
 }

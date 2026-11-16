@@ -9,13 +9,12 @@ import '../../../evacuation_centers/presentation/widgets/center_photo_card.dart'
 import '../../../evacuation_centers/presentation/widgets/center_status_display.dart';
 import '../../../staff_auth/domain/entities/staff_session.dart';
 import '../../../staff_auth/presentation/widgets/staff_auth_guard.dart';
-import '../../domain/center_edit_permission.dart';
 import '../providers/staff_evacuation_centers_provider.dart';
-import 'evacuation_center_form_page.dart';
+import '../widgets/center_location_section.dart';
 
-/// Full authenticated detail for one center — the only screen that
-/// decides whether Edit is shown (see `center_edit_permission.dart`),
-/// since this is the only place that actually has `created_by`.
+/// Full authenticated detail for one of the official's centers. Its
+/// details are edited on the web; here the official sets the center's
+/// location from the phone (C19), through CSWD approval.
 class StaffEvacuationCenterDetailPage extends StatelessWidget {
   const StaffEvacuationCenterDetailPage({super.key, required this.centerId});
 
@@ -36,22 +35,6 @@ class _DetailBody extends ConsumerWidget {
   final int centerId;
   final StaffSession session;
 
-  Future<void> _openEdit(
-    BuildContext context,
-    WidgetRef ref,
-    EvacuationCenter center,
-  ) async {
-    await Navigator.of(context).push<void>(
-      MaterialPageRoute(
-        builder: (_) => EvacuationCenterFormPage(editingCenter: center),
-      ),
-    );
-    // Covers every outcome (saved, cancelled) without needing to know
-    // which one happened — a plain refresh is cheap and correct either
-    // way, same pattern as PendingRegistrationDetailPage's own _openEdit.
-    ref.invalidate(staffCenterDetailProvider(centerId));
-  }
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context);
@@ -60,11 +43,8 @@ class _DetailBody extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(title: Text(l10n.centerDetailsTitle)),
       body: centerAsync.when(
-        data: (center) => _CenterDetailContent(
-          center: center,
-          session: session,
-          onEdit: () => _openEdit(context, ref, center),
-        ),
+        data: (center) =>
+            _CenterDetailContent(center: center, session: session),
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (error, stackTrace) => Center(
           child: Padding(
@@ -82,22 +62,16 @@ class _DetailBody extends ConsumerWidget {
 }
 
 class _CenterDetailContent extends StatelessWidget {
-  const _CenterDetailContent({
-    required this.center,
-    required this.session,
-    required this.onEdit,
-  });
+  const _CenterDetailContent({required this.center, required this.session});
 
   final EvacuationCenter center;
   final StaffSession session;
-  final VoidCallback onEdit;
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     final theme = Theme.of(context);
     final statusColor = centerStatusColor(context, center);
-    final canEdit = canEditCenter(center: center, session: session);
 
     return ListView(
       padding: const EdgeInsets.fromLTRB(16, 16, 16, 32),
@@ -186,20 +160,7 @@ class _CenterDetailContent extends StatelessWidget {
             ),
         ],
         const SizedBox(height: 24),
-        if (canEdit)
-          FilledButton.icon(
-            onPressed: onEdit,
-            icon: const Icon(Icons.edit_outlined),
-            label: Text(l10n.centerEditEvacuationCenter),
-          )
-        else
-          Text(
-            l10n.centerEditNotAllowed,
-            textAlign: TextAlign.center,
-            style: theme.textTheme.bodySmall?.copyWith(
-              color: theme.colorScheme.onSurfaceVariant,
-            ),
-          ),
+        CenterLocationSection(center: center, session: session),
       ],
     );
   }
