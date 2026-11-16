@@ -18,7 +18,6 @@ import '../../../barangay_status/presentation/barangay_status_providers.dart';
 import '../../../home/presentation/providers/home_provider.dart';
 import '../../../staff_auth/presentation/providers/staff_auth_provider.dart';
 import '../../../staff_auth/presentation/widgets/staff_identity_card.dart';
-import '../providers/notification_preference_provider.dart';
 
 /// Every row here either does something real or shows a genuinely
 /// measured value — no fake toggles, no placeholder rows for
@@ -85,7 +84,6 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
     final themeMode = ref.watch(appThemeModeProvider);
     final isConnected = ref.watch(connectivityStatusProvider).value ?? false;
     final staffSession = ref.watch(staffAuthProvider).value;
-    final notificationsEnabled = ref.watch(notificationPreferenceProvider);
     final updatesSupported = ref.watch(updateSupportedProvider);
     final installed = ref.watch(installedAppInfoProvider).value;
     final residentBarangay = ref.watch(residentBarangayProvider);
@@ -121,25 +119,7 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
               ),
             ],
           ),
-          const SizedBox(height: 20),
-          _SectionLabel(title: l10n.settingsSectionNotifications),
-          _SettingsCard(
-            children: [
-              _SettingsRow(
-                icon: Icons.notifications_outlined,
-                iconColor: theme.colorScheme.primary,
-                title: l10n.pushNotificationsTitle,
-                subtitle: l10n.pushNotificationsSubtitle,
-                trailing: Switch(
-                  value: notificationsEnabled,
-                  onChanged: (value) => ref
-                      .read(notificationPreferenceProvider.notifier)
-                      .setEnabled(value),
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 20),
+          const SizedBox(height: 24),
           _SectionLabel(title: l10n.settingsSectionPreferences),
           _SettingsCard(
             children: [
@@ -168,7 +148,7 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
               ),
             ],
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: 24),
           _SectionLabel(title: l10n.settingsSectionStaff),
           if (staffSession == null)
             _SettingsCard(
@@ -197,7 +177,7 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
               ],
             ),
           ],
-          const SizedBox(height: 20),
+          const SizedBox(height: 24),
           _SectionLabel(title: l10n.settingsSectionAbout),
           _SettingsCard(
             children: [
@@ -253,11 +233,8 @@ class _SectionLabel extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.fromLTRB(6, 0, 6, 8),
       child: Text(
-        title.toUpperCase(),
-        style: theme.textTheme.labelSmall?.copyWith(
-          color: color,
-          letterSpacing: 0.6,
-        ),
+        title,
+        style: theme.textTheme.titleSmall?.copyWith(color: color),
       ),
     );
   }
@@ -310,7 +287,6 @@ class _SettingsRow extends StatelessWidget {
     required this.title,
     this.subtitle,
     this.subtitleWidget,
-    this.trailing,
     this.onTap,
   }) : assert(
          subtitle == null || subtitleWidget == null,
@@ -322,7 +298,6 @@ class _SettingsRow extends StatelessWidget {
   final String title;
   final String? subtitle;
   final Widget? subtitleWidget;
-  final Widget? trailing;
   final VoidCallback? onTap;
 
   @override
@@ -371,10 +346,7 @@ class _SettingsRow extends StatelessWidget {
               ],
             ),
           ),
-          if (trailing != null) ...[
-            const SizedBox(width: 8),
-            trailing!,
-          ] else if (onTap != null) ...[
+          if (onTap != null) ...[
             const SizedBox(width: 8),
             Icon(
               Icons.chevron_right,

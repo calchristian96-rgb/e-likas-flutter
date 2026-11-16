@@ -6,7 +6,6 @@ import 'package:go_router/go_router.dart';
 import '../../core/localization/app_locale.dart';
 import '../../core/localization/app_theme_mode.dart';
 import '../../features/barangay_status/presentation/barangay_status_providers.dart';
-import '../../features/settings/presentation/providers/notification_preference_provider.dart';
 import '../../l10n/app_localizations.dart';
 import '../theme/app_theme.dart';
 
@@ -65,7 +64,6 @@ class _SplashPageState extends ConsumerState<SplashPage> {
       await Future.wait([
         ref.read(appLocaleProvider.notifier).load(),
         ref.read(appThemeModeProvider.notifier).load(),
-        ref.read(notificationPreferenceProvider.notifier).load(),
         ref.read(residentBarangayProvider.notifier).load(),
       ]);
     } catch (_) {
