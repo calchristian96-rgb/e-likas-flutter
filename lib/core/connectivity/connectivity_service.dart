@@ -35,6 +35,7 @@ class ConnectivityService {
     : this._(
         interfaceChanges: Connectivity().onConnectivityChanged,
         resultCacheTtl: _defaultResultCacheTtl,
+        offlineRetryInterval: _defaultOfflineRetryInterval,
       );
 
   /// Swaps the two real checks — "is there a network interface?" and
@@ -46,21 +47,22 @@ class ConnectivityService {
     required Future<bool> Function() probe,
     Stream<List<ConnectivityResult>> interfaceChanges = const Stream.empty(),
     Duration resultCacheTtl = _defaultResultCacheTtl,
+    Duration offlineRetryInterval = _defaultOfflineRetryInterval,
   }) : this._(
          interfaceChanges: interfaceChanges,
          resultCacheTtl: resultCacheTtl,
+         offlineRetryInterval: offlineRetryInterval,
          interfaceOverride: hasInterface,
          probeOverride: probe,
        );
 
   ConnectivityService._({
     required Stream<List<ConnectivityResult>> interfaceChanges,
-    required Duration resultCacheTtl,
-    Future<bool> Function()? interfaceOverride,
-    Future<bool> Function()? probeOverride,
-  }) : _resultCacheTtl = resultCacheTtl,
-       _interfaceOverride = interfaceOverride,
-       _probeOverride = probeOverride {
+    required this._resultCacheTtl,
+    required this._offlineRetryInterval,
+    this._interfaceOverride,
+    this._probeOverride,
+  }) {
     _interfaceSubscription = interfaceChanges.listen(_onInterfaceChanged);
     // Establishes a real value immediately rather than leaving the
     // first `onConnectivityChanged` listener with nothing until the
@@ -167,6 +169,29 @@ class ConnectivityService {
   void _emit(bool value) {
     _lastEmitted = value;
     _stateController.add(value);
+    _updateOfflineRetry(value);
+  }
+
+  /// The "stuck offline" fix (C15): once the state is offline, nothing
+  /// re-checked it until the network interface itself changed, so an
+  /// early failed probe (the backend not up yet) kept every screen and
+  /// the Sync button on "Offline" while data was loading fine. While
+  /// offline, re-probe on a timer until a probe succeeds; stop as soon
+  /// as the state is online.
+  static const _defaultOfflineRetryInterval = Duration(seconds: 15);
+  final Duration _offlineRetryInterval;
+  Timer? _offlineRetryTimer;
+
+  void _updateOfflineRetry(bool online) {
+    if (online) {
+      _offlineRetryTimer?.cancel();
+      _offlineRetryTimer = null;
+      return;
+    }
+    _offlineRetryTimer ??= Timer.periodic(_offlineRetryInterval, (_) {
+      connectivityDebugLog('offline: periodic re-check');
+      unawaited(_checkAndBroadcast(bypassCache: true));
+    });
   }
 
   /// Brings the displayed state in line with a [hasConnection] check.
@@ -348,6 +373,7 @@ class ConnectivityService {
 
   void dispose() {
     _debounceTimer?.cancel();
+    _offlineRetryTimer?.cancel();
     unawaited(_interfaceSubscription?.cancel());
     unawaited(_stateController.close());
   }

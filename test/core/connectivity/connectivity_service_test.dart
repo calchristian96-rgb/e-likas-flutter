@@ -39,6 +39,8 @@ Future<void> _settle() =>
     Future<void>.delayed(const Duration(milliseconds: 20));
 
 void main() {
+  _stuckOfflineTests();
+
   test('a probe result that differs from the last emitted value is pushed: '
       'offline → online', () async {
     final h = _Harness(reachable: false);
@@ -174,5 +176,39 @@ void main() {
     });
     addTearDown(sub.cancel);
     expect(await late.future.timeout(const Duration(seconds: 1)), isTrue);
+  });
+}
+
+void _stuckOfflineTests() {
+  test('stuck offline (C15): with nobody asking, an early failed probe is '
+      'corrected by the periodic re-check once the server answers', () async {
+    var reachable = false;
+    var probes = 0;
+    final service = ConnectivityService.forTesting(
+      hasInterface: () async => true,
+      probe: () async {
+        probes++;
+        return reachable;
+      },
+      resultCacheTtl: Duration.zero,
+      offlineRetryInterval: const Duration(milliseconds: 30),
+    );
+    addTearDown(service.dispose);
+    final seen = <bool>[];
+    final sub = service.onConnectivityChanged.listen(seen.add);
+    addTearDown(sub.cancel);
+    await _settle();
+    expect(seen, [false]);
+
+    // The backend comes up; no screen calls hasConnection, the network
+    // interface never changes.
+    reachable = true;
+    await Future<void>.delayed(const Duration(milliseconds: 120));
+    expect(seen, [false, true]);
+
+    // Online: the re-check stops.
+    final probesWhenOnline = probes;
+    await Future<void>.delayed(const Duration(milliseconds: 120));
+    expect(probes, probesWhenOnline);
   });
 }
