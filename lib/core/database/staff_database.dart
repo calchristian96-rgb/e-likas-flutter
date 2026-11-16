@@ -52,7 +52,7 @@ class StaffDatabase extends _$StaffDatabase {
   StaffDatabase.forExecutor(super.executor);
 
   @override
-  int get schemaVersion => 7;
+  int get schemaVersion => 8;
 
   /// Schema 2 adds `PendingEcBoardEntries` (EC Information Board's
   /// offline queue); schema 3 added a typed sectoral/4Ps edit queue,
@@ -114,6 +114,11 @@ class StaffDatabase extends _$StaffDatabase {
           c.hasPendingChange,
           c.rejectionReason,
         ]);
+      }
+      if (from < 8) {
+        // Demo events (backend map-api.md, is_demo).
+        final e = lookupEvacuationEvents;
+        await _addMissingColumns(m, e, [e.isDemo]);
       }
     },
   );

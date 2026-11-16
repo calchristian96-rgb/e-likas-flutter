@@ -2154,4 +2154,10 @@ class AppLocalizationsBcl extends AppLocalizations {
   @override
   String get staffOwnCentersEmpty =>
       'No evacuation centers in your barangay yet';
+
+  @override
+  String get demoBadge => 'DEMO';
+
+  @override
+  String get drillBadge => 'DRILL';
 }

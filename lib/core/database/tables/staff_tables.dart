@@ -20,6 +20,9 @@ class LookupEvacuationEvents extends Table {
   TextColumn get startDate => text().nullable()();
   TextColumn get endDate => text().nullable()();
 
+  /// Schema 8: a demo event ("DEMO - ..."), never real data.
+  BoolColumn get isDemo => boolean().withDefault(const Constant(false))();
+
   @override
   Set<Column> get primaryKey => {id};
 }

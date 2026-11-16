@@ -3843,6 +3843,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No evacuation centers in your barangay yet'**
   String get staffOwnCentersEmpty;
+
+  /// No description provided for @demoBadge.
+  ///
+  /// In en, this message translates to:
+  /// **'DEMO'**
+  String get demoBadge;
+
+  /// No description provided for @drillBadge.
+  ///
+  /// In en, this message translates to:
+  /// **'DRILL'**
+  String get drillBadge;
 }
 
 class _AppLocalizationsDelegate

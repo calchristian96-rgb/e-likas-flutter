@@ -17,6 +17,7 @@ class EvacuationEventLookup {
     required this.status,
     this.startDate,
     this.endDate,
+    this.isDemo = false,
   });
 
   final int id;
@@ -24,6 +25,7 @@ class EvacuationEventLookup {
   final String status;
   final String? startDate;
   final String? endDate;
+  final bool isDemo;
 
   bool get isOpen => status != 'closed';
 }

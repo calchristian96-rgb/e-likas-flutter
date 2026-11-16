@@ -684,5 +684,8 @@
   "ecBoardAsOfNotYetFetched": "Hindi pa nakukuha",
   "ecBoardNotYetFetchedHelp": "Hindi pa naida-download ang board na ito sa device na ito, kaya gitling ang bawat numero. Kumonekta sa internet at subukan ulit.",
   "ecBoardHeaderFamilies": "Pamilya (Cum/Now)",
-  "ecBoardHeaderPersons": "Tao (Cum/Now)"
+  "ecBoardHeaderPersons": "Tao (Cum/Now)",
+
+  "demoBadge": "DEMO",
+  "drillBadge": "DRILL"
 }

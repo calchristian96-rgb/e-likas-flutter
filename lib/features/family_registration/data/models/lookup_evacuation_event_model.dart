@@ -12,6 +12,7 @@ class LookupEvacuationEventModel {
     required this.status,
     this.startDate,
     this.endDate,
+    this.isDemo = false,
   });
 
   final int id;
@@ -24,6 +25,10 @@ class LookupEvacuationEventModel {
   final String? startDate;
   final String? endDate;
 
+  /// A "DEMO - " event with made-up data (backend map-api.md): marked
+  /// DEMO wherever it appears.
+  final bool isDemo;
+
   factory LookupEvacuationEventModel.fromJson(Map<String, dynamic> json) {
     return LookupEvacuationEventModel(
       id: json['id'] as int,
@@ -31,6 +36,7 @@ class LookupEvacuationEventModel {
       status: json['status'] as String,
       startDate: json['start_date'] as String?,
       endDate: json['end_date'] as String?,
+      isDemo: json['is_demo'] as bool? ?? false,
     );
   }
 }

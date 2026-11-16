@@ -848,5 +848,8 @@
   "centerApprovalRejected": "Rejected",
   "centerApprovalEditWaiting": "Edit waiting for CSWD",
   "centerRejectedNotUsable": "Rejected by CSWD. Not usable on the EC Board.",
-  "staffOwnCentersEmpty": "No evacuation centers in your barangay yet"
+  "staffOwnCentersEmpty": "No evacuation centers in your barangay yet",
+
+  "demoBadge": "DEMO",
+  "drillBadge": "DRILL"
 }

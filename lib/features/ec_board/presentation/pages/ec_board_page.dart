@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 
 import '../../../../app/theme/app_theme.dart';
 import '../../../../core/utils/data_freshness_formatter.dart';
+import '../../../../core/widgets/demo_badge.dart';
 import '../../../../core/widgets/empty_state.dart';
 import '../../../../core/widgets/error_state.dart';
 import '../../../../core/widgets/sync_now_action.dart';
@@ -1092,6 +1093,26 @@ class _EventSelector extends StatelessWidget {
   final int value;
   final ValueChanged<int> onChanged;
 
+  /// The event's name; a demo event also carries the DEMO mark.
+  static Widget _eventLabel(
+    EvacuationEventLookup event,
+    AppLocalizations l10n,
+  ) {
+    final text = Text(
+      event.isOpen ? event.name : l10n.ecBoardEventClosedName(event.name),
+      maxLines: 1,
+      overflow: TextOverflow.ellipsis,
+    );
+    if (!event.isDemo) return text;
+    return Row(
+      children: [
+        Flexible(child: text),
+        const SizedBox(width: 8),
+        const DemoBadge(),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
@@ -1110,13 +1131,7 @@ class _EventSelector extends StatelessWidget {
         for (final event in selectable)
           DropdownMenuItem(
             value: event.id,
-            child: Text(
-              event.isOpen
-                  ? event.name
-                  : l10n.ecBoardEventClosedName(event.name),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-            ),
+            child: _eventLabel(event, l10n),
           ),
       ],
       onChanged: (id) {

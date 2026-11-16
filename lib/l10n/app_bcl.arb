@@ -1349,5 +1349,8 @@
   "ecBoardHeaderFamilies": "Families (Cum/Now)",
   "@ecBoardHeaderFamilies": { "description": "PENDING Bikol (Ligao) local-language review — English fallback shown until reviewed." },
   "ecBoardHeaderPersons": "Persons (Cum/Now)",
-  "@ecBoardHeaderPersons": { "description": "PENDING Bikol (Ligao) local-language review — English fallback shown until reviewed." }
+  "@ecBoardHeaderPersons": { "description": "PENDING Bikol (Ligao) local-language review — English fallback shown until reviewed." },
+
+  "demoBadge": "DEMO",
+  "drillBadge": "DRILL"
 }

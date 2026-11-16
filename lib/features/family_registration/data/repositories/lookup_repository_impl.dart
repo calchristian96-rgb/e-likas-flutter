@@ -103,6 +103,7 @@ class LookupRepositoryImpl implements LookupRepository {
     status: m.status as String,
     startDate: m.startDate as String?,
     endDate: m.endDate as String?,
+    isDemo: m.isDemo as bool,
   );
 
   EvacuationCenterLookup _centerToEntity(dynamic m) => EvacuationCenterLookup(

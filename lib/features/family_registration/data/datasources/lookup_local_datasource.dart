@@ -49,6 +49,7 @@ class LookupLocalDataSource {
           status: row.status,
           startDate: row.startDate,
           endDate: row.endDate,
+          isDemo: row.isDemo,
         ),
     ];
   }
@@ -67,6 +68,7 @@ class LookupLocalDataSource {
               status: item.status,
               startDate: Value(item.startDate),
               endDate: Value(item.endDate),
+              isDemo: Value(item.isDemo),
             ),
         ]);
       });
