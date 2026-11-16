@@ -16,6 +16,9 @@ part 'resident_database.g.dart';
 class ResidentDatabase extends _$ResidentDatabase {
   ResidentDatabase() : super(openSqlCipherDatabase('elikas_resident.sqlite'));
 
+  /// Tests: an in-memory executor.
+  ResidentDatabase.forExecutor(super.executor);
+
   @override
   int get schemaVersion => 1;
 }

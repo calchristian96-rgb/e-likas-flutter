@@ -103,15 +103,24 @@ class EvacuationCenterModel {
   /// Staff-only.
   final String? campManagerContact;
 
+  static double? _toDouble(Object? value) => switch (value) {
+    num() => value.toDouble(),
+    String() => double.tryParse(value),
+    _ => null,
+  };
+
   factory EvacuationCenterModel.fromJson(Map<String, dynamic> json) {
     return EvacuationCenterModel(
       id: json['id'] as int,
       name: json['name'] as String,
       type: json['type'] as String,
-      address: json['address'] as String,
+      address: json['address'] as String?,
       barangay: json['barangay'] as String?,
-      latitude: (json['latitude'] as num?)?.toDouble(),
-      longitude: (json['longitude'] as num?)?.toDouble(),
+      // On every public row since backend 71677a8: match a barangay by id.
+      barangayId: (json['barangay_id'] as num?)?.toInt(),
+      // /nearest sends coordinates as strings (a raw SQL row).
+      latitude: _toDouble(json['latitude']),
+      longitude: _toDouble(json['longitude']),
       // `capacity_persons` is a nullable DB column (confirmed against
       // the base migration) that this endpoint passes through
       // unguarded — defaults to 0 rather than force-casting, which

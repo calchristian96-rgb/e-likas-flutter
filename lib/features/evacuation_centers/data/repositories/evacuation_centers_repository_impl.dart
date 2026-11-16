@@ -32,7 +32,7 @@ class EvacuationCentersRepositoryImpl implements EvacuationCentersRepository {
     if (await _connectivity.hasConnection) {
       try {
         final models = await _remote.getAllCenters();
-        await _local.cacheCenters(models);
+        await _local.replaceCenters(models);
         await _syncTimestamps.markSynced(SyncDomain.evacuationCenters);
         return Success(
           EvacuationCentersSnapshot(

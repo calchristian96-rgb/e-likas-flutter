@@ -60,7 +60,13 @@ class StaffEvacuationCentersRepositoryImpl
   /// throws into the caller's `Result`.
   Future<void> _cacheAuthoritative(EvacuationCenterModel model) async {
     try {
-      await _residentCache.cacheCenters([model], photoUrlIsAuthoritative: true);
+      // Only the photo, and only for a center residents already see.
+      // The staff resource also covers pending (Unverified) centers and
+      // staff-only fields, which must never reach the public cache.
+      final photoUrl = model.photoUrl;
+      if (photoUrl != null) {
+        await _residentCache.updatePhotoUrl(model.id, photoUrl);
+      }
       if (kDebugMode) {
         final cached = await _residentCache.getCachedCenters();
         String? cachedPhotoUrl;

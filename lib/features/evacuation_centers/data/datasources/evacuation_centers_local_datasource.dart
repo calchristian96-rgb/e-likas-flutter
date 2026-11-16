@@ -24,21 +24,43 @@ class EvacuationCentersLocalDatasource {
     List<EvacuationCenterModel> centers, {
     bool photoUrlIsAuthoritative = false,
   }) async {
+    await _db.transaction(
+      () =>
+          _upsertAll(centers, photoUrlIsAuthoritative: photoUrlIsAuthoritative),
+    );
+  }
+
+  /// The full public list just arrived: it is the whole truth. A center
+  /// missing from it (deleted, or no longer approved) leaves the cache,
+  /// so an offline resident is never sent to it. The rest is merged as
+  /// in [cacheCenters].
+  Future<void> replaceCenters(List<EvacuationCenterModel> centers) async {
+    final ids = [for (final c in centers) c.id];
     await _db.transaction(() async {
-      for (final center in centers) {
-        final existingRow = await (_db.select(
-          _db.evacuationCenters,
-        )..where((t) => t.id.equals(center.id))).getSingleOrNull();
-        final existing = existingRow == null ? null : _fromRow(existingRow);
-        final merged = center.mergeOverExisting(
-          existing,
-          photoUrlIsAuthoritative: photoUrlIsAuthoritative,
-        );
-        await _db
-            .into(_db.evacuationCenters)
-            .insertOnConflictUpdate(_toCompanion(merged));
-      }
+      await (_db.delete(
+        _db.evacuationCenters,
+      )..where((t) => t.id.isNotIn(ids))).go();
+      await _upsertAll(centers, photoUrlIsAuthoritative: false);
     });
+  }
+
+  Future<void> _upsertAll(
+    List<EvacuationCenterModel> centers, {
+    required bool photoUrlIsAuthoritative,
+  }) async {
+    for (final center in centers) {
+      final existingRow = await (_db.select(
+        _db.evacuationCenters,
+      )..where((t) => t.id.equals(center.id))).getSingleOrNull();
+      final existing = existingRow == null ? null : _fromRow(existingRow);
+      final merged = center.mergeOverExisting(
+        existing,
+        photoUrlIsAuthoritative: photoUrlIsAuthoritative,
+      );
+      await _db
+          .into(_db.evacuationCenters)
+          .insertOnConflictUpdate(_toCompanion(merged));
+    }
   }
 
   /// Targeted single-column update — used only to backfill a real
