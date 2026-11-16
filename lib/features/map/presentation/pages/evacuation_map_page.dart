@@ -13,13 +13,16 @@ import '../../../../core/utils/distance_calculator.dart';
 import '../../../../core/utils/distance_formatter.dart';
 import '../../../../core/utils/map_launcher.dart';
 import '../../../../core/widgets/center_summary_row.dart';
-import '../../../../core/widgets/empty_state.dart';
 import '../../../../core/widgets/error_state.dart';
 import '../../../../core/widgets/occupancy_progress.dart';
 import '../../../../core/widgets/offline_banner.dart';
 import '../../../../core/widgets/search_field.dart';
 import '../../../../core/widgets/status_badge.dart';
 import '../../../../l10n/app_localizations.dart';
+import '../../../barangay_status/data/barangay_outlines.dart';
+import '../../../barangay_status/domain/barangay_status.dart';
+import '../../../barangay_status/presentation/barangay_status_layer.dart';
+import '../../../barangay_status/presentation/barangay_status_providers.dart';
 import '../../../evacuation_centers/domain/entities/evacuation_center.dart';
 import '../../../evacuation_centers/presentation/providers/center_photo_provider.dart';
 import '../../../evacuation_centers/presentation/widgets/center_status_display.dart';
@@ -68,14 +71,8 @@ class EvacuationMapPage extends ConsumerWidget {
           Expanded(
             child: mapDataAsync.when(
               data: (mapData) {
-                if (mapData.centers.isEmpty && mapData.hazardAreas.isEmpty) {
-                  return Center(
-                    child: EmptyState(
-                      message: l10n.noMapData,
-                      icon: Icons.map_outlined,
-                    ),
-                  );
-                }
+                // Never an empty screen: the bundled barangay outlines
+                // and their status still draw with no centers or hazards.
                 return _MapView(
                   centers: mapData.centers,
                   hazardAreas: mapData.hazardAreas,
@@ -117,6 +114,25 @@ class _MapViewState extends ConsumerState<_MapView> {
 
   bool _showCenters = true;
   bool _showHazards = false;
+
+  /// Barangay outlines coloured by status: on by default, since it is
+  /// the main answer during an event (the hazard layers start off).
+  bool _showBarangayStatus = true;
+  final ValueNotifier<LayerHitResult<BarangayStatus>?> _barangayHit =
+      ValueNotifier(null);
+
+  void _showTappedBarangay() {
+    final hits = _barangayHit.value?.hitValues;
+    if (hits == null || hits.isEmpty) return;
+    final b = hits.first;
+    final l10n = AppLocalizations.of(context);
+    ScaffoldMessenger.of(context)
+      ..hideCurrentSnackBar()
+      ..showSnackBar(
+        SnackBar(content: Text(l10n.barangayStatusTapped(b.name, b.label))),
+      );
+  }
+
   bool _showMyLocation = true;
   MapBaseLayer _baseLayer = MapBaseLayer.street;
 
@@ -149,6 +165,7 @@ class _MapViewState extends ConsumerState<_MapView> {
     _searchController.dispose();
     _searchFocusNode.dispose();
     _failedOverlayIds.dispose();
+    _barangayHit.dispose();
     super.dispose();
   }
 
@@ -339,6 +356,9 @@ class _MapViewState extends ConsumerState<_MapView> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final l10n = AppLocalizations.of(context);
+    final outlines = ref.watch(barangayOutlinesProvider).value;
+    final statusBoard = ref.watch(barangayStatusBoardProvider).value;
+    final ownBarangayId = ref.watch(residentBarangayProvider)?.id;
     EvacuationCenter? firstPlottableCenter;
     for (final c in widget.centers) {
       if (c.hasCoordinates) {
@@ -386,11 +406,30 @@ class _MapViewState extends ConsumerState<_MapView> {
                 ),
             MapAttribution(
               baseLayer: _baseLayer,
-              overlayAttributions: hazardOverlayAttributions(
-                l10n,
-                _activeOverlayIds,
-              ),
+              overlayAttributions: [
+                ...hazardOverlayAttributions(l10n, _activeOverlayIds),
+                if (_showBarangayStatus && outlines != null)
+                  MapOverlayAttribution(
+                    text: l10n.barangayBoundariesAttribution,
+                    url: 'https://data.humdata.org/dataset/cod-ab-phl',
+                  ),
+              ],
             ),
+            // Each barangay's status (backend map-api.md), under the
+            // hazard polygons and markers. Tap a barangay to read it.
+            if (_showBarangayStatus && outlines != null)
+              GestureDetector(
+                onTap: _showTappedBarangay,
+                child: PolygonLayer<BarangayStatus>(
+                  hitNotifier: _barangayHit,
+                  polygons: buildBarangayStatusPolygons(
+                    context: context,
+                    outlines: outlines,
+                    board: statusBoard,
+                    ownBarangayId: ownBarangayId,
+                  ),
+                ),
+              ),
             PolygonLayer(polygons: buildHazardPolygons(visibleHazards)),
             MarkerLayer(
               markers: [
@@ -754,6 +793,15 @@ class _MapViewState extends ConsumerState<_MapView> {
                         ),
                       ],
                       const Divider(height: 28),
+                      SwitchListTile(
+                        contentPadding: EdgeInsets.zero,
+                        title: Text(l10n.showBarangayStatus),
+                        value: _showBarangayStatus,
+                        onChanged: (value) {
+                          setState(() => _showBarangayStatus = value);
+                          setSheetState(() {});
+                        },
+                      ),
                       SwitchListTile(
                         contentPadding: EdgeInsets.zero,
                         title: Text(l10n.showEvacuationCenters),

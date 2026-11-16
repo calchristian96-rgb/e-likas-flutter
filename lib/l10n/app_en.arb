@@ -862,5 +862,9 @@
   "residentBarangayWhy": "See your barangay's status and its evacuation centers first.",
   "residentBarangayStatusOf": "Brgy. {barangay}",
   "residentNoOpenEvent": "No disaster event is open.",
-  "residentStatusSavedCopy": "Saved copy, last updated {age}"
+  "residentStatusSavedCopy": "Saved copy, last updated {age}",
+
+  "showBarangayStatus": "Barangay status",
+  "barangayBoundariesAttribution": "Barangay boundaries: PSA-NAMRIA via HDX (CC BY-IGO)",
+  "barangayStatusTapped": "{barangay}: {status}"
 }

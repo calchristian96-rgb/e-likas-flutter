@@ -140,6 +140,9 @@ flutter:
   assets:
     - assets/images/
     - assets/icons/
+    # Barangay outlines (PSA-NAMRIA via HDX, CC BY-IGO), the same static
+    # file the backend serves at /data/ligao-barangay-boundaries.geojson.
+    - assets/data/
 
   # Public Sans -- the same typeface as the E-LIKAS web dashboard and
   # desktop app, bundled (not fetched at runtime) so it works offline.

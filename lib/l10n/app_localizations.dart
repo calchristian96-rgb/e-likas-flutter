@@ -3909,6 +3909,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Saved copy, last updated {age}'**
   String residentStatusSavedCopy(Object age);
+
+  /// No description provided for @showBarangayStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Barangay status'**
+  String get showBarangayStatus;
+
+  /// No description provided for @barangayBoundariesAttribution.
+  ///
+  /// In en, this message translates to:
+  /// **'Barangay boundaries: PSA-NAMRIA via HDX (CC BY-IGO)'**
+  String get barangayBoundariesAttribution;
+
+  /// No description provided for @barangayStatusTapped.
+  ///
+  /// In en, this message translates to:
+  /// **'{barangay}: {status}'**
+  String barangayStatusTapped(Object barangay, Object status);
 }
 
 class _AppLocalizationsDelegate

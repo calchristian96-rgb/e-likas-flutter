@@ -2230,4 +2230,16 @@ class AppLocalizationsFil extends AppLocalizations {
   String residentStatusSavedCopy(Object age) {
     return 'Saved copy, last updated $age';
   }
+
+  @override
+  String get showBarangayStatus => 'Barangay status';
+
+  @override
+  String get barangayBoundariesAttribution =>
+      'Barangay boundaries: PSA-NAMRIA via HDX (CC BY-IGO)';
+
+  @override
+  String barangayStatusTapped(Object barangay, Object status) {
+    return '$barangay: $status';
+  }
 }
