@@ -2176,4 +2176,21 @@ class AppLocalizationsBcl extends AppLocalizations {
   @override
   String get residentBarangayListUnavailable =>
       'The barangay list needs an internet connection the first time.';
+
+  @override
+  String get residentBarangayWhy =>
+      'See your barangay\'s status and its evacuation centers first.';
+
+  @override
+  String residentBarangayStatusOf(Object barangay) {
+    return 'Brgy. $barangay';
+  }
+
+  @override
+  String get residentNoOpenEvent => 'No disaster event is open.';
+
+  @override
+  String residentStatusSavedCopy(Object age) {
+    return 'Saved copy, last updated $age';
+  }
 }

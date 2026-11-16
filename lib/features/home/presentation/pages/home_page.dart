@@ -15,6 +15,7 @@ import '../../../../core/widgets/last_updated_label.dart';
 import '../../../../core/widgets/offline_banner.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../alerts/presentation/providers/alerts_summary_provider.dart';
+import '../../../barangay_status/presentation/barangay_status_card.dart';
 import '../../../evacuation_centers/presentation/providers/evacuation_centers_provider.dart';
 import '../../../settings/presentation/providers/offline_data_provider.dart';
 import '../../domain/dashboard_summary.dart';
@@ -189,6 +190,8 @@ class _HomePageState extends ConsumerState<HomePage> {
                               lastChecked: _lastUpdated,
                             ),
                           ),
+                          const SizedBox(height: 16),
+                          const BarangayStatusCard(),
                           const SizedBox(height: 16),
                           const WeatherUnavailablePlaceholder(),
                           const SizedBox(height: 20),

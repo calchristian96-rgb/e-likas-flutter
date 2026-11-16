@@ -12,6 +12,7 @@ import '../../features/alerts/presentation/pages/alerts_page.dart';
 import '../../features/alerts/presentation/providers/alerts_summary_provider.dart';
 import '../../features/alerts/presentation/widgets/alert_type_display.dart';
 import '../../features/app_update/presentation/update_prompt.dart';
+import '../../features/barangay_status/presentation/barangay_status_providers.dart';
 import '../../features/ec_board/presentation/pages/ec_board_centers_list_page.dart';
 import '../../features/ec_board/presentation/pages/ec_board_page.dart';
 import '../../features/ec_board/presentation/providers/ec_board_provider.dart'
@@ -180,6 +181,7 @@ class _AppShellState extends ConsumerState<AppShell>
     ref.invalidate(alertsSummaryProvider);
     ref.invalidate(alertsListProvider);
     ref.invalidate(mapDataProvider);
+    ref.invalidate(barangayStatusBoardProvider);
     // An open EC Board's "Last Known" figures — a read from the server
     // only. This device's pending entries are never synced from here;
     // that only ever happens on a Sync Now tap.
@@ -538,7 +540,8 @@ final GoRouter appRouter = GoRouter(
                     // so only these two need named routes.
                     GoRoute(
                       path: 'ec-board',
-                      builder: (context, state) => const EcBoardCentersListPage(),
+                      builder: (context, state) =>
+                          const EcBoardCentersListPage(),
                       routes: [
                         GoRoute(
                           path: ':id',

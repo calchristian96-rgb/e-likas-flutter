@@ -5,6 +5,7 @@ import '../../../../core/sync/sync_timestamps.dart';
 import '../../../alerts/presentation/providers/alerts_summary_provider.dart';
 import '../../../evacuation_centers/presentation/providers/evacuation_centers_provider.dart';
 import '../../../map/presentation/providers/map_provider.dart';
+import '../../../barangay_status/presentation/barangay_status_providers.dart';
 
 part 'offline_data_provider.g.dart';
 
@@ -68,8 +69,10 @@ class OfflineDataOverview extends _$OfflineDataOverview {
     ref.invalidate(alertsSummaryProvider);
     ref.invalidate(alertsListProvider);
     ref.invalidate(mapDataProvider);
+    ref.invalidate(barangayStatusBoardProvider);
 
     final results = await Future.wait([
+      _settle(ref.read(barangayStatusBoardProvider.future)),
       _settle(ref.read(allEvacuationCentersProvider.future)),
       _settle(ref.read(alertsSummaryProvider.future)),
       _settle(ref.read(mapDataProvider.future)),

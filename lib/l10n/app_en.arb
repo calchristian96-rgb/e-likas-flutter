@@ -857,5 +857,10 @@
   "residentBarangayNotSet": "Not chosen yet",
   "residentBarangayPickerTitle": "Choose your barangay",
   "residentBarangaySearchHint": "Search barangays",
-  "residentBarangayListUnavailable": "The barangay list needs an internet connection the first time."
+  "residentBarangayListUnavailable": "The barangay list needs an internet connection the first time.",
+
+  "residentBarangayWhy": "See your barangay's status and its evacuation centers first.",
+  "residentBarangayStatusOf": "Brgy. {barangay}",
+  "residentNoOpenEvent": "No disaster event is open.",
+  "residentStatusSavedCopy": "Saved copy, last updated {age}"
 }

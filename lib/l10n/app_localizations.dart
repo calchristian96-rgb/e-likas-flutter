@@ -3885,6 +3885,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'The barangay list needs an internet connection the first time.'**
   String get residentBarangayListUnavailable;
+
+  /// No description provided for @residentBarangayWhy.
+  ///
+  /// In en, this message translates to:
+  /// **'See your barangay\'s status and its evacuation centers first.'**
+  String get residentBarangayWhy;
+
+  /// No description provided for @residentBarangayStatusOf.
+  ///
+  /// In en, this message translates to:
+  /// **'Brgy. {barangay}'**
+  String residentBarangayStatusOf(Object barangay);
+
+  /// No description provided for @residentNoOpenEvent.
+  ///
+  /// In en, this message translates to:
+  /// **'No disaster event is open.'**
+  String get residentNoOpenEvent;
+
+  /// No description provided for @residentStatusSavedCopy.
+  ///
+  /// In en, this message translates to:
+  /// **'Saved copy, last updated {age}'**
+  String residentStatusSavedCopy(Object age);
 }
 
 class _AppLocalizationsDelegate
