@@ -10,6 +10,7 @@ import '../../../../core/widgets/center_summary_row.dart';
 import '../../../../core/widgets/empty_state.dart';
 import '../../../../core/widgets/error_state.dart';
 import '../../../../l10n/app_localizations.dart';
+import '../../../barangay_status/presentation/own_barangay_centers.dart';
 import '../providers/evacuation_centers_provider.dart';
 import '../widgets/evacuation_center_card.dart';
 
@@ -102,11 +103,15 @@ class _NearestCentersBody extends ConsumerWidget {
     return centersAsync.when(
       data: (centers) {
         if (centers.isEmpty) {
-          return _CenteredScrollable(
-            child: EmptyState(
-              message: l10n.noNearbyEvacuationCenters,
-              icon: Icons.location_searching,
-            ),
+          return ListView(
+            padding: const EdgeInsets.fromLTRB(16, 16, 16, 24),
+            children: [
+              EmptyState(
+                message: l10n.noNearbyEvacuationCenters,
+                icon: Icons.location_searching,
+              ),
+              const OwnBarangayCentersSection(),
+            ],
           );
         }
 
@@ -196,6 +201,7 @@ class _NearestCentersBody extends ConsumerWidget {
                   ),
                 ),
               ],
+              const OwnBarangayCentersSection(),
             ],
           ),
         );
@@ -234,24 +240,26 @@ class _LocationError extends StatelessWidget {
       _ => null,
     };
 
-    return _CenteredScrollable(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          ErrorState(
-            message: _localizedMessage(reason, l10n) ?? failure.message,
-            icon: Icons.location_off_outlined,
-            onRetry: onRetry,
-          ),
-          if (permanentlyDenied)
-            TextButton.icon(
+    // No GPS: still answer with the resident's own barangay's centers.
+    return ListView(
+      padding: const EdgeInsets.fromLTRB(16, 24, 16, 24),
+      children: [
+        ErrorState(
+          message: _localizedMessage(reason, l10n) ?? failure.message,
+          icon: Icons.location_off_outlined,
+          onRetry: onRetry,
+        ),
+        if (permanentlyDenied)
+          Center(
+            child: TextButton.icon(
               onPressed: () => Geolocator.openAppSettings(),
               icon: const Icon(Icons.settings_outlined, size: 18),
               label: Text(l10n.openSettings),
-              style: TextButton.styleFrom(minimumSize: const Size(44, 44)),
+              style: TextButton.styleFrom(minimumSize: const Size(48, 48)),
             ),
-        ],
-      ),
+          ),
+        const OwnBarangayCentersSection(),
+      ],
     );
   }
 

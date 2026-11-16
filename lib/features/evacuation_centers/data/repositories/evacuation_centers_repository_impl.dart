@@ -68,28 +68,27 @@ class EvacuationCentersRepositoryImpl implements EvacuationCentersRepository {
     int limit = 10,
     bool allowOfflineFallback = true,
   }) async {
+    // Always ranked here from the full public list, never from
+    // `/public/evacuation-centers/nearest`: that answer has no occupancy
+    // and no barangay name, and the list has both. Online, the list is
+    // refreshed first (replacing the cache); offline, the saved copy is
+    // ranked the same way.
+    var refreshed = false;
     if (await _connectivity.hasConnection) {
       try {
-        final models = await _remote.getNearestCenters(
-          latitude: latitude,
-          longitude: longitude,
-          limit: limit,
-        );
-        await _local.cacheCenters(models);
+        final models = await _remote.getAllCenters();
+        await _local.replaceCenters(models);
         await _syncTimestamps.markSynced(SyncDomain.evacuationCenters);
-        return Success(models.map((m) => m.toEntity()).toList());
+        refreshed = true;
       } catch (_) {
-        // fall through to the offline ranking below
+        // fall through to the saved copy below
       }
     }
 
-    if (!allowOfflineFallback) {
+    if (!refreshed && !allowOfflineFallback) {
       return const Failed(NetworkFailure());
     }
 
-    // Offline fallback: rank the last cached full list client-side —
-    // same UX as the server's own nearest-center ranking, no new
-    // endpoint involved. See the architecture notes on this.
     final cached = await _local.getCachedCenters();
     if (cached.isEmpty) {
       return const Failed(CacheFailure('No cached centers to rank yet.'));
@@ -106,7 +105,13 @@ class EvacuationCentersRepositoryImpl implements EvacuationCentersRepository {
     final withDistance =
         cached
             .map((m) => m.toEntity())
-            .where((entity) => entity.hasCoordinates)
+            // Same rule as the server's nearest search: a place to go
+            // now is active or on standby, never full or closed.
+            .where(
+              (entity) =>
+                  entity.hasCoordinates &&
+                  (entity.status == 'active' || entity.status == 'on_standby'),
+            )
             .map((entity) {
               final meters = DistanceCalculator.metersBetween(
                 lat1: latitude,

@@ -3933,6 +3933,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'DRILL - This is a simulation for demonstration, not a real emergency.'**
   String get drillNotice;
+
+  /// No description provided for @centersInYourBarangay.
+  ///
+  /// In en, this message translates to:
+  /// **'Centers in Brgy. {barangay}'**
+  String centersInYourBarangay(Object barangay);
+
+  /// No description provided for @centerNoMapLocationYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No map location yet. Ask your barangay for directions.'**
+  String get centerNoMapLocationYet;
 }
 
 class _AppLocalizationsDelegate

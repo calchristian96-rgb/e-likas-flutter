@@ -2245,4 +2245,13 @@ class AppLocalizationsFil extends AppLocalizations {
 
   @override
   String get drillNotice => 'PAGSASANAY - Hindi ito totoong emergency.';
+
+  @override
+  String centersInYourBarangay(Object barangay) {
+    return 'Centers in Brgy. $barangay';
+  }
+
+  @override
+  String get centerNoMapLocationYet =>
+      'No map location yet. Ask your barangay for directions.';
 }

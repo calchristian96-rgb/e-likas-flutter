@@ -2209,4 +2209,13 @@ class AppLocalizationsBcl extends AppLocalizations {
   @override
   String get drillNotice =>
       'DRILL - This is a simulation for demonstration, not a real emergency.';
+
+  @override
+  String centersInYourBarangay(Object barangay) {
+    return 'Centers in Brgy. $barangay';
+  }
+
+  @override
+  String get centerNoMapLocationYet =>
+      'No map location yet. Ask your barangay for directions.';
 }

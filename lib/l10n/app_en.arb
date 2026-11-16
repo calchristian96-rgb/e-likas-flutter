@@ -868,5 +868,8 @@
   "barangayBoundariesAttribution": "Barangay boundaries: PSA-NAMRIA via HDX (CC BY-IGO)",
   "barangayStatusTapped": "{barangay}: {status}",
 
-  "drillNotice": "DRILL - This is a simulation for demonstration, not a real emergency."
+  "drillNotice": "DRILL - This is a simulation for demonstration, not a real emergency.",
+
+  "centersInYourBarangay": "Centers in Brgy. {barangay}",
+  "centerNoMapLocationYet": "No map location yet. Ask your barangay for directions."
 }
