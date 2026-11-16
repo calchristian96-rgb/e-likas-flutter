@@ -38,6 +38,7 @@ import '../../features/staff_evacuation_centers/presentation/pages/staff_evacuat
 import '../../features/staff_evacuation_centers/presentation/pages/staff_evacuation_centers_list_page.dart';
 import '../../features/settings/presentation/pages/settings_page.dart';
 import '../../features/box_relief/relief_page.dart';
+import '../../features/box_relief/round_families_page.dart';
 import '../../features/outbox/presentation/sync_page.dart';
 import '../../features/staff_shell/staff_shell.dart';
 import '../../features/staff_workspace/presentation/pages/staff_workspace_page.dart';
@@ -546,6 +547,16 @@ final GoRouter appRouter = GoRouter(
             GoRoute(
               path: '/staff/relief',
               builder: (context, state) => const ReliefPage(),
+              routes: [
+                GoRoute(
+                  path: 'round/:roundId',
+                  builder: (context, state) => RoundFamiliesPage(
+                    roundId:
+                        int.tryParse(state.pathParameters['roundId'] ?? '') ??
+                        0,
+                  ),
+                ),
+              ],
             ),
           ],
         ),

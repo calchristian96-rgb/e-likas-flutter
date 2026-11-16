@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
 import '../../app/theme/app_theme.dart';
@@ -151,6 +152,9 @@ class ReliefPage extends ConsumerWidget {
                                   r.figures.received,
                                 ),
                               ),
+                              trailing: const Icon(Icons.chevron_right),
+                              onTap: () =>
+                                  context.push('/staff/relief/round/${r.id}'),
                             ),
                         ],
                       ),

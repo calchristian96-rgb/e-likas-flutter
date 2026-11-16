@@ -2618,4 +2618,56 @@ class AppLocalizationsEn extends AppLocalizations {
   String reliefConfirmSummary(int count, int round) {
     return '$count boxes received, round $round';
   }
+
+  @override
+  String get reliefLeftToGive => 'Left to give';
+
+  @override
+  String get reliefByPriority => 'By priority';
+
+  @override
+  String get reliefByName => 'By name';
+
+  @override
+  String get reliefSuggestedOrderNote =>
+      'Suggested order, for CSWDO confirmation.';
+
+  @override
+  String reliefPurokHeading(String purok, int given, int total) {
+    return '$purok · $given of $total given';
+  }
+
+  @override
+  String get reliefGiveBox => 'Give box';
+
+  @override
+  String get reliefGivenWaiting => 'Given, waiting to sync';
+
+  @override
+  String get reliefVoidWaiting => 'Void waiting to sync';
+
+  @override
+  String get reliefVoidHandout => 'Void handout';
+
+  @override
+  String reliefVoidTitle(Object family) {
+    return 'Void the box for $family?';
+  }
+
+  @override
+  String get reliefVoidBody =>
+      'The family will show as not given yet. This cannot be undone.';
+
+  @override
+  String get reliefVoidReason => 'Reason (required)';
+
+  @override
+  String reliefGiveSummary(String family, int round) {
+    return 'Box for $family, round $round';
+  }
+
+  @override
+  String reliefVoidSummary(Object family) {
+    return 'Void box for $family';
+  }
 }

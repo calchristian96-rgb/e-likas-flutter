@@ -997,5 +997,22 @@
   "reliefFewerNote": "Why fewer? (required)",
   "reliefConfirm": "Confirm",
   "reliefConfirmSummary": "{count} boxes received, round {round}",
-  "@reliefConfirmSummary": {"placeholders":{"count":{"type":"int"},"round":{"type":"int"}}}
+  "@reliefConfirmSummary": {"placeholders":{"count":{"type":"int"},"round":{"type":"int"}}},
+
+  "reliefLeftToGive": "Left to give",
+  "reliefByPriority": "By priority",
+  "reliefByName": "By name",
+  "reliefSuggestedOrderNote": "Suggested order, for CSWDO confirmation.",
+  "reliefPurokHeading": "{purok} · {given} of {total} given",
+  "@reliefPurokHeading": {"placeholders":{"purok":{"type":"String"},"given":{"type":"int"},"total":{"type":"int"}}},
+  "reliefGiveBox": "Give box",
+  "reliefGivenWaiting": "Given, waiting to sync",
+  "reliefVoidWaiting": "Void waiting to sync",
+  "reliefVoidHandout": "Void handout",
+  "reliefVoidTitle": "Void the box for {family}?",
+  "reliefVoidBody": "The family will show as not given yet. This cannot be undone.",
+  "reliefVoidReason": "Reason (required)",
+  "reliefGiveSummary": "Box for {family}, round {round}",
+  "@reliefGiveSummary": {"placeholders":{"family":{"type":"String"},"round":{"type":"int"}}},
+  "reliefVoidSummary": "Void box for {family}"
 }

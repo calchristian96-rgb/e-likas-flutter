@@ -1,0 +1,430 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../../app/theme/app_theme.dart';
+import '../../core/cache/staff_read_cache.dart';
+import '../../core/utils/data_freshness_formatter.dart';
+import '../../core/widgets/error_state.dart';
+import '../../core/widgets/stat_strip.dart';
+import '../../l10n/app_localizations.dart';
+import '../outbox/domain/pending_action.dart';
+import '../outbox/presentation/outbox_providers.dart';
+import 'box_relief_models.dart';
+
+class RoundFamily {
+  const RoundFamily({
+    required this.id,
+    required this.name,
+    required this.memberCount,
+    required this.given,
+    required this.priorityOrder,
+    this.priorityLabel,
+    this.handoutId,
+  });
+
+  final int id;
+  final String name;
+  final int memberCount;
+  final bool given;
+
+  /// The handout that stands (the one to void), when given.
+  final int? handoutId;
+
+  /// Infant, Pregnant / lactating, PWD / senior, Child- or
+  /// single-headed; null for none of these.
+  final String? priorityLabel;
+
+  /// Place in the suggested order within its purok (1 = first).
+  final int priorityOrder;
+
+  factory RoundFamily.fromJson(Map<String, dynamic> j) => RoundFamily(
+    id: j['id'] as int,
+    name: j['name'] as String? ?? '',
+    memberCount: (j['member_count'] as num?)?.toInt() ?? 0,
+    given: j['given'] == true,
+    handoutId: j['handout_id'] as int?,
+    priorityLabel: j['priority_label'] as String?,
+    priorityOrder: (j['priority_order'] as num?)?.toInt() ?? 0,
+  );
+}
+
+class PurokGroup {
+  const PurokGroup({required this.name, required this.families});
+
+  /// Null for families with no purok (listed last).
+  final String? name;
+  final List<RoundFamily> families;
+}
+
+class RoundFamilies {
+  const RoundFamilies({
+    required this.roundNumber,
+    required this.figures,
+    required this.puroks,
+  });
+
+  final int roundNumber;
+  final BoxFigures figures;
+  final List<PurokGroup> puroks;
+
+  factory RoundFamilies.fromJson(Map<String, dynamic> j) => RoundFamilies(
+    roundNumber:
+        ((j['round'] as Map<String, dynamic>?)?['round_number'] as num?)
+            ?.toInt() ??
+        0,
+    figures: BoxFigures.fromJson(
+      j['figures'] as Map<String, dynamic>? ?? const {},
+    ),
+    puroks: [
+      for (final p in j['puroks'] as List? ?? const [])
+        PurokGroup(
+          name:
+              ((p as Map<String, dynamic>)['purok']
+                      as Map<String, dynamic>?)?['name']
+                  as String?,
+          families: [
+            for (final f in p['families'] as List? ?? const [])
+              RoundFamily.fromJson(f as Map<String, dynamic>),
+          ],
+        ),
+    ],
+  );
+}
+
+/// `GET /box-relief/rounds/{round}/families?order=priority`, saved for
+/// offline; refetched after each sync.
+final roundFamiliesProvider = FutureProvider.autoDispose
+    .family<({RoundFamilies data, DateTime fetchedAt, bool fromCache}), int>((
+      ref,
+      roundId,
+    ) async {
+      ref.watch(outboxRevisionProvider);
+      final read = await ref
+          .watch(staffReadCacheProvider)
+          .get(
+            '/box-relief/rounds/$roundId/families',
+            query: {'order': 'priority'},
+          );
+      return (
+        data: RoundFamilies.fromJson(read.data),
+        fetchedAt: read.fetchedAt,
+        fromCache: read.isFromCache,
+      );
+    });
+
+/// Give 1 box per family in this round, purok by purok, in the
+/// suggested priority order (C22). Giving works offline through the
+/// queue; a wrong handout is voided with a reason from the row's "...".
+class RoundFamiliesPage extends ConsumerStatefulWidget {
+  const RoundFamiliesPage({super.key, required this.roundId});
+
+  final int roundId;
+
+  @override
+  ConsumerState<RoundFamiliesPage> createState() => _RoundFamiliesPageState();
+}
+
+class _RoundFamiliesPageState extends ConsumerState<RoundFamiliesPage> {
+  bool _byName = false;
+
+  String _giveKey(int familyId) => 'round:${widget.roundId}:family:$familyId';
+  String _voidKey(int handoutId) => 'handout:$handoutId:void';
+
+  Future<void> _give(RoundFamily f, int roundNumber) async {
+    final l10n = AppLocalizations.of(context);
+    await enqueueStaffAction(
+      ref,
+      kind: PendingActionKind.boxHandout,
+      method: 'POST',
+      path: '/box-relief/rounds/${widget.roundId}/handouts',
+      body: {'family_id': f.id},
+      summary: l10n.reliefGiveSummary(f.name, roundNumber),
+      subjectKey: _giveKey(f.id),
+    );
+  }
+
+  Future<void> _void(RoundFamily f) async {
+    final l10n = AppLocalizations.of(context);
+    final reason = await showDialog<String>(
+      context: context,
+      builder: (_) => _VoidDialog(familyName: f.name),
+    );
+    if (reason == null || f.handoutId == null) return;
+    await enqueueStaffAction(
+      ref,
+      kind: PendingActionKind.boxHandoutVoid,
+      method: 'POST',
+      path: '/box-relief/handouts/${f.handoutId}/void',
+      body: {'reason': reason},
+      summary: l10n.reliefVoidSummary(f.name),
+      subjectKey: _voidKey(f.handoutId!),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    final theme = Theme.of(context);
+    final async = ref.watch(roundFamiliesProvider(widget.roundId));
+    final queued = {
+      for (final a in ref.watch(pendingActionsProvider).value ?? const [])
+        ?a.subjectKey,
+    };
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          async.value == null
+              ? l10n.reliefGiveBoxes
+              : l10n.reliefRound(async.value!.data.roundNumber),
+        ),
+      ),
+      body: async.when(
+        loading: () => const Center(child: CircularProgressIndicator()),
+        error: (_, _) => Center(
+          child: ErrorState(
+            message: l10n.reliefNeedsConnectionFirst,
+            onRetry: () =>
+                ref.invalidate(roundFamiliesProvider(widget.roundId)),
+          ),
+        ),
+        data: (result) {
+          final data = result.data;
+          final queuedGives = [
+            for (final g in data.puroks)
+              for (final f in g.families)
+                if (!f.given && queued.contains(_giveKey(f.id))) f,
+          ].length;
+          final leftToGive = data.figures.leftToGive - queuedGives;
+          return RefreshIndicator(
+            onRefresh: () async {
+              ref.invalidate(roundFamiliesProvider(widget.roundId));
+              await ref.read(staffSyncAllProvider)();
+            },
+            child: ListView(
+              physics: const AlwaysScrollableScrollPhysics(),
+              padding: const EdgeInsets.all(16),
+              children: [
+                if (result.fromCache)
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 8),
+                    child: Text(
+                      l10n.savedCopyAge(formatElapsedSince(result.fetchedAt)),
+                      style: theme.textTheme.bodySmall,
+                    ),
+                  ),
+                StatStrip(
+                  items: [
+                    StatItem(l10n.reliefReceived, '${data.figures.received}'),
+                    StatItem(
+                      l10n.reliefGiven,
+                      '${data.figures.given + queuedGives}',
+                    ),
+                    StatItem(
+                      l10n.reliefLeftToGive,
+                      '${leftToGive < 0 ? 0 : leftToGive}',
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 16),
+                SegmentedButton<bool>(
+                  segments: [
+                    ButtonSegment(
+                      value: false,
+                      label: Text(l10n.reliefByPriority),
+                    ),
+                    ButtonSegment(value: true, label: Text(l10n.reliefByName)),
+                  ],
+                  selected: {_byName},
+                  onSelectionChanged: (s) => setState(() => _byName = s.first),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  l10n.reliefSuggestedOrderNote,
+                  style: theme.textTheme.bodySmall,
+                ),
+                for (final group in data.puroks) ...[
+                  const SizedBox(height: 24),
+                  Text(
+                    l10n.reliefPurokHeading(
+                      group.name ?? l10n.purokNone,
+                      group.families.where((f) => f.given).length,
+                      group.families.length,
+                    ),
+                    style: theme.textTheme.titleMedium,
+                  ),
+                  const SizedBox(height: 8),
+                  Card(
+                    margin: EdgeInsets.zero,
+                    child: Column(
+                      children: [
+                        for (final f
+                            in [...group.families]..sort(
+                              (a, b) => _byName
+                                  ? a.name.compareTo(b.name)
+                                  : a.priorityOrder.compareTo(b.priorityOrder),
+                            ))
+                          _FamilyTile(
+                            family: f,
+                            queuedGive: queued.contains(_giveKey(f.id)),
+                            queuedVoid:
+                                f.handoutId != null &&
+                                queued.contains(_voidKey(f.handoutId!)),
+                            canGive: leftToGive > 0,
+                            onGive: () => _give(f, data.roundNumber),
+                            onVoid: () => _void(f),
+                          ),
+                      ],
+                    ),
+                  ),
+                ],
+              ],
+            ),
+          );
+        },
+      ),
+    );
+  }
+}
+
+class _FamilyTile extends StatelessWidget {
+  const _FamilyTile({
+    required this.family,
+    required this.queuedGive,
+    required this.queuedVoid,
+    required this.canGive,
+    required this.onGive,
+    required this.onVoid,
+  });
+
+  final RoundFamily family;
+  final bool queuedGive;
+  final bool queuedVoid;
+  final bool canGive;
+  final VoidCallback onGive;
+  final VoidCallback onVoid;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    final theme = Theme.of(context);
+    final semantic = theme.extension<AppSemanticColors>()!;
+    final given = (family.given && !queuedVoid) || queuedGive;
+    final Widget trailing;
+    if (queuedGive || queuedVoid) {
+      trailing = Text(
+        queuedVoid ? l10n.reliefVoidWaiting : l10n.reliefGivenWaiting,
+        style: theme.textTheme.labelMedium,
+      );
+    } else if (family.given) {
+      trailing = Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            l10n.reliefGiven,
+            style: theme.textTheme.labelMedium?.copyWith(
+              color: semantic.success,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          PopupMenuButton<String>(
+            tooltip: l10n.moreActions,
+            onSelected: (_) => onVoid(),
+            itemBuilder: (context) => [
+              PopupMenuItem(
+                value: 'void',
+                child: Text(
+                  l10n.reliefVoidHandout,
+                  style: TextStyle(color: theme.colorScheme.error),
+                ),
+              ),
+            ],
+          ),
+        ],
+      );
+    } else {
+      trailing = FilledButton(
+        style: FilledButton.styleFrom(minimumSize: const Size(96, 48)),
+        onPressed: canGive ? onGive : null,
+        child: Text(l10n.reliefGiveBox),
+      );
+    }
+    return ListTile(
+      minTileHeight: 64,
+      title: Text(family.name),
+      subtitle: Text(
+        [
+          l10n.ecBoardFamilyMembers(family.memberCount),
+          ?family.priorityLabel,
+        ].join(' · '),
+      ),
+      leading: Icon(
+        given ? Icons.check_circle : Icons.radio_button_unchecked,
+        color: given ? semantic.success : theme.colorScheme.onSurfaceVariant,
+      ),
+      trailing: trailing,
+    );
+  }
+}
+
+/// Void needs a reason (at least 3 characters) and cannot be undone.
+class _VoidDialog extends StatefulWidget {
+  const _VoidDialog({required this.familyName});
+
+  final String familyName;
+
+  @override
+  State<_VoidDialog> createState() => _VoidDialogState();
+}
+
+class _VoidDialogState extends State<_VoidDialog> {
+  final _reason = TextEditingController();
+
+  @override
+  void dispose() {
+    _reason.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    final theme = Theme.of(context);
+    final valid = _reason.text.trim().length >= 3;
+    return AlertDialog(
+      title: Text(l10n.reliefVoidTitle(widget.familyName)),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(l10n.reliefVoidBody),
+          const SizedBox(height: 16),
+          TextField(
+            controller: _reason,
+            autofocus: true,
+            decoration: InputDecoration(
+              labelText: l10n.reliefVoidReason,
+              border: const OutlineInputBorder(),
+            ),
+            onChanged: (_) => setState(() {}),
+          ),
+        ],
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.of(context).pop(),
+          child: Text(l10n.cancel),
+        ),
+        FilledButton(
+          style: FilledButton.styleFrom(
+            backgroundColor: theme.colorScheme.error,
+          ),
+          onPressed: valid
+              ? () => Navigator.of(context).pop(_reason.text.trim())
+              : null,
+          child: Text(l10n.reliefVoidHandout),
+        ),
+      ],
+    );
+  }
+}

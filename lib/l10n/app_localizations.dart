@@ -4551,6 +4551,90 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{count} boxes received, round {round}'**
   String reliefConfirmSummary(int count, int round);
+
+  /// No description provided for @reliefLeftToGive.
+  ///
+  /// In en, this message translates to:
+  /// **'Left to give'**
+  String get reliefLeftToGive;
+
+  /// No description provided for @reliefByPriority.
+  ///
+  /// In en, this message translates to:
+  /// **'By priority'**
+  String get reliefByPriority;
+
+  /// No description provided for @reliefByName.
+  ///
+  /// In en, this message translates to:
+  /// **'By name'**
+  String get reliefByName;
+
+  /// No description provided for @reliefSuggestedOrderNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Suggested order, for CSWDO confirmation.'**
+  String get reliefSuggestedOrderNote;
+
+  /// No description provided for @reliefPurokHeading.
+  ///
+  /// In en, this message translates to:
+  /// **'{purok} · {given} of {total} given'**
+  String reliefPurokHeading(String purok, int given, int total);
+
+  /// No description provided for @reliefGiveBox.
+  ///
+  /// In en, this message translates to:
+  /// **'Give box'**
+  String get reliefGiveBox;
+
+  /// No description provided for @reliefGivenWaiting.
+  ///
+  /// In en, this message translates to:
+  /// **'Given, waiting to sync'**
+  String get reliefGivenWaiting;
+
+  /// No description provided for @reliefVoidWaiting.
+  ///
+  /// In en, this message translates to:
+  /// **'Void waiting to sync'**
+  String get reliefVoidWaiting;
+
+  /// No description provided for @reliefVoidHandout.
+  ///
+  /// In en, this message translates to:
+  /// **'Void handout'**
+  String get reliefVoidHandout;
+
+  /// No description provided for @reliefVoidTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Void the box for {family}?'**
+  String reliefVoidTitle(Object family);
+
+  /// No description provided for @reliefVoidBody.
+  ///
+  /// In en, this message translates to:
+  /// **'The family will show as not given yet. This cannot be undone.'**
+  String get reliefVoidBody;
+
+  /// No description provided for @reliefVoidReason.
+  ///
+  /// In en, this message translates to:
+  /// **'Reason (required)'**
+  String get reliefVoidReason;
+
+  /// No description provided for @reliefGiveSummary.
+  ///
+  /// In en, this message translates to:
+  /// **'Box for {family}, round {round}'**
+  String reliefGiveSummary(String family, int round);
+
+  /// No description provided for @reliefVoidSummary.
+  ///
+  /// In en, this message translates to:
+  /// **'Void box for {family}'**
+  String reliefVoidSummary(Object family);
 }
 
 class _AppLocalizationsDelegate
