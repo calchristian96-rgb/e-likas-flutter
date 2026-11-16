@@ -1,38 +1,42 @@
 import 'package:url_launcher/url_launcher.dart';
 
-/// Opens the device's own maps/navigation app pre-filled with
-/// [latitude]/[longitude] as the destination — always the evacuation
-/// center's real coordinates, never a guessed address.
+/// Hands the trip to Google Maps (the app when installed, else the
+/// browser): directions to [latitude]/[longitude] when the center has a
+/// location, otherwise a search for [placeQuery] (its name, barangay and
+/// city), since most centers have no map location yet.
 ///
-/// Tries the `geo:` URI first: on Android this is the platform's
-/// generic "show this location" intent, which the OS resolves to
-/// whichever maps apps the resident actually has installed (letting
-/// them choose, rather than this app forcing one specific app). If
-/// nothing on the device can handle that (most likely iOS, where
-/// `geo:` isn't a registered scheme, or an Android device with no maps
-/// app at all), falls back to the universal Google Maps web URL, which
-/// opens the corresponding native app if one is registered as its
-/// handler and otherwise degrades gracefully to a browser — still
-/// works, just not a hardcoded requirement.
-///
-/// Returns false (rather than throwing) when neither path could be
-/// opened, so the caller can show a friendly message instead of
-/// crashing.
+/// Uses the documented Google Maps URLs (`/maps/dir/?api=1` and
+/// `/maps/search/?api=1`), which Android hands to the Google Maps app.
+/// Returns false, never throws, when nothing could open it.
 Future<bool> openDirections({
-  required double latitude,
-  required double longitude,
+  double? latitude,
+  double? longitude,
+  String? placeQuery,
 }) async {
-  final geoUri = Uri.parse('geo:$latitude,$longitude?q=$latitude,$longitude');
-  if (await canLaunchUrl(geoUri)) {
-    return launchUrl(geoUri);
+  final Uri uri;
+  if (latitude != null && longitude != null) {
+    uri = Uri.https('www.google.com', '/maps/dir/', {
+      'api': '1',
+      'destination': '$latitude,$longitude',
+    });
+  } else if (placeQuery != null && placeQuery.trim().isNotEmpty) {
+    uri = Uri.https('www.google.com', '/maps/search/', {
+      'api': '1',
+      'query': placeQuery,
+    });
+  } else {
+    return false;
   }
-
-  final webUri = Uri.parse(
-    'https://www.google.com/maps/search/?api=1&query=$latitude,$longitude',
-  );
-  if (await canLaunchUrl(webUri)) {
-    return launchUrl(webUri, mode: LaunchMode.externalApplication);
+  try {
+    return await launchUrl(uri, mode: LaunchMode.externalApplication);
+  } catch (_) {
+    return false;
   }
-
-  return false;
 }
+
+/// The search text for a center with no location.
+String centerPlaceQuery(String name, String? barangay) => [
+  name,
+  if (barangay != null && barangay.isNotEmpty) barangay,
+  'Ligao City, Albay',
+].join(', ');

@@ -3,6 +3,7 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:latlong2/latlong.dart' hide DistanceCalculator;
+import '../../../evacuation_centers/presentation/widgets/center_directions.dart';
 
 import '../../../../app/theme/app_theme.dart';
 import '../../../../core/constants/ligao_city_location.dart';
@@ -11,7 +12,6 @@ import '../../../../core/error/result.dart';
 import '../../../../core/location/location_service.dart';
 import '../../../../core/utils/distance_calculator.dart';
 import '../../../../core/utils/distance_formatter.dart';
-import '../../../../core/utils/map_launcher.dart';
 import '../../../../core/widgets/center_summary_row.dart';
 import '../../../../core/widgets/error_state.dart';
 import '../../../../core/widgets/occupancy_progress.dart';
@@ -1066,17 +1066,16 @@ class _CenterSheetContent extends ConsumerWidget {
           // navigate to, same reasoning as EvacuationCenterCard — the
           // neutral message below explains why, instead of an inert
           // button implying a temporary problem.
-          if (center.hasCoordinates) ...[
-            SizedBox(
-              width: double.infinity,
-              child: FilledButton.icon(
-                onPressed: () => _handleGetDirections(context, center),
-                icon: const Icon(Icons.directions_outlined),
-                label: Text(l10n.getDirections),
-              ),
+          SizedBox(
+            width: double.infinity,
+            child: FilledButton.icon(
+              onPressed: () => _handleGetDirections(context, center),
+              icon: const Icon(Icons.directions_outlined),
+              label: Text(l10n.getDirections),
             ),
-            const SizedBox(height: 8),
-          ] else ...[
+          ),
+          const SizedBox(height: 8),
+          if (!center.hasCoordinates) ...[
             Row(
               children: [
                 Icon(
@@ -1116,18 +1115,7 @@ class _CenterSheetContent extends ConsumerWidget {
   static Future<void> _handleGetDirections(
     BuildContext context,
     EvacuationCenter center,
-  ) async {
-    if (!center.hasCoordinates) return;
-    final opened = await openDirections(
-      latitude: center.latitude!,
-      longitude: center.longitude!,
-    );
-    if (!opened && context.mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(AppLocalizations.of(context).unableToOpenMaps)),
-      );
-    }
-  }
+  ) => openCenterDirections(context, center);
 }
 
 /// A compact photo thumbnail for the selected-center bottom sheet —

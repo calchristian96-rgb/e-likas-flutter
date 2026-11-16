@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'center_directions.dart';
 
 import '../../../../core/utils/distance_formatter.dart';
-import '../../../../core/utils/map_launcher.dart';
 import '../../../../core/widgets/accent_card.dart';
 import '../../../../core/widgets/occupancy_progress.dart';
 import '../../../../core/widgets/status_badge.dart';
@@ -84,25 +84,21 @@ class EvacuationCenterCard extends StatelessWidget {
                 ],
               ),
             ],
-            // Hidden rather than disabled when there's no location to
-            // navigate to — a visibly-disabled button here would imply
-            // "directions are temporarily unavailable," when actually
-            // this center simply has no coordinates at all yet.
-            if (center.hasCoordinates) ...[
-              const SizedBox(height: 4),
-              Align(
-                alignment: Alignment.centerRight,
-                child: TextButton.icon(
-                  onPressed: () => _handleGetDirections(context, center),
-                  icon: const Icon(Icons.directions_outlined, size: 18),
-                  label: Text(l10n.getDirections),
-                  style: TextButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(horizontal: 8),
-                    minimumSize: const Size(44, 40),
-                  ),
+            // Always offered: with no location, Google Maps searches the
+            // center's name and barangay instead.
+            const SizedBox(height: 4),
+            Align(
+              alignment: Alignment.centerRight,
+              child: TextButton.icon(
+                onPressed: () => _handleGetDirections(context, center),
+                icon: const Icon(Icons.directions_outlined, size: 18),
+                label: Text(l10n.getDirections),
+                style: TextButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
+                  minimumSize: const Size(48, 48),
                 ),
               ),
-            ],
+            ),
           ],
         ),
       ),
@@ -112,16 +108,5 @@ class EvacuationCenterCard extends StatelessWidget {
   static Future<void> _handleGetDirections(
     BuildContext context,
     EvacuationCenter center,
-  ) async {
-    if (!center.hasCoordinates) return;
-    final opened = await openDirections(
-      latitude: center.latitude!,
-      longitude: center.longitude!,
-    );
-    if (!opened && context.mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(AppLocalizations.of(context).unableToOpenMaps)),
-      );
-    }
-  }
+  ) => openCenterDirections(context, center);
 }

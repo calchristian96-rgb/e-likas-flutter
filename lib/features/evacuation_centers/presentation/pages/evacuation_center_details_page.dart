@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import '../widgets/center_directions.dart';
 
-import '../../../../core/utils/map_launcher.dart';
 import '../../../../core/widgets/error_state.dart';
 import '../../../../core/widgets/occupancy_progress.dart';
 import '../../../../core/widgets/status_badge.dart';
@@ -223,18 +223,16 @@ class _CenterDetailsBody extends StatelessWidget {
         const SizedBox(height: 12),
         Row(
           children: [
-            // Hidden rather than disabled when there's no location to
-            // navigate to, same reasoning as EvacuationCenterCard.
-            if (center.hasCoordinates) ...[
-              Expanded(
-                child: FilledButton.icon(
-                  onPressed: () => _handleGetDirections(context, center),
-                  icon: const Icon(Icons.directions_outlined, size: 18),
-                  label: Text(l10n.getDirections),
-                ),
+            // Always offered: with no location, Google Maps searches
+            // the center's name and barangay instead.
+            Expanded(
+              child: FilledButton.icon(
+                onPressed: () => _handleGetDirections(context, center),
+                icon: const Icon(Icons.directions_outlined, size: 18),
+                label: Text(l10n.getDirections),
               ),
-              const SizedBox(width: 8),
-            ],
+            ),
+            const SizedBox(width: 8),
             Expanded(
               child: OutlinedButton.icon(
                 onPressed: () => context.go('/map'),
@@ -259,18 +257,7 @@ class _CenterDetailsBody extends StatelessWidget {
   static Future<void> _handleGetDirections(
     BuildContext context,
     EvacuationCenter center,
-  ) async {
-    if (!center.hasCoordinates) return;
-    final opened = await openDirections(
-      latitude: center.latitude!,
-      longitude: center.longitude!,
-    );
-    if (!opened && context.mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(AppLocalizations.of(context).unableToOpenMaps)),
-      );
-    }
-  }
+  ) => openCenterDirections(context, center);
 }
 
 /// Renders nothing — a self-contained trigger, exactly like
