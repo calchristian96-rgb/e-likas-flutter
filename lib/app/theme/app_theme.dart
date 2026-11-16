@@ -205,7 +205,7 @@ class AppTheme {
         foregroundColor: colorScheme.onSurface,
         elevation: 0,
         centerTitle: true,
-        titleTextStyle: textTheme.titleMedium?.copyWith(fontSize: 19),
+        titleTextStyle: textTheme.titleLarge,
         systemOverlayStyle: isDark
             ? SystemUiOverlayStyle.light
             : SystemUiOverlayStyle.dark,
@@ -303,58 +303,33 @@ class AppTheme {
   static TextTheme _textThemeFrom(ColorScheme colorScheme) {
     final base = Typography.material2021(colorScheme: colorScheme).englishLike
         .merge(Typography.material2021(colorScheme: colorScheme).black);
+    // The web design system's type scale (backend docs/design-system.md,
+    // E26): 24 page title / headline figure, 18 section title, 15 card
+    // title and body, 14 labels, buttons and table text, 13 badges and
+    // captions. Nothing smaller than 13. Line heights follow the web.
+    TextStyle? size(
+      TextStyle? t,
+      double px,
+      double line,
+      FontWeight w,
+      Color c,
+    ) => t?.copyWith(fontSize: px, height: line / px, fontWeight: w, color: c);
+    final ink = colorScheme.onSurface;
+    final muted = colorScheme.onSurfaceVariant;
     return base
         .copyWith(
-          headlineSmall: base.headlineSmall?.copyWith(
-            fontSize: 26,
-            fontWeight: FontWeight.w600,
-            color: colorScheme.onSurface,
-          ),
-          titleLarge: base.titleLarge?.copyWith(
-            fontSize: 24,
-            fontWeight: FontWeight.w600,
-            color: colorScheme.onSurface,
-          ),
-          titleMedium: base.titleMedium?.copyWith(
-            fontSize: 18,
-            fontWeight: FontWeight.w600,
-            color: colorScheme.onSurface,
-          ),
-          titleSmall: base.titleSmall?.copyWith(
-            fontSize: 14,
-            fontWeight: FontWeight.w600,
-            color: colorScheme.onSurface,
-          ),
-          bodyLarge: base.bodyLarge?.copyWith(
-            fontSize: 15,
-            color: colorScheme.onSurface,
-          ),
-          bodyMedium: base.bodyMedium?.copyWith(
-            fontSize: 14,
-            color: colorScheme.onSurface,
-          ),
-          bodySmall: base.bodySmall?.copyWith(
-            fontSize: 12.5,
-            color: colorScheme.onSurfaceVariant,
-          ),
-          // The one style this override block used to leave out —
-          // `Typography.material2021(...).black` (the "black" half of
-          // the `.merge()` above) colors it for a light background, so
-          // on this app's dark theme it rendered as near-invisible
-          // dark-on-dark text. Every field-group label that uses
-          // `labelLarge` (Add Evacuee's "Sex"/"Age Bracket" headers,
-          // the sectoral/4Ps form's category names) was silently
-          // affected until this was added alongside its siblings above.
-          labelLarge: base.labelLarge?.copyWith(color: colorScheme.onSurface),
-          labelMedium: base.labelMedium?.copyWith(
-            fontSize: 13,
-            fontWeight: FontWeight.w600,
-            color: colorScheme.onSurface,
-          ),
-          labelSmall: base.labelSmall?.copyWith(
-            fontSize: 11.5,
-            fontWeight: FontWeight.w600,
-          ),
+          headlineSmall: size(base.headlineSmall, 24, 32, FontWeight.w700, ink),
+          titleLarge: size(base.titleLarge, 18, 28, FontWeight.w600, ink),
+          titleMedium: size(base.titleMedium, 15, 24, FontWeight.w600, ink),
+          titleSmall: size(base.titleSmall, 14, 22, FontWeight.w600, ink),
+          bodyLarge: size(base.bodyLarge, 15, 24, FontWeight.w400, ink),
+          bodyMedium: size(base.bodyMedium, 14, 22, FontWeight.w400, ink),
+          bodySmall: size(base.bodySmall, 13, 20, FontWeight.w400, muted),
+          // labelLarge is set explicitly so the dark theme never gets
+          // the "black" typography's dark-on-dark label color.
+          labelLarge: size(base.labelLarge, 14, 22, FontWeight.w600, ink),
+          labelMedium: size(base.labelMedium, 13, 20, FontWeight.w600, ink),
+          labelSmall: size(base.labelSmall, 13, 20, FontWeight.w600, muted),
         )
         .apply(fontSizeFactor: 1.0, fontFamily: fontFamily);
   }

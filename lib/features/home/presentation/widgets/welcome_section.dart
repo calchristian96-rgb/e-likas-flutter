@@ -28,7 +28,7 @@ class WelcomeSection extends StatelessWidget {
       children: [
         Text(
           _greetingFor(now, l10n),
-          style: theme.textTheme.titleLarge?.copyWith(fontSize: 20),
+          style: theme.textTheme.titleLarge?.copyWith(fontSize: 18),
         ),
         const SizedBox(height: 2),
         Text(

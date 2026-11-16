@@ -131,7 +131,7 @@ class _SplashPageState extends ConsumerState<SplashPage> {
                         'E-LIKAS',
                         style: TextStyle(
                           color: Colors.white,
-                          fontSize: 30,
+                          fontSize: 24,
                           fontWeight: FontWeight.w800,
                           letterSpacing: 0.5,
                         ),
@@ -142,7 +142,7 @@ class _SplashPageState extends ConsumerState<SplashPage> {
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           color: Colors.white.withValues(alpha: 0.82),
-                          fontSize: 13.5,
+                          fontSize: 14,
                           fontWeight: FontWeight.w600,
                         ),
                       ),
@@ -160,7 +160,7 @@ class _SplashPageState extends ConsumerState<SplashPage> {
                             'Ligao City, Albay',
                             style: TextStyle(
                               color: Colors.white.withValues(alpha: 0.7),
-                              fontSize: 12.5,
+                              fontSize: 13,
                               fontWeight: FontWeight.w600,
                             ),
                           ),
@@ -180,7 +180,7 @@ class _SplashPageState extends ConsumerState<SplashPage> {
                         AppLocalizations.of(context).preparingEmergencyInfo,
                         style: TextStyle(
                           color: Colors.white.withValues(alpha: 0.75),
-                          fontSize: 12,
+                          fontSize: 13,
                           fontWeight: FontWeight.w500,
                         ),
                       ),

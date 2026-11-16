@@ -760,7 +760,7 @@ class _DisplacementTypeField extends StatelessWidget {
               errors!.join(' '),
               style: TextStyle(
                 color: Theme.of(context).colorScheme.error,
-                fontSize: 12,
+                fontSize: 13,
               ),
             ),
           ),
