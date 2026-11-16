@@ -1,7 +1,10 @@
-/// A signed-in staff member, built from `UserResource` (confirmed
-/// fields: id, name, email, contact_number, status, role,
-/// role_display_name, barangay{id,name}|null) — matches the exact
-/// shape both `POST /auth/login` and `GET /auth/me` return.
+/// A signed-in staff member, built from `AuthUserResource` -- the shape
+/// both `POST /auth/login` and `GET /auth/me` return: id, name, email,
+/// status, role, role_display_name, barangay{id,name}|null, and the
+/// user's named `permissions` (`App\Auth\Permissions` on the backend).
+///
+/// Screens decide what to show from [permissions], never from the role
+/// name (backend docs, admin-403-endpoints-step5.md).
 class StaffSession {
   const StaffSession({
     required this.id,
@@ -11,6 +14,7 @@ class StaffSession {
     required this.roleDisplayName,
     this.barangayId,
     this.barangayName,
+    this.permissions = const {},
     this.isFromCache = false,
   });
 
@@ -19,18 +23,38 @@ class StaffSession {
   final String email;
 
   /// Raw backend role string: administrator | cswd_personnel | barangay_official.
+  /// Shown to the user only; access decisions use [can].
   final String role;
   final String roleDisplayName;
 
   final int? barangayId;
   final String? barangayName;
 
+  /// The user's named permissions, e.g. `operations.access`,
+  /// `centers.edit`, `box_relief.distribute`.
+  final Set<String> permissions;
+
   /// True when this session came from the local cache (see
   /// `SecureTokenStorage.readCachedSession`) rather than a fresh
-  /// `/auth/me` response — the app couldn't reach the server to
-  /// re-validate the token, so the UI should show it's working from a
-  /// saved session rather than implying it's live.
+  /// `/auth/me` response.
   final bool isFromCache;
+
+  bool can(String permission) => permissions.contains(permission);
+
+  /// Any operational screen at all. The administrator has none of them
+  /// and is sent to the web.
+  bool get hasOperationsAccess => can(StaffPermission.operationsAccess);
+
+  /// Barangay field work: EC Board, centers of their own barangay,
+  /// relief boxes, barangay status.
+  bool get isFieldOfficial =>
+      hasOperationsAccess &&
+      !can(StaffPermission.allBarangays) &&
+      barangayId != null;
+
+  /// City-wide read-only monitoring (CSWD).
+  bool get isCityMonitor =>
+      hasOperationsAccess && can(StaffPermission.allBarangays);
 
   bool get isBarangayOfficial => role == 'barangay_official';
 
@@ -39,6 +63,7 @@ class StaffSession {
     bool isFromCache = false,
   }) {
     final barangay = json['barangay'] as Map<String, dynamic>?;
+    final rawPermissions = json['permissions'];
     return StaffSession(
       id: json['id'] as int,
       name: json['name'] as String,
@@ -48,13 +73,15 @@ class StaffSession {
           json['role_display_name'] as String? ?? json['role'] as String,
       barangayId: barangay?['id'] as int?,
       barangayName: barangay?['name'] as String?,
+      permissions: rawPermissions is List
+          ? {for (final p in rawPermissions) p.toString()}
+          : StaffPermission.legacyForRole(json['role'] as String?),
       isFromCache: isFromCache,
     );
   }
 
-  /// Only the non-secret fields — safe to keep in
-  /// `SecureTokenStorage`'s cached-session slot for offline session
-  /// restoration.
+  /// Only the non-secret fields -- safe to keep in
+  /// `SecureTokenStorage`'s cached-session slot for offline restore.
   Map<String, dynamic> toJson() => {
     'id': id,
     'name': name,
@@ -63,5 +90,49 @@ class StaffSession {
     'role_display_name': roleDisplayName,
     if (barangayId != null && barangayName != null)
       'barangay': {'id': barangayId, 'name': barangayName},
+    'permissions': permissions.toList()..sort(),
+  };
+}
+
+/// Permission names from the backend's `App\Auth\Permissions::MAP`.
+abstract final class StaffPermission {
+  static const operationsAccess = 'operations.access';
+  static const allBarangays = 'scope.all_barangays';
+  static const monitoring = 'page.monitoring';
+  static const centersEdit = 'centers.edit';
+  static const centersSetStatus = 'centers.set_status';
+  static const facilityRequestsCreate = 'facility_requests.create';
+  static const countSubmit = 'count_submissions.submit';
+  static const reEnroll = 'families.re_enroll';
+  static const boxDistribute = 'box_relief.distribute';
+  static const situationUpdate = 'situation.update';
+  static const puroksView = 'puroks.view';
+
+  /// For a session cached before the backend sent `permissions` (an app
+  /// upgraded while offline): the same map as the backend, by role,
+  /// until the next `/auth/me` replaces it.
+  static Set<String> legacyForRole(String? role) => switch (role) {
+    'barangay_official' => const {
+      operationsAccess,
+      monitoring,
+      centersEdit,
+      centersSetStatus,
+      facilityRequestsCreate,
+      countSubmit,
+      reEnroll,
+      boxDistribute,
+      situationUpdate,
+      puroksView,
+    },
+    'cswd_personnel' => const {
+      operationsAccess,
+      allBarangays,
+      monitoring,
+      centersSetStatus,
+      reEnroll,
+      situationUpdate,
+      puroksView,
+    },
+    _ => const {},
   };
 }
