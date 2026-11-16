@@ -32,6 +32,7 @@ part 'staff_database.g.dart';
     CachedQuickCounts,
     PendingActions,
     LookupPuroks,
+    CachedResponses,
   ],
 )
 class StaffDatabase extends _$StaffDatabase {
@@ -54,7 +55,7 @@ class StaffDatabase extends _$StaffDatabase {
   StaffDatabase.forExecutor(super.executor);
 
   @override
-  int get schemaVersion => 10;
+  int get schemaVersion => 11;
 
   /// Schema 2 adds `PendingEcBoardEntries` (EC Information Board's
   /// offline queue); schema 3 added a typed sectoral/4Ps edit queue,
@@ -133,6 +134,10 @@ class StaffDatabase extends _$StaffDatabase {
         await m.createTable(lookupPuroks);
         final t = pendingEcBoardEntries;
         await _addMissingColumns(m, t, [t.purokId]);
+      }
+      if (from < 11) {
+        // Saved answers of staff reads, for offline (C21).
+        await m.createTable(cachedResponses);
       }
     },
   );

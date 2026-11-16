@@ -36,6 +36,13 @@ final staffTabs = <StaffTab>[
     visibleTo: (s) => s.isFieldOfficial,
   ),
   StaffTab(
+    branch: 2,
+    icon: Icons.inventory_2_outlined,
+    selectedIcon: Icons.inventory_2,
+    label: (l10n) => l10n.staffTabRelief,
+    visibleTo: (s) => s.isFieldOfficial && s.can(StaffPermission.boxDistribute),
+  ),
+  StaffTab(
     branch: 1,
     icon: Icons.more_horiz,
     selectedIcon: Icons.more_horiz,

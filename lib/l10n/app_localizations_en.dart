@@ -2538,4 +2538,84 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get increase => 'Increase';
+
+  @override
+  String get reliefTitle => 'Relief boxes';
+
+  @override
+  String get staffTabRelief => 'Relief';
+
+  @override
+  String get reliefNeedsConnectionFirst =>
+      'Relief boxes need a connection the first time.';
+
+  @override
+  String get staffNoOpenEvent => 'No disaster event is open.';
+
+  @override
+  String savedCopyAge(Object age) {
+    return 'Saved copy, $age';
+  }
+
+  @override
+  String get reliefCountNotValidated =>
+      'Your barangay\'s final count is not validated yet. Until CSWD validates it, the need is 0 and no boxes can be sent.';
+
+  @override
+  String get reliefNoRoundYet => 'No relief round yet.';
+
+  @override
+  String reliefRound(int number) {
+    return 'Round $number';
+  }
+
+  @override
+  String get reliefNeed => 'Need';
+
+  @override
+  String get reliefReceived => 'Received';
+
+  @override
+  String get reliefGiven => 'Given';
+
+  @override
+  String get reliefShort => 'Short';
+
+  @override
+  String get reliefBoxesToConfirm => 'Boxes to confirm';
+
+  @override
+  String get reliefGiveBoxes => 'Give boxes';
+
+  @override
+  String reliefGivenOfReceived(int given, int received) {
+    return '$given given of $received received';
+  }
+
+  @override
+  String reliefBoxesSent(int count, int round) {
+    return '$count boxes sent, round $round';
+  }
+
+  @override
+  String get reliefConfirmArrived => 'Confirm what arrived';
+
+  @override
+  String get reliefHowManyArrived => 'How many boxes arrived?';
+
+  @override
+  String reliefBoxesArrived(int sent) {
+    return 'Boxes received (of $sent sent)';
+  }
+
+  @override
+  String get reliefFewerNote => 'Why fewer? (required)';
+
+  @override
+  String get reliefConfirm => 'Confirm';
+
+  @override
+  String reliefConfirmSummary(int count, int round) {
+    return '$count boxes received, round $round';
+  }
 }

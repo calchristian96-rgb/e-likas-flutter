@@ -4419,6 +4419,138 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Increase'**
   String get increase;
+
+  /// No description provided for @reliefTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Relief boxes'**
+  String get reliefTitle;
+
+  /// No description provided for @staffTabRelief.
+  ///
+  /// In en, this message translates to:
+  /// **'Relief'**
+  String get staffTabRelief;
+
+  /// No description provided for @reliefNeedsConnectionFirst.
+  ///
+  /// In en, this message translates to:
+  /// **'Relief boxes need a connection the first time.'**
+  String get reliefNeedsConnectionFirst;
+
+  /// No description provided for @staffNoOpenEvent.
+  ///
+  /// In en, this message translates to:
+  /// **'No disaster event is open.'**
+  String get staffNoOpenEvent;
+
+  /// No description provided for @savedCopyAge.
+  ///
+  /// In en, this message translates to:
+  /// **'Saved copy, {age}'**
+  String savedCopyAge(Object age);
+
+  /// No description provided for @reliefCountNotValidated.
+  ///
+  /// In en, this message translates to:
+  /// **'Your barangay\'s final count is not validated yet. Until CSWD validates it, the need is 0 and no boxes can be sent.'**
+  String get reliefCountNotValidated;
+
+  /// No description provided for @reliefNoRoundYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No relief round yet.'**
+  String get reliefNoRoundYet;
+
+  /// No description provided for @reliefRound.
+  ///
+  /// In en, this message translates to:
+  /// **'Round {number}'**
+  String reliefRound(int number);
+
+  /// No description provided for @reliefNeed.
+  ///
+  /// In en, this message translates to:
+  /// **'Need'**
+  String get reliefNeed;
+
+  /// No description provided for @reliefReceived.
+  ///
+  /// In en, this message translates to:
+  /// **'Received'**
+  String get reliefReceived;
+
+  /// No description provided for @reliefGiven.
+  ///
+  /// In en, this message translates to:
+  /// **'Given'**
+  String get reliefGiven;
+
+  /// No description provided for @reliefShort.
+  ///
+  /// In en, this message translates to:
+  /// **'Short'**
+  String get reliefShort;
+
+  /// No description provided for @reliefBoxesToConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Boxes to confirm'**
+  String get reliefBoxesToConfirm;
+
+  /// No description provided for @reliefGiveBoxes.
+  ///
+  /// In en, this message translates to:
+  /// **'Give boxes'**
+  String get reliefGiveBoxes;
+
+  /// No description provided for @reliefGivenOfReceived.
+  ///
+  /// In en, this message translates to:
+  /// **'{given} given of {received} received'**
+  String reliefGivenOfReceived(int given, int received);
+
+  /// No description provided for @reliefBoxesSent.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} boxes sent, round {round}'**
+  String reliefBoxesSent(int count, int round);
+
+  /// No description provided for @reliefConfirmArrived.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm what arrived'**
+  String get reliefConfirmArrived;
+
+  /// No description provided for @reliefHowManyArrived.
+  ///
+  /// In en, this message translates to:
+  /// **'How many boxes arrived?'**
+  String get reliefHowManyArrived;
+
+  /// No description provided for @reliefBoxesArrived.
+  ///
+  /// In en, this message translates to:
+  /// **'Boxes received (of {sent} sent)'**
+  String reliefBoxesArrived(int sent);
+
+  /// No description provided for @reliefFewerNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Why fewer? (required)'**
+  String get reliefFewerNote;
+
+  /// No description provided for @reliefConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm'**
+  String get reliefConfirm;
+
+  /// No description provided for @reliefConfirmSummary.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} boxes received, round {round}'**
+  String reliefConfirmSummary(int count, int round);
 }
 
 class _AppLocalizationsDelegate

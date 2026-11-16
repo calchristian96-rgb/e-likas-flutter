@@ -10,6 +10,20 @@ class LookupBarangays extends Table {
   Set<Column> get primaryKey => {id};
 }
 
+/// Schema 11: the last answer of a staff read (relief boxes, the
+/// barangay situation, monitoring), kept as JSON by request key, so the
+/// screen still shows it offline with its age.
+@DataClassName('CachedResponseRow')
+class CachedResponses extends Table {
+  TextColumn get cacheKey => text()();
+  IntColumn get ownerStaffId => integer()();
+  TextColumn get json => text()();
+  IntColumn get fetchedAtEpochMs => integer()();
+
+  @override
+  Set<Column> get primaryKey => {cacheKey, ownerStaffId};
+}
+
 /// Schema 10: offline cache of `GET /puroks?barangay_id=` (backend step
 /// 6), for the purok picker on quick add and relief by purok.
 @DataClassName('LookupPurokRow')
