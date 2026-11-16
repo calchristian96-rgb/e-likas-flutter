@@ -4077,6 +4077,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Sync'**
   String get staffSyncRow;
+
+  /// No description provided for @purokOptionalLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Purok (optional)'**
+  String get purokOptionalLabel;
+
+  /// No description provided for @purokNone.
+  ///
+  /// In en, this message translates to:
+  /// **'No purok'**
+  String get purokNone;
 }
 
 class _AppLocalizationsDelegate

@@ -66,6 +66,7 @@ class EcBoardEntryDraft {
     this.existingFamilyLocalId,
     this.newHouseholdHeadName,
     this.newHouseholdBarangayId,
+    this.purokId,
     this.sectoralFlags = const {},
     this.headIsSelf = false,
     this.isSingleHeaded,
@@ -87,6 +88,10 @@ class EcBoardEntryDraft {
 
   final String? newHouseholdHeadName;
   final int? newHouseholdBarangayId;
+
+  /// New household only, optional (backend step 6): the purok of the
+  /// home, one of [newHouseholdBarangayId]'s puroks.
+  final int? purokId;
 
   /// The optional sectoral flags ticked for this one person. Anything
   /// not in the set is "not recorded", not "no" — see
@@ -170,6 +175,7 @@ class EcBoardEntryDraft {
     bool clearExistingFamilyLocalId = false,
     String? newHouseholdHeadName,
     int? newHouseholdBarangayId,
+    ({int? value})? purokId,
     Set<PerPersonSectoralFlag>? sectoralFlags,
     bool? headIsSelf,
     ({bool? value})? isSingleHeaded,
@@ -191,6 +197,7 @@ class EcBoardEntryDraft {
       newHouseholdHeadName: newHouseholdHeadName ?? this.newHouseholdHeadName,
       newHouseholdBarangayId:
           newHouseholdBarangayId ?? this.newHouseholdBarangayId,
+      purokId: purokId == null ? this.purokId : purokId.value,
       sectoralFlags: sectoralFlags ?? this.sectoralFlags,
       headIsSelf: headIsSelf ?? this.headIsSelf,
       isSingleHeaded: isSingleHeaded == null
@@ -216,6 +223,7 @@ class EcBoardEntryDraft {
     } else ...{
       'family_name': newHouseholdHeadName?.trim(),
       'barangay_id': newHouseholdBarangayId,
+      if (purokId != null) 'purok_id': purokId,
       'head_is_self': headIsSelf,
       'is_single_headed': isSingleHeaded,
       if (!headIsSelf) ...{'head_sex': headSex, 'head_is_minor': headIsMinor},

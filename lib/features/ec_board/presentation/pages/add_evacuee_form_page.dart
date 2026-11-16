@@ -13,6 +13,7 @@ import '../../../family_registration/domain/entities/pending_registration.dart';
 import '../../../family_registration/domain/entities/pending_registration_status.dart';
 import '../../../family_registration/presentation/providers/lookup_providers.dart';
 import '../../../family_registration/presentation/providers/pending_queue_provider.dart';
+import '../../../puroks/puroks.dart';
 import '../../../registered_families/domain/entities/registered_families_snapshot.dart';
 import '../../../registered_families/domain/entities/registered_family.dart';
 import '../../../registered_families/presentation/providers/registered_families_provider.dart';
@@ -227,8 +228,7 @@ class _AddEvacueeFormPageState extends ConsumerState<AddEvacueeFormPage> {
     final householdLabel = _householdLabel;
 
     if (!_draft.isSubmittable || householdLabel == null) {
-      final barangayMissing =
-          _isNew && _draft.newHouseholdBarangayId == null;
+      final barangayMissing = _isNew && _draft.newHouseholdBarangayId == null;
       setState(() => _barangayMissing = barangayMissing);
       // Only the home barangay missing: say exactly that, in the
       // server's words; otherwise the general reminder.
@@ -567,11 +567,25 @@ class _AddEvacueeFormPageState extends ConsumerState<AddEvacueeFormPage> {
                             showRequired: _barangayMissing,
                             onChanged: (id) {
                               _barangayMissing = false;
+                              // A purok belongs to one barangay.
                               _update(
-                                (d) => d.copyWith(newHouseholdBarangayId: id),
+                                (d) => d.copyWith(
+                                  newHouseholdBarangayId: id,
+                                  purokId: (value: null),
+                                ),
                               );
                             },
                           ),
+                          if (_draft.newHouseholdBarangayId != null) ...[
+                            const SizedBox(height: 12),
+                            _PurokField(
+                              barangayId: _draft.newHouseholdBarangayId!,
+                              value: _draft.purokId,
+                              onChanged: (id) => _update(
+                                (d) => d.copyWith(purokId: (value: id)),
+                              ),
+                            ),
+                          ],
                           const SizedBox(height: 12),
                           TextFormField(
                             initialValue: _draft.newHouseholdHeadName,
@@ -839,10 +853,11 @@ class _OtherBarangayNote extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final session = ref.watch(staffAuthProvider).value;
-    final center = (ref.watch(evacuationCentersLookupProvider).value ??
-            const <EvacuationCenterLookup>[])
-        .where((c) => c.id == centerId)
-        .firstOrNull;
+    final center =
+        (ref.watch(evacuationCentersLookupProvider).value ??
+                const <EvacuationCenterLookup>[])
+            .where((c) => c.id == centerId)
+            .firstOrNull;
     if (session == null ||
         !session.isBarangayOfficial ||
         session.barangayId == null ||
@@ -850,11 +865,11 @@ class _OtherBarangayNote extends ConsumerWidget {
         center.barangayId == session.barangayId) {
       return const SizedBox.shrink();
     }
-    final barangayName = (ref.watch(barangaysProvider).value ??
-            const <Barangay>[])
-        .where((b) => b.id == center.barangayId)
-        .map((b) => b.name)
-        .firstOrNull;
+    final barangayName =
+        (ref.watch(barangaysProvider).value ?? const <Barangay>[])
+            .where((b) => b.id == center.barangayId)
+            .map((b) => b.name)
+            .firstOrNull;
     if (barangayName == null) return const SizedBox.shrink();
 
     final l10n = AppLocalizations.of(context);
@@ -888,6 +903,42 @@ class _OtherBarangayNote extends ConsumerWidget {
   }
 }
 
+/// The new family's purok (optional, backend step 6), from the home
+/// barangay's purok list; works offline from the copy on this device.
+/// Hidden when the barangay has no puroks on record.
+class _PurokField extends ConsumerWidget {
+  const _PurokField({
+    required this.barangayId,
+    required this.value,
+    required this.onChanged,
+  });
+
+  final int barangayId;
+  final int? value;
+  final ValueChanged<int?> onChanged;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context);
+    final puroks = ref.watch(puroksForBarangayProvider(barangayId)).value;
+    if (puroks == null || puroks.isEmpty) return const SizedBox.shrink();
+    return DropdownButtonFormField<int?>(
+      initialValue: puroks.any((p) => p.id == value) ? value : null,
+      isExpanded: true,
+      decoration: InputDecoration(
+        labelText: l10n.purokOptionalLabel,
+        border: const OutlineInputBorder(),
+      ),
+      items: [
+        DropdownMenuItem<int?>(value: null, child: Text(l10n.purokNone)),
+        for (final p in puroks)
+          DropdownMenuItem<int?>(value: p.id, child: Text(p.name)),
+      ],
+      onChanged: onChanged,
+    );
+  }
+}
+
 /// A new family's home barangay -- where the family lives, which decides
 /// whose family it is on the server (Evacuees page, DROMIC report); the
 /// same field as the web dashboard's Add Evacuee. No default on purpose:
@@ -912,11 +963,12 @@ class _HomeBarangayField extends ConsumerWidget {
     final l10n = AppLocalizations.of(context);
     final theme = Theme.of(context);
     final barangays = ref.watch(barangaysProvider);
-    final centerBarangayId = (ref.watch(evacuationCentersLookupProvider).value ??
-            const <EvacuationCenterLookup>[])
-        .where((c) => c.id == centerId)
-        .map((c) => c.barangayId)
-        .firstOrNull;
+    final centerBarangayId =
+        (ref.watch(evacuationCentersLookupProvider).value ??
+                const <EvacuationCenterLookup>[])
+            .where((c) => c.id == centerId)
+            .map((c) => c.barangayId)
+            .firstOrNull;
     final centerBarangay = (barangays.value ?? const <Barangay>[])
         .where((b) => b.id == centerBarangayId)
         .firstOrNull;
@@ -1207,10 +1259,8 @@ class _HouseholdPickerSheetState extends ConsumerState<_HouseholdPickerSheet> {
 
   /// The families here right now, from the server -- the web form's
   /// "Already here" list and the only ones the server accepts.
-  EcBoardFamiliesHereProvider get _hereProvider => ecBoardFamiliesHereProvider(
-    widget.centerId,
-    widget.evacuationEventId,
-  );
+  EcBoardFamiliesHereProvider get _hereProvider =>
+      ecBoardFamiliesHereProvider(widget.centerId, widget.evacuationEventId);
 
   Future<void> _refreshSynced() async {
     ref.invalidate(_hereProvider);
@@ -1365,9 +1415,7 @@ class _HouseholdPickerSheetState extends ConsumerState<_HouseholdPickerSheet> {
                           ..._filteredHere(value).map(_hereTile),
                           if (value.isEmpty)
                             Padding(
-                              padding: const EdgeInsets.symmetric(
-                                vertical: 16,
-                              ),
+                              padding: const EdgeInsets.symmetric(vertical: 16),
                               child: Text(
                                 l10n.ecBoardNoFamiliesHere,
                                 textAlign: TextAlign.center,
@@ -1426,7 +1474,12 @@ class _HouseholdPickerSheetState extends ConsumerState<_HouseholdPickerSheet> {
       title: Text(label),
       subtitle: item.isGeneric
           ? null
-          : Text(item.barangayName ?? l10n.staffFamiliesUnknownBarangay),
+          : Text(
+              [
+                item.barangayName ?? l10n.staffFamiliesUnknownBarangay,
+                ?item.purokName,
+              ].join(' · '),
+            ),
       onTap: () => Navigator.of(context).pop(
         _HouseholdPick(
           label: label,

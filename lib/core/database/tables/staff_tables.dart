@@ -10,6 +10,18 @@ class LookupBarangays extends Table {
   Set<Column> get primaryKey => {id};
 }
 
+/// Schema 10: offline cache of `GET /puroks?barangay_id=` (backend step
+/// 6), for the purok picker on quick add and relief by purok.
+@DataClassName('LookupPurokRow')
+class LookupPuroks extends Table {
+  IntColumn get id => integer()();
+  IntColumn get barangayId => integer()();
+  TextColumn get name => text()();
+
+  @override
+  Set<Column> get primaryKey => {id};
+}
+
 /// Offline cache of `GET /evacuation-events` — mirrors
 /// `LookupEvacuationEventModel`.
 @DataClassName('LookupEvacuationEventRow')
@@ -194,6 +206,9 @@ class PendingEcBoardEntries extends Table {
 
   TextColumn get newHouseholdHeadName => text().nullable()();
   IntColumn get newHouseholdBarangayId => integer().nullable()();
+
+  /// Schema 10: the new household's purok (backend step 6), optional.
+  IntColumn get purokId => integer().nullable()();
 
   /// Household head answers, sent exactly as the backend's addEvacuee()
   /// takes them (see `EcBoardEntryDraft`): [headIsSelf] links this

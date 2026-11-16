@@ -1129,10 +1129,7 @@ class _EventSelector extends StatelessWidget {
       ),
       items: [
         for (final event in selectable)
-          DropdownMenuItem(
-            value: event.id,
-            child: _eventLabel(event, l10n),
-          ),
+          DropdownMenuItem(value: event.id, child: _eventLabel(event, l10n)),
       ],
       onChanged: (id) {
         if (id != null) onChanged(id);

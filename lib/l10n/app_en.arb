@@ -898,5 +898,8 @@
   "syncDiscarded": "Action discarded",
   "syncCouldNotRead": "Could not read the queue on this device.",
   "moreActions": "More actions",
-  "staffSyncRow": "Sync"
+  "staffSyncRow": "Sync",
+
+  "purokOptionalLabel": "Purok (optional)",
+  "purokNone": "No purok"
 }

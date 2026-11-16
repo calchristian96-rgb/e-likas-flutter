@@ -2311,4 +2311,10 @@ class AppLocalizationsBcl extends AppLocalizations {
 
   @override
   String get staffSyncRow => 'Sync';
+
+  @override
+  String get purokOptionalLabel => 'Purok (optional)';
+
+  @override
+  String get purokNone => 'No purok';
 }

@@ -31,6 +31,7 @@ part 'staff_database.g.dart';
     PendingEcBoardEntries,
     CachedQuickCounts,
     PendingActions,
+    LookupPuroks,
   ],
 )
 class StaffDatabase extends _$StaffDatabase {
@@ -53,7 +54,7 @@ class StaffDatabase extends _$StaffDatabase {
   StaffDatabase.forExecutor(super.executor);
 
   @override
-  int get schemaVersion => 9;
+  int get schemaVersion => 10;
 
   /// Schema 2 adds `PendingEcBoardEntries` (EC Information Board's
   /// offline queue); schema 3 added a typed sectoral/4Ps edit queue,
@@ -124,6 +125,14 @@ class StaffDatabase extends _$StaffDatabase {
       if (from < 9) {
         // The offline action queue (C15).
         await m.createTable(pendingActions);
+      }
+      if (from < 10) {
+        // Puroks (backend step 6): the lookup and the queued entry's
+        // purok. A device upgrading from < 2 already created
+        // PendingEcBoardEntries with the column, hence "if missing".
+        await m.createTable(lookupPuroks);
+        final t = pendingEcBoardEntries;
+        await _addMissingColumns(m, t, [t.purokId]);
       }
     },
   );

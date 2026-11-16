@@ -15,6 +15,7 @@ class FamilyHere {
     required this.headLinked,
     this.name,
     this.barangayName,
+    this.purokName,
     this.hereCount,
   });
 
@@ -32,13 +33,12 @@ class FamilyHere {
                 ? name
                 : head?['full_name'] as String?),
       barangayName: barangay?['name'] as String?,
+      purokName: (json['purok'] as Map<String, dynamic>?)?['name'] as String?,
       hereCount: (json['here_count'] as num?)?.toInt(),
       memberCount: (json['member_count'] as num?)?.toInt() ?? 0,
       // Another barangay's family has no head_of_family: the server says
       // whether one is linked instead.
-      headLinked: isGeneric
-          ? json['has_head_linked'] == true
-          : head != null,
+      headLinked: isGeneric ? json['has_head_linked'] == true : head != null,
     );
   }
 
@@ -49,6 +49,9 @@ class FamilyHere {
   /// family with neither on record yet.
   final String? name;
   final String? barangayName;
+
+  /// The home's purok (backend step 6), or null when none is recorded.
+  final String? purokName;
 
   /// How many of its people are here -- given for [isGeneric] only.
   final int? hereCount;

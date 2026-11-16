@@ -30,6 +30,7 @@ class PendingEcBoardEntryModel {
     this.existingFamilyLocalId,
     this.newHouseholdHeadName,
     this.newHouseholdBarangayId,
+    this.purokId,
     required this.householdLabel,
     required this.syncStatus,
     this.attemptCount = 0,
@@ -53,6 +54,9 @@ class PendingEcBoardEntryModel {
   final String? existingFamilyLocalId;
   final String? newHouseholdHeadName;
   final int? newHouseholdBarangayId;
+
+  /// New household only (schema 10); null = no purok recorded.
+  final int? purokId;
   final String householdLabel;
   final String syncStatus;
   final int attemptCount;
@@ -84,6 +88,7 @@ class PendingEcBoardEntryModel {
     bool clearExistingFamilyLocalId = false,
     String? newHouseholdHeadName,
     int? newHouseholdBarangayId,
+    ({int? value})? purokId,
     String? householdLabel,
     String? syncStatus,
     int? attemptCount,
@@ -113,6 +118,7 @@ class PendingEcBoardEntryModel {
       newHouseholdHeadName: newHouseholdHeadName ?? this.newHouseholdHeadName,
       newHouseholdBarangayId:
           newHouseholdBarangayId ?? this.newHouseholdBarangayId,
+      purokId: purokId == null ? this.purokId : purokId.value,
       householdLabel: householdLabel ?? this.householdLabel,
       syncStatus: syncStatus ?? this.syncStatus,
       attemptCount: attemptCount ?? this.attemptCount,
