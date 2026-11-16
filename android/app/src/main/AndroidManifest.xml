@@ -43,14 +43,6 @@
          deliberately not declared. -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <!-- image_picker's "Take Photo" option (Staff evacuation-center
-         photo upload, Part 2). Gallery selection needs no extra
-         permission — the system picker handles that itself. Camera
-         declared optional so the app still installs on a
-         camera-less device (gallery-only photo selection still
-         works there). -->
-    <uses-permission android:name="android.permission.CAMERA"/>
-    <uses-feature android:name="android.hardware.camera" android:required="false"/>
     <!-- Required to query activities that can process text, see:
          https://developer.android.com/training/package-visibility and
          https://developer.android.com/reference/android/content/Intent#ACTION_PROCESS_TEXT.

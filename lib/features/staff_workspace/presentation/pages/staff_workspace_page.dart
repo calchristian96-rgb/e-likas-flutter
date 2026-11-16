@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../../app/theme/app_theme.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../outbox/presentation/outbox_providers.dart';
 import '../../../staff_auth/domain/entities/staff_session.dart';
@@ -54,7 +53,6 @@ class _StaffWorkspaceBody extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context);
     final theme = Theme.of(context);
-    final semantic = theme.extension<AppSemanticColors>()!;
 
     return Scaffold(
       appBar: AppBar(title: Text(l10n.staffWorkspaceTitle)),
@@ -83,52 +81,17 @@ class _StaffWorkspaceBody extends ConsumerWidget {
             const SizedBox(height: 8),
           ],
           const SizedBox(height: 8),
-          // Grouped by workflow rather than one flat list — mirrors
-          // Settings' own sectioning. No standalone "Sync Now" action
-          // here: each screen with something to sync (EC Board,
-          // Registered Families) has its own, scoped to what it shows.
-          //
-          // "Register a Family" and "Pending Registrations" are no
-          // longer entries here — EC Board is the primary entry point,
-          // matching desktop/web. Both still exist, reachable by their
-          // direct routes: full registration from Registered Families'
-          // own button, and the pending queue as Registered Families'
-          // "Not yet synced" section.
-          // The EC Board is Staff Mode's first tab. Field work below is
-          // for barangay officials only; CSWD monitors from its own tab.
-          if (session.isFieldOfficial) ...[
-            _SectionLabel(title: l10n.staffWorkspaceEvacuationCentersSection),
-            _WorkspaceAction(
-              icon: Icons.add_business_outlined,
-              iconColor: semantic.navy,
-              label: l10n.staffAddEvacuationCenter,
-              subtitle: l10n.staffAddEvacuationCenterSubtitle,
-              onTap: () => context.push('/staff/more/evacuation-centers/add'),
-            ),
+          // Field work lives in the tabs (EC Board, Relief, Barangay);
+          // here only the official's centers (location, facility
+          // requests). Center details are added and edited on the web.
+          if (session.isFieldOfficial)
             _WorkspaceAction(
               icon: Icons.home_work_outlined,
-              iconColor: theme.colorScheme.tertiary,
+              iconColor: theme.colorScheme.primary,
               label: l10n.staffManageEvacuationCenters,
-              subtitle: l10n.staffManageEvacuationCentersSubtitle,
+              subtitle: l10n.staffMyCentersSubtitle,
               onTap: () => context.push('/staff/more/evacuation-centers'),
             ),
-            const SizedBox(height: 16),
-            _SectionLabel(title: l10n.staffWorkspaceRecordsSection),
-            _WorkspaceAction(
-              icon: Icons.groups_outlined,
-              iconColor: semantic.success,
-              label: l10n.staffWorkspaceAllEvacuees,
-              subtitle: l10n.staffWorkspaceAllEvacueesSubtitle,
-              onTap: () => context.push('/staff/more/all-evacuees'),
-            ),
-            _WorkspaceAction(
-              icon: Icons.folder_shared_outlined,
-              iconColor: semantic.warning,
-              label: l10n.registeredFamiliesTitle,
-              subtitle: l10n.registeredFamiliesWorkspaceSubtitle,
-              onTap: () => context.push('/staff/more/registered-families'),
-            ),
-          ],
           const SizedBox(height: 16),
           _WorkspaceAction(
             icon: Icons.logout_outlined,
@@ -138,27 +101,6 @@ class _StaffWorkspaceBody extends ConsumerWidget {
             onTap: () => _confirmLogout(context, ref),
           ),
         ],
-      ),
-    );
-  }
-}
-
-class _SectionLabel extends StatelessWidget {
-  const _SectionLabel({required this.title});
-
-  final String title;
-
-  @override
-  Widget build(BuildContext context) {
-    final semantic = Theme.of(context).extension<AppSemanticColors>()!;
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(6, 0, 6, 8),
-      child: Text(
-        title.toUpperCase(),
-        style: Theme.of(context).textTheme.labelSmall?.copyWith(
-          color: semantic.navy,
-          letterSpacing: 0.6,
-        ),
       ),
     );
   }

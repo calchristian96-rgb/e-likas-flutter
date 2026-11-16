@@ -26,14 +26,10 @@ import '../../features/home/presentation/pages/home_page.dart';
 import '../../features/home/presentation/providers/home_provider.dart';
 import '../../features/map/presentation/pages/evacuation_map_page.dart';
 import '../../features/map/presentation/providers/map_provider.dart';
-import '../../features/family_registration/presentation/pages/family_registration_form_page.dart';
 import '../../features/family_registration/presentation/pages/pending_registration_detail_page.dart';
 import '../../features/family_registration/presentation/pages/pending_registrations_page.dart';
-import '../../features/registered_families/presentation/pages/registered_families_overview_page.dart';
-import '../../features/registered_families/presentation/pages/registered_families_page.dart';
 import '../../features/settings/presentation/pages/dev_settings_page.dart';
 import '../../features/settings/presentation/pages/offline_data_management_page.dart';
-import '../../features/staff_evacuation_centers/presentation/pages/evacuation_center_form_page.dart';
 import '../../features/staff_evacuation_centers/presentation/pages/staff_evacuation_center_detail_page.dart';
 import '../../features/staff_evacuation_centers/presentation/pages/staff_evacuation_centers_list_page.dart';
 import '../../features/settings/presentation/pages/settings_page.dart';
@@ -485,11 +481,8 @@ final GoRouter appRouter = GoRouter(
                   path: 'sync',
                   builder: (context, state) => const SyncPage(),
                 ),
-                GoRoute(
-                  path: 'register-family',
-                  builder: (context, state) =>
-                      const FamilyRegistrationFormPage(),
-                ),
+                // Older full registrations still on this phone (C24):
+                // reachable from Sync only while some remain.
                 GoRoute(
                   path: 'pending-registrations',
                   builder: (context, state) => const PendingRegistrationsPage(),
@@ -504,24 +497,10 @@ final GoRouter appRouter = GoRouter(
                   ],
                 ),
                 GoRoute(
-                  path: 'all-evacuees',
-                  builder: (context, state) => const RegisteredFamiliesPage(),
-                ),
-                GoRoute(
-                  path: 'registered-families',
-                  builder: (context, state) =>
-                      const RegisteredFamiliesOverviewPage(),
-                ),
-                GoRoute(
                   path: 'evacuation-centers',
                   builder: (context, state) =>
                       const StaffEvacuationCentersListPage(),
                   routes: [
-                    GoRoute(
-                      path: 'add',
-                      builder: (context, state) =>
-                          const EvacuationCenterFormPage(),
-                    ),
                     GoRoute(
                       path: ':id',
                       builder: (context, state) {

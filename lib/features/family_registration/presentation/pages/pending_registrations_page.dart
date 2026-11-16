@@ -63,15 +63,14 @@ class _PendingRegistrationsBodyState
       ),
       body: Column(
         children: [
+          // C24: new families are entered on the EC Board. This screen
+          // stays only to sync or fix full registrations already on this
+          // phone, and is reachable from Sync only while some remain.
           Padding(
-            padding: const EdgeInsets.fromLTRB(12, 12, 12, 0),
-            child: FilledButton.icon(
-              // Always visible — online, offline, empty queue,
-              // populated queue, or a sync error — registering a new
-              // family never depends on this list's own load state.
-              onPressed: () => context.push('/staff/more/register-family'),
-              icon: const Icon(Icons.person_add_alt_1_outlined),
-              label: Text(l10n.staffWorkspaceRegisterFamily),
+            padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
+            child: Text(
+              l10n.pendingRegistrationsRetiring,
+              style: Theme.of(context).textTheme.bodyMedium,
             ),
           ),
           Expanded(

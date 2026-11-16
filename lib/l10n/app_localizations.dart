@@ -4809,6 +4809,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Request {count} more boxes, round {round}'**
   String reliefShortfallSummary(int count, int round);
+
+  /// No description provided for @staffMyCentersSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Set a location, request what is missing'**
+  String get staffMyCentersSubtitle;
+
+  /// No description provided for @pendingRegistrationsRetiring.
+  ///
+  /// In en, this message translates to:
+  /// **'Full registrations are no longer started on the phone; families are entered on the EC Board. Sync or fix the ones below. This screen goes away once they are done.'**
+  String get pendingRegistrationsRetiring;
 }
 
 class _AppLocalizationsDelegate

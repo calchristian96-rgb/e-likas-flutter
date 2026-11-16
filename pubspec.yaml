@@ -64,12 +64,6 @@ dependencies:
   latlong2: ^0.9.1
   power_geojson: ^3.41.0
 
-  # Staff evacuation-center photo picker (Part 2) — native camera/
-  # gallery picker for the `POST/PATCH /evacuation-centers` `photo`
-  # multipart field, which the backend now genuinely supports (see
-  # elikas-backend-main (4)'s StoreEvacuationCenterRequest). No
-  # existing image-picking dependency in this project to reuse.
-  image_picker: ^1.1.2
 
   # Location
   geolocator: ^13.0.0

@@ -1054,5 +1054,8 @@
   "reliefShortfallRow": "Requested {count} more: {status}",
   "@reliefShortfallRow": {"placeholders":{"count":{"type":"int"},"status":{"type":"String"}}},
   "reliefShortfallSummary": "Request {count} more boxes, round {round}",
-  "@reliefShortfallSummary": {"placeholders":{"count":{"type":"int"},"round":{"type":"int"}}}
+  "@reliefShortfallSummary": {"placeholders":{"count":{"type":"int"},"round":{"type":"int"}}},
+
+  "staffMyCentersSubtitle": "Set a location, request what is missing",
+  "pendingRegistrationsRetiring": "Full registrations are no longer started on the phone; families are entered on the EC Board. Sync or fix the ones below. This screen goes away once they are done."
 }

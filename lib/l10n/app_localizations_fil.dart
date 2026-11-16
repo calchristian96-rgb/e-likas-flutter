@@ -2822,4 +2822,12 @@ class AppLocalizationsFil extends AppLocalizations {
   String reliefShortfallSummary(int count, int round) {
     return 'Request $count more boxes, round $round';
   }
+
+  @override
+  String get staffMyCentersSubtitle =>
+      'Set a location, request what is missing';
+
+  @override
+  String get pendingRegistrationsRetiring =>
+      'Full registrations are no longer started on the phone; families are entered on the EC Board. Sync or fix the ones below. This screen goes away once they are done.';
 }
