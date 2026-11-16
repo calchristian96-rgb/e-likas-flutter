@@ -2163,34 +2163,34 @@ class AppLocalizationsFil extends AppLocalizations {
   String get ecBoardHeaderPersons => 'Tao (Cum/Now)';
 
   @override
-  String get staffUseTheWebTitle => 'Use the web';
+  String get staffUseTheWebTitle => 'Gamitin ang website';
 
   @override
   String get staffUseTheWebBody =>
-      'Administrator accounts manage users, logs and backups on the E-LIKAS website. The mobile app is for barangay field work and CSWD monitoring.';
+      'Ang mga administrator account ay namamahala ng users, logs at backups sa E-LIKAS website. Ang mobile app ay para sa field work ng barangay at monitoring ng CSWD.';
 
   @override
-  String get staffOpenWebsite => 'Open the E-LIKAS website';
+  String get staffOpenWebsite => 'Buksan ang E-LIKAS website';
 
   @override
-  String get staffSignOut => 'Sign out';
+  String get staffSignOut => 'Mag-sign out';
 
   @override
-  String get centerApprovalUnverified => 'Unverified';
+  String get centerApprovalUnverified => 'Hindi pa beripikado';
 
   @override
-  String get centerApprovalRejected => 'Rejected';
+  String get centerApprovalRejected => 'Tinanggihan';
 
   @override
-  String get centerApprovalEditWaiting => 'Edit waiting for CSWD';
+  String get centerApprovalEditWaiting => 'Pagbabago na hinihintay ang CSWD';
 
   @override
   String get centerRejectedNotUsable =>
-      'Rejected by CSWD. Not usable on the EC Board.';
+      'Tinanggihan ng CSWD. Hindi magagamit sa EC Board.';
 
   @override
   String get staffOwnCentersEmpty =>
-      'No evacuation centers in your barangay yet';
+      'Wala pang evacuation center sa inyong barangay';
 
   @override
   String get demoBadge => 'DEMO';
@@ -2199,24 +2199,24 @@ class AppLocalizationsFil extends AppLocalizations {
   String get drillBadge => 'DRILL';
 
   @override
-  String get residentBarangayTitle => 'Your barangay';
+  String get residentBarangayTitle => 'Inyong barangay';
 
   @override
-  String get residentBarangayNotSet => 'Not chosen yet';
+  String get residentBarangayNotSet => 'Hindi pa napipili';
 
   @override
-  String get residentBarangayPickerTitle => 'Choose your barangay';
+  String get residentBarangayPickerTitle => 'Piliin ang inyong barangay';
 
   @override
-  String get residentBarangaySearchHint => 'Search barangays';
+  String get residentBarangaySearchHint => 'Maghanap ng barangay';
 
   @override
   String get residentBarangayListUnavailable =>
-      'The barangay list needs an internet connection the first time.';
+      'Kailangan ng internet sa unang pagkuha ng listahan ng barangay.';
 
   @override
   String get residentBarangayWhy =>
-      'See your barangay\'s status and its evacuation centers first.';
+      'Makita muna ang status ng inyong barangay at ang mga evacuation center nito.';
 
   @override
   String residentBarangayStatusOf(Object barangay) {
@@ -2224,19 +2224,19 @@ class AppLocalizationsFil extends AppLocalizations {
   }
 
   @override
-  String get residentNoOpenEvent => 'No disaster event is open.';
+  String get residentNoOpenEvent => 'Walang bukas na sakuna.';
 
   @override
   String residentStatusSavedCopy(Object age) {
-    return 'Saved copy, last updated $age';
+    return 'Naka-save na kopya, huling update $age';
   }
 
   @override
-  String get showBarangayStatus => 'Barangay status';
+  String get showBarangayStatus => 'Status ng barangay';
 
   @override
   String get barangayBoundariesAttribution =>
-      'Barangay boundaries: PSA-NAMRIA via HDX (CC BY-IGO)';
+      'Hangganan ng barangay: PSA-NAMRIA via HDX (CC BY-IGO)';
 
   @override
   String barangayStatusTapped(Object barangay, Object status) {
@@ -2248,18 +2248,18 @@ class AppLocalizationsFil extends AppLocalizations {
 
   @override
   String centersInYourBarangay(Object barangay) {
-    return 'Centers in Brgy. $barangay';
+    return 'Mga center sa Brgy. $barangay';
   }
 
   @override
   String get centerNoMapLocationYet =>
-      'No map location yet. Ask your barangay for directions.';
+      'Wala pang lokasyon sa mapa. Magtanong sa inyong barangay kung paano pumunta.';
 
   @override
   String get staffTabCenters => 'Centers';
 
   @override
-  String get staffTabMore => 'More';
+  String get staffTabMore => 'Iba pa';
 
   @override
   String get staffTabResidentApp => 'Resident app';
@@ -2274,18 +2274,18 @@ class AppLocalizationsFil extends AppLocalizations {
   String get syncTitle => 'Sync';
 
   @override
-  String get syncNow => 'Sync now';
+  String get syncNow => 'I-sync ngayon';
 
   @override
-  String get syncAllDone => 'Everything is synced';
+  String get syncAllDone => 'Naka-sync na ang lahat';
 
   @override
   String syncWaitingCount(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count waiting to sync',
-      one: '1 waiting to sync',
+      other: '$count naghihintay ma-sync',
+      one: '1 naghihintay ma-sync',
     );
     return '$_temp0';
   }
@@ -2295,8 +2295,8 @@ class AppLocalizationsFil extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count need a look',
-      one: '1 needs a look',
+      other: '$count kailangang tingnan',
+      one: '1 kailangang tingnan',
     );
     return '$_temp0';
   }
@@ -2306,142 +2306,143 @@ class AppLocalizationsFil extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count sent.',
-      one: '1 sent.',
-      zero: 'Nothing new to send.',
+      other: '$count naipadala.',
+      one: '1 naipadala.',
+      zero: 'Walang bagong ipapadala.',
     );
     return '$_temp0';
   }
 
   @override
-  String get syncNeedsAttention => 'Needs a look';
+  String get syncNeedsAttention => 'Kailangang tingnan';
 
   @override
-  String get syncWaiting => 'Waiting to sync';
+  String get syncWaiting => 'Naghihintay ma-sync';
 
   @override
-  String get syncFamilyRegistrations => 'Family registrations';
+  String get syncFamilyRegistrations => 'Mga rehistro ng pamilya';
 
   @override
-  String get syncTryAgain => 'Try again';
+  String get syncTryAgain => 'Subukang muli';
 
   @override
-  String get syncDiscardTitle => 'Discard this action?';
+  String get syncDiscardTitle => 'Itapon ang aksyong ito?';
 
   @override
   String syncDiscardBody(Object summary) {
-    return '\"$summary\" will not be sent. This cannot be undone.';
+    return 'Hindi na ipapadala ang \"$summary\". Hindi na ito maibabalik.';
   }
 
   @override
-  String get syncDiscardConfirm => 'Discard';
+  String get syncDiscardConfirm => 'Itapon';
 
   @override
-  String get syncDiscarded => 'Action discarded';
+  String get syncDiscarded => 'Naitapon ang aksyon';
 
   @override
-  String get syncCouldNotRead => 'Could not read the queue on this device.';
+  String get syncCouldNotRead => 'Hindi mabasa ang pila sa device na ito.';
 
   @override
-  String get moreActions => 'More actions';
+  String get moreActions => 'Iba pang aksyon';
 
   @override
   String get staffSyncRow => 'Sync';
 
   @override
-  String get purokOptionalLabel => 'Purok (optional)';
+  String get purokOptionalLabel => 'Purok (opsyonal)';
 
   @override
-  String get purokNone => 'No purok';
+  String get purokNone => 'Walang purok';
 
   @override
-  String get ecBoardFamiliesHereTitle => 'Families here now';
+  String get ecBoardFamiliesHereTitle => 'Mga pamilyang narito ngayon';
 
   @override
   String get ecBoardFamiliesHereEmpty =>
-      'No family is checked in here for this event.';
+      'Walang pamilyang naka-check in dito para sa event na ito.';
 
   @override
   String ecBoardFamilyMembers(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count members',
-      one: '1 member',
+      other: '$count miyembro',
+      one: '1 miyembro',
     );
     return '$_temp0';
   }
 
   @override
   String showAllCount(int count) {
-    return 'Show all $count';
+    return 'Ipakita lahat ($count)';
   }
 
   @override
-  String get returningFamiliesTitle => 'Returning families';
+  String get returningFamiliesTitle => 'Bumabalik na pamilya';
 
   @override
   String get returningFamiliesOfflineButton =>
-      'Returning families (needs a connection)';
+      'Bumabalik na pamilya (kailangan ng internet)';
 
   @override
   String get returningFamiliesNeedsConnection =>
-      'Returning families need an internet connection.';
+      'Kailangan ng internet para sa bumabalik na pamilya.';
 
   @override
   String get returningFamiliesNoPastEvents =>
-      'No family of your barangay from a past event can be entered here.';
+      'Walang pamilya ng inyong barangay mula sa nakaraang event na maaaring ilagay dito.';
 
   @override
-  String get returningFamiliesPastEvent => 'Past event';
+  String get returningFamiliesPastEvent => 'Nakaraang event';
 
   @override
-  String get returningFamiliesSearchHint => 'Family or member name';
+  String get returningFamiliesSearchHint => 'Pangalan ng pamilya o miyembro';
 
   @override
-  String get returningFamiliesNone => 'No family found.';
+  String get returningFamiliesNone => 'Walang nahanap na pamilya.';
 
   @override
-  String get returningFamilyAlreadyIn => 'Already in this event';
+  String get returningFamilyAlreadyIn => 'Nasa event na ito na';
 
   @override
-  String get returningFamilyWhoArrived => 'Who arrived?';
+  String get returningFamilyWhoArrived => 'Sino ang dumating?';
 
   @override
   String returningFamilyUnnamed(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count members without a name are not listed.',
-      one: '1 member without a name is not listed.',
+      other: 'Hindi nakalista ang $count miyembrong walang pangalan.',
+      one: 'Hindi nakalista ang 1 miyembrong walang pangalan.',
     );
     return '$_temp0';
   }
 
   @override
-  String get returningMemberCheckedIn => 'Already checked in this event';
+  String get returningMemberCheckedIn => 'Naka-check in na sa event na ito';
 
   @override
   String returningMemberAge(int age) {
-    return '$age years';
+    return '$age taon';
   }
 
   @override
-  String get returningMemberAgeGroup => 'Age group (no birthdate on record)';
+  String get returningMemberAgeGroup =>
+      'Pangkat ng edad (walang petsa ng kapanganakan)';
 
   @override
-  String get returningMemberStillPregnant => 'Pregnant now';
+  String get returningMemberStillPregnant => 'Buntis ngayon';
 
   @override
-  String get returningMemberStillLactating => 'Lactating now';
+  String get returningMemberStillLactating => 'Nagpapasuso ngayon';
 
   @override
   String returningFamilyEnroll(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'Enter $count people',
-      one: 'Enter 1 person',
+      other: 'Ilagay ang $count tao',
+      one: 'Ilagay ang 1 tao',
     );
     return '$_temp0';
   }
@@ -2451,154 +2452,155 @@ class AppLocalizationsFil extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count people entered',
-      one: '1 person entered',
+      other: '$count tao ang nailagay',
+      one: '1 tao ang nailagay',
     );
     return '$_temp0';
   }
 
   @override
-  String get returningFamilyDuplicateTitle => 'Same family?';
+  String get returningFamilyDuplicateTitle => 'Parehong pamilya?';
 
   @override
   String get returningFamilyDuplicateBody =>
-      'A family that may be the same one is already in this event.';
+      'May pamilyang maaaring pareho na nasa event na ito.';
 
   @override
   String returningFamilyLinkTo(String name, String center, int count) {
-    return 'Same family, link it: $name · $center · $count members';
+    return 'Parehong pamilya, ikonekta: $name · $center · $count miyembro';
   }
 
   @override
-  String get returningFamilyDifferent => 'Different family, add as new';
+  String get returningFamilyDifferent => 'Ibang pamilya, idagdag bilang bago';
 
   @override
-  String get centerLocationTitle => 'Location on the map';
+  String get centerLocationTitle => 'Lokasyon sa mapa';
 
   @override
-  String get centerLocationOnMap => 'On the map';
+  String get centerLocationOnMap => 'Nasa mapa';
 
   @override
   String get centerLocationWaitingForCswd =>
-      'A location you sent is waiting for CSWD.';
+      'Hinihintay ng CSWD ang lokasyong ipinadala ninyo.';
 
   @override
   String get centerLocationWaitingToSync =>
-      'A location is saved on this phone and will be sent when online.';
+      'May lokasyong naka-save sa teleponong ito at ipapadala pagka-online.';
 
   @override
-  String get centerLocationSetFromPhone => 'Set location from this phone';
+  String get centerLocationSetFromPhone =>
+      'Itakda ang lokasyon mula sa teleponong ito';
 
   @override
-  String get centerLocationConfirmTitle => 'Use this location?';
+  String get centerLocationConfirmTitle => 'Gamitin ang lokasyong ito?';
 
   @override
   String centerLocationAccuracy(int meters) {
-    return 'Accurate to about $meters m';
+    return 'Tumpak hanggang mga $meters m';
   }
 
   @override
   String get centerLocationLowAccuracy =>
-      'Low accuracy. Step outside or wait a moment, then try again.';
+      'Mababa ang katumpakan. Lumabas o maghintay sandali, saka subukang muli.';
 
   @override
   String get centerLocationGoesToCswd =>
-      'Stand at the center\'s entrance. CSWD approves the location before it appears on the map.';
+      'Tumayo sa pasukan ng center. Aaprubahan ng CSWD ang lokasyon bago ito lumabas sa mapa.';
 
   @override
-  String get centerLocationSend => 'Send to CSWD';
+  String get centerLocationSend => 'Ipadala sa CSWD';
 
   @override
   String centerLocationSummary(Object center) {
-    return 'Location of $center';
+    return 'Lokasyon ng $center';
   }
 
   @override
   String get centerLocationQueued =>
-      'Location sent for CSWD approval (or kept until you are online).';
+      'Naipadala ang lokasyon para sa pag-apruba ng CSWD (o itatago hanggang maka-online).';
 
   @override
-  String get facilityRequestsTitle => 'Facility requests';
+  String get facilityRequestsTitle => 'Mga hiling na pasilidad';
 
   @override
-  String get facilityRequestsNone => 'No request yet.';
+  String get facilityRequestsNone => 'Wala pang hiling.';
 
   @override
   String get facilityRequestsNeedConnection =>
-      'The requests sent before need a connection to show.';
+      'Kailangan ng internet para makita ang mga naunang hiling.';
 
   @override
-  String get facilityRequestsAsk => 'Request what\'s missing';
+  String get facilityRequestsAsk => 'Hilingin ang kulang';
 
   @override
-  String get facilityRequestWhat => 'What is missing';
+  String get facilityRequestWhat => 'Ano ang kulang';
 
   @override
-  String get facilityRequestOther => 'Something else (type it)';
+  String get facilityRequestOther => 'Iba pa (i-type)';
 
   @override
-  String get facilityRequestItem => 'What is needed';
+  String get facilityRequestItem => 'Ano ang kailangan';
 
   @override
-  String get facilityRequestQuantity => 'How many';
+  String get facilityRequestQuantity => 'Ilan';
 
   @override
-  String get facilityRequestReason => 'Why (optional)';
+  String get facilityRequestReason => 'Bakit (opsyonal)';
 
   @override
-  String get facilityRequestSend => 'Send to CSWD';
+  String get facilityRequestSend => 'Ipadala sa CSWD';
 
   @override
   String get facilityRequestSent =>
-      'Request sent to CSWD (or kept until you are online).';
+      'Naipadala ang hiling sa CSWD (o itatago hanggang maka-online).';
 
   @override
   String facilityRequestSummary(String what, int count, String center) {
-    return '$what × $count for $center';
+    return '$what × $count para sa $center';
   }
 
   @override
-  String get requestStatusWaiting => 'Waiting';
+  String get requestStatusWaiting => 'Naghihintay';
 
   @override
-  String get requestStatusApproved => 'Approved';
+  String get requestStatusApproved => 'Naaprubahan';
 
   @override
-  String get requestStatusRejected => 'Rejected';
+  String get requestStatusRejected => 'Tinanggihan';
 
   @override
-  String get requestStatusFulfilled => 'Fulfilled';
+  String get requestStatusFulfilled => 'Naibigay';
 
   @override
-  String get decrease => 'Decrease';
+  String get decrease => 'Bawasan';
 
   @override
-  String get increase => 'Increase';
+  String get increase => 'Dagdagan';
 
   @override
-  String get reliefTitle => 'Relief boxes';
+  String get reliefTitle => 'Mga relief box';
 
   @override
   String get staffTabRelief => 'Relief';
 
   @override
   String get reliefNeedsConnectionFirst =>
-      'Relief boxes need a connection the first time.';
+      'Kailangan ng internet sa unang pagbukas ng relief box.';
 
   @override
-  String get staffNoOpenEvent => 'No disaster event is open.';
+  String get staffNoOpenEvent => 'Walang bukas na sakuna.';
 
   @override
   String savedCopyAge(Object age) {
-    return 'Saved copy, $age';
+    return 'Naka-save na kopya, $age';
   }
 
   @override
   String get reliefCountNotValidated =>
-      'Your barangay\'s final count is not validated yet. Until CSWD validates it, the need is 0 and no boxes can be sent.';
+      'Hindi pa beripikado ang final count ng inyong barangay. Hanggang hindi ito beripikado ng CSWD, 0 ang pangangailangan at walang box na maipapadala.';
 
   @override
-  String get reliefNoRoundYet => 'No relief round yet.';
+  String get reliefNoRoundYet => 'Wala pang relief round.';
 
   @override
   String reliefRound(int number) {
@@ -2606,105 +2608,105 @@ class AppLocalizationsFil extends AppLocalizations {
   }
 
   @override
-  String get reliefNeed => 'Need';
+  String get reliefNeed => 'Kailangan';
 
   @override
-  String get reliefReceived => 'Received';
+  String get reliefReceived => 'Natanggap';
 
   @override
-  String get reliefGiven => 'Given';
+  String get reliefGiven => 'Naibigay';
 
   @override
-  String get reliefShort => 'Short';
+  String get reliefShort => 'Kulang';
 
   @override
-  String get reliefBoxesToConfirm => 'Boxes to confirm';
+  String get reliefBoxesToConfirm => 'Mga box na kukumpirmahin';
 
   @override
-  String get reliefGiveBoxes => 'Give boxes';
+  String get reliefGiveBoxes => 'Magbigay ng box';
 
   @override
   String reliefGivenOfReceived(int given, int received) {
-    return '$given given of $received received';
+    return '$given naibigay sa $received natanggap';
   }
 
   @override
   String reliefBoxesSent(int count, int round) {
-    return '$count boxes sent, round $round';
+    return '$count box na ipinadala, round $round';
   }
 
   @override
-  String get reliefConfirmArrived => 'Confirm what arrived';
+  String get reliefConfirmArrived => 'Kumpirmahin ang dumating';
 
   @override
-  String get reliefHowManyArrived => 'How many boxes arrived?';
+  String get reliefHowManyArrived => 'Ilang box ang dumating?';
 
   @override
   String reliefBoxesArrived(int sent) {
-    return 'Boxes received (of $sent sent)';
+    return 'Mga box na natanggap (sa $sent na ipinadala)';
   }
 
   @override
-  String get reliefFewerNote => 'Why fewer? (required)';
+  String get reliefFewerNote => 'Bakit kulang? (kailangan)';
 
   @override
-  String get reliefConfirm => 'Confirm';
+  String get reliefConfirm => 'Kumpirmahin';
 
   @override
   String reliefConfirmSummary(int count, int round) {
-    return '$count boxes received, round $round';
+    return '$count box na natanggap, round $round';
   }
 
   @override
-  String get reliefLeftToGive => 'Left to give';
+  String get reliefLeftToGive => 'Natitirang ibibigay';
 
   @override
-  String get reliefByPriority => 'By priority';
+  String get reliefByPriority => 'Ayon sa prayoridad';
 
   @override
-  String get reliefByName => 'By name';
+  String get reliefByName => 'Ayon sa pangalan';
 
   @override
   String get reliefSuggestedOrderNote =>
-      'Suggested order, for CSWDO confirmation.';
+      'Mungkahing pagkakasunod, para kumpirmahin ng CSWDO.';
 
   @override
   String reliefPurokHeading(String purok, int given, int total) {
-    return '$purok · $given of $total given';
+    return '$purok · $given sa $total naibigay';
   }
 
   @override
-  String get reliefGiveBox => 'Give box';
+  String get reliefGiveBox => 'Ibigay ang box';
 
   @override
-  String get reliefGivenWaiting => 'Given, waiting to sync';
+  String get reliefGivenWaiting => 'Naibigay, naghihintay ma-sync';
 
   @override
-  String get reliefVoidWaiting => 'Void waiting to sync';
+  String get reliefVoidWaiting => 'Pag-void na naghihintay ma-sync';
 
   @override
-  String get reliefVoidHandout => 'Void handout';
+  String get reliefVoidHandout => 'I-void ang pagbigay';
 
   @override
   String reliefVoidTitle(Object family) {
-    return 'Void the box for $family?';
+    return 'I-void ang box para sa $family?';
   }
 
   @override
   String get reliefVoidBody =>
-      'The family will show as not given yet. This cannot be undone.';
+      'Lalabas ang pamilya na hindi pa nabibigyan. Hindi na ito maibabalik.';
 
   @override
-  String get reliefVoidReason => 'Reason (required)';
+  String get reliefVoidReason => 'Dahilan (kailangan)';
 
   @override
   String reliefGiveSummary(String family, int round) {
-    return 'Box for $family, round $round';
+    return 'Box para sa $family, round $round';
   }
 
   @override
   String reliefVoidSummary(Object family) {
-    return 'Void box for $family';
+    return 'I-void ang box para sa $family';
   }
 
   @override
@@ -2712,35 +2714,35 @@ class AppLocalizationsFil extends AppLocalizations {
 
   @override
   String get barangayStatusNeedsConnection =>
-      'The barangay status needs a connection the first time.';
+      'Kailangan ng internet sa unang pagkuha ng status ng barangay.';
 
   @override
   String barangayStatusSetBy(Object name, Object when) {
-    return 'Set by $name, $when';
+    return 'Itinakda ni $name, $when';
   }
 
   @override
   String get barangayStatusReadOnly =>
-      'The event is closed. The status can only be changed during an open event.';
+      'Sarado na ang event. Mababago lang ang status habang bukas ang event.';
 
   @override
   String barangayStatusCswdOrder(Object status) {
-    return 'Under \"$status\", ordered by CSWD. Only CSWD can change it.';
+    return 'Nasa \"$status\", iniutos ng CSWD. CSWD lang ang makakapagbago nito.';
   }
 
   @override
-  String get barangayStatusChange => 'Change status';
+  String get barangayStatusChange => 'Baguhin ang status';
 
   @override
   String get barangayStatusNote =>
-      'Note (optional; required to update the same status)';
+      'Tala (opsyonal; kailangan para i-update ang parehong status)';
 
   @override
-  String get barangayStatusSave => 'Save status';
+  String get barangayStatusSave => 'I-save ang status';
 
   @override
   String barangayStatusSaved(Object status) {
-    return 'Marked \"$status\" (sent when online).';
+    return 'Minarkahan na \"$status\" (ipapadala pagka-online).';
   }
 
   @override
@@ -2748,88 +2750,88 @@ class AppLocalizationsFil extends AppLocalizations {
 
   @override
   String finalCountFigures(int families, int persons) {
-    return '$families families · $persons persons';
+    return '$families pamilya · $persons tao';
   }
 
   @override
   String finalCountInsideOutside(int inside, int outside) {
-    return '$inside inside centers · $outside outside';
+    return '$inside nasa loob ng center · $outside nasa labas';
   }
 
   @override
   String finalCountNoStay(int count) {
-    return '$count with no stay recorded';
+    return '$count na walang naitalang pananatili';
   }
 
   @override
-  String get finalCountNotSubmitted => 'Not submitted yet';
+  String get finalCountNotSubmitted => 'Hindi pa naisusumite';
 
   @override
-  String get finalCountWaiting => 'Submitted, waiting for CSWD';
+  String get finalCountWaiting => 'Naisumite, hinihintay ang CSWD';
 
   @override
-  String get finalCountReturned => 'Returned by CSWD';
+  String get finalCountReturned => 'Ibinalik ng CSWD';
 
   @override
   String finalCountValidated(int families) {
-    return 'Validated: $families families (the relief need)';
+    return 'Beripikado: $families pamilya (ang pangangailangan sa relief)';
   }
 
   @override
   String get finalCountChanged =>
-      'The count has changed since the last submission.';
+      'Nagbago ang bilang mula sa huling pagsumite.';
 
   @override
-  String get finalCountSubmit => 'Submit final count';
+  String get finalCountSubmit => 'Isumite ang final count';
 
   @override
-  String get finalCountSubmitUpdated => 'Submit updated count';
+  String get finalCountSubmitUpdated => 'Isumite ang bagong bilang';
 
   @override
-  String get finalCountSubmitTitle => 'Submit this final count?';
+  String get finalCountSubmitTitle => 'Isumite ang final count na ito?';
 
   @override
   String get finalCountComputedNote =>
-      'The system computes these numbers from the families registered in this event; they are not typed in.';
+      'Kinukuwenta ng sistema ang mga bilang mula sa mga pamilyang nakarehistro sa event na ito; hindi ito tina-type.';
 
   @override
-  String get finalCountNote => 'Note for CSWD (optional)';
+  String get finalCountNote => 'Tala para sa CSWD (opsyonal)';
 
   @override
   String finalCountSummary(int families, int persons) {
-    return 'Final count: $families families, $persons persons';
+    return 'Final count: $families pamilya, $persons tao';
   }
 
   @override
   String reliefShortfallTitle(int round) {
-    return 'Request more boxes for round $round';
+    return 'Humiling ng dagdag na box para sa round $round';
   }
 
   @override
-  String get reliefShortfallSend => 'Send request';
+  String get reliefShortfallSend => 'Ipadala ang hiling';
 
   @override
   String reliefShortfallAsk(int count) {
-    return 'Request up to $count more boxes';
+    return 'Humiling ng hanggang $count pang box';
   }
 
   @override
   String reliefShortfallRow(int count, String status) {
-    return 'Requested $count more: $status';
+    return 'Humiling ng $count pa: $status';
   }
 
   @override
   String reliefShortfallSummary(int count, int round) {
-    return 'Request $count more boxes, round $round';
+    return 'Humiling ng $count pang box, round $round';
   }
 
   @override
   String get staffMyCentersSubtitle =>
-      'Set a location, request what is missing';
+      'Itakda ang lokasyon, hilingin ang kulang';
 
   @override
   String get pendingRegistrationsRetiring =>
-      'Full registrations are no longer started on the phone; families are entered on the EC Board. Sync or fix the ones below. This screen goes away once they are done.';
+      'Hindi na nagsisimula ng buong rehistro sa telepono; sa EC Board na inilalagay ang mga pamilya. I-sync o ayusin ang mga nasa ibaba. Mawawala ang screen na ito kapag tapos na ang mga ito.';
 
   @override
   String get monitoringTitle => 'Monitoring';
@@ -2838,69 +2840,69 @@ class AppLocalizationsFil extends AppLocalizations {
   String get staffTabMonitoring => 'Monitoring';
 
   @override
-  String get monitoringOverview => 'Overview';
+  String get monitoringOverview => 'Buod';
 
   @override
-  String get monitoringCenters => 'Centers';
+  String get monitoringCenters => 'Mga center';
 
   @override
-  String get monitoringBarangays => 'Barangays';
+  String get monitoringBarangays => 'Mga barangay';
 
   @override
-  String get monitoringRequests => 'Requests';
+  String get monitoringRequests => 'Mga hiling';
 
   @override
-  String get monitoringPersons => 'Persons';
+  String get monitoringPersons => 'Tao';
 
   @override
-  String get monitoringFamilies => 'Families';
+  String get monitoringFamilies => 'Pamilya';
 
   @override
-  String get monitoringInside => 'Inside centers';
+  String get monitoringInside => 'Nasa loob ng center';
 
   @override
-  String get monitoringCentersInUse => 'Centers in use';
+  String get monitoringCentersInUse => 'Ginagamit na center';
 
   @override
   String monitoringArrivedLastHour(int count) {
-    return '$count arrived in the last hour';
+    return '$count ang dumating sa nakaraang oras';
   }
 
   @override
-  String get monitoringNeedsAttention => 'Needs attention';
+  String get monitoringNeedsAttention => 'Kailangang tingnan';
 
   @override
-  String get monitoringNothingUrgent => 'Nothing needs attention now.';
+  String get monitoringNothingUrgent => 'Walang kailangang tingnan ngayon.';
 
   @override
   String monitoringCentersSummary(int inUse, int total, int noCapacity) {
-    return '$inUse of $total centers in use · $noCapacity without capacity';
+    return '$inUse sa $total center ang ginagamit · $noCapacity walang kapasidad';
   }
 
   @override
   String monitoringShort(Object items) {
-    return 'Short: $items';
+    return 'Kulang: $items';
   }
 
   @override
-  String get monitoringNoChecklist => 'No facilities checklist';
+  String get monitoringNoChecklist => 'Walang checklist ng pasilidad';
 
   @override
   String monitoringInsideNoCapacity(int count) {
-    return '$count inside · capacity not set';
+    return '$count sa loob · walang kapasidad';
   }
 
   @override
-  String get monitoringNotNormal => 'Not normal';
+  String get monitoringNotNormal => 'Hindi normal';
 
   @override
-  String get monitoringAllNormal => 'Every barangay is normal.';
+  String get monitoringAllNormal => 'Normal ang lahat ng barangay.';
 
   @override
-  String get monitoringLatestChanges => 'Latest changes';
+  String get monitoringLatestChanges => 'Pinakabagong pagbabago';
 
   @override
-  String get monitoringNoRequests => 'No request is waiting.';
+  String get monitoringNoRequests => 'Walang hiling na naghihintay.';
 
   @override
   String monitoringWaited(int hours, int minutes) {
@@ -2909,10 +2911,10 @@ class AppLocalizationsFil extends AppLocalizations {
 
   @override
   String get monitoringNeedsConnection =>
-      'Monitoring needs a connection the first time.';
+      'Kailangan ng internet sa unang pagbukas ng monitoring.';
 
   @override
   String monitoringUpdated(Object age) {
-    return 'Updated $age';
+    return 'Na-update $age';
   }
 }
