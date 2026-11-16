@@ -10,6 +10,7 @@ import '../../../evacuation_centers/presentation/widgets/center_status_display.d
 import '../../../staff_auth/domain/entities/staff_session.dart';
 import '../../../staff_auth/presentation/widgets/staff_auth_guard.dart';
 import '../providers/staff_evacuation_centers_provider.dart';
+import '../../../facility_requests/facility_requests.dart';
 import '../widgets/center_location_section.dart';
 
 /// Full authenticated detail for one of the official's centers. Its
@@ -161,6 +162,14 @@ class _CenterDetailContent extends StatelessWidget {
         ],
         const SizedBox(height: 24),
         CenterLocationSection(center: center, session: session),
+        const Divider(height: 32),
+        FacilityRequestsSection(
+          centerId: center.id,
+          centerName: center.name,
+          canCreate:
+              session.can(StaffPermission.facilityRequestsCreate) &&
+              center.barangayId == session.barangayId,
+        ),
       ],
     );
   }

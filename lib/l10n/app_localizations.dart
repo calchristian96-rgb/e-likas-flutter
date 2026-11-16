@@ -4311,6 +4311,114 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Location sent for CSWD approval (or kept until you are online).'**
   String get centerLocationQueued;
+
+  /// No description provided for @facilityRequestsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Facility requests'**
+  String get facilityRequestsTitle;
+
+  /// No description provided for @facilityRequestsNone.
+  ///
+  /// In en, this message translates to:
+  /// **'No request yet.'**
+  String get facilityRequestsNone;
+
+  /// No description provided for @facilityRequestsNeedConnection.
+  ///
+  /// In en, this message translates to:
+  /// **'The requests sent before need a connection to show.'**
+  String get facilityRequestsNeedConnection;
+
+  /// No description provided for @facilityRequestsAsk.
+  ///
+  /// In en, this message translates to:
+  /// **'Request what\'s missing'**
+  String get facilityRequestsAsk;
+
+  /// No description provided for @facilityRequestWhat.
+  ///
+  /// In en, this message translates to:
+  /// **'What is missing'**
+  String get facilityRequestWhat;
+
+  /// No description provided for @facilityRequestOther.
+  ///
+  /// In en, this message translates to:
+  /// **'Something else (type it)'**
+  String get facilityRequestOther;
+
+  /// No description provided for @facilityRequestItem.
+  ///
+  /// In en, this message translates to:
+  /// **'What is needed'**
+  String get facilityRequestItem;
+
+  /// No description provided for @facilityRequestQuantity.
+  ///
+  /// In en, this message translates to:
+  /// **'How many'**
+  String get facilityRequestQuantity;
+
+  /// No description provided for @facilityRequestReason.
+  ///
+  /// In en, this message translates to:
+  /// **'Why (optional)'**
+  String get facilityRequestReason;
+
+  /// No description provided for @facilityRequestSend.
+  ///
+  /// In en, this message translates to:
+  /// **'Send to CSWD'**
+  String get facilityRequestSend;
+
+  /// No description provided for @facilityRequestSent.
+  ///
+  /// In en, this message translates to:
+  /// **'Request sent to CSWD (or kept until you are online).'**
+  String get facilityRequestSent;
+
+  /// No description provided for @facilityRequestSummary.
+  ///
+  /// In en, this message translates to:
+  /// **'{what} × {count} for {center}'**
+  String facilityRequestSummary(String what, int count, String center);
+
+  /// No description provided for @requestStatusWaiting.
+  ///
+  /// In en, this message translates to:
+  /// **'Waiting'**
+  String get requestStatusWaiting;
+
+  /// No description provided for @requestStatusApproved.
+  ///
+  /// In en, this message translates to:
+  /// **'Approved'**
+  String get requestStatusApproved;
+
+  /// No description provided for @requestStatusRejected.
+  ///
+  /// In en, this message translates to:
+  /// **'Rejected'**
+  String get requestStatusRejected;
+
+  /// No description provided for @requestStatusFulfilled.
+  ///
+  /// In en, this message translates to:
+  /// **'Fulfilled'**
+  String get requestStatusFulfilled;
+
+  /// No description provided for @decrease.
+  ///
+  /// In en, this message translates to:
+  /// **'Decrease'**
+  String get decrease;
+
+  /// No description provided for @increase.
+  ///
+  /// In en, this message translates to:
+  /// **'Increase'**
+  String get increase;
 }
 
 class _AppLocalizationsDelegate

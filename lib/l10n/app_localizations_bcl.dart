@@ -2480,4 +2480,62 @@ class AppLocalizationsBcl extends AppLocalizations {
   @override
   String get centerLocationQueued =>
       'Location sent for CSWD approval (or kept until you are online).';
+
+  @override
+  String get facilityRequestsTitle => 'Facility requests';
+
+  @override
+  String get facilityRequestsNone => 'No request yet.';
+
+  @override
+  String get facilityRequestsNeedConnection =>
+      'The requests sent before need a connection to show.';
+
+  @override
+  String get facilityRequestsAsk => 'Request what\'s missing';
+
+  @override
+  String get facilityRequestWhat => 'What is missing';
+
+  @override
+  String get facilityRequestOther => 'Something else (type it)';
+
+  @override
+  String get facilityRequestItem => 'What is needed';
+
+  @override
+  String get facilityRequestQuantity => 'How many';
+
+  @override
+  String get facilityRequestReason => 'Why (optional)';
+
+  @override
+  String get facilityRequestSend => 'Send to CSWD';
+
+  @override
+  String get facilityRequestSent =>
+      'Request sent to CSWD (or kept until you are online).';
+
+  @override
+  String facilityRequestSummary(String what, int count, String center) {
+    return '$what × $count for $center';
+  }
+
+  @override
+  String get requestStatusWaiting => 'Waiting';
+
+  @override
+  String get requestStatusApproved => 'Approved';
+
+  @override
+  String get requestStatusRejected => 'Rejected';
+
+  @override
+  String get requestStatusFulfilled => 'Fulfilled';
+
+  @override
+  String get decrease => 'Decrease';
+
+  @override
+  String get increase => 'Increase';
 }

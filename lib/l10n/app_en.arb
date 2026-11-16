@@ -949,5 +949,25 @@
   "centerLocationGoesToCswd": "Stand at the center's entrance. CSWD approves the location before it appears on the map.",
   "centerLocationSend": "Send to CSWD",
   "centerLocationSummary": "Location of {center}",
-  "centerLocationQueued": "Location sent for CSWD approval (or kept until you are online)."
+  "centerLocationQueued": "Location sent for CSWD approval (or kept until you are online).",
+
+  "facilityRequestsTitle": "Facility requests",
+  "facilityRequestsNone": "No request yet.",
+  "facilityRequestsNeedConnection": "The requests sent before need a connection to show.",
+  "facilityRequestsAsk": "Request what's missing",
+  "facilityRequestWhat": "What is missing",
+  "facilityRequestOther": "Something else (type it)",
+  "facilityRequestItem": "What is needed",
+  "facilityRequestQuantity": "How many",
+  "facilityRequestReason": "Why (optional)",
+  "facilityRequestSend": "Send to CSWD",
+  "facilityRequestSent": "Request sent to CSWD (or kept until you are online).",
+  "facilityRequestSummary": "{what} × {count} for {center}",
+  "@facilityRequestSummary": {"placeholders":{"what":{"type":"String"},"count":{"type":"int"},"center":{"type":"String"}}},
+  "requestStatusWaiting": "Waiting",
+  "requestStatusApproved": "Approved",
+  "requestStatusRejected": "Rejected",
+  "requestStatusFulfilled": "Fulfilled",
+  "decrease": "Decrease",
+  "increase": "Increase"
 }
