@@ -21,6 +21,7 @@ import '../../../staff_auth/presentation/providers/staff_auth_provider.dart';
 import '../../domain/dashboard_summary.dart';
 import '../providers/home_provider.dart';
 import '../widgets/emergency_status_card.dart';
+import '../widgets/hotlines_quick_card.dart';
 import '../widgets/nearest_center_preview.dart';
 import '../widgets/quick_action_card.dart';
 import '../widgets/section_header.dart';
@@ -191,6 +192,10 @@ class _HomePageState extends ConsumerState<HomePage> {
                           const BarangayStatusCard(),
                           const SizedBox(height: 24),
                           const NearestCenterPreview(),
+                          const SizedBox(height: 24),
+                          SectionHeader(title: l10n.emergencyHotlines),
+                          const SizedBox(height: 8),
+                          const HotlinesQuickCard(),
                           const SizedBox(height: 24),
                           SectionHeader(title: l10n.quickActions),
                           const SizedBox(height: 8),

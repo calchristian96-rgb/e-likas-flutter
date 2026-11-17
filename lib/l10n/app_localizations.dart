@@ -3907,7 +3907,7 @@ abstract class AppLocalizations {
   /// No description provided for @residentStatusSavedCopy.
   ///
   /// In en, this message translates to:
-  /// **'Saved copy, last updated {age}'**
+  /// **'As of {age}'**
   String residentStatusSavedCopy(Object age);
 
   /// No description provided for @showBarangayStatus.
@@ -4447,7 +4447,7 @@ abstract class AppLocalizations {
   /// No description provided for @savedCopyAge.
   ///
   /// In en, this message translates to:
-  /// **'Saved copy, {age}'**
+  /// **'As of {age}'**
   String savedCopyAge(Object age);
 
   /// No description provided for @reliefCountNotValidated.
@@ -5229,6 +5229,300 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Male'**
   String get sexMaleShort;
+
+  /// No description provided for @staffTabHome.
+  ///
+  /// In en, this message translates to:
+  /// **'Home'**
+  String get staffTabHome;
+
+  /// No description provided for @homeEvacueesHere.
+  ///
+  /// In en, this message translates to:
+  /// **'Evacuees in my centers'**
+  String get homeEvacueesHere;
+
+  /// No description provided for @homeWithoutBox.
+  ///
+  /// In en, this message translates to:
+  /// **'Families without a box'**
+  String get homeWithoutBox;
+
+  /// No description provided for @homeBoxesLeft.
+  ///
+  /// In en, this message translates to:
+  /// **'Boxes left'**
+  String get homeBoxesLeft;
+
+  /// No description provided for @homeEvacuees.
+  ///
+  /// In en, this message translates to:
+  /// **'Evacuees'**
+  String get homeEvacuees;
+
+  /// No description provided for @homeNoOccupancyYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No count yet'**
+  String get homeNoOccupancyYet;
+
+  /// No description provided for @homeCheckInOut.
+  ///
+  /// In en, this message translates to:
+  /// **'Check in / Check out'**
+  String get homeCheckInOut;
+
+  /// No description provided for @homeGiveBox.
+  ///
+  /// In en, this message translates to:
+  /// **'Give relief box'**
+  String get homeGiveBox;
+
+  /// No description provided for @homeTodo.
+  ///
+  /// In en, this message translates to:
+  /// **'To do'**
+  String get homeTodo;
+
+  /// No description provided for @homeTodoNone.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing to do right now.'**
+  String get homeTodoNone;
+
+  /// No description provided for @homeTodoWithoutBox.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 family is waiting for a box} other{{count} families are waiting for boxes}}'**
+  String homeTodoWithoutBox(int count);
+
+  /// No description provided for @homeTodoFinalCountNotSent.
+  ///
+  /// In en, this message translates to:
+  /// **'Final count not sent'**
+  String get homeTodoFinalCountNotSent;
+
+  /// No description provided for @homeBarangayStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Barangay status'**
+  String get homeBarangayStatus;
+
+  /// No description provided for @homeAllHotlines.
+  ///
+  /// In en, this message translates to:
+  /// **'All hotlines'**
+  String get homeAllHotlines;
+
+  /// No description provided for @syncAllSent.
+  ///
+  /// In en, this message translates to:
+  /// **'All sent'**
+  String get syncAllSent;
+
+  /// No description provided for @syncWaitingToSend.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 waiting to send} other{{count} waiting to send}}'**
+  String syncWaitingToSend(int count);
+
+  /// No description provided for @notificationsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications'**
+  String get notificationsTitle;
+
+  /// No description provided for @notificationsNeedConnection.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications need a connection the first time.'**
+  String get notificationsNeedConnection;
+
+  /// No description provided for @notificationsNone.
+  ///
+  /// In en, this message translates to:
+  /// **'No notifications yet.'**
+  String get notificationsNone;
+
+  /// No description provided for @cswdHomeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'City overview'**
+  String get cswdHomeTitle;
+
+  /// No description provided for @eventStatusActive.
+  ///
+  /// In en, this message translates to:
+  /// **'Active'**
+  String get eventStatusActive;
+
+  /// No description provided for @eventStatusMonitoring.
+  ///
+  /// In en, this message translates to:
+  /// **'Monitoring'**
+  String get eventStatusMonitoring;
+
+  /// No description provided for @cswdBarangaysByStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Barangays per status'**
+  String get cswdBarangaysByStatus;
+
+  /// No description provided for @cswdCenterNearlyFull.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} is {percent}% full'**
+  String cswdCenterNearlyFull(String name, int percent);
+
+  /// No description provided for @cswdBarangayShortBoxes.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} is short {boxes}'**
+  String cswdBarangayShortBoxes(String name, String boxes);
+
+  /// No description provided for @countBarangays.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 barangay} other{{count} barangays}}'**
+  String countBarangays(int count);
+
+  /// No description provided for @cswdFinalCountsNotSent.
+  ///
+  /// In en, this message translates to:
+  /// **'Final count not sent: {barangays} ({names})'**
+  String cswdFinalCountsNotSent(String barangays, String names);
+
+  /// No description provided for @cswdDoThisOnTheWeb.
+  ///
+  /// In en, this message translates to:
+  /// **'Other changes (events, centers, accounts, relief stock): do this on the web.'**
+  String get cswdDoThisOnTheWeb;
+
+  /// No description provided for @cswdOpenMonitoring.
+  ///
+  /// In en, this message translates to:
+  /// **'Open monitoring'**
+  String get cswdOpenMonitoring;
+
+  /// No description provided for @cswdReadiness.
+  ///
+  /// In en, this message translates to:
+  /// **'Readiness'**
+  String get cswdReadiness;
+
+  /// No description provided for @cswdReadyCenters.
+  ///
+  /// In en, this message translates to:
+  /// **'{centers} ready of {approved} approved'**
+  String cswdReadyCenters(String centers, int approved);
+
+  /// No description provided for @cswdBelowStandards.
+  ///
+  /// In en, this message translates to:
+  /// **'Below standards: {centers}'**
+  String cswdBelowStandards(String centers);
+
+  /// No description provided for @cswdBoxStock.
+  ///
+  /// In en, this message translates to:
+  /// **'City box stock: {boxes}'**
+  String cswdBoxStock(String boxes);
+
+  /// No description provided for @cswdWatchedBarangays.
+  ///
+  /// In en, this message translates to:
+  /// **'Watched: {names}'**
+  String cswdWatchedBarangays(String names);
+
+  /// No description provided for @cswdOrderNeedsConnection.
+  ///
+  /// In en, this message translates to:
+  /// **'An evacuation order needs a connection. It is never saved to send later.'**
+  String get cswdOrderNeedsConnection;
+
+  /// No description provided for @cswdOrderTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Order {status} for {name}?'**
+  String cswdOrderTitle(String status, String name);
+
+  /// No description provided for @cswdOrderBody.
+  ///
+  /// In en, this message translates to:
+  /// **'This notifies the barangay.'**
+  String get cswdOrderBody;
+
+  /// No description provided for @cswdOrderConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Order {status}'**
+  String cswdOrderConfirm(String status);
+
+  /// No description provided for @barangayStatusOrdered.
+  ///
+  /// In en, this message translates to:
+  /// **'{status} ordered for {name}.'**
+  String barangayStatusOrdered(String status, String name);
+
+  /// No description provided for @cswdOrderEvacuation.
+  ///
+  /// In en, this message translates to:
+  /// **'Evacuation order'**
+  String get cswdOrderEvacuation;
+
+  /// No description provided for @staffMorePublic.
+  ///
+  /// In en, this message translates to:
+  /// **'Public'**
+  String get staffMorePublic;
+
+  /// No description provided for @staffMorePublicSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'The resident app: alerts, centers, hotlines'**
+  String get staffMorePublicSubtitle;
+
+  /// No description provided for @distanceMetersAway.
+  ///
+  /// In en, this message translates to:
+  /// **'{meters} m away'**
+  String distanceMetersAway(int meters);
+
+  /// No description provided for @distanceKmAway.
+  ///
+  /// In en, this message translates to:
+  /// **'{km} km away'**
+  String distanceKmAway(String km);
+
+  /// No description provided for @adviceWatch.
+  ///
+  /// In en, this message translates to:
+  /// **'Get ready. Pack your go-bag and listen for updates.'**
+  String get adviceWatch;
+
+  /// No description provided for @adviceFlooding.
+  ///
+  /// In en, this message translates to:
+  /// **'Flooding is reported. Move to higher ground if water rises.'**
+  String get adviceFlooding;
+
+  /// No description provided for @advicePreemptive.
+  ///
+  /// In en, this message translates to:
+  /// **'Preemptive evacuation: go to your evacuation center now.'**
+  String get advicePreemptive;
+
+  /// No description provided for @adviceForced.
+  ///
+  /// In en, this message translates to:
+  /// **'Forced evacuation: leave now and go to your evacuation center.'**
+  String get adviceForced;
+
+  /// No description provided for @adviceNormal.
+  ///
+  /// In en, this message translates to:
+  /// **'No action needed. Stay alert.'**
+  String get adviceNormal;
 }
 
 class _AppLocalizationsDelegate

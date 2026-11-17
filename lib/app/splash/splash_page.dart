@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import '../../core/localization/app_locale.dart';
 import '../../core/localization/app_theme_mode.dart';
 import '../../features/barangay_status/presentation/barangay_status_providers.dart';
+import '../../features/staff_auth/presentation/providers/staff_auth_provider.dart';
 import '../../l10n/app_localizations.dart';
 import '../theme/app_theme.dart';
 
@@ -43,7 +44,14 @@ class _SplashPageState extends ConsumerState<SplashPage> {
       _initializeApp(),
       Future.delayed(SplashPage.minimumDisplayDuration),
     ]);
-    if (mounted) context.go('/home');
+    // Signed-in staff open their staff home directly (Part 3.1); the
+    // resident app is for everyone else. A stored token is enough: the
+    // staff screens restore the session (offline from the saved copy).
+    var staff = false;
+    try {
+      staff = await ref.read(staffAuthRepositoryProvider).hasStoredToken();
+    } catch (_) {}
+    if (mounted) context.go(staff ? '/staff/home' : '/home');
   }
 
   /// The real startup work this app has: loading the resident's

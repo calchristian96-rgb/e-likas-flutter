@@ -40,6 +40,7 @@ import '../../features/box_relief/round_families_page.dart';
 import '../../features/family_registration/presentation/register/register_family_page.dart';
 import '../../features/monitoring/monitoring_page.dart';
 import '../../features/outbox/presentation/sync_page.dart';
+import '../../features/staff_home/staff_home_page.dart';
 import '../../features/staff_shell/staff_shell.dart';
 import '../../features/staff_workspace/presentation/pages/staff_workspace_page.dart';
 import '../../l10n/app_localizations.dart';
@@ -341,7 +342,9 @@ class _InvalidLinkPage extends StatelessWidget {
 final GoRouter appRouter = GoRouter(
   initialLocation: '/splash',
   // Staff screens moved from Settings into Staff Mode (C14).
-  redirect: (context, state) => redirectOldStaffPath(state.uri.path),
+  redirect: (context, state) =>
+      redirectOldStaffPath(state.uri.path) ??
+      redirectMovedStaffPath(state.uri.path),
   routes: [
     // Outside the shell, same as /centers below — the bottom nav has
     // nothing to show yet at this point, and this route is never
@@ -449,7 +452,6 @@ final GoRouter appRouter = GoRouter(
     // Staff Mode: its own screens and bottom tabs (C14), entered from
     // "Staff sign in" on Home or Settings. Every page inside is gated by
     // StaffAuthGuard (sign in / "Use the web").
-    GoRoute(path: '/staff', redirect: (context, state) => '/staff/centers'),
     // Register a family in steps (Part 2.6): full screen, above the tabs.
     GoRoute(
       path: '/staff/register',
@@ -549,9 +551,20 @@ final GoRouter appRouter = GoRouter(
         StatefulShellBranch(
           routes: [
             GoRoute(
-              path: '/staff/barangay',
-              builder: (context, state) =>
-                  const StaffBarangayPage(extraSections: [FinalCountCard()]),
+              path: '/staff/home',
+              builder: (context, state) => const StaffHomePage(),
+              routes: [
+                GoRoute(
+                  path: 'barangay',
+                  builder: (context, state) => const StaffBarangayPage(
+                    extraSections: [FinalCountCard()],
+                  ),
+                ),
+                GoRoute(
+                  path: 'monitoring',
+                  builder: (context, state) => const MonitoringPage(),
+                ),
+              ],
             ),
           ],
         ),

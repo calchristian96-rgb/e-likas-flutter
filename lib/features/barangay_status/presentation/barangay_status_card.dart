@@ -9,6 +9,15 @@ import 'barangay_status_providers.dart';
 
 /// The fill colours of the web map (backend map-api.md). Normal has no
 /// fill on the map; on a card it is the success green.
+/// The advice that goes with a status.
+String whatToDo(AppLocalizations l10n, String status) => switch (status) {
+  BarangayStatusKey.watch => l10n.adviceWatch,
+  BarangayStatusKey.floodingReported => l10n.adviceFlooding,
+  BarangayStatusKey.preemptiveEvacuation => l10n.advicePreemptive,
+  BarangayStatusKey.forcedEvacuation => l10n.adviceForced,
+  _ => l10n.adviceNormal,
+};
+
 Color barangayStatusColor(BuildContext context, String status) {
   return switch (status) {
     BarangayStatusKey.watch => const Color(0xFFFACC15),
@@ -101,6 +110,14 @@ class BarangayStatusCard extends ConsumerWidget {
                           ),
                         ],
                       ),
+                      // What to do now, in plain words (Part 3.2).
+                      if (status != null) ...[
+                        const SizedBox(height: 8),
+                        Text(
+                          whatToDo(l10n, status.status),
+                          style: theme.textTheme.bodyLarge,
+                        ),
+                      ],
                       if (board != null) ...[
                         const SizedBox(height: 4),
                         Text(

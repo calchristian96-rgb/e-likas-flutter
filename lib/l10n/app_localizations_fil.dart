@@ -2228,7 +2228,7 @@ class AppLocalizationsFil extends AppLocalizations {
 
   @override
   String residentStatusSavedCopy(Object age) {
-    return 'Naka-save na kopya, huling update $age';
+    return 'Noong $age';
   }
 
   @override
@@ -2599,7 +2599,7 @@ class AppLocalizationsFil extends AppLocalizations {
 
   @override
   String savedCopyAge(Object age) {
-    return 'Naka-save na kopya, $age';
+    return 'Noong $age';
   }
 
   @override
@@ -3127,4 +3127,207 @@ class AppLocalizationsFil extends AppLocalizations {
 
   @override
   String get sexMaleShort => 'Lalaki';
+
+  @override
+  String get staffTabHome => 'Home';
+
+  @override
+  String get homeEvacueesHere => 'Lumikas sa aking mga center';
+
+  @override
+  String get homeWithoutBox => 'Pamilyang walang kahon';
+
+  @override
+  String get homeBoxesLeft => 'Natitirang kahon';
+
+  @override
+  String get homeEvacuees => 'Mga lumikas';
+
+  @override
+  String get homeNoOccupancyYet => 'Wala pang bilang';
+
+  @override
+  String get homeCheckInOut => 'Check in / Check out';
+
+  @override
+  String get homeGiveBox => 'Magbigay ng relief box';
+
+  @override
+  String get homeTodo => 'Gagawin';
+
+  @override
+  String get homeTodoNone => 'Walang gagawin sa ngayon.';
+
+  @override
+  String homeTodoWithoutBox(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count pamilya ang naghihintay ng kahon',
+      one: '1 pamilya ang naghihintay ng kahon',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get homeTodoFinalCountNotSent =>
+      'Hindi pa naipapadala ang final count';
+
+  @override
+  String get homeBarangayStatus => 'Status ng barangay';
+
+  @override
+  String get homeAllHotlines => 'Lahat ng hotline';
+
+  @override
+  String get syncAllSent => 'Naipadala na lahat';
+
+  @override
+  String syncWaitingToSend(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count naghihintay ipadala',
+      one: '1 naghihintay ipadala',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get notificationsTitle => 'Mga abiso';
+
+  @override
+  String get notificationsNeedConnection =>
+      'Kailangan ng koneksyon para makita ang mga abiso sa unang pagkakataon.';
+
+  @override
+  String get notificationsNone => 'Wala pang abiso.';
+
+  @override
+  String get cswdHomeTitle => 'Buod ng lungsod';
+
+  @override
+  String get eventStatusActive => 'Aktibo';
+
+  @override
+  String get eventStatusMonitoring => 'Binabantayan';
+
+  @override
+  String get cswdBarangaysByStatus => 'Mga barangay ayon sa status';
+
+  @override
+  String cswdCenterNearlyFull(String name, int percent) {
+    return 'Puno na ang $name nang $percent%';
+  }
+
+  @override
+  String cswdBarangayShortBoxes(String name, String boxes) {
+    return 'Kulang ang $name ng $boxes';
+  }
+
+  @override
+  String countBarangays(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count barangay',
+      one: '1 barangay',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String cswdFinalCountsNotSent(String barangays, String names) {
+    return 'Hindi pa naipapadala ang final count: $barangays ($names)';
+  }
+
+  @override
+  String get cswdDoThisOnTheWeb =>
+      'Iba pang pagbabago (event, center, account, relief stock): gawin ito sa web.';
+
+  @override
+  String get cswdOpenMonitoring => 'Buksan ang monitoring';
+
+  @override
+  String get cswdReadiness => 'Kahandaan';
+
+  @override
+  String cswdReadyCenters(String centers, int approved) {
+    return '$centers handa sa $approved na aprubado';
+  }
+
+  @override
+  String cswdBelowStandards(String centers) {
+    return 'Kulang sa pamantayan: $centers';
+  }
+
+  @override
+  String cswdBoxStock(String boxes) {
+    return 'Kahon ng lungsod: $boxes';
+  }
+
+  @override
+  String cswdWatchedBarangays(String names) {
+    return 'Binabantayan: $names';
+  }
+
+  @override
+  String get cswdOrderNeedsConnection =>
+      'Kailangan ng koneksyon ang utos na paglikas. Hindi ito sine-save para ipadala mamaya.';
+
+  @override
+  String cswdOrderTitle(String status, String name) {
+    return 'Iutos ang $status para sa $name?';
+  }
+
+  @override
+  String get cswdOrderBody => 'Aabisuhan nito ang barangay.';
+
+  @override
+  String cswdOrderConfirm(String status) {
+    return 'Iutos ang $status';
+  }
+
+  @override
+  String barangayStatusOrdered(String status, String name) {
+    return 'Iniutos ang $status para sa $name.';
+  }
+
+  @override
+  String get cswdOrderEvacuation => 'Utos na paglikas';
+
+  @override
+  String get staffMorePublic => 'Public';
+
+  @override
+  String get staffMorePublicSubtitle =>
+      'Ang app ng residente: alerto, center, hotline';
+
+  @override
+  String distanceMetersAway(int meters) {
+    return '$meters m ang layo';
+  }
+
+  @override
+  String distanceKmAway(String km) {
+    return '$km km ang layo';
+  }
+
+  @override
+  String get adviceWatch => 'Maghanda. Ihanda ang go-bag at makinig sa balita.';
+
+  @override
+  String get adviceFlooding =>
+      'May ulat ng baha. Lumipat sa mataas na lugar kung tumataas ang tubig.';
+
+  @override
+  String get advicePreemptive =>
+      'Preemptive na paglikas: pumunta na sa inyong evacuation center.';
+
+  @override
+  String get adviceForced =>
+      'Sapilitang paglikas: umalis na at pumunta sa inyong evacuation center.';
+
+  @override
+  String get adviceNormal => 'Walang kailangang gawin. Manatiling alerto.';
 }

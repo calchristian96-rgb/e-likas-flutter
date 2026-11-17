@@ -24,10 +24,19 @@ class StaffTab {
   final bool Function(StaffSession session) visibleTo;
 }
 
-/// Staff Mode's tabs, in order. A barangay official does field work;
-/// CSWD only monitors (read-only); the administrator never gets here
-/// (StaffAuthGuard shows "Use the web").
+/// Staff Mode's tabs, in order: at most 5, one short word each
+/// (Part 2.4). A barangay official: Home, Centers, Relief, More. CSWDO:
+/// Home, More. The administrator never gets here
+/// (StaffAuthGuard shows "Use the web"). Barangay status, Monitoring and
+/// Notifications open from Home; the public view from More.
 final staffTabs = <StaffTab>[
+  StaffTab(
+    branch: 3,
+    icon: Icons.home_outlined,
+    selectedIcon: Icons.home,
+    label: (l10n) => l10n.staffTabHome,
+    visibleTo: (s) => true,
+  ),
   StaffTab(
     branch: 0,
     icon: Icons.fact_check_outlined,
@@ -43,21 +52,6 @@ final staffTabs = <StaffTab>[
     visibleTo: (s) => s.isFieldOfficial && s.can(StaffPermission.boxDistribute),
   ),
   StaffTab(
-    branch: 3,
-    icon: Icons.location_city_outlined,
-    selectedIcon: Icons.location_city,
-    label: (l10n) => l10n.staffTabBarangay,
-    visibleTo: (s) =>
-        s.isFieldOfficial && s.can(StaffPermission.situationUpdate),
-  ),
-  StaffTab(
-    branch: 4,
-    icon: Icons.monitor_heart_outlined,
-    selectedIcon: Icons.monitor_heart,
-    label: (l10n) => l10n.staffTabMonitoring,
-    visibleTo: (s) => s.isCityMonitor && s.can(StaffPermission.monitoring),
-  ),
-  StaffTab(
     branch: 1,
     icon: Icons.more_horiz,
     selectedIcon: Icons.more_horiz,
@@ -67,8 +61,7 @@ final staffTabs = <StaffTab>[
 ];
 
 /// Staff Mode's own screens and bottom tabs, separate from the resident
-/// app's. The last destination leaves Staff Mode (the session stays
-/// signed in).
+/// app's. Signed-in staff open here; the public view is in More.
 class StaffShell extends StatelessWidget {
   const StaffShell({super.key, required this.navigationShell});
 
@@ -99,16 +92,11 @@ class StaffShell extends StatelessWidget {
           body: StaffAutoSync(child: navigationShell),
           bottomNavigationBar: NavigationBar(
             selectedIndex: selected,
-            onDestinationSelected: (i) {
-              if (i == tabs.length) {
-                context.go('/home');
-                return;
-              }
-              navigationShell.goBranch(
-                tabs[i].branch,
-                initialLocation: tabs[i].branch == navigationShell.currentIndex,
-              );
-            },
+            labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
+            onDestinationSelected: (i) => navigationShell.goBranch(
+              tabs[i].branch,
+              initialLocation: tabs[i].branch == navigationShell.currentIndex,
+            ),
             destinations: [
               for (final t in tabs)
                 NavigationDestination(
@@ -116,10 +104,6 @@ class StaffShell extends StatelessWidget {
                   selectedIcon: Icon(t.selectedIcon),
                   label: t.label(l10n),
                 ),
-              NavigationDestination(
-                icon: const Icon(Icons.home_outlined),
-                label: l10n.staffTabResidentApp,
-              ),
             ],
           ),
         );
@@ -139,3 +123,10 @@ String? redirectOldStaffPath(String path) {
   }
   return '/staff/more$rest';
 }
+
+/// Staff paths that moved under Home (Part 3).
+String? redirectMovedStaffPath(String path) => switch (path) {
+  '/staff' || '/staff/' => '/staff/home',
+  '/staff/barangay' => '/staff/home/barangay',
+  _ => null,
+};

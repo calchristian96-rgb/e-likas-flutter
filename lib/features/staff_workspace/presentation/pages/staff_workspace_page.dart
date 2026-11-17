@@ -93,6 +93,14 @@ class _StaffWorkspaceBody extends ConsumerWidget {
               subtitle: l10n.staffMyCentersSubtitle,
               onTap: () => context.push('/staff/more/evacuation-centers'),
             ),
+          // The resident app (Part 3.1), still signed in.
+          _WorkspaceAction(
+            icon: Icons.public,
+            iconColor: theme.colorScheme.primary,
+            label: l10n.staffMorePublic,
+            subtitle: l10n.staffMorePublicSubtitle,
+            onTap: () => context.go('/home'),
+          ),
           const SizedBox(height: 16),
           _WorkspaceAction(
             icon: Icons.logout_outlined,

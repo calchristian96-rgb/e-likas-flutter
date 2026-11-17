@@ -2191,7 +2191,7 @@ class AppLocalizationsBcl extends AppLocalizations {
 
   @override
   String residentStatusSavedCopy(Object age) {
-    return 'Saved copy, last updated $age';
+    return 'As of $age';
   }
 
   @override
@@ -2561,7 +2561,7 @@ class AppLocalizationsBcl extends AppLocalizations {
 
   @override
   String savedCopyAge(Object age) {
-    return 'Saved copy, $age';
+    return 'As of $age';
   }
 
   @override
@@ -3088,4 +3088,207 @@ class AppLocalizationsBcl extends AppLocalizations {
 
   @override
   String get sexMaleShort => 'Male';
+
+  @override
+  String get staffTabHome => 'Home';
+
+  @override
+  String get homeEvacueesHere => 'Evacuees in my centers';
+
+  @override
+  String get homeWithoutBox => 'Families without a box';
+
+  @override
+  String get homeBoxesLeft => 'Boxes left';
+
+  @override
+  String get homeEvacuees => 'Evacuees';
+
+  @override
+  String get homeNoOccupancyYet => 'No count yet';
+
+  @override
+  String get homeCheckInOut => 'Check in / Check out';
+
+  @override
+  String get homeGiveBox => 'Give relief box';
+
+  @override
+  String get homeTodo => 'To do';
+
+  @override
+  String get homeTodoNone => 'Nothing to do right now.';
+
+  @override
+  String homeTodoWithoutBox(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count families are waiting for boxes',
+      one: '1 family is waiting for a box',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get homeTodoFinalCountNotSent => 'Final count not sent';
+
+  @override
+  String get homeBarangayStatus => 'Barangay status';
+
+  @override
+  String get homeAllHotlines => 'All hotlines';
+
+  @override
+  String get syncAllSent => 'All sent';
+
+  @override
+  String syncWaitingToSend(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count waiting to send',
+      one: '1 waiting to send',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get notificationsTitle => 'Notifications';
+
+  @override
+  String get notificationsNeedConnection =>
+      'Notifications need a connection the first time.';
+
+  @override
+  String get notificationsNone => 'No notifications yet.';
+
+  @override
+  String get cswdHomeTitle => 'City overview';
+
+  @override
+  String get eventStatusActive => 'Active';
+
+  @override
+  String get eventStatusMonitoring => 'Monitoring';
+
+  @override
+  String get cswdBarangaysByStatus => 'Barangays per status';
+
+  @override
+  String cswdCenterNearlyFull(String name, int percent) {
+    return '$name is $percent% full';
+  }
+
+  @override
+  String cswdBarangayShortBoxes(String name, String boxes) {
+    return '$name is short $boxes';
+  }
+
+  @override
+  String countBarangays(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count barangays',
+      one: '1 barangay',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String cswdFinalCountsNotSent(String barangays, String names) {
+    return 'Final count not sent: $barangays ($names)';
+  }
+
+  @override
+  String get cswdDoThisOnTheWeb =>
+      'Other changes (events, centers, accounts, relief stock): do this on the web.';
+
+  @override
+  String get cswdOpenMonitoring => 'Open monitoring';
+
+  @override
+  String get cswdReadiness => 'Readiness';
+
+  @override
+  String cswdReadyCenters(String centers, int approved) {
+    return '$centers ready of $approved approved';
+  }
+
+  @override
+  String cswdBelowStandards(String centers) {
+    return 'Below standards: $centers';
+  }
+
+  @override
+  String cswdBoxStock(String boxes) {
+    return 'City box stock: $boxes';
+  }
+
+  @override
+  String cswdWatchedBarangays(String names) {
+    return 'Watched: $names';
+  }
+
+  @override
+  String get cswdOrderNeedsConnection =>
+      'An evacuation order needs a connection. It is never saved to send later.';
+
+  @override
+  String cswdOrderTitle(String status, String name) {
+    return 'Order $status for $name?';
+  }
+
+  @override
+  String get cswdOrderBody => 'This notifies the barangay.';
+
+  @override
+  String cswdOrderConfirm(String status) {
+    return 'Order $status';
+  }
+
+  @override
+  String barangayStatusOrdered(String status, String name) {
+    return '$status ordered for $name.';
+  }
+
+  @override
+  String get cswdOrderEvacuation => 'Evacuation order';
+
+  @override
+  String get staffMorePublic => 'Public';
+
+  @override
+  String get staffMorePublicSubtitle =>
+      'The resident app: alerts, centers, hotlines';
+
+  @override
+  String distanceMetersAway(int meters) {
+    return '$meters m away';
+  }
+
+  @override
+  String distanceKmAway(String km) {
+    return '$km km away';
+  }
+
+  @override
+  String get adviceWatch =>
+      'Get ready. Pack your go-bag and listen for updates.';
+
+  @override
+  String get adviceFlooding =>
+      'Flooding is reported. Move to higher ground if water rises.';
+
+  @override
+  String get advicePreemptive =>
+      'Preemptive evacuation: go to your evacuation center now.';
+
+  @override
+  String get adviceForced =>
+      'Forced evacuation: leave now and go to your evacuation center.';
+
+  @override
+  String get adviceNormal => 'No action needed. Stay alert.';
 }

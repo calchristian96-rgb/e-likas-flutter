@@ -11,11 +11,15 @@ import '../../helpers/fake_staff_api.dart';
 import '../../helpers/fake_staff_auth.dart';
 
 void main() {
-  test("Monitoring is the city monitor's tab, not an official's", () {
-    Iterable<int> branchesFor(session) =>
-        staffTabs.where((t) => t.visibleTo(session)).map((t) => t.branch);
-    expect(branchesFor(cswd), contains(4));
-    expect(branchesFor(official), isNot(contains(4)));
+  test("each role gets its own tabs, Home first", () {
+    List<int> branchesFor(session) => [
+      for (final t in staffTabs)
+        if (t.visibleTo(session)) t.branch,
+    ];
+    // CSWDO: Home (city monitoring), More.
+    expect(branchesFor(cswd), [3, 1]);
+    // Barangay official: Home, Centers, Relief, More.
+    expect(branchesFor(official), [3, 0, 2, 1]);
   });
 
   test('a section is read with its event and DEMO flag', () async {
