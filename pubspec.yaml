@@ -1,7 +1,7 @@
 name: elikas_mobile
 description: "E-LIKAS resident app — evacuation centers, hazard map, and alerts for Ligao City. Read-only, no login, offline-first."
 publish_to: 'none'
-version: 0.3.0+5
+version: 0.3.1+6
 
 environment:
   sdk: ">=3.12.0 <4.0.0"

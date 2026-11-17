@@ -86,7 +86,6 @@ class OfficialHomePage extends ConsumerWidget {
               ? l10n.staffTabHome
               : l10n.residentBarangayStatusOf(session.barangayName!),
         ),
-        actions: const [SyncChip(), SizedBox(width: 8)],
       ),
       body: RefreshIndicator(
         onRefresh: () async {
@@ -99,6 +98,13 @@ class OfficialHomePage extends ConsumerWidget {
           physics: const AlwaysScrollableScrollPhysics(),
           padding: pagePadding(context),
           children: [
+            // In the body, not the app bar: the barangay name keeps its
+            // room at a large font size.
+            const Align(
+              alignment: AlignmentDirectional.centerStart,
+              child: SyncChip(),
+            ),
+            const SizedBox(height: 8),
             const StaffEventBar(),
             const SizedBox(height: 16),
             _QuickStatusCard(session: session),

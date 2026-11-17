@@ -75,9 +75,7 @@ class CswdHomePage extends ConsumerWidget {
     ];
     final relief = ref.watch(monitoringSectionProvider('relief')).value;
     final rounds = relief?.data?['rounds'] as List? ?? const [];
-    final latest = rounds.isEmpty
-        ? null
-        : rounds.last as Map<String, dynamic>;
+    final latest = rounds.isEmpty ? null : rounds.last as Map<String, dynamic>;
     final shortBoxes = [
       for (final b in latest?['barangays'] as List? ?? const [])
         if (((b as Map<String, dynamic>)['short'] as num? ?? 0) > 0) b,
@@ -244,9 +242,7 @@ class _ReadinessCard extends ConsumerWidget {
               i(c, 'approved'),
             ),
           ),
-          Text(
-            l10n.cswdBelowStandards(l10n.countCenters(i(below, 'count'))),
-          ),
+          Text(l10n.cswdBelowStandards(l10n.countCenters(i(below, 'count')))),
           if (boxes != null)
             Text(l10n.cswdBoxStock(l10n.countBoxes(i(boxes, 'on_hand')))),
           if (watched != null && watched.isNotEmpty)
@@ -298,18 +294,19 @@ class CswdBarangaysPage extends ConsumerWidget {
               ),
             ],
             data: (d) {
-              final rows = [
-                for (final b in d['barangays'] as List? ?? const [])
-                  b as Map<String, dynamic>,
-              ]..sort((a, b) {
-                final r = ((b['rank'] as num?) ?? 0).compareTo(
-                  (a['rank'] as num?) ?? 0,
-                );
-                if (r != 0) return r;
-                return '${(a['barangay'] as Map)['name']}'.compareTo(
-                  '${(b['barangay'] as Map)['name']}',
-                );
-              });
+              final rows =
+                  [
+                    for (final b in d['barangays'] as List? ?? const [])
+                      b as Map<String, dynamic>,
+                  ]..sort((a, b) {
+                    final r = ((b['rank'] as num?) ?? 0).compareTo(
+                      (a['rank'] as num?) ?? 0,
+                    );
+                    if (r != 0) return r;
+                    return '${(a['barangay'] as Map)['name']}'.compareTo(
+                      '${(b['barangay'] as Map)['name']}',
+                    );
+                  });
               return [
                 for (final b in rows) ...[
                   AppCard(

@@ -380,11 +380,20 @@ class _FamilyTile extends StatelessWidget {
     } else {
       // Giving needs only confirmed boxes left; with none left the button
       // waits (disabled) until more are confirmed (backend 02a41f4).
-      trailing = FilledButton(
-        style: FilledButton.styleFrom(minimumSize: const Size(96, 48)),
-        onPressed: boxesLeft ? onGive : null,
-        child: Text(
-          boxesLeft ? l10n.reliefGiveBox : l10n.reliefWaitingForBoxes,
+      // At most 136 wide so the family's name keeps its room on a
+      // 360 dp phone; a long label wraps.
+      trailing = ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: 136),
+        child: FilledButton(
+          style: FilledButton.styleFrom(
+            minimumSize: const Size(96, 48),
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+          ),
+          onPressed: boxesLeft ? onGive : null,
+          child: Text(
+            boxesLeft ? l10n.reliefGiveBox : l10n.reliefWaitingForBoxes,
+            textAlign: TextAlign.center,
+          ),
         ),
       );
     }
