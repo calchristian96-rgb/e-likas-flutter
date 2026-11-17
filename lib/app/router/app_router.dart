@@ -40,6 +40,8 @@ import '../../features/box_relief/round_families_page.dart';
 import '../../features/family_registration/presentation/register/register_family_page.dart';
 import '../../features/monitoring/monitoring_page.dart';
 import '../../features/outbox/presentation/sync_page.dart';
+import '../../features/notifications/notifications.dart';
+import '../../features/staff_home/cswd_home_page.dart';
 import '../../features/staff_home/staff_home_page.dart';
 import '../../features/staff_shell/staff_shell.dart';
 import '../../features/staff_workspace/presentation/pages/staff_workspace_page.dart';
@@ -564,6 +566,10 @@ final GoRouter appRouter = GoRouter(
                   path: 'monitoring',
                   builder: (context, state) => const MonitoringPage(),
                 ),
+                GoRoute(
+                  path: 'notifications',
+                  builder: (context, state) => const NotificationsPage(),
+                ),
               ],
             ),
           ],
@@ -571,8 +577,17 @@ final GoRouter appRouter = GoRouter(
         StatefulShellBranch(
           routes: [
             GoRoute(
-              path: '/staff/monitoring',
-              builder: (context, state) => const MonitoringPage(),
+              path: '/staff/barangays',
+              builder: (context, state) => const CswdBarangaysPage(),
+              routes: [
+                GoRoute(
+                  path: ':id',
+                  builder: (context, state) => CswdBarangayDetailPage(
+                    barangayId:
+                        int.tryParse(state.pathParameters['id'] ?? '') ?? 0,
+                  ),
+                ),
+              ],
             ),
           ],
         ),

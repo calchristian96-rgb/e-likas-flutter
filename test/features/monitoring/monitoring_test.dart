@@ -11,13 +11,13 @@ import '../../helpers/fake_staff_api.dart';
 import '../../helpers/fake_staff_auth.dart';
 
 void main() {
-  test("each role gets its own tabs, Home first", () {
+  test('each role gets its own tabs, Home first', () {
     List<int> branchesFor(session) => [
       for (final t in staffTabs)
         if (t.visibleTo(session)) t.branch,
     ];
-    // CSWDO: Home (city monitoring), More.
-    expect(branchesFor(cswd), [3, 1]);
+    // CSWDO: Home, Barangays, More.
+    expect(branchesFor(cswd), [3, 4, 1]);
     // Barangay official: Home, Centers, Relief, More.
     expect(branchesFor(official), [3, 0, 2, 1]);
   });

@@ -26,7 +26,7 @@ class StaffTab {
 
 /// Staff Mode's tabs, in order: at most 5, one short word each
 /// (Part 2.4). A barangay official: Home, Centers, Relief, More. CSWDO:
-/// Home, More. The administrator never gets here
+/// Home, Barangays, More. The administrator never gets here
 /// (StaffAuthGuard shows "Use the web"). Barangay status, Monitoring and
 /// Notifications open from Home; the public view from More.
 final staffTabs = <StaffTab>[
@@ -50,6 +50,13 @@ final staffTabs = <StaffTab>[
     selectedIcon: Icons.inventory_2,
     label: (l10n) => l10n.staffTabRelief,
     visibleTo: (s) => s.isFieldOfficial && s.can(StaffPermission.boxDistribute),
+  ),
+  StaffTab(
+    branch: 4,
+    icon: Icons.location_city_outlined,
+    selectedIcon: Icons.location_city,
+    label: (l10n) => l10n.monitoringBarangays,
+    visibleTo: (s) => s.isCityMonitor,
   ),
   StaffTab(
     branch: 1,
@@ -128,5 +135,6 @@ String? redirectOldStaffPath(String path) {
 String? redirectMovedStaffPath(String path) => switch (path) {
   '/staff' || '/staff/' => '/staff/home',
   '/staff/barangay' => '/staff/home/barangay',
+  '/staff/monitoring' => '/staff/home/monitoring',
   _ => null,
 };
