@@ -301,7 +301,7 @@ class _BrandedHeader extends StatelessWidget {
                                       color: Colors.white.withValues(
                                         alpha: 0.78,
                                       ),
-                                      fontSize: 13,
+                                      fontSize: 14,
                                       fontWeight: FontWeight.w500,
                                     ),
                                   ),
@@ -326,7 +326,7 @@ class _BrandedHeader extends StatelessWidget {
                                 'Ligao City, Albay',
                                 style: TextStyle(
                                   color: Colors.white.withValues(alpha: 0.85),
-                                  fontSize: 13,
+                                  fontSize: 14,
                                   fontWeight: FontWeight.w600,
                                 ),
                               ),
@@ -364,7 +364,7 @@ class _HeaderDateTimeRow extends StatelessWidget {
   Widget build(BuildContext context) {
     final style = TextStyle(
       color: Colors.white.withValues(alpha: 0.85),
-      fontSize: 13,
+      fontSize: 14,
       fontWeight: FontWeight.w600,
     );
 

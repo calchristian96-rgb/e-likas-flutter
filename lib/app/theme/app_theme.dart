@@ -305,8 +305,8 @@ class AppTheme {
         .merge(Typography.material2021(colorScheme: colorScheme).black);
     // The web design system's type scale (backend docs/design-system.md,
     // E26): 24 page title / headline figure, 18 section title, 15 card
-    // title and body, 14 labels, buttons and table text, 13 badges and
-    // captions. Nothing smaller than 13. Line heights follow the web.
+    // title and body, 14 labels, buttons, badges and
+    // captions: nothing smaller than 14 on a phone (Part 2.8).
     TextStyle? size(
       TextStyle? t,
       double px,
@@ -324,12 +324,12 @@ class AppTheme {
           titleSmall: size(base.titleSmall, 14, 22, FontWeight.w600, ink),
           bodyLarge: size(base.bodyLarge, 15, 24, FontWeight.w400, ink),
           bodyMedium: size(base.bodyMedium, 14, 22, FontWeight.w400, ink),
-          bodySmall: size(base.bodySmall, 13, 20, FontWeight.w400, muted),
+          bodySmall: size(base.bodySmall, 14, 20, FontWeight.w400, muted),
           // labelLarge is set explicitly so the dark theme never gets
           // the "black" typography's dark-on-dark label color.
           labelLarge: size(base.labelLarge, 14, 22, FontWeight.w600, ink),
-          labelMedium: size(base.labelMedium, 13, 20, FontWeight.w600, ink),
-          labelSmall: size(base.labelSmall, 13, 20, FontWeight.w600, muted),
+          labelMedium: size(base.labelMedium, 14, 20, FontWeight.w600, ink),
+          labelSmall: size(base.labelSmall, 14, 20, FontWeight.w600, muted),
         )
         .apply(fontSizeFactor: 1.0, fontFamily: fontFamily);
   }

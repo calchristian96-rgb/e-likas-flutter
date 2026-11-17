@@ -1,3 +1,4 @@
+import '../../../core/widgets/ui_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
@@ -136,7 +137,7 @@ class StaffBarangayPage extends ConsumerWidget {
         },
         child: ListView(
           physics: const AlwaysScrollableScrollPhysics(),
-          padding: const EdgeInsets.all(16),
+          padding: pagePadding(context),
           children: [
             const StaffEventBar(),
             const SizedBox(height: 16),

@@ -8,6 +8,7 @@ import '../../../../core/connectivity/connectivity_service.dart';
 import '../../../../core/error/failure.dart';
 import '../../../../core/error/result.dart';
 import '../../../../core/widgets/error_state.dart';
+import '../../../../core/widgets/ui_kit.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../family_registration/domain/entities/lookup_entities.dart';
 import '../../../family_registration/domain/entities/pending_registration.dart';
@@ -671,6 +672,18 @@ class _AddEvacueeFormPageState extends ConsumerState<AddEvacueeFormPage> {
                   lines: _summaryLines(l10n, barangays),
                   submitting: _submitting,
                   onSubmit: _submit,
+                )
+              else
+                // While typing: only the primary button, kept above the
+                // keyboard (Part 2.5).
+                BottomActionBar(
+                  liftAboveKeyboard: false,
+                  children: [
+                    FilledButton(
+                      onPressed: _submitting ? null : _submit,
+                      child: Text(l10n.ecBoardSubmitButton),
+                    ),
+                  ],
                 ),
             ],
           ),

@@ -1,3 +1,4 @@
+import '../../../../core/widgets/ui_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
@@ -159,7 +160,7 @@ class _DetailBody extends StatelessWidget {
     final isSyncing = summary.status == PendingRegistrationStatus.syncing;
 
     return ListView(
-      padding: const EdgeInsets.all(16),
+      padding: pagePadding(context),
       children: [
         Row(
           children: [
@@ -249,18 +250,16 @@ class _DetailBody extends StatelessWidget {
                     child: CircularProgressIndicator(strokeWidth: 2),
                   ),
                 )
-              : PopupMenuButton<String>(
-                  tooltip: l10n.moreActions,
-                  enabled: !isSyncing,
-                  onSelected: (_) => onDelete(),
-                  itemBuilder: (context) => [
-                    PopupMenuItem(
-                      value: 'delete',
-                      child: Text(
-                        l10n.staffPendingDetailDeleteButton,
-                        style: TextStyle(color: theme.colorScheme.error),
+              : MoreButton(
+                  title: l10n.moreActions,
+                  actions: [
+                    if (!isSyncing)
+                      SheetAction(
+                        label: l10n.staffPendingDetailDeleteButton,
+                        icon: Icons.delete_outline,
+                        destructive: true,
+                        onTap: onDelete,
                       ),
-                    ),
                   ],
                 ),
         ),
@@ -324,7 +323,7 @@ class _StatusChip extends StatelessWidget {
       ),
     };
     return Chip(
-      label: Text(label, style: TextStyle(color: color, fontSize: 13)),
+      label: Text(label, style: TextStyle(color: color, fontSize: 14)),
       visualDensity: VisualDensity.compact,
       backgroundColor: color.withValues(alpha: 0.08),
       side: BorderSide.none,

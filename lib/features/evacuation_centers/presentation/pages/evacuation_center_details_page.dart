@@ -1,3 +1,4 @@
+import '../../../../core/widgets/ui_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -83,7 +84,7 @@ class _CenterDetailsBody extends StatelessWidget {
     final statusColor = centerStatusColor(context, center);
 
     return ListView(
-      padding: const EdgeInsets.fromLTRB(16, 16, 16, 32),
+      padding: pagePadding(context),
       children: [
         // Header — icon, name, address, status.
         Row(

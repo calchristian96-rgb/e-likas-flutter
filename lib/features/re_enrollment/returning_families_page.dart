@@ -1,3 +1,4 @@
+import '../../core/widgets/ui_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uuid/uuid.dart';
@@ -104,7 +105,7 @@ class _ReturningFamiliesPageState extends ConsumerState<ReturningFamiliesPage> {
             );
           }
           return ListView(
-            padding: const EdgeInsets.all(16),
+            padding: pagePadding(context),
             children: [
               DropdownButtonFormField<int>(
                 initialValue: _sourceEventId,
@@ -331,7 +332,7 @@ class _ReEnrollFamilyPageState extends ConsumerState<_ReEnrollFamilyPage> {
     return Scaffold(
       appBar: AppBar(title: Text(family.name)),
       body: ListView(
-        padding: const EdgeInsets.all(16),
+        padding: pagePadding(context),
         children: [
           Text(
             l10n.returningFamilyWhoArrived,

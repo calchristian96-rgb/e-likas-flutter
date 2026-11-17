@@ -195,7 +195,7 @@ class _StatusChip extends StatelessWidget {
       ),
     };
     return Chip(
-      label: Text(label, style: TextStyle(color: color, fontSize: 13)),
+      label: Text(label, style: TextStyle(color: color, fontSize: 14)),
       visualDensity: VisualDensity.compact,
       backgroundColor: color.withValues(alpha: 0.08),
       side: BorderSide.none,

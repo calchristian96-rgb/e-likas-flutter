@@ -37,6 +37,7 @@ import '../../features/barangay_status/staff/barangay_page.dart';
 import '../../features/box_relief/relief_page.dart';
 import '../../features/count_submissions/final_count_card.dart';
 import '../../features/box_relief/round_families_page.dart';
+import '../../features/family_registration/presentation/register/register_family_page.dart';
 import '../../features/monitoring/monitoring_page.dart';
 import '../../features/outbox/presentation/sync_page.dart';
 import '../../features/staff_shell/staff_shell.dart';
@@ -449,6 +450,11 @@ final GoRouter appRouter = GoRouter(
     // "Staff sign in" on Home or Settings. Every page inside is gated by
     // StaffAuthGuard (sign in / "Use the web").
     GoRoute(path: '/staff', redirect: (context, state) => '/staff/centers'),
+    // Register a family in steps (Part 2.6): full screen, above the tabs.
+    GoRoute(
+      path: '/staff/register',
+      builder: (context, state) => const RegisterFamilyPage(),
+    ),
     StatefulShellRoute.indexedStack(
       builder: (context, state, navigationShell) =>
           StaffShell(navigationShell: navigationShell),

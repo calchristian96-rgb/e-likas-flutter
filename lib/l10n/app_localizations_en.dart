@@ -2975,4 +2975,117 @@ class AppLocalizationsEn extends AppLocalizations {
     );
     return '$_temp0';
   }
+
+  @override
+  String get registerTitle => 'Register family';
+
+  @override
+  String get registerStepHead => 'Head of family';
+
+  @override
+  String get registerStepMembers => 'Members';
+
+  @override
+  String get registerStepPlace => 'Purok and center';
+
+  @override
+  String get registerStepReview => 'Review';
+
+  @override
+  String registerStepOf(int step, int total) {
+    return 'Step $step of $total';
+  }
+
+  @override
+  String get registerBack => 'Back';
+
+  @override
+  String get registerNext => 'Next';
+
+  @override
+  String get registerSave => 'Save';
+
+  @override
+  String registerSaved(Object name) {
+    return '$name\'s family saved. It is sent now, or when you are back online.';
+  }
+
+  @override
+  String get registerDiscardDraft => 'Discard this draft';
+
+  @override
+  String get registerFirstName => 'First name';
+
+  @override
+  String get registerMiddleName => 'Middle name (optional)';
+
+  @override
+  String get registerLastName => 'Last name';
+
+  @override
+  String get registerSex => 'Sex';
+
+  @override
+  String get registerBirthdate => 'Choose the date of birth';
+
+  @override
+  String registerBirthdateValue(Object date) {
+    return 'Born $date';
+  }
+
+  @override
+  String get registerMobile => 'Mobile number';
+
+  @override
+  String get registerMobileInvalid => '11 digits starting with 09 (or +639)';
+
+  @override
+  String get registerPwd => 'Person with disability (PWD)';
+
+  @override
+  String get registerPwdType => 'Type of disability';
+
+  @override
+  String get registerSoloParent => 'Solo parent';
+
+  @override
+  String get registerIndigenous => 'Indigenous person';
+
+  @override
+  String get register4ps => '4Ps beneficiary';
+
+  @override
+  String get registerMembersHint =>
+      'Add the other people of the family. Each one uses the head\'s mobile number unless they have their own.';
+
+  @override
+  String get registerAddMember => 'Add member';
+
+  @override
+  String get registerEditMember => 'Edit member';
+
+  @override
+  String get registerRemoveMember => 'Remove member';
+
+  @override
+  String get registerSaveMember => 'Save member';
+
+  @override
+  String get registerBarangay => 'Barangay';
+
+  @override
+  String get registerCenter => 'Evacuation center';
+
+  @override
+  String get registerHomeAddress => 'Home address (optional)';
+
+  @override
+  String get registerSaveNote =>
+      'Saved on this phone first and sent to the server; nothing is lost offline.';
+
+  @override
+  String get sexFemaleShort => 'Female';
+
+  @override
+  String get sexMaleShort => 'Male';
 }

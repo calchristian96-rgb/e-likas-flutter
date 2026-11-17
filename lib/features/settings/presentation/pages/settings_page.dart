@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../app/theme/app_theme.dart';
+import '../../../../core/widgets/ui_kit.dart';
 import '../../../../core/localization/app_locale.dart';
 import '../../../../core/localization/app_theme_mode.dart';
 import '../../../../core/localization/language_selector_sheet.dart';
@@ -91,7 +92,9 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
     return Scaffold(
       appBar: AppBar(title: Text(l10n.settingsTitle)),
       body: ListView(
-        padding: const EdgeInsets.all(16),
+        // Bottom inset + end space: the last row (Check for updates)
+        // is never cut off above the navigation bar (Part 2.3).
+        padding: pagePadding(context),
         children: [
           _SectionLabel(title: l10n.settingsSectionOfflineData),
           _SettingsCard(
@@ -158,31 +161,24 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                   iconColor: semantic.navy,
                   title: l10n.settingsStaffAccess,
                   subtitle: l10n.settingsStaffAccessSubtitle,
-                  onTap: () => context.push('/staff'),
+                  onTap: () => context.go('/staff'),
                 ),
               ],
             )
-          else ...[
-            StaffIdentityCard(session: staffSession),
-            const SizedBox(height: 12),
-            _SettingsCard(
-              children: [
-                _SettingsRow(
-                  icon: Icons.dashboard_outlined,
-                  iconColor: theme.colorScheme.tertiary,
-                  title: l10n.staffDashboardTitle,
-                  subtitle: l10n.staffDashboardSubtitle,
-                  onTap: () => context.push('/staff'),
-                ),
-              ],
+          else
+            // The same card as the rest, lightly highlighted; tapping it
+            // opens Staff Mode.
+            StaffIdentityCard(
+              session: staffSession,
+              onTap: () => context.go('/staff'),
             ),
-          ],
           const SizedBox(height: 24),
           _SectionLabel(title: l10n.settingsSectionAbout),
           _SettingsCard(
             children: [
               _SettingsRow(
                 icon: Icons.shield_outlined,
+                leading: const ElikasLogo(size: 36),
                 iconColor: semantic.navy,
                 title: 'E-LIKAS',
                 subtitle: l10n.aboutTagline,
@@ -283,6 +279,7 @@ class _RowDivider extends StatelessWidget {
 class _SettingsRow extends StatelessWidget {
   const _SettingsRow({
     required this.icon,
+    this.leading,
     required this.iconColor,
     required this.title,
     this.subtitle,
@@ -294,6 +291,9 @@ class _SettingsRow extends StatelessWidget {
        );
 
   final IconData icon;
+
+  /// Replaces the icon tile (the About row shows the real logo).
+  final Widget? leading;
   final Color iconColor;
   final String title;
   final String? subtitle;
@@ -307,15 +307,16 @@ class _SettingsRow extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
       child: Row(
         children: [
-          Container(
-            width: 36,
-            height: 36,
-            decoration: BoxDecoration(
-              color: iconColor.withValues(alpha: 0.12),
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: Icon(icon, size: 19, color: iconColor),
-          ),
+          leading ??
+              Container(
+                width: 36,
+                height: 36,
+                decoration: BoxDecoration(
+                  color: iconColor.withValues(alpha: 0.12),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Icon(icon, size: 20, color: iconColor),
+              ),
           const SizedBox(width: 12),
           Expanded(
             child: Column(

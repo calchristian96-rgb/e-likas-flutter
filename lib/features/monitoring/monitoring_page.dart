@@ -1,3 +1,4 @@
+import '../../core/widgets/ui_kit.dart';
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -342,7 +343,7 @@ class _SectionView extends ConsumerWidget {
       },
       child: ListView(
         physics: const AlwaysScrollableScrollPhysics(),
-        padding: const EdgeInsets.all(16),
+        padding: pagePadding(context),
         children: async.when(
           loading: () => [const Center(child: CircularProgressIndicator())],
           error: (_, _) => [

@@ -3014,4 +3014,117 @@ class AppLocalizationsFil extends AppLocalizations {
     );
     return '$_temp0';
   }
+
+  @override
+  String get registerTitle => 'Irehistro ang pamilya';
+
+  @override
+  String get registerStepHead => 'Puno ng pamilya';
+
+  @override
+  String get registerStepMembers => 'Mga miyembro';
+
+  @override
+  String get registerStepPlace => 'Purok at center';
+
+  @override
+  String get registerStepReview => 'Suriin';
+
+  @override
+  String registerStepOf(int step, int total) {
+    return 'Hakbang $step sa $total';
+  }
+
+  @override
+  String get registerBack => 'Bumalik';
+
+  @override
+  String get registerNext => 'Susunod';
+
+  @override
+  String get registerSave => 'I-save';
+
+  @override
+  String registerSaved(Object name) {
+    return 'Na-save ang pamilya ni $name. Ipapadala ngayon, o pagbalik ng internet.';
+  }
+
+  @override
+  String get registerDiscardDraft => 'Itapon ang draft na ito';
+
+  @override
+  String get registerFirstName => 'Pangalan';
+
+  @override
+  String get registerMiddleName => 'Gitnang pangalan (opsyonal)';
+
+  @override
+  String get registerLastName => 'Apelyido';
+
+  @override
+  String get registerSex => 'Kasarian';
+
+  @override
+  String get registerBirthdate => 'Piliin ang petsa ng kapanganakan';
+
+  @override
+  String registerBirthdateValue(Object date) {
+    return 'Ipinanganak $date';
+  }
+
+  @override
+  String get registerMobile => 'Mobile number';
+
+  @override
+  String get registerMobileInvalid => '11 digit na nagsisimula sa 09 (o +639)';
+
+  @override
+  String get registerPwd => 'May kapansanan (PWD)';
+
+  @override
+  String get registerPwdType => 'Uri ng kapansanan';
+
+  @override
+  String get registerSoloParent => 'Solo parent';
+
+  @override
+  String get registerIndigenous => 'Katutubo';
+
+  @override
+  String get register4ps => 'Benepisyaryo ng 4Ps';
+
+  @override
+  String get registerMembersHint =>
+      'Idagdag ang ibang miyembro ng pamilya. Gagamitin ang mobile number ng puno maliban kung may sarili sila.';
+
+  @override
+  String get registerAddMember => 'Magdagdag ng miyembro';
+
+  @override
+  String get registerEditMember => 'I-edit ang miyembro';
+
+  @override
+  String get registerRemoveMember => 'Tanggalin ang miyembro';
+
+  @override
+  String get registerSaveMember => 'I-save ang miyembro';
+
+  @override
+  String get registerBarangay => 'Barangay';
+
+  @override
+  String get registerCenter => 'Evacuation center';
+
+  @override
+  String get registerHomeAddress => 'Tirahan (opsyonal)';
+
+  @override
+  String get registerSaveNote =>
+      'Una itong nase-save sa teleponong ito at saka ipinapadala; walang mawawala kahit offline.';
+
+  @override
+  String get sexFemaleShort => 'Babae';
+
+  @override
+  String get sexMaleShort => 'Lalaki';
 }

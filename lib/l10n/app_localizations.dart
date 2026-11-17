@@ -5019,6 +5019,216 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{count, plural, =1{1 evacuee} other{{count} evacuees}}'**
   String countEvacuees(int count);
+
+  /// No description provided for @registerTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Register family'**
+  String get registerTitle;
+
+  /// No description provided for @registerStepHead.
+  ///
+  /// In en, this message translates to:
+  /// **'Head of family'**
+  String get registerStepHead;
+
+  /// No description provided for @registerStepMembers.
+  ///
+  /// In en, this message translates to:
+  /// **'Members'**
+  String get registerStepMembers;
+
+  /// No description provided for @registerStepPlace.
+  ///
+  /// In en, this message translates to:
+  /// **'Purok and center'**
+  String get registerStepPlace;
+
+  /// No description provided for @registerStepReview.
+  ///
+  /// In en, this message translates to:
+  /// **'Review'**
+  String get registerStepReview;
+
+  /// No description provided for @registerStepOf.
+  ///
+  /// In en, this message translates to:
+  /// **'Step {step} of {total}'**
+  String registerStepOf(int step, int total);
+
+  /// No description provided for @registerBack.
+  ///
+  /// In en, this message translates to:
+  /// **'Back'**
+  String get registerBack;
+
+  /// No description provided for @registerNext.
+  ///
+  /// In en, this message translates to:
+  /// **'Next'**
+  String get registerNext;
+
+  /// No description provided for @registerSave.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get registerSave;
+
+  /// No description provided for @registerSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'{name}\'s family saved. It is sent now, or when you are back online.'**
+  String registerSaved(Object name);
+
+  /// No description provided for @registerDiscardDraft.
+  ///
+  /// In en, this message translates to:
+  /// **'Discard this draft'**
+  String get registerDiscardDraft;
+
+  /// No description provided for @registerFirstName.
+  ///
+  /// In en, this message translates to:
+  /// **'First name'**
+  String get registerFirstName;
+
+  /// No description provided for @registerMiddleName.
+  ///
+  /// In en, this message translates to:
+  /// **'Middle name (optional)'**
+  String get registerMiddleName;
+
+  /// No description provided for @registerLastName.
+  ///
+  /// In en, this message translates to:
+  /// **'Last name'**
+  String get registerLastName;
+
+  /// No description provided for @registerSex.
+  ///
+  /// In en, this message translates to:
+  /// **'Sex'**
+  String get registerSex;
+
+  /// No description provided for @registerBirthdate.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose the date of birth'**
+  String get registerBirthdate;
+
+  /// No description provided for @registerBirthdateValue.
+  ///
+  /// In en, this message translates to:
+  /// **'Born {date}'**
+  String registerBirthdateValue(Object date);
+
+  /// No description provided for @registerMobile.
+  ///
+  /// In en, this message translates to:
+  /// **'Mobile number'**
+  String get registerMobile;
+
+  /// No description provided for @registerMobileInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'11 digits starting with 09 (or +639)'**
+  String get registerMobileInvalid;
+
+  /// No description provided for @registerPwd.
+  ///
+  /// In en, this message translates to:
+  /// **'Person with disability (PWD)'**
+  String get registerPwd;
+
+  /// No description provided for @registerPwdType.
+  ///
+  /// In en, this message translates to:
+  /// **'Type of disability'**
+  String get registerPwdType;
+
+  /// No description provided for @registerSoloParent.
+  ///
+  /// In en, this message translates to:
+  /// **'Solo parent'**
+  String get registerSoloParent;
+
+  /// No description provided for @registerIndigenous.
+  ///
+  /// In en, this message translates to:
+  /// **'Indigenous person'**
+  String get registerIndigenous;
+
+  /// No description provided for @register4ps.
+  ///
+  /// In en, this message translates to:
+  /// **'4Ps beneficiary'**
+  String get register4ps;
+
+  /// No description provided for @registerMembersHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Add the other people of the family. Each one uses the head\'s mobile number unless they have their own.'**
+  String get registerMembersHint;
+
+  /// No description provided for @registerAddMember.
+  ///
+  /// In en, this message translates to:
+  /// **'Add member'**
+  String get registerAddMember;
+
+  /// No description provided for @registerEditMember.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit member'**
+  String get registerEditMember;
+
+  /// No description provided for @registerRemoveMember.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove member'**
+  String get registerRemoveMember;
+
+  /// No description provided for @registerSaveMember.
+  ///
+  /// In en, this message translates to:
+  /// **'Save member'**
+  String get registerSaveMember;
+
+  /// No description provided for @registerBarangay.
+  ///
+  /// In en, this message translates to:
+  /// **'Barangay'**
+  String get registerBarangay;
+
+  /// No description provided for @registerCenter.
+  ///
+  /// In en, this message translates to:
+  /// **'Evacuation center'**
+  String get registerCenter;
+
+  /// No description provided for @registerHomeAddress.
+  ///
+  /// In en, this message translates to:
+  /// **'Home address (optional)'**
+  String get registerHomeAddress;
+
+  /// No description provided for @registerSaveNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Saved on this phone first and sent to the server; nothing is lost offline.'**
+  String get registerSaveNote;
+
+  /// No description provided for @sexFemaleShort.
+  ///
+  /// In en, this message translates to:
+  /// **'Female'**
+  String get sexFemaleShort;
+
+  /// No description provided for @sexMaleShort.
+  ///
+  /// In en, this message translates to:
+  /// **'Male'**
+  String get sexMaleShort;
 }
 
 class _AppLocalizationsDelegate

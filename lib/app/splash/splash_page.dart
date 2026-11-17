@@ -160,7 +160,7 @@ class _SplashPageState extends ConsumerState<SplashPage> {
                             'Ligao City, Albay',
                             style: TextStyle(
                               color: Colors.white.withValues(alpha: 0.7),
-                              fontSize: 13,
+                              fontSize: 14,
                               fontWeight: FontWeight.w600,
                             ),
                           ),
@@ -180,7 +180,7 @@ class _SplashPageState extends ConsumerState<SplashPage> {
                         AppLocalizations.of(context).preparingEmergencyInfo,
                         style: TextStyle(
                           color: Colors.white.withValues(alpha: 0.75),
-                          fontSize: 13,
+                          fontSize: 14,
                           fontWeight: FontWeight.w500,
                         ),
                       ),

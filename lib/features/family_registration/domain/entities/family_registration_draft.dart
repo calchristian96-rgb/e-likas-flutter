@@ -12,7 +12,11 @@ class FamilyRegistrationDraft {
     this.evacuationCenterId,
     this.is4psBeneficiary = false,
     this.members = const [],
+    this.purokId,
   });
+
+  /// The home's purok (backend step 6), optional.
+  final int? purokId;
 
   final int? evacuationEventId;
   final int? barangayId;
@@ -81,6 +85,7 @@ class FamilyRegistrationDraft {
     bool clearEvacuationCenterId = false,
     bool? is4psBeneficiary,
     List<FamilyMemberDraft>? members,
+    ({int? value})? purokId,
   }) {
     return FamilyRegistrationDraft(
       evacuationEventId: evacuationEventId ?? this.evacuationEventId,
@@ -92,6 +97,7 @@ class FamilyRegistrationDraft {
           : (evacuationCenterId ?? this.evacuationCenterId),
       is4psBeneficiary: is4psBeneficiary ?? this.is4psBeneficiary,
       members: members ?? this.members,
+      purokId: purokId == null ? this.purokId : purokId.value,
     );
   }
 
@@ -111,6 +117,7 @@ class FamilyRegistrationDraft {
     'displacement_type': displacementType,
     if (evacuationCenterId != null) 'evacuation_center_id': evacuationCenterId,
     'is_4ps_beneficiary': is4psBeneficiary,
+    'purok_id': ?purokId,
     'members': members.map((m) => m.toJson()).toList(),
   };
 
@@ -125,6 +132,7 @@ class FamilyRegistrationDraft {
       members: (json['members'] as List? ?? [])
           .map((m) => FamilyMemberDraft.fromJson(m as Map<String, dynamic>))
           .toList(),
+      purokId: json['purok_id'] as int?,
     );
   }
 }

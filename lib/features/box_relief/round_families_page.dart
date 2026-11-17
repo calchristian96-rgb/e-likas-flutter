@@ -1,3 +1,4 @@
+import '../../core/widgets/ui_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -236,7 +237,7 @@ class _RoundFamiliesPageState extends ConsumerState<RoundFamiliesPage> {
             },
             child: ListView(
               physics: const AlwaysScrollableScrollPhysics(),
-              padding: const EdgeInsets.all(16),
+              padding: pagePadding(context),
               children: [
                 if (result.fromCache)
                   Padding(
@@ -363,16 +364,14 @@ class _FamilyTile extends StatelessWidget {
               fontWeight: FontWeight.w600,
             ),
           ),
-          PopupMenuButton<String>(
-            tooltip: l10n.moreActions,
-            onSelected: (_) => onVoid(),
-            itemBuilder: (context) => [
-              PopupMenuItem(
-                value: 'void',
-                child: Text(
-                  l10n.reliefVoidHandout,
-                  style: TextStyle(color: theme.colorScheme.error),
-                ),
+          MoreButton(
+            title: family.name,
+            actions: [
+              SheetAction(
+                label: l10n.reliefVoidHandout,
+                icon: Icons.undo,
+                destructive: true,
+                onTap: onVoid,
               ),
             ],
           ),

@@ -1,3 +1,4 @@
+import '../../../../core/widgets/ui_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
@@ -259,7 +260,7 @@ class _EcBoardBody extends ConsumerWidget {
       // recorded on the family's record (Registered Families), not here
       // -- the board no longer has Quick Departure, as on the web.
       child: ListView(
-        padding: const EdgeInsets.all(16),
+        padding: pagePadding(context),
         children: [
           if (selectedClosed)
             _ClosedEventNote(

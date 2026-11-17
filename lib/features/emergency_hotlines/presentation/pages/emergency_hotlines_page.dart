@@ -1,3 +1,4 @@
+import '../../../../core/widgets/ui_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -45,7 +46,7 @@ class EmergencyHotlinesPage extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(title: Text(l10n.emergencyHotlinesTitle)),
       body: ListView(
-        padding: const EdgeInsets.all(16),
+        padding: pagePadding(context),
         children: [
           _OfficialServicesBanner(message: l10n.emergencyHotlinesSubtitle),
           const SizedBox(height: 10),

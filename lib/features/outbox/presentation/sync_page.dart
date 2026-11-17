@@ -1,3 +1,4 @@
+import '../../../core/widgets/ui_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -109,7 +110,7 @@ class _SyncPageState extends ConsumerState<SyncPage> {
             onRefresh: _syncNow,
             child: ListView(
               physics: const AlwaysScrollableScrollPhysics(),
-              padding: const EdgeInsets.all(16),
+              padding: pagePadding(context),
               children: [
                 Text(
                   totalWaiting == 0 && totalAttention == 0
@@ -207,18 +208,19 @@ class _ActionTile extends StatelessWidget {
         ),
         trailing: onRetry == null
             ? const Icon(Icons.schedule)
-            : PopupMenuButton<String>(
-                tooltip: l10n.moreActions,
-                onSelected: (v) => v == 'retry' ? onRetry!() : onDiscard!(),
-                itemBuilder: (context) => [
-                  PopupMenuItem(value: 'retry', child: Text(l10n.syncTryAgain)),
-                  const PopupMenuDivider(),
-                  PopupMenuItem(
-                    value: 'discard',
-                    child: Text(
-                      l10n.syncDiscardConfirm,
-                      style: TextStyle(color: theme.colorScheme.error),
-                    ),
+            : MoreButton(
+                title: action.summary,
+                actions: [
+                  SheetAction(
+                    label: l10n.syncTryAgain,
+                    icon: Icons.refresh,
+                    onTap: onRetry!,
+                  ),
+                  SheetAction(
+                    label: l10n.syncDiscardConfirm,
+                    icon: Icons.delete_outline,
+                    destructive: true,
+                    onTap: onDiscard!,
                   ),
                 ],
               ),

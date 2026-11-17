@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/connectivity/connectivity_service.dart';
 import '../../../../core/error/result.dart';
+import '../../../../core/widgets/ui_kit.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../providers/staff_auth_provider.dart';
 
@@ -69,7 +70,23 @@ class _StaffLoginPageState extends ConsumerState<StaffLoginPage> {
     final l10n = AppLocalizations.of(context);
     return Scaffold(
       appBar: AppBar(title: Text(l10n.staffLoginTitle)),
+      // The one primary action, fixed at the bottom above the keyboard.
+      bottomNavigationBar: BottomActionBar(
+        children: [
+          FilledButton(
+            onPressed: _submitting ? null : _submit,
+            child: _submitting
+                ? const SizedBox(
+                    width: 20,
+                    height: 20,
+                    child: CircularProgressIndicator(strokeWidth: 2),
+                  )
+                : Text(l10n.staffLoginButton),
+          ),
+        ],
+      ),
       body: SafeArea(
+        bottom: false,
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(24),
           child: Form(
@@ -77,11 +94,7 @@ class _StaffLoginPageState extends ConsumerState<StaffLoginPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Icon(
-                  Icons.shield_outlined,
-                  size: 56,
-                  color: Theme.of(context).colorScheme.primary,
-                ),
+                const Center(child: ElikasLogo(size: 72)),
                 const SizedBox(height: 16),
                 Text(
                   l10n.staffLoginTitle,
@@ -135,20 +148,6 @@ class _StaffLoginPageState extends ConsumerState<StaffLoginPage> {
                     }
                     return null;
                   },
-                ),
-                const SizedBox(height: 24),
-                FilledButton(
-                  onPressed: _submitting ? null : _submit,
-                  style: FilledButton.styleFrom(
-                    minimumSize: const Size.fromHeight(48),
-                  ),
-                  child: _submitting
-                      ? const SizedBox(
-                          width: 20,
-                          height: 20,
-                          child: CircularProgressIndicator(strokeWidth: 2),
-                        )
-                      : Text(l10n.staffLoginButton),
                 ),
               ],
             ),
