@@ -113,5 +113,11 @@ abstract class EcBoardRepository {
   /// `POST /evacuation-centers/{id}/evacuees`. See
   /// [EcBoardSubmitResult]'s doc comment for why both ids it carries
   /// matter, not just the evacuee's.
-  Future<Result<EcBoardSubmitResult>> submit(EcBoardEntryDraft draft);
+  /// [clientRef]: the queued record's UUID, sent as `client_ref` so a
+  /// retry after a lost answer never adds the person twice
+  /// (backend docs/client-ref-api.md).
+  Future<Result<EcBoardSubmitResult>> submit(
+    EcBoardEntryDraft draft, {
+    String? clientRef,
+  });
 }

@@ -44,12 +44,17 @@ class OutboxRepository {
   }) async {
     final owner = _ownerStaffId;
     if (owner == null) throw StateError('Not signed in.');
+    final localId = _uuid.v4();
     final action = PendingAction(
-      localId: _uuid.v4(),
+      localId: localId,
       kind: kind,
       method: method,
       path: path,
-      body: body,
+      // The row's own UUID as client_ref on every queued write: the
+      // backend replays the first answer instead of doing it twice
+      // where it supports it (docs/client-ref-api.md); elsewhere it is
+      // ignored.
+      body: {...body, 'client_ref': localId},
       summary: summary,
       subjectKey: subjectKey,
       status: PendingActionStatus.pending,
@@ -63,7 +68,7 @@ class OutboxRepository {
             kind: kind.name,
             method: method,
             path: path,
-            bodyJson: jsonEncode(body),
+            bodyJson: jsonEncode(action.body),
             summary: summary,
             subjectKey: Value(subjectKey),
             status: action.status.wire,

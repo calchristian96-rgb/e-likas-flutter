@@ -282,12 +282,15 @@ class EcBoardRepositoryImpl implements EcBoardRepository {
   }
 
   @override
-  Future<Result<EcBoardSubmitResult>> submit(EcBoardEntryDraft draft) async {
+  Future<Result<EcBoardSubmitResult>> submit(
+    EcBoardEntryDraft draft, {
+    String? clientRef,
+  }) async {
     try {
-      final result = await _remote.createEvacuee(
-        draft.evacuationCenterId,
-        draft.toJson(),
-      );
+      final result = await _remote.createEvacuee(draft.evacuationCenterId, {
+        ...draft.toJson(),
+        'client_ref': ?clientRef,
+      });
       return Success(result);
     } on DioException catch (e) {
       return Failed(mapStaffDioError(e));

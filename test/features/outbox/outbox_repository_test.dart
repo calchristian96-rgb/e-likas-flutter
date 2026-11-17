@@ -49,7 +49,10 @@ void main() {
       expect(result.sent, 1);
       expect(await r.getAll(), isEmpty);
       expect(api.calls, ['POST /box-relief/rounds/3/handouts']);
-      expect(api.bodies.single, {'family_id': 548});
+      // With the row's own UUID as client_ref (docs/client-ref-api.md).
+      final sent = api.bodies.single as Map<String, dynamic>;
+      expect(sent['family_id'], 548);
+      expect(sent['client_ref'], hasLength(36));
     },
   );
 

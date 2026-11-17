@@ -163,7 +163,14 @@ void main() {
       'without Add Evacuee', (tester) async {
     await _pump(tester, events: const [_closed, _older]);
 
-    expect(find.text(_closedNote), findsOneWidget);
+    // No event is open at all: the backend's wording comes first.
+    expect(
+      find.text(
+        'No open event yet. CSWDO opens an event when a threat is announced. '
+        '$_closedNote',
+      ),
+      findsOneWidget,
+    );
     expect(find.widgetWithText(FilledButton, 'Add Evacuee'), findsNothing);
     expect(
       await _eventChoices(tester),

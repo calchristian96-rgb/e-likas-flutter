@@ -10,5 +10,9 @@ import '../entities/family_registration_draft.dart';
 /// backend actually returns, mapped through [mapStaffDioError].
 abstract class FamilyRegistrationRepository {
   /// Returns the created family's backend id on a confirmed 201.
-  Future<Result<int>> submit(FamilyRegistrationDraft draft);
+  /// [clientRef]: sent as `client_ref` (backend docs/client-ref-api.md).
+  Future<Result<int>> submit(
+    FamilyRegistrationDraft draft, {
+    String? clientRef,
+  });
 }

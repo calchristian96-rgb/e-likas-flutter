@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:uuid/uuid.dart';
 
 import '../../core/widgets/error_state.dart';
 import '../../core/widgets/search_field.dart';
@@ -209,6 +210,10 @@ class _ReEnrollFamilyPageState extends ConsumerState<_ReEnrollFamilyPage> {
   bool _sending = false;
   String? _error;
 
+  /// One client_ref for this family's re-enrolment, kept across the 409
+  /// "same family?" resend and a retry (docs/client-ref-api.md).
+  final String _clientRef = const Uuid().v4();
+
   List<ReturningMember> get _ticked => [
     for (final m in widget.family.members)
       if (!m.checkedIn && _answers[m.id]!.ticked) m,
@@ -234,6 +239,7 @@ class _ReEnrollFamilyPageState extends ConsumerState<_ReEnrollFamilyPage> {
           sourceFamilyId: widget.family.id,
           duplicateDecision: decision,
           linkFamilyId: linkFamilyId,
+          clientRef: _clientRef,
           members: [
             for (final m in _ticked)
               ReEnrollMember(
@@ -295,7 +301,7 @@ class _ReEnrollFamilyPageState extends ConsumerState<_ReEnrollFamilyPage> {
                     l10n.returningFamilyLinkTo(
                       c.name,
                       c.centerName ?? '',
-                      c.memberCount,
+                      l10n.ecBoardFamilyMembers(c.memberCount),
                     ),
                     textAlign: TextAlign.center,
                   ),

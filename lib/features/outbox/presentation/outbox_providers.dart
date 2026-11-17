@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/connectivity/connectivity_service.dart';
 import '../../../core/database/staff_database.dart';
 import '../../../core/network/staff_api_client.dart';
+import '../../family_registration/presentation/providers/lookup_providers.dart';
 import '../../family_registration/presentation/providers/pending_queue_provider.dart';
 import '../../home/presentation/providers/home_provider.dart';
 import '../../staff_auth/presentation/providers/staff_auth_provider.dart';
@@ -86,6 +87,11 @@ class StaffSyncAll {
     }
     final result = await _ref.read(outboxRepositoryProvider).run();
     _ref.read(outboxRevisionProvider.notifier).bump();
+    // The first check-in switches an event in monitoring to active on
+    // the server (backend EventFlow): read the events again.
+    if (families.processed > 0 || result.sent > 0) {
+      _ref.invalidate(evacuationEventsLookupProvider);
+    }
     return OutboxRunResult(
       sent: result.sent + families.processed,
       needAttention: result.needAttention,

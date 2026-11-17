@@ -3073,7 +3073,7 @@ abstract class AppLocalizations {
   /// No description provided for @ecBoardNoEventsAvailable.
   ///
   /// In en, this message translates to:
-  /// **'No evacuation events are available yet.'**
+  /// **'No open event yet. CSWDO opens an event when a threat is announced.'**
   String get ecBoardNoEventsAvailable;
 
   /// No description provided for @ecBoardAgeSexSectionTitle.
@@ -4183,7 +4183,7 @@ abstract class AppLocalizations {
   /// No description provided for @returningMemberAge.
   ///
   /// In en, this message translates to:
-  /// **'{age} years'**
+  /// **'{age, plural, =1{1 year} other{{age} years}}'**
   String returningMemberAge(int age);
 
   /// No description provided for @returningMemberAgeGroup.
@@ -4231,8 +4231,8 @@ abstract class AppLocalizations {
   /// No description provided for @returningFamilyLinkTo.
   ///
   /// In en, this message translates to:
-  /// **'Same family, link it: {name} · {center} · {count} members'**
-  String returningFamilyLinkTo(String name, String center, int count);
+  /// **'Same family, link it: {name} · {center} · {members}'**
+  String returningFamilyLinkTo(String name, String center, String members);
 
   /// No description provided for @returningFamilyDifferent.
   ///
@@ -4441,7 +4441,7 @@ abstract class AppLocalizations {
   /// No description provided for @staffNoOpenEvent.
   ///
   /// In en, this message translates to:
-  /// **'No disaster event is open.'**
+  /// **'No open event yet. CSWDO opens an event when a threat is announced.'**
   String get staffNoOpenEvent;
 
   /// No description provided for @savedCopyAge.
@@ -4513,8 +4513,8 @@ abstract class AppLocalizations {
   /// No description provided for @reliefBoxesSent.
   ///
   /// In en, this message translates to:
-  /// **'{count} boxes sent, round {round}'**
-  String reliefBoxesSent(int count, int round);
+  /// **'{boxes} sent, round {round}'**
+  String reliefBoxesSent(String boxes, int round);
 
   /// No description provided for @reliefConfirmArrived.
   ///
@@ -4549,8 +4549,8 @@ abstract class AppLocalizations {
   /// No description provided for @reliefConfirmSummary.
   ///
   /// In en, this message translates to:
-  /// **'{count} boxes received, round {round}'**
-  String reliefConfirmSummary(int count, int round);
+  /// **'{boxes} received, round {round}'**
+  String reliefConfirmSummary(String boxes, int round);
 
   /// No description provided for @reliefLeftToGive.
   ///
@@ -4573,7 +4573,7 @@ abstract class AppLocalizations {
   /// No description provided for @reliefSuggestedOrderNote.
   ///
   /// In en, this message translates to:
-  /// **'Suggested order, for CSWDO confirmation.'**
+  /// **'Priority order: give to the families at the top first.'**
   String get reliefSuggestedOrderNote;
 
   /// No description provided for @reliefPurokHeading.
@@ -4699,8 +4699,8 @@ abstract class AppLocalizations {
   /// No description provided for @finalCountFigures.
   ///
   /// In en, this message translates to:
-  /// **'{families} families · {persons} persons'**
-  String finalCountFigures(int families, int persons);
+  /// **'{families} · {persons}'**
+  String finalCountFigures(String families, String persons);
 
   /// No description provided for @finalCountInsideOutside.
   ///
@@ -4735,8 +4735,8 @@ abstract class AppLocalizations {
   /// No description provided for @finalCountValidated.
   ///
   /// In en, this message translates to:
-  /// **'Validated: {families} families (the relief need)'**
-  String finalCountValidated(int families);
+  /// **'Validated: {families} (the relief need)'**
+  String finalCountValidated(String families);
 
   /// No description provided for @finalCountChanged.
   ///
@@ -4777,8 +4777,8 @@ abstract class AppLocalizations {
   /// No description provided for @finalCountSummary.
   ///
   /// In en, this message translates to:
-  /// **'Final count: {families} families, {persons} persons'**
-  String finalCountSummary(int families, int persons);
+  /// **'Final count: {families}, {persons}'**
+  String finalCountSummary(String families, String persons);
 
   /// No description provided for @reliefShortfallTitle.
   ///
@@ -4795,7 +4795,7 @@ abstract class AppLocalizations {
   /// No description provided for @reliefShortfallAsk.
   ///
   /// In en, this message translates to:
-  /// **'Request up to {count} more boxes'**
+  /// **'{count, plural, =1{Request 1 more box} other{Request up to {count} more boxes}}'**
   String reliefShortfallAsk(int count);
 
   /// No description provided for @reliefShortfallRow.
@@ -4807,7 +4807,7 @@ abstract class AppLocalizations {
   /// No description provided for @reliefShortfallSummary.
   ///
   /// In en, this message translates to:
-  /// **'Request {count} more boxes, round {round}'**
+  /// **'{count, plural, =1{Request 1 more box, round {round}} other{Request {count} more boxes, round {round}}}'**
   String reliefShortfallSummary(int count, int round);
 
   /// No description provided for @staffMyCentersSubtitle.
@@ -4903,8 +4903,8 @@ abstract class AppLocalizations {
   /// No description provided for @monitoringCentersSummary.
   ///
   /// In en, this message translates to:
-  /// **'{inUse} of {total} centers in use · {noCapacity} without capacity'**
-  String monitoringCentersSummary(int inUse, int total, int noCapacity);
+  /// **'{inUse} of {centers} in use · {noCapacity} without capacity'**
+  String monitoringCentersSummary(int inUse, String centers, int noCapacity);
 
   /// No description provided for @monitoringShort.
   ///
@@ -4965,6 +4965,60 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Updated {age}'**
   String monitoringUpdated(Object age);
+
+  /// No description provided for @reliefNextInLine.
+  ///
+  /// In en, this message translates to:
+  /// **'Next in line'**
+  String get reliefNextInLine;
+
+  /// No description provided for @reliefWaitingForBoxes.
+  ///
+  /// In en, this message translates to:
+  /// **'Waiting for more boxes'**
+  String get reliefWaitingForBoxes;
+
+  /// No description provided for @reliefOutOfOrderTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Give a box to {family} now?'**
+  String reliefOutOfOrderTitle(Object family);
+
+  /// No description provided for @reliefOutOfOrderBody.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 family with a higher priority is still waiting.} other{{count} families with a higher priority are still waiting.}}'**
+  String reliefOutOfOrderBody(int count);
+
+  /// No description provided for @countFamilies.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 family} other{{count} families}}'**
+  String countFamilies(int count);
+
+  /// No description provided for @countPersons.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 person} other{{count} persons}}'**
+  String countPersons(int count);
+
+  /// No description provided for @countBoxes.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 box} other{{count} boxes}}'**
+  String countBoxes(int count);
+
+  /// No description provided for @countCenters.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 center} other{{count} centers}}'**
+  String countCenters(int count);
+
+  /// No description provided for @countEvacuees.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 evacuee} other{{count} evacuees}}'**
+  String countEvacuees(int count);
 }
 
 class _AppLocalizationsDelegate

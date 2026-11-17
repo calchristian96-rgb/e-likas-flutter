@@ -1,13 +1,11 @@
 {
   "@@locale": "fil",
-
   "navHome": "Home",
   "navMap": "Mapa",
   "navNearestCenter": "Malapit na Center",
   "navAlerts": "Mga Alerto",
   "navHotlines": "Mga Hotline",
   "navSettings": "Settings",
-
   "online": "Online",
   "offlineModeLabel": "Offline mode",
   "offline": "Offline",
@@ -36,13 +34,10 @@
   "tryAgain": "Subukan muli",
   "language": "Wika",
   "selectLanguage": "Pumili ng wika",
-
   "languageEnglish": "English",
   "languageFilipino": "Filipino",
   "languageBikolLigao": "Bikol (Ligao)",
-
   "preparingEmergencyInfo": "Inihahanda ang impormasyong pang-emerhensiya…",
-
   "goodMorning": "Magandang umaga",
   "goodAfternoon": "Magandang hapon",
   "goodEvening": "Magandang gabi",
@@ -69,7 +64,6 @@
   "noNearbyEvacuationCenters": "Wala pang malapit na evacuation center na ipapakita.",
   "youAreViewingLiveData": "Nakikita mo ang live data.",
   "checkingForAlerts": "Sinusuri ang mga alertong pang-emerhensiya…",
-
   "alertsTitle": "Mga Alerto",
   "alertDetailsTitle": "Detalye ng Alerto",
   "noPublicAlerts": "Wala pang pampublikong alerto na ipapakita.",
@@ -83,38 +77,30 @@
   "emergencyAlertReceived": "May natanggap na alertong pang-emerhensiya",
   "newInformationAlert": "May bagong impormasyon",
   "allClearUpdateReceived": "May natanggap na all-clear update",
-
   "severityMandatory": "Sapilitan",
   "severityAdvisory": "Advisory",
   "severityInfo": "Impormasyon",
   "severityAllClear": "Ligtas na",
-
   "statusActive": "Aktibo",
   "statusFull": "Puno",
   "statusClosed": "Sarado",
   "statusOnStandby": "Nakahanda",
-
   "evacuationCentersTitle": "Mga Evacuation Center",
   "noEvacuationCenters": "Wala pang evacuation center na ipapakita.",
   "evacuationCentersCount": "{count, plural, =1{1 evacuation center} other{{count} evacuation center}}",
   "publicAlertsCount": "{count, plural, =1{1 pampublikong alerto} other{{count} pampublikong alerto}}",
-
   "nearestCenterTitle": "Pinakamalapit na Center",
   "locationPermissionDenied": "Hindi pinayagan ang location permission.",
   "locationServicesOff": "Naka-off ang location services.",
   "locationPermanentlyDenied": "Permanenteng naka-deny ang location permission — i-enable ito sa system settings.",
   "couldNotDetermineLocation": "Hindi matukoy ang kasalukuyang lokasyon.",
   "couldNotLoadNearbyCenters": "Hindi na-load ang mga malapit na center",
-
   "emergencyHotlinesTitle": "Mga Hotline para sa Emerhensiya",
   "hotlinesOfflineNote": "Naka-save ang mga numerong ito sa iyong device at gumagana kahit walang internet.",
   "couldNotOpenDialer": "Hindi mabuksan ang phone dialer — gamitin ang Kopyahin ang Numero para i-dial nang manu-mano.",
   "copiedToClipboard": "Nakopya sa clipboard",
-
   "weatherNotYetAvailable": "Hindi pa available ang mga update ng panahon sa app na ito.",
-
   "cancel": "Kanselahin",
-
   "settingsTitle": "Settings",
   "settingsSectionOfflineData": "Offline at Datos",
   "settingsOfflineData": "Offline na Datos",
@@ -141,7 +127,6 @@
   "aboutTagline": "Electronic Ligao Kaligtasan Sistema",
   "syncCompleted": "Na-update ang impormasyon.",
   "syncPartialFailure": "May impormasyong hindi na-update. Ipinapakita ang pinakahuling naka-save na datos.",
-
   "offlineDataManagementTitle": "Pamamahala ng Offline na Datos",
   "offlineDataManagementSubtitle": "Pamahalaan ang na-save na impormasyon para sa offline access",
   "couldNotLoadOfflineData": "Hindi na-load ang detalye ng offline na datos",
@@ -157,7 +142,6 @@
   "clearCacheDialogBody": "Aalisin nito ang na-save na mga alerto, evacuation center, at impormasyon ng mapa sa device na ito. Maaari itong i-download muli kapag may internet access na.",
   "clearCacheDialogConfirm": "Burahin ang Datos",
   "cacheCleared": "Nabura ang offline na datos.",
-
   "hazardMapTitle": "Mapa ng Panganib",
   "noMapData": "Wala pang available na map data.",
   "couldNotLoadMapData": "Hindi na-load ang map data",
@@ -165,9 +149,7 @@
   "legendHazardArea": "Lugar na may panganib",
   "showMyLocation": "Ipakita ang aking lokasyon",
   "unableToOpenMaps": "Hindi mabuksan ang maps application sa device na ito.",
-
   "refreshing": "Nire-refresh…",
-
   "alertsAndNoticesTitle": "Mga Alerto at Paalala",
   "alertsAndNoticesSubtitle": "Real-time na updates para sa Ligao City",
   "dateGroupToday": "Ngayon",
@@ -182,7 +164,6 @@
   "sortOldestFirst": "Pinakaluma muna",
   "sortBySeverity": "Antas ng Severity",
   "latestAlertLabel": "Pinakabago",
-
   "shareAlert": "I-share ang alerto",
   "additionalInformation": "Karagdagang impormasyon",
   "severityLabel": "Severity",
@@ -190,11 +171,9 @@
   "receivedLabel": "Natanggap",
   "viewEvacuationCenters": "Tingnan ang mga evacuation center",
   "invalidCenterLink": "Hindi valid ang link ng center na ito.",
-
   "viewOnMap": "Tingnan sa mapa",
   "refreshLocation": "I-refresh ang lokasyon",
   "otherNearbyCenters": "Iba pang malapit na center",
-
   "evacuationCentersSubtitle": "Maghanap ng malapit at available na center",
   "searchCentersHint": "Maghanap ng center",
   "searchMyEvacuationCentersHint": "Maghanap sa aking mga evacuation center...",
@@ -207,7 +186,6 @@
   "sortByName": "Pangalan",
   "sortByOccupancy": "Occupancy",
   "sortByCapacity": "Capacity",
-
   "centerDetailsTitle": "Detalye ng center",
   "centerNotFound": "Hindi mahanap ang evacuation center na ito.",
   "overviewSectionTitle": "Buod",
@@ -220,7 +198,6 @@
   "centerMapLocationUnavailable": "Wala pang available na lokasyon sa mapa para sa center na ito.",
   "centerPhotoUnavailable": "Walang available na larawan",
   "centerPhotoUnavailableOffline": "Hindi available ang larawan offline",
-
   "facilitiesSectionTitle": "Pasilidad",
   "couldNotLoadFacilities": "Hindi ma-load ang mga pasilidad",
   "facilitiesNotAvailable": "Wala pang impormasyon tungkol sa mga pasilidad.",
@@ -230,7 +207,11 @@
   "facilityQuantityAvailable": "{quantity, plural, =1{1 available} other{{quantity} available}}",
   "@facilityQuantityAvailable": {
     "description": "Status line for an available facility with a recorded quantity, e.g. '3 available'",
-    "placeholders": { "quantity": { "type": "int" } }
+    "placeholders": {
+      "quantity": {
+        "type": "int"
+      }
+    }
   },
   "facilityTypeLatrineCompostPit": "Compost Pit Latrine",
   "facilityTypeLatrineSealed": "Sealed Latrine",
@@ -251,7 +232,6 @@
   "facilityTypeCampManagementDesk": "Camp Management Desk",
   "facilityTypeInfoBoard": "Info / Help Desk",
   "facilityTypeStorageArea": "Bodega",
-
   "centerTypeSchool": "Paaralan",
   "centerTypeCoveredCourt": "Covered Court",
   "centerTypeChurch": "Simbahan",
@@ -296,7 +276,6 @@
   "centerDiscardDialogTitle": "Itapon ang mga pagbabago?",
   "centerDiscardDialogBody": "May mga hindi na-save na pagbabago sa evacuation center na ito. Kung aalis ka ngayon, mawawala ang mga ito.",
   "centerDiscardDialogConfirm": "Itapon",
-
   "layersTooltip": "Mga Layer",
   "mapLayersTitle": "Mga Layer",
   "mapLegendTitle": "Legend ng Mapa",
@@ -326,7 +305,6 @@
   "hazardOverlayLandslideNote": "Landslide dulot ng ulan lamang: Mines and Geosciences Bureau via GeoRiskPH (ayon sa service: may petsang 2012). Antas ng panganib ito, hindi hula sa landslide. Hindi kasama sa mapa ang lahar.",
   "hazardOverlayLoadFailed": "Hindi ma-load ang {layer} mula sa GeoRiskPH sa ngayon. I-off at i-on ito para subukan muli.",
   "hazardOverlayAttribution": "MGB via GeoRiskPH",
-
   "updateAvailableTitle": "May bagong update",
   "updateRequiredTitle": "Kailangan ng update",
   "updateVersionReady": "Handa na ang bersyon {version}",
@@ -351,12 +329,10 @@
   "updateChecking": "Sinusuri…",
   "updateUpToDate": "Napapanahon na ang E-LIKAS.",
   "updateCheckFailed": "Hindi masuri ang mga update sa ngayon.",
-
   "normalMonitoringTitle": "Normal na Pagmomonitor",
   "viewAlert": "Tingnan ang Alerto",
   "findNearestCenterAction": "Hanapin ang Pinakamalapit na Center",
   "showingSavedAlertInfo": "Ipinapakita ang naka-save na impormasyon ng alerto",
-
   "emergencyHotlinesSubtitle": "Ito ang mga opisyal na serbisyong pang-emerhensiya ng Lungsod ng Ligao.",
   "hotlineNumberNotSet": "Hindi pa nakatakda",
   "emergencyCallNowNote": "Para sa mga banta sa buhay, tumawag agad sa tamang serbisyong pang-emerhensiya.",
@@ -372,7 +348,6 @@
   "addToFavoritesTooltip": "Idagdag ang {name} sa paborito",
   "removeFromFavoritesTooltip": "Alisin ang {name} sa paborito",
   "numberCopiedFor": "Nakopya ang numero ng {name}",
-
   "staffLogoutDialogTitle": "Mag-sign out?",
   "staffLogoutDialogBody": "Kailangan mong mag-sign in muli para ma-access ang mga staff feature.",
   "staffLogoutDialogConfirm": "Mag-sign out",
@@ -401,7 +376,6 @@
   "staffManageEvacuationCenters": "Aking mga Evacuation Center",
   "staffManageEvacuationCentersSubtitle": "Tingnan at i-edit ang mga sentrong pinamamahalaan mo",
   "staffSessionOfflineBanner": "Gumagamit ng naka-save na sign-in. May mga aksyon na nangangailangan ng koneksyon.",
-
   "staffFamiliesEmptyState": "Wala pang nairehistrong pamilya.",
   "staffFamiliesNoCacheMessage": "Wala pang naka-save na impormasyon ng pamilya — kumonekta sa internet nang minsan para ma-load ito.",
   "staffFamiliesLoadError": "Hindi ma-load ang mga rehistradong pamilya.",
@@ -412,7 +386,6 @@
   "staffFamiliesMemberCount": "{count, plural, =1{1 miyembro} other{{count} na miyembro}}",
   "staffFamiliesRegisteredIn": "Nakarehistro sa {barangay}",
   "staffFamiliesMembersSectionTitle": "Mga Miyembro",
-
   "staffSyncStoppedForAuthMessage": "Nag-expire ang iyong sesyon. Mag-sign in muli para magpatuloy ang pag-sync.",
   "staffSyncRequiresConnectionMessage": "Kailangan ng internet connection para mag-sync.",
   "staffSyncCompletedMessage": "{count, plural, =0{Walang na-sync na rehistrasyon.} =1{1 rehistrasyon ang na-sync.} other{{count} rehistrasyon ang na-sync.}}",
@@ -423,7 +396,6 @@
   "staffStatusPending": "Naghihintay",
   "staffStatusSyncing": "Nagsi-sync",
   "staffStatusNeedsAttention": "Kailangan ng Aksyon",
-
   "staffRegDiscardDialogTitle": "Itapon ang mga pagbabago?",
   "staffRegDiscardDialogBody": "May mga hindi pa na-save na pagbabago sa rehistrasyong ito. Kung aalis ka ngayon, mawawala ang mga ito.",
   "staffRegDiscardDialogConfirm": "Itapon",
@@ -447,7 +419,6 @@
   "staffRegDisplacementInsideCenter": "Nasa loob ng evacuation center",
   "staffRegDisplacementOutsideCenter": "Nasa labas ng evacuation center",
   "staffRegFieldEvacuationCenter": "Evacuation Center",
-
   "staffRegMemberCardTitle": "Miyembro {number}",
   "staffRegHeadOfFamilyBadge": "Puno ng Pamilya",
   "staffRegSetAsHead": "Itakda bilang puno",
@@ -482,13 +453,11 @@
   "staffRegIsIndigenous": "Katutubo",
   "staffRegIs4psMember": "4Ps Beneficiary",
   "staffRegFieldPwdType": "Uri ng Kapansanan",
-
   "staffLoginOfflineTitle": "Offline ka. Kumonekta para mag-sign in.",
   "staffLoginTitle": "Staff Sign In",
   "staffLoginEmailLabel": "Email",
   "staffLoginPasswordLabel": "Password",
   "staffLoginButton": "Mag-sign In",
-
   "staffPendingDetailTitle": "Detalye ng Rehistrasyon",
   "staffPendingDetailNotFound": "Wala na ang rehistrasyong ito sa queue. Maaaring na-sync na ito.",
   "staffPendingDetailLoadError": "Hindi na-load ang rehistrasyong ito.",
@@ -511,7 +480,6 @@
   "staffPendingDetailDeleteDialogBody": "Permanente itong aalisin sa offline queue. Hindi na ito mababawi.",
   "staffPendingDetailSyncingNotice": "Kasalukuyang nagsi-sync ang rehistrasyong ito. Mangyaring maghintay.",
   "staffPendingDetailDeletedMessage": "Naalis ang rehistrasyon sa queue.",
-
   "ecBoardTitle": "EC Information Board",
   "ecBoardWorkspaceActionSubtitle": "Magdagdag ng mga evacuee at tingnan ang breakdown ng edad/kasarian para sa isang center",
   "ecBoardAddEvacueeTitle": "Magdagdag ng Evacuee",
@@ -535,7 +503,7 @@
   "ecBoardSavedOfflineMessage": "Na-save offline. Mag-si-sync ito kapag online ka na.",
   "ecBoardSavedPendingHouseholdMessage": "Na-save — hinihintay munang maki-sync ang piniling pamilya.",
   "ecBoardSuccessMessage": "Matagumpay na naidagdag ang evacuee.",
-  "ecBoardNoEventsAvailable": "Wala pang available na evacuation event.",
+  "ecBoardNoEventsAvailable": "Wala pang bukas na event. Nagbubukas ang CSWDO ng event kapag may ibinabalang banta.",
   "ecBoardAgeSexSectionTitle": "Edad at Kasarian (Age & Sex)",
   "ecBoardSectoralSectionTitle": "Sectoral Group",
   "ecBoardLastKnownFromCacheNotice": "Offline — ipinapakita ang huling nakumpirmang bilang na naka-save sa device na ito.",
@@ -552,7 +520,6 @@
   "ecBoardBracketTeenage": "Tin-edyer",
   "ecBoardBracketAdult": "Nasa Hustong Gulang",
   "ecBoardBracketSeniorCitizen": "Senior Citizen",
-
   "ecBoardSectoralPwd": "Taong May Kapansanan (PWD)",
   "ecBoardSectoralChildHeadedFamily": "Pamilyang Pinamumunuan ng Bata",
   "ecBoardSectoralSingleHeadedFamily": "Pamilyang Iisa ang Puno",
@@ -564,10 +531,7 @@
   "ecBoardSectoralFlagsTitle": "Sectoral na detalye (opsyonal)",
   "ecBoardSectoralFlagsHelp": "Lagyan ng tsek lang ang alam mo. Ang walang tsek ay hindi naitala — hindi ito nangangahulugang \"hindi\".",
   "ecBoardSectoralFlagsTicked": "{count} ang may tsek",
-
   "ecBoardFourPsBeneficiaryFamilies": "4Ps Beneficiary na mga Pamilya",
-
-
   "ecBoardAddEvacueeIntro": "Maaaring idagdag ang pangalan at kaarawan sa ibang pagkakataon sa Evacuees page ng web dashboard.",
   "ecBoardSectionWhoIsThisPerson": "Sino ang taong ito?",
   "ecBoardHeadNote": "Gagamitin ang edad at kasarian ng taong ito para sa puno ng pamilya.",
@@ -584,70 +548,193 @@
   "ecBoardHeadIsMinorLabel": "Menor de edad ba ang puno?",
   "ecBoardWillBeRecordedTitle": "Itatala",
   "ecBoardSummaryAdding": "Magdaragdag ng 1 {sex}, {ageGroup}.",
-  "@ecBoardSummaryAdding": { "placeholders": { "sex": { "type": "String" }, "ageGroup": { "type": "String" } } },
+  "@ecBoardSummaryAdding": {
+    "placeholders": {
+      "sex": {
+        "type": "String"
+      },
+      "ageGroup": {
+        "type": "String"
+      }
+    }
+  },
   "ecBoardSummaryChooseAgeSex": "Piliin ang age group at kasarian ng taong ito.",
   "ecBoardSummaryJoinsHousehold": "Sasali sa pamilyang narito na: {household}.",
-  "@ecBoardSummaryJoinsHousehold": { "placeholders": { "household": { "type": "String" } } },
+  "@ecBoardSummaryJoinsHousehold": {
+    "placeholders": {
+      "household": {
+        "type": "String"
+      }
+    }
+  },
   "ecBoardSummaryChooseHousehold": "Piliin ang pamilya ng taong ito.",
   "ecBoardSummaryBecomesHead": "Magiging puno ng pamilyang iyon ({minor}).",
-  "@ecBoardSummaryBecomesHead": { "placeholders": { "minor": { "type": "String" } } },
+  "@ecBoardSummaryBecomesHead": {
+    "placeholders": {
+      "minor": {
+        "type": "String"
+      }
+    }
+  },
   "ecBoardSummaryNewHousehold": "Bagong pamilya: {name}, {barangay}.",
-  "@ecBoardSummaryNewHousehold": { "placeholders": { "name": { "type": "String" }, "barangay": { "type": "String" } } },
+  "@ecBoardSummaryNewHousehold": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "barangay": {
+        "type": "String"
+      }
+    }
+  },
   "ecBoardSummaryNoHeadName": "(wala pang pangalan ng pamilya)",
   "ecBoardSummaryNoBarangay": "(hindi pa napipili ang barangay na tinitirhan)",
   "ecBoardHomeBarangayLabel": "Barangay na tinitirhan",
   "ecBoardHomeBarangayHint": "Piliin ang barangay na tinitirhan ng pamilya...",
   "ecBoardHomeBarangayHelp": "Kung saan nakatira ang pamilya -- hindi kailangang kung saan ang center na ito.",
   "ecBoardHomeBarangaySameAsCenter": "Kapareho ng center na ito ({barangay})",
-  "@ecBoardHomeBarangaySameAsCenter": {"placeholders": {"barangay": {"type": "String"}}},
+  "@ecBoardHomeBarangaySameAsCenter": {
+    "placeholders": {
+      "barangay": {
+        "type": "String"
+      }
+    }
+  },
   "ecBoardHomeBarangayRequired": "Piliin ang barangay na tinitirhan ng pamilya.",
   "ecBoardFamilyHereGeneric": "Pamilya #{id} · {barangay} · {count} narito",
-  "@ecBoardFamilyHereGeneric": {"placeholders": {"id": {"type": "int"}, "barangay": {"type": "String"}, "count": {"type": "int"}}},
+  "@ecBoardFamilyHereGeneric": {
+    "placeholders": {
+      "id": {
+        "type": "int"
+      },
+      "barangay": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "ecBoardFamilyNumber": "Pamilya #{id}",
-  "@ecBoardFamilyNumber": {"placeholders": {"id": {"type": "int"}}},
+  "@ecBoardFamilyNumber": {
+    "placeholders": {
+      "id": {
+        "type": "int"
+      }
+    }
+  },
   "ecBoardNoFamiliesHere": "Walang pamilya rito sa ngayon.",
   "ecBoardFamiliesHereOffline": "Offline: ipinapakita ang mga pamilyang naka-save sa teleponong ito. Ang pamilyang umalis na sa center na ito ay tatanggihan pagka-sync.",
   "ecBoardOtherBarangayNote": "Nasa {barangay} ang center na ito. Idagdag lamang ang mga taong nananatili sa center na ito.",
-  "@ecBoardOtherBarangayNote": {"placeholders": {"barangay": {"type": "String"}}},
+  "@ecBoardOtherBarangayNote": {
+    "placeholders": {
+      "barangay": {
+        "type": "String"
+      }
+    }
+  },
   "ecBoardEventClosedName": "{name} (sarado)",
-  "@ecBoardEventClosedName": {"placeholders": {"name": {"type": "String"}}},
+  "@ecBoardEventClosedName": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
   "ecBoardClosedEventNote": "Sarado na ang event na ito. Hindi na maaaring magdagdag ng evacuee rito.",
   "ecBoardClosedEventWaitingNote": "Hindi na maisi-sync ang mga entry na naghihintay pa sa teleponong ito para rito. Suriin ang mga ito, saka burahin sa teleponong ito.",
   "ecBoardSummaryHeadIsThisPerson": "Puno: ang taong ito ({minor}).",
-  "@ecBoardSummaryHeadIsThisPerson": { "placeholders": { "minor": { "type": "String" } } },
+  "@ecBoardSummaryHeadIsThisPerson": {
+    "placeholders": {
+      "minor": {
+        "type": "String"
+      }
+    }
+  },
   "ecBoardSummaryHeadIsSomeoneElse": "Puno: ibang tao, {sex}, {minor}.",
-  "@ecBoardSummaryHeadIsSomeoneElse": { "placeholders": { "sex": { "type": "String" }, "minor": { "type": "String" } } },
+  "@ecBoardSummaryHeadIsSomeoneElse": {
+    "placeholders": {
+      "sex": {
+        "type": "String"
+      },
+      "minor": {
+        "type": "String"
+      }
+    }
+  },
   "ecBoardSummarySexNotYetKnown": "hindi pa alam ang kasarian",
   "ecBoardSummaryMinorUnknown": "menor de edad o hindi: hindi pa alam",
   "ecBoardSummaryMinor": "menor de edad",
   "ecBoardSummaryNotMinor": "hindi menor de edad",
   "ecBoardSummarySingleHeaded": "Single-headed: {answer}.",
-  "@ecBoardSummarySingleHeaded": { "placeholders": { "answer": { "type": "String" } } },
+  "@ecBoardSummarySingleHeaded": {
+    "placeholders": {
+      "answer": {
+        "type": "String"
+      }
+    }
+  },
   "ecBoardSummaryAnswerUnknown": "hindi pa alam",
   "ecBoardSummaryAnswerYes": "oo",
   "ecBoardSummaryAnswerNo": "hindi",
   "ecBoardSummaryMale": "lalaki",
   "ecBoardSummaryFemale": "babae",
   "ecBoardSummarySectoral": "Sectoral: {flags}.",
-  "@ecBoardSummarySectoral": { "placeholders": { "flags": { "type": "String" } } },
+  "@ecBoardSummarySectoral": {
+    "placeholders": {
+      "flags": {
+        "type": "String"
+      }
+    }
+  },
   "ecBoardSummaryNoSectoral": "Walang sectoral na detalye.",
   "ecBoardSectoralLiveExplanation": "Binibilang mula sa sectoral na detalye ng bawat evacuee. Ang child- at single-headed na pamilya ay binibilang nang isang beses bawat pamilya, ayon sa kasarian ng puno, mula sa mga sagot noong idinagdag ang pamilya.",
   "familyMemberDetailsPending": "Miyembro {index} — kulang pa ang detalye",
-  "@familyMemberDetailsPending": { "placeholders": { "index": { "type": "int" } } },
+  "@familyMemberDetailsPending": {
+    "placeholders": {
+      "index": {
+        "type": "int"
+      }
+    }
+  },
   "familyMemberCheckedInAt": "Naka-check in sa {center}",
-  "@familyMemberCheckedInAt": { "placeholders": { "center": { "type": "String" } } },
+  "@familyMemberCheckedInAt": {
+    "placeholders": {
+      "center": {
+        "type": "String"
+      }
+    }
+  },
   "familyMemberCheckedInUnspecified": "Naka-check in sa hindi tukoy na lugar",
   "familyMemberCheckedOut": "Naka-check out na",
   "familyMembersNeedConnection": "Kumonekta sa internet para makita kung sino pa ang naka-check in at para mag-check out ng isang tao.",
   "familyHeadNotLinked": "Wala pang naka-link na puno. Ginagamit ng bilang ang mga sagot para sa puno ({answers}) hanggang may ma-link na miyembro. Pagdating ng puno, idagdag sila sa Add Evacuee → Narito na at i-tsek ang \"Ang taong ito ang puno ng pamilya\".",
-  "@familyHeadNotLinked": { "placeholders": { "answers": { "type": "String" } } },
+  "@familyHeadNotLinked": {
+    "placeholders": {
+      "answers": {
+        "type": "String"
+      }
+    }
+  },
   "familyHeadNotLinkedNothingKnown": "Wala pang naka-link na puno. Wala pang alam tungkol sa puno hanggang may ma-link na miyembro. Pagdating ng puno, idagdag sila sa Add Evacuee → Narito na at i-tsek ang \"Ang taong ito ang puno ng pamilya\".",
   "familyLegacyBulkEntryNotice": "Lumang bulk entry — kailangang suriin nang mano-mano. Mga hindi kilalang tao mula sa lumang headcount, hindi tunay na pamilya.",
   "checkOutButton": "Check out",
   "checkOutDialogTitle": "I-check out si {name}",
-  "@checkOutDialogTitle": { "placeholders": { "name": { "type": "String" } } },
+  "@checkOutDialogTitle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
   "checkOutDialogSubtitle": "Isasara ang kanilang pananatili sa {center}, kaya hindi na sila bibilangin bilang narito ngayon.",
-  "@checkOutDialogSubtitle": { "placeholders": { "center": { "type": "String" } } },
+  "@checkOutDialogSubtitle": {
+    "placeholders": {
+      "center": {
+        "type": "String"
+      }
+    }
+  },
   "checkOutTheirCurrentLocation": "kanilang kasalukuyang lugar",
   "checkOutReasonLabel": "Dahilan",
   "checkOutReturnedHome": "Umuwi na",
@@ -655,11 +742,32 @@
   "checkOutReturnedHomeLower": "umuwi na",
   "checkOutTransferredLower": "lumipat sa ibang lugar",
   "checkOutConfirm": "I-check out si {name} bilang {reason}? Hindi na sila bibilangin bilang narito ngayon.",
-  "@checkOutConfirm": { "placeholders": { "name": { "type": "String" }, "reason": { "type": "String" } } },
+  "@checkOutConfirm": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "reason": {
+        "type": "String"
+      }
+    }
+  },
   "checkOutMemberPendingName": "Miyembro {index} (kulang pa ang detalye)",
-  "@checkOutMemberPendingName": { "placeholders": { "index": { "type": "int" } } },
+  "@checkOutMemberPendingName": {
+    "placeholders": {
+      "index": {
+        "type": "int"
+      }
+    }
+  },
   "checkOutSucceeded": "Na-check out na si {name}.",
-  "@checkOutSucceeded": { "placeholders": { "name": { "type": "String" } } },
+  "@checkOutSucceeded": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
   "checkOutOther": "Iba pa",
   "checkOutOtherLower": "umalis dahil sa ibang dahilan",
   "markFamilyDepartedButton": "Markahang umalis ang pamilya",
@@ -667,17 +775,50 @@
   "markFamilyDepartedWho": "Sino ang aalis",
   "markFamilyDepartedReasonHelp": "Para sa lahat ng naka-tsek sa itaas.",
   "markFamilyDepartedSubmit": "Markahang umalis ang {count}",
-  "@markFamilyDepartedSubmit": { "placeholders": { "count": { "type": "int" } } },
+  "@markFamilyDepartedSubmit": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "markFamilyDepartedConfirmTitle": "{count, plural, =1{Markahang umalis ang 1 miyembro?} other{Markahang umalis ang {count} miyembro?}}",
-  "@markFamilyDepartedConfirmTitle": { "placeholders": { "count": { "type": "int" } } },
+  "@markFamilyDepartedConfirmTitle": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "markFamilyDepartedConfirmMessage": "Itatala sila bilang {reason} at hindi na bibilangin bilang narito ngayon.",
-  "@markFamilyDepartedConfirmMessage": { "placeholders": { "reason": { "type": "String" } } },
+  "@markFamilyDepartedConfirmMessage": {
+    "placeholders": {
+      "reason": {
+        "type": "String"
+      }
+    }
+  },
   "markFamilyDepartedConfirmButton": "Markahang umalis",
   "markFamilyDepartedWorking": "Minamarkahan…",
   "markFamilyDepartedDone": "{count, plural, =1{Namarkahang umalis ang 1 miyembro.} other{Namarkahang umalis ang {count} miyembro.}}",
-  "@markFamilyDepartedDone": { "placeholders": { "count": { "type": "int" } } },
+  "@markFamilyDepartedDone": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "markFamilyDepartedPartialTitle": "{done} sa {total} ang namarkahang umalis",
-  "@markFamilyDepartedPartialTitle": { "placeholders": { "done": { "type": "int" }, "total": { "type": "int" } } },
+  "@markFamilyDepartedPartialTitle": {
+    "placeholders": {
+      "done": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
   "markFamilyDepartedPartialBody": "Hindi na-check out ang mga ito:",
   "ecBoardHeaderCenter": "Evacuation center",
   "ecBoardAsOf": "Hanggang",
@@ -685,12 +826,9 @@
   "ecBoardNotYetFetchedHelp": "Hindi pa naida-download ang board na ito sa device na ito, kaya gitling ang bawat numero. Kumonekta sa internet at subukan ulit.",
   "ecBoardHeaderFamilies": "Pamilya (Cum/Now)",
   "ecBoardHeaderPersons": "Tao (Cum/Now)",
-
   "demoBadge": "DEMO",
   "drillBadge": "DRILL",
-
   "drillNotice": "PAGSASANAY - Hindi ito totoong emergency.",
-
   "staffUseTheWebTitle": "Gamitin ang website",
   "staffUseTheWebBody": "Ang mga administrator account ay namamahala ng users, logs at backups sa E-LIKAS website. Ang mobile app ay para sa field work ng barangay at monitoring ng CSWD.",
   "staffOpenWebsite": "Buksan ang E-LIKAS website",
@@ -753,7 +891,7 @@
   "returningFamilyWhoArrived": "Sino ang dumating?",
   "returningFamilyUnnamed": "{count, plural, =1{Hindi nakalista ang 1 miyembrong walang pangalan.} other{Hindi nakalista ang {count} miyembrong walang pangalan.}}",
   "returningMemberCheckedIn": "Naka-check in na sa event na ito",
-  "returningMemberAge": "{age} taon",
+  "returningMemberAge": "{age, plural, =1{1 taon} other{{age} taon}}",
   "returningMemberAgeGroup": "Pangkat ng edad (walang petsa ng kapanganakan)",
   "returningMemberStillPregnant": "Buntis ngayon",
   "returningMemberStillLactating": "Nagpapasuso ngayon",
@@ -761,7 +899,7 @@
   "returningFamilyDone": "{count, plural, =1{1 tao ang nailagay} other{{count} tao ang nailagay}}",
   "returningFamilyDuplicateTitle": "Parehong pamilya?",
   "returningFamilyDuplicateBody": "May pamilyang maaaring pareho na nasa event na ito.",
-  "returningFamilyLinkTo": "Parehong pamilya, ikonekta: {name} · {center} · {count} miyembro",
+  "returningFamilyLinkTo": "Parehong pamilya, ikonekta: {name} · {center} · {members}",
   "returningFamilyDifferent": "Ibang pamilya, idagdag bilang bago",
   "centerLocationTitle": "Lokasyon sa mapa",
   "centerLocationOnMap": "Nasa mapa",
@@ -796,7 +934,7 @@
   "reliefTitle": "Mga relief box",
   "staffTabRelief": "Relief",
   "reliefNeedsConnectionFirst": "Kailangan ng internet sa unang pagbukas ng relief box.",
-  "staffNoOpenEvent": "Walang bukas na sakuna.",
+  "staffNoOpenEvent": "Wala pang bukas na event. Nagbubukas ang CSWDO ng event kapag may ibinabalang banta.",
   "savedCopyAge": "Naka-save na kopya, {age}",
   "reliefCountNotValidated": "Hindi pa beripikado ang final count ng inyong barangay. Hanggang hindi ito beripikado ng CSWD, 0 ang pangangailangan at walang box na maipapadala.",
   "reliefNoRoundYet": "Wala pang relief round.",
@@ -808,17 +946,17 @@
   "reliefBoxesToConfirm": "Mga box na kukumpirmahin",
   "reliefGiveBoxes": "Magbigay ng box",
   "reliefGivenOfReceived": "{given} naibigay sa {received} natanggap",
-  "reliefBoxesSent": "{count} box na ipinadala, round {round}",
+  "reliefBoxesSent": "{boxes} ang ipinadala, round {round}",
   "reliefConfirmArrived": "Kumpirmahin ang dumating",
   "reliefHowManyArrived": "Ilang box ang dumating?",
   "reliefBoxesArrived": "Mga box na natanggap (sa {sent} na ipinadala)",
   "reliefFewerNote": "Bakit kulang? (kailangan)",
   "reliefConfirm": "Kumpirmahin",
-  "reliefConfirmSummary": "{count} box na natanggap, round {round}",
+  "reliefConfirmSummary": "{boxes} ang natanggap, round {round}",
   "reliefLeftToGive": "Natitirang ibibigay",
   "reliefByPriority": "Ayon sa prayoridad",
   "reliefByName": "Ayon sa pangalan",
-  "reliefSuggestedOrderNote": "Mungkahing pagkakasunod, para kumpirmahin ng CSWDO.",
+  "reliefSuggestedOrderNote": "Pagkakasunod ayon sa prayoridad: unahin ang mga pamilya sa itaas.",
   "reliefPurokHeading": "{purok} · {given} sa {total} naibigay",
   "reliefGiveBox": "Ibigay ang box",
   "reliefGivenWaiting": "Naibigay, naghihintay ma-sync",
@@ -839,25 +977,25 @@
   "barangayStatusSave": "I-save ang status",
   "barangayStatusSaved": "Minarkahan na \"{status}\" (ipapadala pagka-online).",
   "finalCountTitle": "Final count",
-  "finalCountFigures": "{families} pamilya · {persons} tao",
+  "finalCountFigures": "{families} · {persons}",
   "finalCountInsideOutside": "{inside} nasa loob ng center · {outside} nasa labas",
   "finalCountNoStay": "{count} na walang naitalang pananatili",
   "finalCountNotSubmitted": "Hindi pa naisusumite",
   "finalCountWaiting": "Naisumite, hinihintay ang CSWD",
   "finalCountReturned": "Ibinalik ng CSWD",
-  "finalCountValidated": "Beripikado: {families} pamilya (ang pangangailangan sa relief)",
+  "finalCountValidated": "Beripikado: {families} (ang pangangailangan sa relief)",
   "finalCountChanged": "Nagbago ang bilang mula sa huling pagsumite.",
   "finalCountSubmit": "Isumite ang final count",
   "finalCountSubmitUpdated": "Isumite ang bagong bilang",
   "finalCountSubmitTitle": "Isumite ang final count na ito?",
   "finalCountComputedNote": "Kinukuwenta ng sistema ang mga bilang mula sa mga pamilyang nakarehistro sa event na ito; hindi ito tina-type.",
   "finalCountNote": "Tala para sa CSWD (opsyonal)",
-  "finalCountSummary": "Final count: {families} pamilya, {persons} tao",
+  "finalCountSummary": "Final count: {families}, {persons}",
   "reliefShortfallTitle": "Humiling ng dagdag na box para sa round {round}",
   "reliefShortfallSend": "Ipadala ang hiling",
-  "reliefShortfallAsk": "Humiling ng hanggang {count} pang box",
+  "reliefShortfallAsk": "{count, plural, =1{Humiling ng 1 pang box} other{Humiling ng hanggang {count} pang box}}",
   "reliefShortfallRow": "Humiling ng {count} pa: {status}",
-  "reliefShortfallSummary": "Humiling ng {count} pang box, round {round}",
+  "reliefShortfallSummary": "{count, plural, =1{Humiling ng 1 pang box, round {round}} other{Humiling ng {count} pang box, round {round}}}",
   "staffMyCentersSubtitle": "Itakda ang lokasyon, hilingin ang kulang",
   "pendingRegistrationsRetiring": "Hindi na nagsisimula ng buong rehistro sa telepono; sa EC Board na inilalagay ang mga pamilya. I-sync o ayusin ang mga nasa ibaba. Mawawala ang screen na ito kapag tapos na ang mga ito.",
   "monitoringTitle": "Monitoring",
@@ -873,7 +1011,7 @@
   "monitoringArrivedLastHour": "{count} ang dumating sa nakaraang oras",
   "monitoringNeedsAttention": "Kailangang tingnan",
   "monitoringNothingUrgent": "Walang kailangang tingnan ngayon.",
-  "monitoringCentersSummary": "{inUse} sa {total} center ang ginagamit · {noCapacity} walang kapasidad",
+  "monitoringCentersSummary": "{inUse} sa {centers} ang ginagamit · {noCapacity} walang kapasidad",
   "monitoringShort": "Kulang: {items}",
   "monitoringNoChecklist": "Walang checklist ng pasilidad",
   "monitoringInsideNoCapacity": "{count} sa loob · walang kapasidad",
@@ -883,5 +1021,14 @@
   "monitoringNoRequests": "Walang hiling na naghihintay.",
   "monitoringWaited": "{hours}h {minutes}m",
   "monitoringNeedsConnection": "Kailangan ng internet sa unang pagbukas ng monitoring.",
-  "monitoringUpdated": "Na-update {age}"
+  "monitoringUpdated": "Na-update {age}",
+  "reliefNextInLine": "Susunod",
+  "reliefWaitingForBoxes": "Naghihintay ng dagdag na box",
+  "reliefOutOfOrderTitle": "Bigyan ng box ang {family} ngayon?",
+  "reliefOutOfOrderBody": "{count, plural, =1{May 1 pamilyang mas mataas ang prayoridad na naghihintay pa.} other{May {count} pamilyang mas mataas ang prayoridad na naghihintay pa.}}",
+  "countFamilies": "{count, plural, =1{1 pamilya} other{{count} pamilya}}",
+  "countPersons": "{count, plural, =1{1 tao} other{{count} tao}}",
+  "countBoxes": "{count, plural, =1{1 box} other{{count} box}}",
+  "countCenters": "{count, plural, =1{1 center} other{{count} center}}",
+  "countEvacuees": "{count, plural, =1{1 evacuee} other{{count} evacuee}}"
 }

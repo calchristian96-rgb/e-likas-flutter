@@ -227,7 +227,10 @@ class _DispatchCard extends ConsumerWidget {
       method: 'POST',
       path: '/box-relief/dispatches/${dispatch.id}/confirm',
       body: {'confirmed_quantity': count, 'note': ?note},
-      summary: l10n.reliefConfirmSummary(count, round.roundNumber),
+      summary: l10n.reliefConfirmSummary(
+        l10n.countBoxes(count),
+        round.roundNumber,
+      ),
       subjectKey: 'dispatch:${dispatch.id}',
     );
   }
@@ -246,7 +249,10 @@ class _DispatchCard extends ConsumerWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Text(
-              l10n.reliefBoxesSent(dispatch.quantity, round.roundNumber),
+              l10n.reliefBoxesSent(
+                l10n.countBoxes(dispatch.quantity),
+                round.roundNumber,
+              ),
               style: Theme.of(context).textTheme.titleSmall,
             ),
             if (sentOn.isNotEmpty) Text(sentOn),

@@ -7,7 +7,6 @@ import 'package:share_plus/share_plus.dart' show ShareParams, SharePlus;
 import '../../../../core/error/failure.dart';
 import '../../../../core/widgets/error_state.dart';
 import '../../../../core/widgets/status_badge.dart';
-import '../../../../core/widgets/demo_badge.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../domain/entities/alert.dart';
 import '../providers/alerts_summary_provider.dart';
@@ -213,13 +212,6 @@ class _SeverityCard extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 12),
-          if (alert.isDrill) ...[
-            const Align(
-              alignment: Alignment.centerLeft,
-              child: DemoBadge(drill: true),
-            ),
-            const SizedBox(height: 8),
-          ],
           Text(alert.title, style: theme.textTheme.headlineSmall),
           const SizedBox(height: 6),
           Text(

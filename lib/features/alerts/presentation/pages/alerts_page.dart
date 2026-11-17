@@ -9,7 +9,6 @@ import '../../../../core/widgets/filter_chip_row.dart';
 import '../../../../core/widgets/offline_banner.dart';
 import '../../../../core/widgets/search_field.dart';
 import '../../../../l10n/app_localizations.dart';
-import '../../../barangay_status/presentation/drill_notice.dart';
 import '../../../home/presentation/providers/home_provider.dart';
 import '../../domain/entities/alert.dart';
 import '../providers/alerts_summary_provider.dart';
@@ -163,7 +162,6 @@ class _AlertsListPageState extends ConsumerState<AlertsListPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const DrillNotice(),
                 Text(
                   l10n.alertsAndNoticesSubtitle,
                   style: theme.textTheme.bodyMedium?.copyWith(

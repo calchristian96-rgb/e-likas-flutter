@@ -20,7 +20,17 @@ class RoundFamily {
     required this.priorityOrder,
     this.priorityLabel,
     this.handoutId,
+    this.nextInLine = false,
+    this.higherPriorityWaiting = 0,
   });
+
+  /// The next family in the suggested order across the barangay
+  /// (backend 02a41f4): marked "Next in line".
+  final bool nextInLine;
+
+  /// Families of a higher priority tier still without a box: giving to
+  /// this one first asks for confirmation (a warning, never a block).
+  final int higherPriorityWaiting;
 
   final int id;
   final String name;
@@ -45,6 +55,8 @@ class RoundFamily {
     handoutId: j['handout_id'] as int?,
     priorityLabel: j['priority_label'] as String?,
     priorityOrder: (j['priority_order'] as num?)?.toInt() ?? 0,
+    nextInLine: j['next_in_line'] == true,
+    higherPriorityWaiting: (j['higher_priority_waiting'] as num?)?.toInt() ?? 0,
   );
 }
 
@@ -132,6 +144,27 @@ class _RoundFamiliesPageState extends ConsumerState<RoundFamiliesPage> {
 
   Future<void> _give(RoundFamily f, int roundNumber) async {
     final l10n = AppLocalizations.of(context);
+    // Out of the priority order: a warning, the same as the web.
+    if (f.higherPriorityWaiting > 0) {
+      final ok = await showDialog<bool>(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text(l10n.reliefOutOfOrderTitle(f.name)),
+          content: Text(l10n.reliefOutOfOrderBody(f.higherPriorityWaiting)),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(false),
+              child: Text(l10n.cancel),
+            ),
+            FilledButton(
+              onPressed: () => Navigator.of(context).pop(true),
+              child: Text(l10n.reliefGiveBox),
+            ),
+          ],
+        ),
+      );
+      if (ok != true || !mounted) return;
+    }
     await enqueueStaffAction(
       ref,
       kind: PendingActionKind.boxHandout,
@@ -270,7 +303,7 @@ class _RoundFamiliesPageState extends ConsumerState<RoundFamiliesPage> {
                             queuedVoid:
                                 f.handoutId != null &&
                                 queued.contains(_voidKey(f.handoutId!)),
-                            canGive: leftToGive > 0,
+                            boxesLeft: leftToGive > 0,
                             onGive: () => _give(f, data.roundNumber),
                             onVoid: () => _void(f),
                           ),
@@ -292,7 +325,7 @@ class _FamilyTile extends StatelessWidget {
     required this.family,
     required this.queuedGive,
     required this.queuedVoid,
-    required this.canGive,
+    required this.boxesLeft,
     required this.onGive,
     required this.onVoid,
   });
@@ -300,7 +333,10 @@ class _FamilyTile extends StatelessWidget {
   final RoundFamily family;
   final bool queuedGive;
   final bool queuedVoid;
-  final bool canGive;
+
+  /// Confirmed boxes left to give (received - given, counting the
+  /// handouts still on this phone). None left: "Waiting for more boxes".
+  final bool boxesLeft;
   final VoidCallback onGive;
   final VoidCallback onVoid;
 
@@ -343,10 +379,14 @@ class _FamilyTile extends StatelessWidget {
         ],
       );
     } else {
+      // Giving needs only confirmed boxes left; with none left the button
+      // waits (disabled) until more are confirmed (backend 02a41f4).
       trailing = FilledButton(
         style: FilledButton.styleFrom(minimumSize: const Size(96, 48)),
-        onPressed: canGive ? onGive : null,
-        child: Text(l10n.reliefGiveBox),
+        onPressed: boxesLeft ? onGive : null,
+        child: Text(
+          boxesLeft ? l10n.reliefGiveBox : l10n.reliefWaitingForBoxes,
+        ),
       );
     }
     return ListTile(
@@ -354,6 +394,7 @@ class _FamilyTile extends StatelessWidget {
       title: Text(family.name),
       subtitle: Text(
         [
+          if (family.nextInLine && !given) l10n.reliefNextInLine,
           l10n.ecBoardFamilyMembers(family.memberCount),
           ?family.priorityLabel,
         ].join(' · '),

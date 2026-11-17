@@ -13,7 +13,6 @@ import '../../../../core/widgets/connectivity_badge.dart';
 import '../../../../core/widgets/last_updated_label.dart';
 import '../../../../core/widgets/offline_banner.dart';
 import '../../../../l10n/app_localizations.dart';
-import '../../../barangay_status/presentation/drill_notice.dart';
 import '../../../alerts/presentation/providers/alerts_summary_provider.dart';
 import '../../../barangay_status/presentation/barangay_status_card.dart';
 import '../../../evacuation_centers/presentation/providers/evacuation_centers_provider.dart';
@@ -177,7 +176,6 @@ class _HomePageState extends ConsumerState<HomePage> {
                           // Answer first (web design rule 2): is this a
                           // drill, how urgent is it, my barangay, where
                           // to go. Nothing decorative.
-                          const DrillNotice(),
                           AnimatedSwitcher(
                             duration: const Duration(milliseconds: 250),
                             child: EmergencyStatusCard(

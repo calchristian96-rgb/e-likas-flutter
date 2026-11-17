@@ -1,19 +1,29 @@
 {
   "@@locale": "en",
-
   "navHome": "Home",
-  "@navHome": { "description": "Bottom navigation tab label" },
+  "@navHome": {
+    "description": "Bottom navigation tab label"
+  },
   "navMap": "GIS Map",
-  "@navMap": { "description": "Bottom navigation tab label" },
+  "@navMap": {
+    "description": "Bottom navigation tab label"
+  },
   "navNearestCenter": "Nearest Center",
-  "@navNearestCenter": { "description": "Bottom navigation tab label" },
+  "@navNearestCenter": {
+    "description": "Bottom navigation tab label"
+  },
   "navAlerts": "Alerts",
-  "@navAlerts": { "description": "Bottom navigation tab label" },
+  "@navAlerts": {
+    "description": "Bottom navigation tab label"
+  },
   "navHotlines": "Hotlines",
-  "@navHotlines": { "description": "Bottom navigation tab label" },
+  "@navHotlines": {
+    "description": "Bottom navigation tab label"
+  },
   "navSettings": "Settings",
-  "@navSettings": { "description": "Bottom navigation tab label" },
-
+  "@navSettings": {
+    "description": "Bottom navigation tab label"
+  },
   "online": "Online",
   "offlineModeLabel": "Offline mode",
   "offline": "Offline",
@@ -30,12 +40,20 @@
   "callNumberTooltip": "Call {number}",
   "@callNumberTooltip": {
     "description": "Tooltip on a hotline card's Call button",
-    "placeholders": { "number": { "type": "String" } }
+    "placeholders": {
+      "number": {
+        "type": "String"
+      }
+    }
   },
   "copyNumberTooltip": "Copy {number} to clipboard",
   "@copyNumberTooltip": {
     "description": "Tooltip on a hotline card's Copy button",
-    "placeholders": { "number": { "type": "String" } }
+    "placeholders": {
+      "number": {
+        "type": "String"
+      }
+    }
   },
   "retry": "Retry",
   "refresh": "Refresh",
@@ -50,13 +68,10 @@
   "tryAgain": "Try again",
   "language": "Language",
   "selectLanguage": "Select language",
-
   "languageEnglish": "English",
   "languageFilipino": "Filipino",
   "languageBikolLigao": "Bikol (Ligao)",
-
   "preparingEmergencyInfo": "Preparing emergency information…",
-
   "goodMorning": "Good morning",
   "goodAfternoon": "Good afternoon",
   "goodEvening": "Good evening",
@@ -83,7 +98,6 @@
   "noNearbyEvacuationCenters": "No nearby evacuation centers to show yet.",
   "youAreViewingLiveData": "You're viewing live data.",
   "checkingForAlerts": "Checking for emergency alerts…",
-
   "alertsTitle": "Alerts",
   "alertDetailsTitle": "Alert details",
   "noPublicAlerts": "No public alerts to show yet.",
@@ -97,46 +111,46 @@
   "emergencyAlertReceived": "Emergency alert received",
   "newInformationAlert": "New information alert",
   "allClearUpdateReceived": "All-clear update received",
-
   "severityMandatory": "Mandatory",
   "severityAdvisory": "Advisory",
   "severityInfo": "Info",
   "severityAllClear": "All clear",
-
   "statusActive": "Active",
   "statusFull": "Full",
   "statusClosed": "Closed",
   "statusOnStandby": "On standby",
-
   "evacuationCentersTitle": "Evacuation centers",
   "noEvacuationCenters": "No evacuation centers to show yet.",
   "evacuationCentersCount": "{count, plural, =1{1 evacuation center} other{{count} evacuation centers}}",
   "@evacuationCentersCount": {
     "description": "Count line above the evacuation centers list",
-    "placeholders": { "count": { "type": "int" } }
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
   },
   "publicAlertsCount": "{count, plural, =1{1 public alert} other{{count} public alerts}}",
   "@publicAlertsCount": {
     "description": "Count line above the alerts list",
-    "placeholders": { "count": { "type": "int" } }
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
   },
-
   "nearestCenterTitle": "Nearest center",
   "locationPermissionDenied": "Location permission was denied.",
   "locationServicesOff": "Location services are turned off.",
   "locationPermanentlyDenied": "Location permission is permanently denied — enable it in system settings.",
   "couldNotDetermineLocation": "Could not determine current location.",
   "couldNotLoadNearbyCenters": "Could not load nearby centers",
-
   "emergencyHotlinesTitle": "Emergency Hotlines",
   "hotlinesOfflineNote": "These numbers are saved on your device and work even without internet.",
   "couldNotOpenDialer": "Could not open the phone dialer — use Copy Number to dial manually.",
   "copiedToClipboard": "Copied to clipboard",
-
   "weatherNotYetAvailable": "Weather updates are not yet available in this app.",
-
   "cancel": "Cancel",
-
   "settingsTitle": "Settings",
   "settingsSectionOfflineData": "Offline & Data",
   "settingsOfflineData": "Offline Data",
@@ -159,8 +173,12 @@
   "@staffIdentityWithBarangay": {
     "description": "Settings Staff section identity row subtitle, e.g. 'barangay_official · Brgy. Binatagan'",
     "placeholders": {
-      "role": { "type": "String" },
-      "barangay": { "type": "String" }
+      "role": {
+        "type": "String"
+      },
+      "barangay": {
+        "type": "String"
+      }
     }
   },
   "settingsSectionNotifications": "Notifications",
@@ -170,7 +188,6 @@
   "aboutTagline": "Electronic Ligao Kaligtasan Sistema",
   "syncCompleted": "Information updated.",
   "syncPartialFailure": "Some information could not be updated. Showing the latest saved data.",
-
   "offlineDataManagementTitle": "Offline Data Management",
   "offlineDataManagementSubtitle": "Manage saved information for offline access",
   "couldNotLoadOfflineData": "Could not load offline data details",
@@ -181,7 +198,11 @@
   "cachedItemsCount": "{count, plural, =1{1 cached item} other{{count} cached items}}",
   "@cachedItemsCount": {
     "description": "Record count line on an Offline Data Management category tile",
-    "placeholders": { "count": { "type": "int" } }
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
   },
   "noSavedDataForCategory": "No saved data",
   "updateAllData": "Update All Data",
@@ -190,7 +211,6 @@
   "clearCacheDialogBody": "This will remove saved alerts, evacuation centers, and map information from this device. New information can be downloaded again when internet access is available.",
   "clearCacheDialogConfirm": "Clear Data",
   "cacheCleared": "Offline data cleared.",
-
   "hazardMapTitle": "Hazard map",
   "noMapData": "No map data available yet.",
   "couldNotLoadMapData": "Could not load map data",
@@ -198,9 +218,7 @@
   "legendHazardArea": "Hazard area",
   "showMyLocation": "Show my location",
   "unableToOpenMaps": "Unable to open a maps application on this device.",
-
   "refreshing": "Refreshing…",
-
   "alertsAndNoticesTitle": "Alerts & Notices",
   "alertsAndNoticesSubtitle": "Real-time updates for Ligao City",
   "dateGroupToday": "Today",
@@ -209,8 +227,12 @@
   "@filteredAlertsCount": {
     "description": "Count line above the alerts list when a severity filter is active",
     "placeholders": {
-      "count": { "type": "int" },
-      "severity": { "type": "String" }
+      "count": {
+        "type": "int"
+      },
+      "severity": {
+        "type": "String"
+      }
     }
   },
   "searchAlertsHint": "Search alerts",
@@ -222,7 +244,6 @@
   "sortOldestFirst": "Oldest first",
   "sortBySeverity": "Severity",
   "latestAlertLabel": "Latest",
-
   "shareAlert": "Share alert",
   "additionalInformation": "Additional information",
   "severityLabel": "Severity",
@@ -230,11 +251,9 @@
   "receivedLabel": "Received",
   "viewEvacuationCenters": "View evacuation centers",
   "invalidCenterLink": "That center link isn't valid.",
-
   "viewOnMap": "View on map",
   "refreshLocation": "Refresh location",
   "otherNearbyCenters": "Other nearby centers",
-
   "evacuationCentersSubtitle": "Find nearby and available centers",
   "searchCentersHint": "Search centers",
   "searchMyEvacuationCentersHint": "Search my evacuation centers...",
@@ -246,15 +265,18 @@
   "@filteredCentersCount": {
     "description": "Count line above the evacuation centers list when a status filter is active",
     "placeholders": {
-      "count": { "type": "int" },
-      "status": { "type": "String" }
+      "count": {
+        "type": "int"
+      },
+      "status": {
+        "type": "String"
+      }
     }
   },
   "sortCentersTooltip": "Sort centers",
   "sortByName": "Name",
   "sortByOccupancy": "Occupancy",
   "sortByCapacity": "Capacity",
-
   "centerDetailsTitle": "Center details",
   "centerNotFound": "This evacuation center could not be found.",
   "overviewSectionTitle": "Overview",
@@ -267,7 +289,6 @@
   "centerMapLocationUnavailable": "Map location is not available for this center yet.",
   "centerPhotoUnavailable": "No photo available",
   "centerPhotoUnavailableOffline": "Photo unavailable offline",
-
   "facilitiesSectionTitle": "Facilities",
   "couldNotLoadFacilities": "Could not load facilities",
   "facilitiesNotAvailable": "Facilities information is not available.",
@@ -277,7 +298,11 @@
   "facilityQuantityAvailable": "{quantity, plural, =1{1 available} other{{quantity} available}}",
   "@facilityQuantityAvailable": {
     "description": "Status line for an available facility with a recorded quantity, e.g. '3 available'",
-    "placeholders": { "quantity": { "type": "int" } }
+    "placeholders": {
+      "quantity": {
+        "type": "int"
+      }
+    }
   },
   "facilityTypeLatrineCompostPit": "Compost Pit Latrine",
   "facilityTypeLatrineSealed": "Sealed Latrine",
@@ -298,7 +323,6 @@
   "facilityTypeCampManagementDesk": "Camp Management Desk",
   "facilityTypeInfoBoard": "Info / Help Desk",
   "facilityTypeStorageArea": "Storage Area",
-
   "centerTypeSchool": "School",
   "centerTypeCoveredCourt": "Covered Court",
   "centerTypeChurch": "Church",
@@ -343,7 +367,6 @@
   "centerDiscardDialogTitle": "Discard changes?",
   "centerDiscardDialogBody": "You have unsaved changes to this evacuation center. If you leave now, they'll be lost.",
   "centerDiscardDialogConfirm": "Discard",
-
   "layersTooltip": "Layers",
   "mapLayersTitle": "Layers",
   "mapLegendTitle": "Map Legend",
@@ -366,88 +389,160 @@
   "mapAttributionOpenStreetMap": "© OpenStreetMap contributors",
   "mapAttributionEsri": "Esri World Imagery",
   "hazardOverlaysSectionTitle": "Hazard susceptibility (MGB)",
-  "@hazardOverlaysSectionTitle": { "description": "Layers sheet section heading for the online-only MGB flood and landslide susceptibility overlays" },
+  "@hazardOverlaysSectionTitle": {
+    "description": "Layers sheet section heading for the online-only MGB flood and landslide susceptibility overlays"
+  },
   "hazardOverlayFloodName": "Flood susceptibility",
-  "@hazardOverlayFloodName": { "description": "Switch label and legend heading for the MGB flood susceptibility overlay" },
+  "@hazardOverlayFloodName": {
+    "description": "Switch label and legend heading for the MGB flood susceptibility overlay"
+  },
   "hazardOverlayLandslideName": "Rain-induced landslide susceptibility",
-  "@hazardOverlayLandslideName": { "description": "Switch label and legend heading for the MGB rain-induced landslide susceptibility overlay" },
+  "@hazardOverlayLandslideName": {
+    "description": "Switch label and legend heading for the MGB rain-induced landslide susceptibility overlay"
+  },
   "hazardOverlaysOnlineNotice": "Hazard susceptibility layers need an internet connection — they aren't saved for offline use.",
-  "@hazardOverlaysOnlineNotice": { "description": "Static note under the susceptibility switches in the Layers sheet" },
+  "@hazardOverlaysOnlineNotice": {
+    "description": "Static note under the susceptibility switches in the Layers sheet"
+  },
   "hazardOverlayFloodNote": "Flood susceptibility: Mines and Geosciences Bureau via GeoRiskPH (service metadata: as of July 2018). Susceptibility, not a flood forecast.",
-  "@hazardOverlayFloodNote": { "description": "Source, as-of date and caveat shown under the flood susceptibility switch and in the legend" },
+  "@hazardOverlayFloodNote": {
+    "description": "Source, as-of date and caveat shown under the flood susceptibility switch and in the legend"
+  },
   "hazardOverlayLandslideNote": "Rain-induced landslide susceptibility only: Mines and Geosciences Bureau via GeoRiskPH (service metadata: dated 2012). Susceptibility, not a landslide forecast. Lahar is not mapped.",
-  "@hazardOverlayLandslideNote": { "description": "Source, date and caveat shown under the landslide susceptibility switch and in the legend" },
+  "@hazardOverlayLandslideNote": {
+    "description": "Source, date and caveat shown under the landslide susceptibility switch and in the legend"
+  },
   "hazardOverlayLoadFailed": "{layer} could not be loaded from GeoRiskPH right now. Switch it off and on to retry.",
   "@hazardOverlayLoadFailed": {
     "description": "Shown in the Layers sheet and Legend when an overlay's tiles keep failing to load",
-    "placeholders": { "layer": { "type": "String" } }
+    "placeholders": {
+      "layer": {
+        "type": "String"
+      }
+    }
   },
   "hazardOverlayAttribution": "MGB via GeoRiskPH",
-  "@hazardOverlayAttribution": { "description": "Map attribution for the susceptibility overlays; tapping opens georisk.gov.ph" },
-
+  "@hazardOverlayAttribution": {
+    "description": "Map attribution for the susceptibility overlays; tapping opens georisk.gov.ph"
+  },
   "updateAvailableTitle": "Update available",
-  "@updateAvailableTitle": { "description": "Dialog title when an optional app update is available" },
+  "@updateAvailableTitle": {
+    "description": "Dialog title when an optional app update is available"
+  },
   "updateRequiredTitle": "Update required",
-  "@updateRequiredTitle": { "description": "Dialog title when the installed version is below the minimum supported build" },
+  "@updateRequiredTitle": {
+    "description": "Dialog title when the installed version is below the minimum supported build"
+  },
   "updateVersionReady": "Version {version} is ready",
   "@updateVersionReady": {
     "description": "Dialog headline naming the new version",
-    "placeholders": { "version": { "type": "String" } }
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
   },
   "updateRequiredBody": "This version of E-LIKAS is out of date. Please update so your alerts and evacuation information stay accurate.",
-  "@updateRequiredBody": { "description": "Body text when an update is required" },
+  "@updateRequiredBody": {
+    "description": "Body text when an update is required"
+  },
   "updateSizeWifi": "{size} MB · Wi-Fi recommended",
   "@updateSizeWifi": {
     "description": "Download size line in the update dialog",
-    "placeholders": { "size": { "type": "String" } }
+    "placeholders": {
+      "size": {
+        "type": "String"
+      }
+    }
   },
   "updateWifiRecommended": "Wi-Fi recommended",
-  "@updateWifiRecommended": { "description": "Shown when the manifest gives no download size" },
+  "@updateWifiRecommended": {
+    "description": "Shown when the manifest gives no download size"
+  },
   "updateWhatsNew": "What's new",
-  "@updateWhatsNew": { "description": "Heading above the release notes" },
+  "@updateWhatsNew": {
+    "description": "Heading above the release notes"
+  },
   "updateLater": "Later",
-  "@updateLater": { "description": "Dismiss button in the update dialog" },
+  "@updateLater": {
+    "description": "Dismiss button in the update dialog"
+  },
   "updateNow": "Update now",
-  "@updateNow": { "description": "Start-download button in the update dialog" },
+  "@updateNow": {
+    "description": "Start-download button in the update dialog"
+  },
   "updateDownloading": "Downloading update…",
-  "@updateDownloading": { "description": "Progress dialog title" },
+  "@updateDownloading": {
+    "description": "Progress dialog title"
+  },
   "updateVerifying": "Checking the download…",
-  "@updateVerifying": { "description": "Shown while the SHA-256 is verified" },
+  "@updateVerifying": {
+    "description": "Shown while the SHA-256 is verified"
+  },
   "updateReadyToInstall": "Download verified. Opening the installer…",
-  "@updateReadyToInstall": { "description": "Shown once the file passed verification" },
+  "@updateReadyToInstall": {
+    "description": "Shown once the file passed verification"
+  },
   "updateInstallHint": "If Android asks you to allow installs from E-LIKAS, turn it on, then come back and tap Install.",
-  "@updateInstallHint": { "description": "Hint about the Android install-unknown-apps permission" },
+  "@updateInstallHint": {
+    "description": "Hint about the Android install-unknown-apps permission"
+  },
   "updateInstall": "Install",
-  "@updateInstall": { "description": "Re-open the Android installer for the verified file" },
+  "@updateInstall": {
+    "description": "Re-open the Android installer for the verified file"
+  },
   "updateCancel": "Cancel",
-  "@updateCancel": { "description": "Cancel the running download" },
+  "@updateCancel": {
+    "description": "Cancel the running download"
+  },
   "updateFailedTitle": "Update failed",
-  "@updateFailedTitle": { "description": "Error dialog title" },
+  "@updateFailedTitle": {
+    "description": "Error dialog title"
+  },
   "updateFailedBody": "The update could not be downloaded or did not pass the safety check. Check your connection and try again.",
-  "@updateFailedBody": { "description": "Error dialog body after the automatic retry also failed" },
+  "@updateFailedBody": {
+    "description": "Error dialog body after the automatic retry also failed"
+  },
   "updateTryAgain": "Try again",
-  "@updateTryAgain": { "description": "Retry the download" },
+  "@updateTryAgain": {
+    "description": "Retry the download"
+  },
   "updateOpenInBrowser": "Open in browser",
-  "@updateOpenInBrowser": { "description": "Fall back to downloading the APK in the browser" },
+  "@updateOpenInBrowser": {
+    "description": "Fall back to downloading the APK in the browser"
+  },
   "settingsCheckForUpdates": "Check for updates",
-  "@settingsCheckForUpdates": { "description": "Settings row title" },
+  "@settingsCheckForUpdates": {
+    "description": "Settings row title"
+  },
   "settingsVersionBuild": "Version {version} (build {build})",
   "@settingsVersionBuild": {
     "description": "Settings row subtitle with the installed version",
-    "placeholders": { "version": { "type": "String" }, "build": { "type": "String" } }
+    "placeholders": {
+      "version": {
+        "type": "String"
+      },
+      "build": {
+        "type": "String"
+      }
+    }
   },
   "updateChecking": "Checking…",
-  "@updateChecking": { "description": "Settings row subtitle while a manual check runs" },
+  "@updateChecking": {
+    "description": "Settings row subtitle while a manual check runs"
+  },
   "updateUpToDate": "E-LIKAS is up to date.",
-  "@updateUpToDate": { "description": "Snackbar after a manual check finds nothing newer" },
+  "@updateUpToDate": {
+    "description": "Snackbar after a manual check finds nothing newer"
+  },
   "updateCheckFailed": "Could not check for updates right now.",
-  "@updateCheckFailed": { "description": "Snackbar when a manual check fails" },
-
+  "@updateCheckFailed": {
+    "description": "Snackbar when a manual check fails"
+  },
   "normalMonitoringTitle": "Normal Monitoring",
   "viewAlert": "View Alert",
   "findNearestCenterAction": "Find Nearest Center",
   "showingSavedAlertInfo": "Showing saved alert information",
-
   "emergencyHotlinesSubtitle": "These are the official emergency services of Ligao City.",
   "hotlineNumberNotSet": "Not set",
   "emergencyCallNowNote": "For life-threatening emergencies, call the appropriate emergency service immediately.",
@@ -463,19 +558,30 @@
   "addToFavoritesTooltip": "Add {name} to favorites",
   "@addToFavoritesTooltip": {
     "description": "Accessibility label on a hotline card's favorite-star button when not yet favorited",
-    "placeholders": { "name": { "type": "String" } }
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
   },
   "removeFromFavoritesTooltip": "Remove {name} from favorites",
   "@removeFromFavoritesTooltip": {
     "description": "Accessibility label on a hotline card's favorite-star button when already favorited",
-    "placeholders": { "name": { "type": "String" } }
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
   },
   "numberCopiedFor": "{name}'s number copied",
   "@numberCopiedFor": {
     "description": "SnackBar shown after copying a hotline's number",
-    "placeholders": { "name": { "type": "String" } }
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
   },
-
   "staffLogoutDialogTitle": "Sign out?",
   "staffLogoutDialogBody": "You'll need to sign in again to access staff features.",
   "staffLogoutDialogConfirm": "Sign out",
@@ -504,14 +610,17 @@
   "staffManageEvacuationCenters": "My Evacuation Centers",
   "staffManageEvacuationCentersSubtitle": "View and edit centers you can manage",
   "staffSessionOfflineBanner": "Working from a saved sign-in. Some actions need a connection.",
-
   "staffFamiliesEmptyState": "No families have been registered yet.",
   "staffFamiliesNoCacheMessage": "No saved family information yet — connect to the internet at least once to load it.",
   "staffFamiliesLoadError": "Could not load registered families.",
   "staffFamiliesShowingAsOf": "Showing data as of {date}",
   "@staffFamiliesShowingAsOf": {
     "description": "Freshness caption on the Registered Families list",
-    "placeholders": { "date": { "type": "String" } }
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
   },
   "staffFamiliesShowingSaved": "Showing saved data",
   "staffFamiliesUnknownBarangay": "Unknown barangay",
@@ -519,21 +628,32 @@
   "staffFamiliesMemberCount": "{count, plural, =1{1 member} other{{count} members}}",
   "@staffFamiliesMemberCount": {
     "description": "Family card/detail subtitle",
-    "placeholders": { "count": { "type": "int" } }
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
   },
   "staffFamiliesRegisteredIn": "Registered in {barangay}",
   "@staffFamiliesRegisteredIn": {
     "description": "Subtitle on the family detail sheet and the duplicate-match warning",
-    "placeholders": { "barangay": { "type": "String" } }
+    "placeholders": {
+      "barangay": {
+        "type": "String"
+      }
+    }
   },
   "staffFamiliesMembersSectionTitle": "Members",
-
   "staffSyncStoppedForAuthMessage": "Your session expired. Sign in again to keep syncing.",
   "staffSyncRequiresConnectionMessage": "Sync requires an internet connection.",
   "staffSyncCompletedMessage": "{count, plural, =0{No registrations were synced.} =1{1 registration synced.} other{{count} registrations synced.}}",
   "@staffSyncCompletedMessage": {
     "description": "SnackBar shown after a manual Sync Now run completes",
-    "placeholders": { "count": { "type": "int" } }
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
   },
   "staffPendingListEmpty": "No pending registrations. Everything is synced.",
   "staffPendingListError": "Could not load pending registrations.",
@@ -542,15 +662,20 @@
   "@staffPendingSubtitle": {
     "description": "Pending Registrations list row subtitle",
     "placeholders": {
-      "count": { "type": "int" },
-      "barangay": { "type": "String" },
-      "date": { "type": "String" }
+      "count": {
+        "type": "int"
+      },
+      "barangay": {
+        "type": "String"
+      },
+      "date": {
+        "type": "String"
+      }
     }
   },
   "staffStatusPending": "Pending",
   "staffStatusSyncing": "Syncing",
   "staffStatusNeedsAttention": "Needs Attention",
-
   "staffRegDiscardDialogTitle": "Discard changes?",
   "staffRegDiscardDialogBody": "You have unsaved changes to this registration. If you leave now, they'll be lost.",
   "staffRegDiscardDialogConfirm": "Discard",
@@ -574,11 +699,14 @@
   "staffRegDisplacementInsideCenter": "Inside evacuation center",
   "staffRegDisplacementOutsideCenter": "Outside evacuation center",
   "staffRegFieldEvacuationCenter": "Evacuation Center",
-
   "staffRegMemberCardTitle": "Member {number}",
   "@staffRegMemberCardTitle": {
     "description": "Header on each dynamic member card in the registration form",
-    "placeholders": { "number": { "type": "int" } }
+    "placeholders": {
+      "number": {
+        "type": "int"
+      }
+    }
   },
   "staffRegHeadOfFamilyBadge": "Head of Family",
   "staffRegSetAsHead": "Set as head",
@@ -613,13 +741,11 @@
   "staffRegIsIndigenous": "Indigenous Person",
   "staffRegIs4psMember": "4Ps Beneficiary",
   "staffRegFieldPwdType": "Type of Disability",
-
   "staffLoginOfflineTitle": "You're offline. Connect to sign in.",
   "staffLoginTitle": "Staff Sign In",
   "staffLoginEmailLabel": "Email",
   "staffLoginPasswordLabel": "Password",
   "staffLoginButton": "Sign In",
-
   "staffPendingDetailTitle": "Registration Details",
   "staffPendingDetailNotFound": "This registration is no longer in the queue. It may have already synced.",
   "staffPendingDetailLoadError": "Could not load this registration.",
@@ -629,19 +755,35 @@
   "staffPendingDetailAttemptCount": "{count, plural, =1{1 attempt} other{{count} attempts}}",
   "@staffPendingDetailAttemptCount": {
     "description": "Number of sync attempts made for this registration",
-    "placeholders": { "count": { "type": "int" } }
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
   },
   "staffPendingDetailLastAttempt": "Last attempt: {date}",
   "@staffPendingDetailLastAttempt": {
-    "placeholders": { "date": { "type": "String" } }
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
   },
   "staffPendingDetailCreatedAt": "Created {date}",
   "@staffPendingDetailCreatedAt": {
-    "placeholders": { "date": { "type": "String" } }
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
   },
   "staffPendingDetailUpdatedAt": "Updated {date}",
   "@staffPendingDetailUpdatedAt": {
-    "placeholders": { "date": { "type": "String" } }
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
   },
   "staffPendingErrorCategoryValidation": "Needs correction before resubmitting",
   "staffPendingErrorCategoryForbidden": "Not permitted for your account",
@@ -655,7 +797,6 @@
   "staffPendingDetailDeleteDialogBody": "This removes it from the offline queue permanently. This cannot be undone.",
   "staffPendingDetailSyncingNotice": "This registration is currently syncing. Please wait.",
   "staffPendingDetailDeletedMessage": "Registration removed from the queue.",
-
   "ecBoardTitle": "EC Information Board",
   "ecBoardWorkspaceActionSubtitle": "Add evacuees and view the age/sex breakdown for a center",
   "ecBoardAddEvacueeTitle": "Add Evacuee",
@@ -679,7 +820,7 @@
   "ecBoardSavedOfflineMessage": "Saved offline. It will sync when you're back online.",
   "ecBoardSavedPendingHouseholdMessage": "Saved — waiting for the selected family to sync first.",
   "ecBoardSuccessMessage": "Evacuee added successfully.",
-  "ecBoardNoEventsAvailable": "No evacuation events are available yet.",
+  "ecBoardNoEventsAvailable": "No open event yet. CSWDO opens an event when a threat is announced.",
   "ecBoardAgeSexSectionTitle": "Age & Sex Disaggregation",
   "ecBoardSectoralSectionTitle": "Sectoral Group",
   "ecBoardLastKnownFromCacheNotice": "Offline — showing the last confirmed figures saved on this device.",
@@ -696,7 +837,6 @@
   "ecBoardBracketTeenage": "Teenage",
   "ecBoardBracketAdult": "Adult",
   "ecBoardBracketSeniorCitizen": "Senior Citizen",
-
   "ecBoardSectoralPwd": "Persons with Disability",
   "ecBoardSectoralChildHeadedFamily": "Child-Headed Family",
   "ecBoardSectoralSingleHeadedFamily": "Single-Headed Family",
@@ -714,13 +854,12 @@
   "@ecBoardSectoralFlagsTicked": {
     "description": "Badge on the collapsed sectoral section showing how many flags are ticked",
     "placeholders": {
-      "count": { "type": "int" }
+      "count": {
+        "type": "int"
+      }
     }
   },
-
   "ecBoardFourPsBeneficiaryFamilies": "4Ps Beneficiary Families",
-
-
   "ecBoardAddEvacueeIntro": "Name and birthdate can be added later on the web dashboard's Evacuees page.",
   "ecBoardSectionWhoIsThisPerson": "Who is this person?",
   "ecBoardHeadNote": "This person's age and sex will be used for the family head.",
@@ -737,70 +876,193 @@
   "ecBoardHeadIsMinorLabel": "Head is a minor?",
   "ecBoardWillBeRecordedTitle": "Will be recorded",
   "ecBoardSummaryAdding": "Adding 1 {sex}, {ageGroup}.",
-  "@ecBoardSummaryAdding": { "placeholders": { "sex": { "type": "String" }, "ageGroup": { "type": "String" } } },
+  "@ecBoardSummaryAdding": {
+    "placeholders": {
+      "sex": {
+        "type": "String"
+      },
+      "ageGroup": {
+        "type": "String"
+      }
+    }
+  },
   "ecBoardSummaryChooseAgeSex": "Choose this person's age group and sex.",
   "ecBoardSummaryJoinsHousehold": "Joins the family already here: {household}.",
-  "@ecBoardSummaryJoinsHousehold": { "placeholders": { "household": { "type": "String" } } },
+  "@ecBoardSummaryJoinsHousehold": {
+    "placeholders": {
+      "household": {
+        "type": "String"
+      }
+    }
+  },
   "ecBoardSummaryChooseHousehold": "Choose the family this person belongs to.",
   "ecBoardSummaryBecomesHead": "Becomes that family's head ({minor}).",
-  "@ecBoardSummaryBecomesHead": { "placeholders": { "minor": { "type": "String" } } },
+  "@ecBoardSummaryBecomesHead": {
+    "placeholders": {
+      "minor": {
+        "type": "String"
+      }
+    }
+  },
   "ecBoardSummaryNewHousehold": "New family: {name}, {barangay}.",
-  "@ecBoardSummaryNewHousehold": { "placeholders": { "name": { "type": "String" }, "barangay": { "type": "String" } } },
+  "@ecBoardSummaryNewHousehold": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "barangay": {
+        "type": "String"
+      }
+    }
+  },
   "ecBoardSummaryNoHeadName": "(family name not entered yet)",
   "ecBoardSummaryNoBarangay": "(home barangay not chosen yet)",
   "ecBoardHomeBarangayLabel": "Home barangay",
   "ecBoardHomeBarangayHint": "Choose the family's home barangay...",
   "ecBoardHomeBarangayHelp": "Where the family lives -- not necessarily where this center is.",
   "ecBoardHomeBarangaySameAsCenter": "Same as this center ({barangay})",
-  "@ecBoardHomeBarangaySameAsCenter": {"placeholders": {"barangay": {"type": "String"}}},
+  "@ecBoardHomeBarangaySameAsCenter": {
+    "placeholders": {
+      "barangay": {
+        "type": "String"
+      }
+    }
+  },
   "ecBoardHomeBarangayRequired": "Choose the family's home barangay.",
   "ecBoardFamilyHereGeneric": "Family #{id} · {barangay} · {count} here",
-  "@ecBoardFamilyHereGeneric": {"placeholders": {"id": {"type": "int"}, "barangay": {"type": "String"}, "count": {"type": "int"}}},
+  "@ecBoardFamilyHereGeneric": {
+    "placeholders": {
+      "id": {
+        "type": "int"
+      },
+      "barangay": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "ecBoardFamilyNumber": "Family #{id}",
-  "@ecBoardFamilyNumber": {"placeholders": {"id": {"type": "int"}}},
+  "@ecBoardFamilyNumber": {
+    "placeholders": {
+      "id": {
+        "type": "int"
+      }
+    }
+  },
   "ecBoardNoFamiliesHere": "No families here right now.",
   "ecBoardFamiliesHereOffline": "Offline: showing the families saved on this phone. One that has left this center will be refused when it syncs.",
   "ecBoardOtherBarangayNote": "This center is in {barangay}. Add only people who are staying at this center.",
-  "@ecBoardOtherBarangayNote": {"placeholders": {"barangay": {"type": "String"}}},
+  "@ecBoardOtherBarangayNote": {
+    "placeholders": {
+      "barangay": {
+        "type": "String"
+      }
+    }
+  },
   "ecBoardEventClosedName": "{name} (closed)",
-  "@ecBoardEventClosedName": {"placeholders": {"name": {"type": "String"}}},
+  "@ecBoardEventClosedName": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
   "ecBoardClosedEventNote": "This event is closed. Evacuees can no longer be added to it.",
   "ecBoardClosedEventWaitingNote": "Entries still waiting on this phone for it can't sync. Check them, then delete them from this phone.",
   "ecBoardSummaryHeadIsThisPerson": "Head: this person ({minor}).",
-  "@ecBoardSummaryHeadIsThisPerson": { "placeholders": { "minor": { "type": "String" } } },
+  "@ecBoardSummaryHeadIsThisPerson": {
+    "placeholders": {
+      "minor": {
+        "type": "String"
+      }
+    }
+  },
   "ecBoardSummaryHeadIsSomeoneElse": "Head: someone else, {sex}, {minor}.",
-  "@ecBoardSummaryHeadIsSomeoneElse": { "placeholders": { "sex": { "type": "String" }, "minor": { "type": "String" } } },
+  "@ecBoardSummaryHeadIsSomeoneElse": {
+    "placeholders": {
+      "sex": {
+        "type": "String"
+      },
+      "minor": {
+        "type": "String"
+      }
+    }
+  },
   "ecBoardSummarySexNotYetKnown": "sex not yet known",
   "ecBoardSummaryMinorUnknown": "minor or not: not yet known",
   "ecBoardSummaryMinor": "a minor",
   "ecBoardSummaryNotMinor": "not a minor",
   "ecBoardSummarySingleHeaded": "Single-headed: {answer}.",
-  "@ecBoardSummarySingleHeaded": { "placeholders": { "answer": { "type": "String" } } },
+  "@ecBoardSummarySingleHeaded": {
+    "placeholders": {
+      "answer": {
+        "type": "String"
+      }
+    }
+  },
   "ecBoardSummaryAnswerUnknown": "not yet known",
   "ecBoardSummaryAnswerYes": "yes",
   "ecBoardSummaryAnswerNo": "no",
   "ecBoardSummaryMale": "male",
   "ecBoardSummaryFemale": "female",
   "ecBoardSummarySectoral": "Sectoral: {flags}.",
-  "@ecBoardSummarySectoral": { "placeholders": { "flags": { "type": "String" } } },
+  "@ecBoardSummarySectoral": {
+    "placeholders": {
+      "flags": {
+        "type": "String"
+      }
+    }
+  },
   "ecBoardSummaryNoSectoral": "No sectoral details.",
   "ecBoardSectoralLiveExplanation": "Counted from each evacuee's sectoral details. Child- and single-headed families are counted once per family, by the head's sex, from the answers given when the family was added.",
   "familyMemberDetailsPending": "Member {index} — details pending",
-  "@familyMemberDetailsPending": { "placeholders": { "index": { "type": "int" } } },
+  "@familyMemberDetailsPending": {
+    "placeholders": {
+      "index": {
+        "type": "int"
+      }
+    }
+  },
   "familyMemberCheckedInAt": "Checked in at {center}",
-  "@familyMemberCheckedInAt": { "placeholders": { "center": { "type": "String" } } },
+  "@familyMemberCheckedInAt": {
+    "placeholders": {
+      "center": {
+        "type": "String"
+      }
+    }
+  },
   "familyMemberCheckedInUnspecified": "Checked in at unspecified location",
   "familyMemberCheckedOut": "Checked out",
   "familyMembersNeedConnection": "Connect to the internet to see who's still checked in and to check someone out.",
   "familyHeadNotLinked": "Head not yet linked. Counts use the answers given for the head ({answers}) until a member is linked. When the head arrives, add them with Add Evacuee → Already here and tick \"This person is the family head\".",
-  "@familyHeadNotLinked": { "placeholders": { "answers": { "type": "String" } } },
+  "@familyHeadNotLinked": {
+    "placeholders": {
+      "answers": {
+        "type": "String"
+      }
+    }
+  },
   "familyHeadNotLinkedNothingKnown": "Head not yet linked. Nothing is known about the head yet until a member is linked. When the head arrives, add them with Add Evacuee → Already here and tick \"This person is the family head\".",
   "familyLegacyBulkEntryNotice": "Legacy bulk entry — needs manual review. Anonymous people from an old headcount, not a real family.",
   "checkOutButton": "Check out",
   "checkOutDialogTitle": "Check out {name}",
-  "@checkOutDialogTitle": { "placeholders": { "name": { "type": "String" } } },
+  "@checkOutDialogTitle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
   "checkOutDialogSubtitle": "Closes their stay at {center}, so they no longer count as here now.",
-  "@checkOutDialogSubtitle": { "placeholders": { "center": { "type": "String" } } },
+  "@checkOutDialogSubtitle": {
+    "placeholders": {
+      "center": {
+        "type": "String"
+      }
+    }
+  },
   "checkOutTheirCurrentLocation": "their current location",
   "checkOutReasonLabel": "Reason",
   "checkOutReturnedHome": "Returned home",
@@ -808,11 +1070,32 @@
   "checkOutReturnedHomeLower": "returned home",
   "checkOutTransferredLower": "transferred elsewhere",
   "checkOutConfirm": "Check out {name} as {reason}? They'll no longer count as here now.",
-  "@checkOutConfirm": { "placeholders": { "name": { "type": "String" }, "reason": { "type": "String" } } },
+  "@checkOutConfirm": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "reason": {
+        "type": "String"
+      }
+    }
+  },
   "checkOutMemberPendingName": "Member {index} (details pending)",
-  "@checkOutMemberPendingName": { "placeholders": { "index": { "type": "int" } } },
+  "@checkOutMemberPendingName": {
+    "placeholders": {
+      "index": {
+        "type": "int"
+      }
+    }
+  },
   "checkOutSucceeded": "{name} checked out.",
-  "@checkOutSucceeded": { "placeholders": { "name": { "type": "String" } } },
+  "@checkOutSucceeded": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
   "checkOutOther": "Others",
   "checkOutOtherLower": "departed for another reason",
   "markFamilyDepartedButton": "Mark family as departed",
@@ -820,17 +1103,50 @@
   "markFamilyDepartedWho": "Who is leaving",
   "markFamilyDepartedReasonHelp": "Applies to everyone ticked above.",
   "markFamilyDepartedSubmit": "Mark {count} as departed",
-  "@markFamilyDepartedSubmit": { "placeholders": { "count": { "type": "int" } } },
+  "@markFamilyDepartedSubmit": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "markFamilyDepartedConfirmTitle": "{count, plural, =1{Mark 1 member as departed?} other{Mark {count} members as departed?}}",
-  "@markFamilyDepartedConfirmTitle": { "placeholders": { "count": { "type": "int" } } },
+  "@markFamilyDepartedConfirmTitle": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "markFamilyDepartedConfirmMessage": "They'll be recorded as {reason} and no longer count as here now.",
-  "@markFamilyDepartedConfirmMessage": { "placeholders": { "reason": { "type": "String" } } },
+  "@markFamilyDepartedConfirmMessage": {
+    "placeholders": {
+      "reason": {
+        "type": "String"
+      }
+    }
+  },
   "markFamilyDepartedConfirmButton": "Mark as departed",
   "markFamilyDepartedWorking": "Marking…",
   "markFamilyDepartedDone": "{count, plural, =1{1 member marked as departed.} other{{count} members marked as departed.}}",
-  "@markFamilyDepartedDone": { "placeholders": { "count": { "type": "int" } } },
+  "@markFamilyDepartedDone": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "markFamilyDepartedPartialTitle": "{done} of {total} marked as departed",
-  "@markFamilyDepartedPartialTitle": { "placeholders": { "done": { "type": "int" }, "total": { "type": "int" } } },
+  "@markFamilyDepartedPartialTitle": {
+    "placeholders": {
+      "done": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
   "markFamilyDepartedPartialBody": "These weren't checked out:",
   "ecBoardHeaderCenter": "Evacuation center",
   "ecBoardAsOf": "As of",
@@ -838,56 +1154,64 @@
   "ecBoardNotYetFetchedHelp": "This board hasn't been loaded on this device yet, so every figure shows a dash. Connect to the internet and try again.",
   "ecBoardHeaderFamilies": "Families (Cum/Now)",
   "ecBoardHeaderPersons": "Persons (Cum/Now)",
-
   "staffUseTheWebTitle": "Use the web",
   "staffUseTheWebBody": "Administrator accounts manage users, logs and backups on the E-LIKAS website. The mobile app is for barangay field work and CSWD monitoring.",
   "staffOpenWebsite": "Open the E-LIKAS website",
   "staffSignOut": "Sign out",
-
   "centerApprovalUnverified": "Unverified",
   "centerApprovalRejected": "Rejected",
   "centerApprovalEditWaiting": "Edit waiting for CSWD",
   "centerRejectedNotUsable": "Rejected by CSWD. Not usable on the EC Board.",
   "staffOwnCentersEmpty": "No evacuation centers in your barangay yet",
-
   "demoBadge": "DEMO",
   "drillBadge": "DRILL",
-
   "residentBarangayTitle": "Your barangay",
   "residentBarangayNotSet": "Not chosen yet",
   "residentBarangayPickerTitle": "Choose your barangay",
   "residentBarangaySearchHint": "Search barangays",
   "residentBarangayListUnavailable": "The barangay list needs an internet connection the first time.",
-
   "residentBarangayWhy": "See your barangay's status and its evacuation centers first.",
   "residentBarangayStatusOf": "Brgy. {barangay}",
   "residentNoOpenEvent": "No disaster event is open.",
   "residentStatusSavedCopy": "Saved copy, last updated {age}",
-
   "showBarangayStatus": "Barangay status",
   "barangayBoundariesAttribution": "Barangay boundaries: PSA-NAMRIA via HDX (CC BY-IGO)",
   "barangayStatusTapped": "{barangay}: {status}",
-
   "drillNotice": "DRILL - This is a simulation for demonstration, not a real emergency.",
-
   "centersInYourBarangay": "Centers in Brgy. {barangay}",
   "centerNoMapLocationYet": "No map location yet. Ask your barangay for directions.",
-
   "staffTabCenters": "Centers",
   "staffTabMore": "More",
   "staffTabResidentApp": "Resident app",
   "staffSignInButton": "Staff sign in",
   "staffModeButton": "Staff Mode",
-
   "syncTitle": "Sync",
   "syncNow": "Sync now",
   "syncAllDone": "Everything is synced",
   "syncWaitingCount": "{count, plural, =1{1 waiting to sync} other{{count} waiting to sync}}",
-  "@syncWaitingCount": {"placeholders":{"count":{"type":"int"}}},
+  "@syncWaitingCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "syncAttentionCount": "{count, plural, =1{1 needs a look} other{{count} need a look}}",
-  "@syncAttentionCount": {"placeholders":{"count":{"type":"int"}}},
+  "@syncAttentionCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "syncSentMessage": "{count, plural, =0{Nothing new to send.} =1{1 sent.} other{{count} sent.}}",
-  "@syncSentMessage": {"placeholders":{"count":{"type":"int"}}},
+  "@syncSentMessage": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "syncNeedsAttention": "Needs a look",
   "syncWaiting": "Waiting to sync",
   "syncFamilyRegistrations": "Family registrations",
@@ -899,17 +1223,26 @@
   "syncCouldNotRead": "Could not read the queue on this device.",
   "moreActions": "More actions",
   "staffSyncRow": "Sync",
-
   "purokOptionalLabel": "Purok (optional)",
   "purokNone": "No purok",
-
   "ecBoardFamiliesHereTitle": "Families here now",
   "ecBoardFamiliesHereEmpty": "No family is checked in here for this event.",
   "ecBoardFamilyMembers": "{count, plural, =1{1 member} other{{count} members}}",
-  "@ecBoardFamilyMembers": {"placeholders":{"count":{"type":"int"}}},
+  "@ecBoardFamilyMembers": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "showAllCount": "Show all {count}",
-  "@showAllCount": {"placeholders":{"count":{"type":"int"}}},
-
+  "@showAllCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "returningFamiliesTitle": "Returning families",
   "returningFamiliesOfflineButton": "Returning families (needs a connection)",
   "returningFamiliesNeedsConnection": "Returning families need an internet connection.",
@@ -920,23 +1253,58 @@
   "returningFamilyAlreadyIn": "Already in this event",
   "returningFamilyWhoArrived": "Who arrived?",
   "returningFamilyUnnamed": "{count, plural, =1{1 member without a name is not listed.} other{{count} members without a name are not listed.}}",
-  "@returningFamilyUnnamed": {"placeholders":{"count":{"type":"int"}}},
+  "@returningFamilyUnnamed": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "returningMemberCheckedIn": "Already checked in this event",
-  "returningMemberAge": "{age} years",
-  "@returningMemberAge": {"placeholders":{"age":{"type":"int"}}},
+  "returningMemberAge": "{age, plural, =1{1 year} other{{age} years}}",
+  "@returningMemberAge": {
+    "placeholders": {
+      "age": {
+        "type": "int"
+      }
+    }
+  },
   "returningMemberAgeGroup": "Age group (no birthdate on record)",
   "returningMemberStillPregnant": "Pregnant now",
   "returningMemberStillLactating": "Lactating now",
   "returningFamilyEnroll": "{count, plural, =1{Enter 1 person} other{Enter {count} people}}",
-  "@returningFamilyEnroll": {"placeholders":{"count":{"type":"int"}}},
+  "@returningFamilyEnroll": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "returningFamilyDone": "{count, plural, =1{1 person entered} other{{count} people entered}}",
-  "@returningFamilyDone": {"placeholders":{"count":{"type":"int"}}},
+  "@returningFamilyDone": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "returningFamilyDuplicateTitle": "Same family?",
   "returningFamilyDuplicateBody": "A family that may be the same one is already in this event.",
-  "returningFamilyLinkTo": "Same family, link it: {name} · {center} · {count} members",
-  "@returningFamilyLinkTo": {"placeholders":{"name":{"type":"String"},"center":{"type":"String"},"count":{"type":"int"}}},
+  "returningFamilyLinkTo": "Same family, link it: {name} · {center} · {members}",
+  "@returningFamilyLinkTo": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "center": {
+        "type": "String"
+      },
+      "members": {
+        "type": "String"
+      }
+    }
+  },
   "returningFamilyDifferent": "Different family, add as new",
-
   "centerLocationTitle": "Location on the map",
   "centerLocationOnMap": "On the map",
   "centerLocationWaitingForCswd": "A location you sent is waiting for CSWD.",
@@ -944,13 +1312,18 @@
   "centerLocationSetFromPhone": "Set location from this phone",
   "centerLocationConfirmTitle": "Use this location?",
   "centerLocationAccuracy": "Accurate to about {meters} m",
-  "@centerLocationAccuracy": {"placeholders":{"meters":{"type":"int"}}},
+  "@centerLocationAccuracy": {
+    "placeholders": {
+      "meters": {
+        "type": "int"
+      }
+    }
+  },
   "centerLocationLowAccuracy": "Low accuracy. Step outside or wait a moment, then try again.",
   "centerLocationGoesToCswd": "Stand at the center's entrance. CSWD approves the location before it appears on the map.",
   "centerLocationSend": "Send to CSWD",
   "centerLocationSummary": "Location of {center}",
   "centerLocationQueued": "Location sent for CSWD approval (or kept until you are online).",
-
   "facilityRequestsTitle": "Facility requests",
   "facilityRequestsNone": "No request yet.",
   "facilityRequestsNeedConnection": "The requests sent before need a connection to show.",
@@ -963,23 +1336,40 @@
   "facilityRequestSend": "Send to CSWD",
   "facilityRequestSent": "Request sent to CSWD (or kept until you are online).",
   "facilityRequestSummary": "{what} × {count} for {center}",
-  "@facilityRequestSummary": {"placeholders":{"what":{"type":"String"},"count":{"type":"int"},"center":{"type":"String"}}},
+  "@facilityRequestSummary": {
+    "placeholders": {
+      "what": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      },
+      "center": {
+        "type": "String"
+      }
+    }
+  },
   "requestStatusWaiting": "Waiting",
   "requestStatusApproved": "Approved",
   "requestStatusRejected": "Rejected",
   "requestStatusFulfilled": "Fulfilled",
   "decrease": "Decrease",
   "increase": "Increase",
-
   "reliefTitle": "Relief boxes",
   "staffTabRelief": "Relief",
   "reliefNeedsConnectionFirst": "Relief boxes need a connection the first time.",
-  "staffNoOpenEvent": "No disaster event is open.",
+  "staffNoOpenEvent": "No open event yet. CSWDO opens an event when a threat is announced.",
   "savedCopyAge": "Saved copy, {age}",
   "reliefCountNotValidated": "Your barangay's final count is not validated yet. Until CSWD validates it, the need is 0 and no boxes can be sent.",
   "reliefNoRoundYet": "No relief round yet.",
   "reliefRound": "Round {number}",
-  "@reliefRound": {"placeholders":{"number":{"type":"int"}}},
+  "@reliefRound": {
+    "placeholders": {
+      "number": {
+        "type": "int"
+      }
+    }
+  },
   "reliefNeed": "Need",
   "reliefReceived": "Received",
   "reliefGiven": "Given",
@@ -987,24 +1377,68 @@
   "reliefBoxesToConfirm": "Boxes to confirm",
   "reliefGiveBoxes": "Give boxes",
   "reliefGivenOfReceived": "{given} given of {received} received",
-  "@reliefGivenOfReceived": {"placeholders":{"given":{"type":"int"},"received":{"type":"int"}}},
-  "reliefBoxesSent": "{count} boxes sent, round {round}",
-  "@reliefBoxesSent": {"placeholders":{"count":{"type":"int"},"round":{"type":"int"}}},
+  "@reliefGivenOfReceived": {
+    "placeholders": {
+      "given": {
+        "type": "int"
+      },
+      "received": {
+        "type": "int"
+      }
+    }
+  },
+  "reliefBoxesSent": "{boxes} sent, round {round}",
+  "@reliefBoxesSent": {
+    "placeholders": {
+      "boxes": {
+        "type": "String"
+      },
+      "round": {
+        "type": "int"
+      }
+    }
+  },
   "reliefConfirmArrived": "Confirm what arrived",
   "reliefHowManyArrived": "How many boxes arrived?",
   "reliefBoxesArrived": "Boxes received (of {sent} sent)",
-  "@reliefBoxesArrived": {"placeholders":{"sent":{"type":"int"}}},
+  "@reliefBoxesArrived": {
+    "placeholders": {
+      "sent": {
+        "type": "int"
+      }
+    }
+  },
   "reliefFewerNote": "Why fewer? (required)",
   "reliefConfirm": "Confirm",
-  "reliefConfirmSummary": "{count} boxes received, round {round}",
-  "@reliefConfirmSummary": {"placeholders":{"count":{"type":"int"},"round":{"type":"int"}}},
-
+  "reliefConfirmSummary": "{boxes} received, round {round}",
+  "@reliefConfirmSummary": {
+    "placeholders": {
+      "boxes": {
+        "type": "String"
+      },
+      "round": {
+        "type": "int"
+      }
+    }
+  },
   "reliefLeftToGive": "Left to give",
   "reliefByPriority": "By priority",
   "reliefByName": "By name",
-  "reliefSuggestedOrderNote": "Suggested order, for CSWDO confirmation.",
+  "reliefSuggestedOrderNote": "Priority order: give to the families at the top first.",
   "reliefPurokHeading": "{purok} · {given} of {total} given",
-  "@reliefPurokHeading": {"placeholders":{"purok":{"type":"String"},"given":{"type":"int"},"total":{"type":"int"}}},
+  "@reliefPurokHeading": {
+    "placeholders": {
+      "purok": {
+        "type": "String"
+      },
+      "given": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
   "reliefGiveBox": "Give box",
   "reliefGivenWaiting": "Given, waiting to sync",
   "reliefVoidWaiting": "Void waiting to sync",
@@ -1013,9 +1447,17 @@
   "reliefVoidBody": "The family will show as not given yet. This cannot be undone.",
   "reliefVoidReason": "Reason (required)",
   "reliefGiveSummary": "Box for {family}, round {round}",
-  "@reliefGiveSummary": {"placeholders":{"family":{"type":"String"},"round":{"type":"int"}}},
+  "@reliefGiveSummary": {
+    "placeholders": {
+      "family": {
+        "type": "String"
+      },
+      "round": {
+        "type": "int"
+      }
+    }
+  },
   "reliefVoidSummary": "Void box for {family}",
-
   "staffTabBarangay": "Barangay",
   "barangayStatusNeedsConnection": "The barangay status needs a connection the first time.",
   "barangayStatusSetBy": "Set by {name}, {when}",
@@ -1025,40 +1467,106 @@
   "barangayStatusNote": "Note (optional; required to update the same status)",
   "barangayStatusSave": "Save status",
   "barangayStatusSaved": "Marked \"{status}\" (sent when online).",
-
   "finalCountTitle": "Final count",
-  "finalCountFigures": "{families} families · {persons} persons",
-  "@finalCountFigures": {"placeholders":{"families":{"type":"int"},"persons":{"type":"int"}}},
+  "finalCountFigures": "{families} · {persons}",
+  "@finalCountFigures": {
+    "placeholders": {
+      "families": {
+        "type": "String"
+      },
+      "persons": {
+        "type": "String"
+      }
+    }
+  },
   "finalCountInsideOutside": "{inside} inside centers · {outside} outside",
-  "@finalCountInsideOutside": {"placeholders":{"inside":{"type":"int"},"outside":{"type":"int"}}},
+  "@finalCountInsideOutside": {
+    "placeholders": {
+      "inside": {
+        "type": "int"
+      },
+      "outside": {
+        "type": "int"
+      }
+    }
+  },
   "finalCountNoStay": "{count} with no stay recorded",
-  "@finalCountNoStay": {"placeholders":{"count":{"type":"int"}}},
+  "@finalCountNoStay": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "finalCountNotSubmitted": "Not submitted yet",
   "finalCountWaiting": "Submitted, waiting for CSWD",
   "finalCountReturned": "Returned by CSWD",
-  "finalCountValidated": "Validated: {families} families (the relief need)",
-  "@finalCountValidated": {"placeholders":{"families":{"type":"int"}}},
+  "finalCountValidated": "Validated: {families} (the relief need)",
+  "@finalCountValidated": {
+    "placeholders": {
+      "families": {
+        "type": "String"
+      }
+    }
+  },
   "finalCountChanged": "The count has changed since the last submission.",
   "finalCountSubmit": "Submit final count",
   "finalCountSubmitUpdated": "Submit updated count",
   "finalCountSubmitTitle": "Submit this final count?",
   "finalCountComputedNote": "The system computes these numbers from the families registered in this event; they are not typed in.",
   "finalCountNote": "Note for CSWD (optional)",
-  "finalCountSummary": "Final count: {families} families, {persons} persons",
-  "@finalCountSummary": {"placeholders":{"families":{"type":"int"},"persons":{"type":"int"}}},
+  "finalCountSummary": "Final count: {families}, {persons}",
+  "@finalCountSummary": {
+    "placeholders": {
+      "families": {
+        "type": "String"
+      },
+      "persons": {
+        "type": "String"
+      }
+    }
+  },
   "reliefShortfallTitle": "Request more boxes for round {round}",
-  "@reliefShortfallTitle": {"placeholders":{"round":{"type":"int"}}},
+  "@reliefShortfallTitle": {
+    "placeholders": {
+      "round": {
+        "type": "int"
+      }
+    }
+  },
   "reliefShortfallSend": "Send request",
-  "reliefShortfallAsk": "Request up to {count} more boxes",
-  "@reliefShortfallAsk": {"placeholders":{"count":{"type":"int"}}},
+  "reliefShortfallAsk": "{count, plural, =1{Request 1 more box} other{Request up to {count} more boxes}}",
+  "@reliefShortfallAsk": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "reliefShortfallRow": "Requested {count} more: {status}",
-  "@reliefShortfallRow": {"placeholders":{"count":{"type":"int"},"status":{"type":"String"}}},
-  "reliefShortfallSummary": "Request {count} more boxes, round {round}",
-  "@reliefShortfallSummary": {"placeholders":{"count":{"type":"int"},"round":{"type":"int"}}},
-
+  "@reliefShortfallRow": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "status": {
+        "type": "String"
+      }
+    }
+  },
+  "reliefShortfallSummary": "{count, plural, =1{Request 1 more box, round {round}} other{Request {count} more boxes, round {round}}}",
+  "@reliefShortfallSummary": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "round": {
+        "type": "int"
+      }
+    }
+  },
   "staffMyCentersSubtitle": "Set a location, request what is missing",
   "pendingRegistrationsRetiring": "Full registrations are no longer started on the phone; families are entered on the EC Board. Sync or fix the ones below. This screen goes away once they are done.",
-
   "monitoringTitle": "Monitoring",
   "staffTabMonitoring": "Monitoring",
   "monitoringOverview": "Overview",
@@ -1070,21 +1578,105 @@
   "monitoringInside": "Inside centers",
   "monitoringCentersInUse": "Centers in use",
   "monitoringArrivedLastHour": "{count} arrived in the last hour",
-  "@monitoringArrivedLastHour": {"placeholders":{"count":{"type":"int"}}},
+  "@monitoringArrivedLastHour": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "monitoringNeedsAttention": "Needs attention",
   "monitoringNothingUrgent": "Nothing needs attention now.",
-  "monitoringCentersSummary": "{inUse} of {total} centers in use · {noCapacity} without capacity",
-  "@monitoringCentersSummary": {"placeholders":{"inUse":{"type":"int"},"total":{"type":"int"},"noCapacity":{"type":"int"}}},
+  "monitoringCentersSummary": "{inUse} of {centers} in use · {noCapacity} without capacity",
+  "@monitoringCentersSummary": {
+    "placeholders": {
+      "inUse": {
+        "type": "int"
+      },
+      "centers": {
+        "type": "String"
+      },
+      "noCapacity": {
+        "type": "int"
+      }
+    }
+  },
   "monitoringShort": "Short: {items}",
   "monitoringNoChecklist": "No facilities checklist",
   "monitoringInsideNoCapacity": "{count} inside · capacity not set",
-  "@monitoringInsideNoCapacity": {"placeholders":{"count":{"type":"int"}}},
+  "@monitoringInsideNoCapacity": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "monitoringNotNormal": "Not normal",
   "monitoringAllNormal": "Every barangay is normal.",
   "monitoringLatestChanges": "Latest changes",
   "monitoringNoRequests": "No request is waiting.",
   "monitoringWaited": "{hours}h {minutes}m",
-  "@monitoringWaited": {"placeholders":{"hours":{"type":"int"},"minutes":{"type":"int"}}},
+  "@monitoringWaited": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      },
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
   "monitoringNeedsConnection": "Monitoring needs a connection the first time.",
-  "monitoringUpdated": "Updated {age}"
+  "monitoringUpdated": "Updated {age}",
+  "reliefNextInLine": "Next in line",
+  "reliefWaitingForBoxes": "Waiting for more boxes",
+  "reliefOutOfOrderTitle": "Give a box to {family} now?",
+  "reliefOutOfOrderBody": "{count, plural, =1{1 family with a higher priority is still waiting.} other{{count} families with a higher priority are still waiting.}}",
+  "@reliefOutOfOrderBody": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "countFamilies": "{count, plural, =1{1 family} other{{count} families}}",
+  "@countFamilies": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "countPersons": "{count, plural, =1{1 person} other{{count} persons}}",
+  "@countPersons": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "countBoxes": "{count, plural, =1{1 box} other{{count} boxes}}",
+  "@countBoxes": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "countCenters": "{count, plural, =1{1 center} other{{count} centers}}",
+  "@countCenters": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "countEvacuees": "{count, plural, =1{1 evacuee} other{{count} evacuees}}",
+  "@countEvacuees": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  }
 }

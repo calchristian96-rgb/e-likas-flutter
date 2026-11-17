@@ -216,6 +216,7 @@ class ReEnrollmentApi {
     required List<ReEnrollMember> members,
     String? duplicateDecision,
     int? linkFamilyId,
+    String? clientRef,
   }) async {
     try {
       final response = await _api.post(
@@ -226,6 +227,7 @@ class ReEnrollmentApi {
           'members': [for (final m in members) m.toJson()],
           'duplicate_decision': duplicateDecision,
           'link_family_id': linkFamilyId,
+          'client_ref': ?clientRef,
         },
       );
       final data = response.data as Map<String, dynamic>;

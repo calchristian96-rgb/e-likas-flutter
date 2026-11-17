@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:uuid/uuid.dart';
 
 import '../../../../app/theme/app_theme.dart';
 import '../../../../core/connectivity/connectivity_service.dart';
@@ -55,6 +56,8 @@ class AddEvacueeFormPage extends ConsumerStatefulWidget {
 }
 
 class _AddEvacueeFormPageState extends ConsumerState<AddEvacueeFormPage> {
+  /// This form's client_ref for an online add (docs/client-ref-api.md).
+  final String _clientRef = const Uuid().v4();
   late EcBoardEntryDraft _draft;
   String? _householdLabel;
   bool _submitting = false;
@@ -284,7 +287,12 @@ class _AddEvacueeFormPageState extends ConsumerState<AddEvacueeFormPage> {
       return;
     }
 
-    final result = await ref.read(ecBoardSubmitProvider)(draft);
+    // One client_ref per entry: the queued one's own id, else this
+    // form's, so a second tap after a lost answer is not a second person.
+    final result = await ref.read(ecBoardSubmitProvider)(
+      draft,
+      clientRef: widget.editingLocalId ?? _clientRef,
+    );
     if (!mounted) return;
     setState(() => _submitting = false);
 
@@ -299,6 +307,8 @@ class _AddEvacueeFormPageState extends ConsumerState<AddEvacueeFormPage> {
         ref.invalidate(ecBoardCountsForCenterProvider(widget.centerId));
         // The household's head link/answers may have just changed.
         ref.invalidate(registeredFamiliesProvider);
+        // A first check-in turns an event in monitoring active.
+        ref.invalidate(evacuationEventsLookupProvider);
         _showSnack(l10n.ecBoardSuccessMessage, isError: false);
         Navigator.of(context).maybePop();
       case Failed(:final failure):

@@ -164,7 +164,7 @@ class _MonitoringPageState extends ConsumerState<MonitoringPage> {
       Text(
         l10n.monitoringCentersSummary(
           (d['in_use'] as num?)?.toInt() ?? 0,
-          (d['total'] as num?)?.toInt() ?? 0,
+          l10n.countCenters((d['total'] as num?)?.toInt() ?? 0),
           (d['capacity_not_set'] as num?)?.toInt() ?? 0,
         ),
         style: theme.textTheme.titleMedium,

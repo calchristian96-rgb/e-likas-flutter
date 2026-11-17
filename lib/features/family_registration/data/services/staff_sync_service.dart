@@ -137,7 +137,10 @@ class StaffSyncService {
       if (!await _connectivity.hasConnection) break;
 
       await _pendingQueueRepository.markSyncing(localId);
-      final result = await _registrationRepository.submit(item.draft);
+      final result = await _registrationRepository.submit(
+        item.draft,
+        clientRef: localId,
+      );
 
       switch (result) {
         case Success(:final value):
@@ -244,7 +247,7 @@ class StaffSyncService {
       if (!item.draft.isReadyToSync) continue;
 
       await ecBoard.markSyncing(localId);
-      final result = await ecBoard.submit(item.draft);
+      final result = await ecBoard.submit(item.draft, clientRef: localId);
 
       switch (result) {
         case Success(:final value):

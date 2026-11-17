@@ -72,9 +72,8 @@ Future<void> _newFamilyForm(WidgetTester tester) async {
   await tester.pumpAndSettle();
 }
 
-int? _chosen(WidgetTester tester) => tester
-    .widget<DropdownButton<int>>(find.byType(DropdownButton<int>))
-    .value;
+int? _chosen(WidgetTester tester) =>
+    tester.widget<DropdownButton<int>>(find.byType(DropdownButton<int>)).value;
 
 void main() {
   testWidgets('asks for the home barangay, with no default', (tester) async {
@@ -90,7 +89,9 @@ void main() {
     );
     expect(_chosen(tester), isNull);
     expect(
-      find.text('New family: Rosario Magbanua, (home barangay not chosen yet).'),
+      find.text(
+        'New family: Rosario Magbanua, (home barangay not chosen yet).',
+      ),
       findsOneWidget,
     );
   });

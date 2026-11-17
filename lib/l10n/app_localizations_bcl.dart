@@ -1678,7 +1678,7 @@ class AppLocalizationsBcl extends AppLocalizations {
 
   @override
   String get ecBoardNoEventsAvailable =>
-      'No evacuation events are available yet.';
+      'No open event yet. CSWDO opens an event when a threat is announced.';
 
   @override
   String get ecBoardAgeSexSectionTitle => 'Age & Sex Disaggregation';
@@ -2387,7 +2387,13 @@ class AppLocalizationsBcl extends AppLocalizations {
 
   @override
   String returningMemberAge(int age) {
-    return '$age years';
+    String _temp0 = intl.Intl.pluralLogic(
+      age,
+      locale: localeName,
+      other: '$age years',
+      one: '1 year',
+    );
+    return '$_temp0';
   }
 
   @override
@@ -2429,8 +2435,8 @@ class AppLocalizationsBcl extends AppLocalizations {
       'A family that may be the same one is already in this event.';
 
   @override
-  String returningFamilyLinkTo(String name, String center, int count) {
-    return 'Same family, link it: $name · $center · $count members';
+  String returningFamilyLinkTo(String name, String center, String members) {
+    return 'Same family, link it: $name · $center · $members';
   }
 
   @override
@@ -2550,7 +2556,8 @@ class AppLocalizationsBcl extends AppLocalizations {
       'Relief boxes need a connection the first time.';
 
   @override
-  String get staffNoOpenEvent => 'No disaster event is open.';
+  String get staffNoOpenEvent =>
+      'No open event yet. CSWDO opens an event when a threat is announced.';
 
   @override
   String savedCopyAge(Object age) {
@@ -2593,8 +2600,8 @@ class AppLocalizationsBcl extends AppLocalizations {
   }
 
   @override
-  String reliefBoxesSent(int count, int round) {
-    return '$count boxes sent, round $round';
+  String reliefBoxesSent(String boxes, int round) {
+    return '$boxes sent, round $round';
   }
 
   @override
@@ -2615,8 +2622,8 @@ class AppLocalizationsBcl extends AppLocalizations {
   String get reliefConfirm => 'Confirm';
 
   @override
-  String reliefConfirmSummary(int count, int round) {
-    return '$count boxes received, round $round';
+  String reliefConfirmSummary(String boxes, int round) {
+    return '$boxes received, round $round';
   }
 
   @override
@@ -2630,7 +2637,7 @@ class AppLocalizationsBcl extends AppLocalizations {
 
   @override
   String get reliefSuggestedOrderNote =>
-      'Suggested order, for CSWDO confirmation.';
+      'Priority order: give to the families at the top first.';
 
   @override
   String reliefPurokHeading(String purok, int given, int total) {
@@ -2711,8 +2718,8 @@ class AppLocalizationsBcl extends AppLocalizations {
   String get finalCountTitle => 'Final count';
 
   @override
-  String finalCountFigures(int families, int persons) {
-    return '$families families · $persons persons';
+  String finalCountFigures(String families, String persons) {
+    return '$families · $persons';
   }
 
   @override
@@ -2735,8 +2742,8 @@ class AppLocalizationsBcl extends AppLocalizations {
   String get finalCountReturned => 'Returned by CSWD';
 
   @override
-  String finalCountValidated(int families) {
-    return 'Validated: $families families (the relief need)';
+  String finalCountValidated(String families) {
+    return 'Validated: $families (the relief need)';
   }
 
   @override
@@ -2760,8 +2767,8 @@ class AppLocalizationsBcl extends AppLocalizations {
   String get finalCountNote => 'Note for CSWD (optional)';
 
   @override
-  String finalCountSummary(int families, int persons) {
-    return 'Final count: $families families, $persons persons';
+  String finalCountSummary(String families, String persons) {
+    return 'Final count: $families, $persons';
   }
 
   @override
@@ -2774,7 +2781,13 @@ class AppLocalizationsBcl extends AppLocalizations {
 
   @override
   String reliefShortfallAsk(int count) {
-    return 'Request up to $count more boxes';
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Request up to $count more boxes',
+      one: 'Request 1 more box',
+    );
+    return '$_temp0';
   }
 
   @override
@@ -2784,7 +2797,13 @@ class AppLocalizationsBcl extends AppLocalizations {
 
   @override
   String reliefShortfallSummary(int count, int round) {
-    return 'Request $count more boxes, round $round';
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Request $count more boxes, round $round',
+      one: 'Request 1 more box, round $round',
+    );
+    return '$_temp0';
   }
 
   @override
@@ -2837,8 +2856,8 @@ class AppLocalizationsBcl extends AppLocalizations {
   String get monitoringNothingUrgent => 'Nothing needs attention now.';
 
   @override
-  String monitoringCentersSummary(int inUse, int total, int noCapacity) {
-    return '$inUse of $total centers in use · $noCapacity without capacity';
+  String monitoringCentersSummary(int inUse, String centers, int noCapacity) {
+    return '$inUse of $centers in use · $noCapacity without capacity';
   }
 
   @override
@@ -2878,5 +2897,82 @@ class AppLocalizationsBcl extends AppLocalizations {
   @override
   String monitoringUpdated(Object age) {
     return 'Updated $age';
+  }
+
+  @override
+  String get reliefNextInLine => 'Next in line';
+
+  @override
+  String get reliefWaitingForBoxes => 'Waiting for more boxes';
+
+  @override
+  String reliefOutOfOrderTitle(Object family) {
+    return 'Give a box to $family now?';
+  }
+
+  @override
+  String reliefOutOfOrderBody(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count families with a higher priority are still waiting.',
+      one: '1 family with a higher priority is still waiting.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String countFamilies(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count families',
+      one: '1 family',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String countPersons(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count persons',
+      one: '1 person',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String countBoxes(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count boxes',
+      one: '1 box',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String countCenters(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count centers',
+      one: '1 center',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String countEvacuees(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count evacuees',
+      one: '1 evacuee',
+    );
+    return '$_temp0';
   }
 }

@@ -65,6 +65,7 @@ void main() {
     final queued = (await outbox.getAll()).single;
     expect(queued.kind, PendingActionKind.checkOut);
     expect(queued.path, '/evacuees/1804/check-out');
-    expect(queued.body, {'status': 'returned_home'});
+    expect(queued.body['status'], 'returned_home');
+    expect(queued.body['client_ref'], queued.localId);
   });
 }

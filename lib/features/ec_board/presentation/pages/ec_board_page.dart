@@ -264,6 +264,7 @@ class _EcBoardBody extends ConsumerWidget {
           if (selectedClosed)
             _ClosedEventNote(
               entriesWaiting: waitingEventIds.contains(selectedEventId),
+              noOpenEvent: !events.any((e) => e.isOpen),
             )
           else
             _EcBoardActionButton(
@@ -1191,9 +1192,15 @@ class _EventSelector extends StatelessWidget {
 /// In place of Add Evacuee while a closed event is selected: why there's
 /// nothing to add, and what to do with entries still waiting for it.
 class _ClosedEventNote extends StatelessWidget {
-  const _ClosedEventNote({required this.entriesWaiting});
+  const _ClosedEventNote({
+    required this.entriesWaiting,
+    this.noOpenEvent = false,
+  });
 
   final bool entriesWaiting;
+
+  /// No event is open at all: the backend's own wording first.
+  final bool noOpenEvent;
 
   @override
   Widget build(BuildContext context) {
@@ -1217,9 +1224,11 @@ class _ClosedEventNote extends StatelessWidget {
           const SizedBox(width: 8),
           Expanded(
             child: Text(
-              entriesWaiting
-                  ? '${l10n.ecBoardClosedEventNote} ${l10n.ecBoardClosedEventWaitingNote}'
-                  : l10n.ecBoardClosedEventNote,
+              [
+                if (noOpenEvent) l10n.staffNoOpenEvent,
+                l10n.ecBoardClosedEventNote,
+                if (entriesWaiting) l10n.ecBoardClosedEventWaitingNote,
+              ].join(' '),
               style: theme.textTheme.bodySmall?.copyWith(color: warning),
             ),
           ),

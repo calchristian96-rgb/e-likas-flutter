@@ -96,15 +96,13 @@ class _DevSettingsPageState extends State<DevSettingsPage> {
             ),
             const SizedBox(height: 20),
             _InfoRow(
-              label: 'Compiled default (production unless built with '
+              label:
+                  'Compiled default (production unless built with '
                   '--dart-define)',
               value: Env.compiledDefaultApiBaseUrl,
             ),
             const SizedBox(height: 12),
-            _InfoRow(
-              label: 'Currently effective',
-              value: Env.apiBaseUrl,
-            ),
+            _InfoRow(label: 'Currently effective', value: Env.apiBaseUrl),
             const Divider(height: 32),
             TextField(
               controller: _controller,

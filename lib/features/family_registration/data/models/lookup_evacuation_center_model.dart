@@ -27,7 +27,9 @@ class LookupEvacuationCenterModel {
       id: json['id'] as int,
       name: json['name'] as String,
       barangayId: json['barangay_id'] as int,
-      status: json['status'] as String,
+      // The status shown (backend bd5b433): people inside make a center
+      // active, or full near capacity; `status` is what officials set.
+      status: json['effective_status'] as String? ?? json['status'] as String,
       approvalStatus: json['approval_status'] as String? ?? 'approved',
       hasPendingChange: json['has_pending_change'] as bool? ?? false,
       rejectionReason: json['rejection_reason'] as String?,

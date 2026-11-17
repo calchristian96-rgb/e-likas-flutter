@@ -12,9 +12,15 @@ class FamilyRegistrationRepositoryImpl implements FamilyRegistrationRepository {
   final FamilyRegistrationRemoteDataSource _remote;
 
   @override
-  Future<Result<int>> submit(FamilyRegistrationDraft draft) async {
+  Future<Result<int>> submit(
+    FamilyRegistrationDraft draft, {
+    String? clientRef,
+  }) async {
     try {
-      final data = await _remote.register(draft.toJson());
+      final data = await _remote.register({
+        ...draft.toJson(),
+        'client_ref': ?clientRef,
+      });
       return Success(data['id'] as int);
     } on DioException catch (e) {
       return Failed(mapStaffDioError(e));

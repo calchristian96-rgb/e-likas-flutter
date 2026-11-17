@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../../../../app/theme/app_theme.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../domain/entities/evacuation_center.dart';
 
@@ -55,33 +54,18 @@ const evacuationCenterTypeValues = [
   'other',
 ];
 
-/// The one colour every screen showing a center's status/occupancy
-/// uses — lifted out of what was a private `EvacuationCenterCard`
-/// method so Nearest Center and Evacuation Center Details can match it
-/// exactly instead of each growing a slightly different copy.
-///
-/// Same colour bands as the web admin dashboard's evacuation center
-/// cards: under 75% reads as healthy capacity, 75–94% as filling up,
-/// 95%+ as effectively full. A closed center's occupancy number isn't a
-/// meaningful signal at all, so it gets the neutral colour regardless
-/// of whatever number the backend reports for it — same treatment as a
-/// center with no occupancy data at all (e.g. from the `/nearest`
-/// endpoint).
-Color centerStatusColor(BuildContext context, EvacuationCenter center) {
-  final theme = Theme.of(context);
-  final semantic = theme.extension<AppSemanticColors>()!;
-  final status = center.status.toLowerCase();
-  final occupancyPercent = center.occupancyPercent;
+/// A center status colour, the web's marker colours (backend bd5b433):
+/// active green, on standby blue, full red, closed dark gray. Always
+/// shown with the status word.
+Color centerStatusColorOf(String status) => switch (status.toLowerCase()) {
+  'active' => const Color(0xFF15803D),
+  'full' => const Color(0xFFDC2626),
+  'closed' => const Color(0xFF374151),
+  _ => const Color(0xFF2563EB),
+};
 
-  if (status.contains('closed') || occupancyPercent == null) {
-    return theme.colorScheme.onSurfaceVariant;
-  }
-  // 'full' reads as red even on the rare chance occupancy_percent
-  // itself hasn't caught up to 95+ yet — the status field is the more
-  // authoritative signal when the two disagree.
-  if (status == 'full' || occupancyPercent >= 95) {
-    return theme.colorScheme.error;
-  }
-  if (occupancyPercent >= 75) return semantic.warning;
-  return semantic.success;
-}
+/// The colour of a center's status as the API returns it: the effective
+/// status (people inside make a center active, or full near capacity),
+/// never worked out again from occupancy here.
+Color centerStatusColor(BuildContext context, EvacuationCenter center) =>
+    centerStatusColorOf(center.status);

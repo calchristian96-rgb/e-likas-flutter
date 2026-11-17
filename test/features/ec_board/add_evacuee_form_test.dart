@@ -91,26 +91,25 @@ void main() {
     },
   );
 
-  testWidgets(
-    'the pinned read-back steps aside while the keyboard is open',
-    (tester) async {
-      _tallPhone(tester);
-      await tester.pumpWidget(
-        _app(const AddEvacueeFormPage(centerId: 1, evacuationEventId: 7)),
-      );
-      await tester.pumpAndSettle();
-      expect(find.text('Will be recorded'), findsOneWidget);
+  testWidgets('the pinned read-back steps aside while the keyboard is open', (
+    tester,
+  ) async {
+    _tallPhone(tester);
+    await tester.pumpWidget(
+      _app(const AddEvacueeFormPage(centerId: 1, evacuationEventId: 7)),
+    );
+    await tester.pumpAndSettle();
+    expect(find.text('Will be recorded'), findsOneWidget);
 
-      tester.view.viewInsets = const FakeViewPadding(bottom: 800);
-      addTearDown(tester.view.resetViewInsets);
-      await tester.pumpAndSettle();
-      expect(find.text('Will be recorded'), findsNothing);
+    tester.view.viewInsets = const FakeViewPadding(bottom: 800);
+    addTearDown(tester.view.resetViewInsets);
+    await tester.pumpAndSettle();
+    expect(find.text('Will be recorded'), findsNothing);
 
-      tester.view.resetViewInsets();
-      await tester.pumpAndSettle();
-      expect(find.text('Will be recorded'), findsOneWidget);
-    },
-  );
+    tester.view.resetViewInsets();
+    await tester.pumpAndSettle();
+    expect(find.text('Will be recorded'), findsOneWidget);
+  });
 
   testWidgets(
     'editing an entry with flags opens the section with them ticked',
@@ -153,115 +152,103 @@ void main() {
     },
   );
 
-  testWidgets(
-    'new family: this person is the head by default; unticking asks '
-    'about the actual head, and the read-back follows every answer',
-    (tester) async {
-      _tallPhone(tester);
-      await tester.pumpWidget(
-        _app(const AddEvacueeFormPage(centerId: 1, evacuationEventId: 7)),
-      );
-      await tester.pumpAndSettle();
+  testWidgets('new family: this person is the head by default; unticking asks '
+      'about the actual head, and the read-back follows every answer', (
+    tester,
+  ) async {
+    _tallPhone(tester);
+    await tester.pumpWidget(
+      _app(const AddEvacueeFormPage(centerId: 1, evacuationEventId: 7)),
+    );
+    await tester.pumpAndSettle();
 
-      await _tapVisible(tester, find.widgetWithText(ChoiceChip, 'Teenage'));
-      await _tapVisible(tester, find.widgetWithText(ChoiceChip, 'Male'));
-      await _tapVisible(tester, find.text('New family'));
+    await _tapVisible(tester, find.widgetWithText(ChoiceChip, 'Teenage'));
+    await _tapVisible(tester, find.widgetWithText(ChoiceChip, 'Male'));
+    await _tapVisible(tester, find.text('New family'));
 
-      final headTick = find.widgetWithText(
-        CheckboxListTile,
-        'This person is the family head',
-      );
-      expect(tester.widget<CheckboxListTile>(headTick).value, isTrue);
-      expect(find.text('About the actual family head'), findsNothing);
-      expect(
-        find.text(
-          "This person's age and sex will be used for the family head.",
-        ),
-        findsOneWidget,
-      );
-      expect(find.text('Head: this person (a minor).'), findsOneWidget);
-      expect(find.text('Single-headed: not yet known.'), findsOneWidget);
+    final headTick = find.widgetWithText(
+      CheckboxListTile,
+      'This person is the family head',
+    );
+    expect(tester.widget<CheckboxListTile>(headTick).value, isTrue);
+    expect(find.text('About the actual family head'), findsNothing);
+    expect(
+      find.text("This person's age and sex will be used for the family head."),
+      findsOneWidget,
+    );
+    expect(find.text('Head: this person (a minor).'), findsOneWidget);
+    expect(find.text('Single-headed: not yet known.'), findsOneWidget);
 
-      await _tapVisible(tester, headTick);
-      expect(find.text('About the actual family head'), findsOneWidget);
-      expect(
-        find.text(
-          'Head: someone else, sex not yet known, minor or not: not yet known.',
-        ),
-        findsOneWidget,
-      );
+    await _tapVisible(tester, headTick);
+    expect(find.text('About the actual family head'), findsOneWidget);
+    expect(
+      find.text(
+        'Head: someone else, sex not yet known, minor or not: not yet known.',
+      ),
+      findsOneWidget,
+    );
 
-      // Head's sex → Female; head is a minor → No.
-      final inset = find.ancestor(
-        of: find.text('About the actual family head'),
-        matching: find.byType(Container),
-      );
-      await _tapVisible(
-        tester,
-        find.descendant(
-          of: inset.first,
-          matching: find.widgetWithText(ChoiceChip, 'Female'),
-        ),
-      );
-      await _tapVisible(
-        tester,
-        find.descendant(
-          of: inset.first,
-          matching: find.widgetWithText(ChoiceChip, 'No'),
-        ),
-      );
-      expect(
-        find.text('Head: someone else, female, not a minor.'),
-        findsOneWidget,
-      );
-    },
-  );
+    // Head's sex → Female; head is a minor → No.
+    final inset = find.ancestor(
+      of: find.text('About the actual family head'),
+      matching: find.byType(Container),
+    );
+    await _tapVisible(
+      tester,
+      find.descendant(
+        of: inset.first,
+        matching: find.widgetWithText(ChoiceChip, 'Female'),
+      ),
+    );
+    await _tapVisible(
+      tester,
+      find.descendant(
+        of: inset.first,
+        matching: find.widgetWithText(ChoiceChip, 'No'),
+      ),
+    );
+    expect(
+      find.text('Head: someone else, female, not a minor.'),
+      findsOneWidget,
+    );
+  });
 
-  testWidgets(
-    'already here: a family with no head linked offers linking this '
-    'person as its head',
-    (tester) async {
-      _tallPhone(tester);
-      await tester.pumpWidget(
-        _app(
-          const AddEvacueeFormPage(
-            centerId: 1,
+  testWidgets('already here: a family with no head linked offers linking this '
+      'person as its head', (tester) async {
+    _tallPhone(tester);
+    await tester.pumpWidget(
+      _app(
+        const AddEvacueeFormPage(
+          centerId: 1,
+          evacuationEventId: 7,
+          editingLocalId: 'abc',
+          initialHouseholdLabel: 'Juan Dela Cruz',
+          initialDraft: EcBoardEntryDraft(
+            evacuationCenterId: 1,
             evacuationEventId: 7,
-            editingLocalId: 'abc',
-            initialHouseholdLabel: 'Juan Dela Cruz',
-            initialDraft: EcBoardEntryDraft(
-              evacuationCenterId: 1,
-              evacuationEventId: 7,
-              sex: 'male',
-              ageBracket: AgeBracket.adult,
-              householdMode: HouseholdMode.existing,
-              existingFamilyRemoteId: 454,
-              headIsSelf: true,
-            ),
+            sex: 'male',
+            ageBracket: AgeBracket.adult,
+            householdMode: HouseholdMode.existing,
+            existingFamilyRemoteId: 454,
+            headIsSelf: true,
           ),
         ),
-      );
-      await tester.pumpAndSettle();
+      ),
+    );
+    await tester.pumpAndSettle();
 
-      final tick = find.widgetWithText(
-        CheckboxListTile,
-        'This person is the family head',
-      );
-      expect(tick, findsOneWidget);
-      expect(tester.widget<CheckboxListTile>(tick).value, isTrue);
-      expect(
-        find.text('This family has no head linked yet.'),
-        findsOneWidget,
-      );
-      expect(
-        find.text("Becomes that family's head (not a minor)."),
-        findsOneWidget,
-      );
-      // The new-family questions never appear for Already here.
-      expect(
-        find.text('Only one family head? (single-headed)'),
-        findsNothing,
-      );
-    },
-  );
+    final tick = find.widgetWithText(
+      CheckboxListTile,
+      'This person is the family head',
+    );
+    expect(tick, findsOneWidget);
+    expect(tester.widget<CheckboxListTile>(tick).value, isTrue);
+    expect(find.text('This family has no head linked yet.'), findsOneWidget);
+    expect(
+      find.text("Becomes that family's head (not a minor)."),
+      findsOneWidget,
+    );
+    // The new-family questions never appear for Already here.
+    expect(find.text('Only one family head? (single-headed)'), findsNothing);
+  });
 }

@@ -114,8 +114,11 @@ Future<List<FamilyHere>> ecBoardFamiliesHere(
 /// branch and `StaffSyncService` — same one-wiring-not-two convention
 /// `registrationSubmitProvider` already established.
 @riverpod
-Future<Result<EcBoardSubmitResult>> Function(EcBoardEntryDraft draft)
+Future<Result<EcBoardSubmitResult>> Function(
+  EcBoardEntryDraft draft, {
+  String? clientRef,
+})
 ecBoardSubmit(Ref ref) {
   final repository = ref.watch(ecBoardRepositoryProvider);
-  return (draft) => repository.submit(draft);
+  return (draft, {clientRef}) => repository.submit(draft, clientRef: clientRef);
 }

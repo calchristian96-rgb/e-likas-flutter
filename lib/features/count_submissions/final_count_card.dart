@@ -154,8 +154,8 @@ class FinalCountCard extends ConsumerWidget {
           children: [
             Text(
               l10n.finalCountFigures(
-                count.computed.families,
-                count.computed.persons,
+                l10n.countFamilies(count.computed.families),
+                l10n.countPersons(count.computed.persons),
               ),
               style: Theme.of(context).textTheme.titleMedium,
             ),
@@ -197,8 +197,8 @@ class FinalCountCard extends ConsumerWidget {
         if (text.isNotEmpty) 'note': text,
       },
       summary: l10n.finalCountSummary(
-        count.computed.families,
-        count.computed.persons,
+        l10n.countFamilies(count.computed.families),
+        l10n.countPersons(count.computed.persons),
       ),
       subjectKey: 'count:${count.eventId}',
     );
@@ -221,7 +221,9 @@ class FinalCountCard extends ConsumerWidget {
     );
     final (statusText, statusColor) = switch (count.submissionStatus) {
       'validated' => (
-        l10n.finalCountValidated(count.validatedFamilies ?? 0),
+        l10n.finalCountValidated(
+          l10n.countFamilies(count.validatedFamilies ?? 0),
+        ),
         semantic.success,
       ),
       'returned' => (l10n.finalCountReturned, theme.colorScheme.error),
@@ -241,7 +243,10 @@ class FinalCountCard extends ConsumerWidget {
               Text(l10n.finalCountTitle, style: theme.textTheme.titleMedium),
               const SizedBox(height: 8),
               Text(
-                l10n.finalCountFigures(c.families, c.persons),
+                l10n.finalCountFigures(
+                  l10n.countFamilies(c.families),
+                  l10n.countPersons(c.persons),
+                ),
                 style: theme.textTheme.headlineSmall,
               ),
               Text(
