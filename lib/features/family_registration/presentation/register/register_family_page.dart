@@ -129,7 +129,10 @@ class _RegisterFlowState extends ConsumerState<_RegisterFlow> {
   bool get _stepValid => switch (_step) {
     0 => memberComplete(_head),
     1 => _others.every(memberComplete),
-    2 => _draft.evacuationCenterId != null,
+    2 =>
+      _draft.isPrivateHouse
+          ? _draft.hasHost
+          : _draft.evacuationCenterId != null,
     _ => true,
   };
 
@@ -139,13 +142,13 @@ class _RegisterFlowState extends ConsumerState<_RegisterFlow> {
     final draft = _draft.copyWith(
       evacuationEventId: eventId,
       barangayId: widget.session.barangayId,
-      displacementType: 'inside_center',
+      displacementType: _draft.displacementType ?? 'inside_center',
     );
     await ref.read(pendingQueueRepositoryProvider).enqueue(draft);
     try {
       final prefs = await SharedPreferences.getInstance();
       await prefs.remove(_draftKey(widget.session.id));
-      if (draft.evacuationCenterId != null) {
+      if (!draft.isPrivateHouse && draft.evacuationCenterId != null) {
         await prefs.setInt(
           _centerKey(widget.session.id),
           draft.evacuationCenterId!,
@@ -649,9 +652,72 @@ class _PlaceStep extends ConsumerWidget {
           ),
           const SizedBox(height: 16),
         ],
-        Text(l10n.registerCenter, style: theme.textTheme.titleSmall),
+        Text(l10n.registerWhereStaying, style: theme.textTheme.titleSmall),
         const SizedBox(height: 8),
-        if (centers.isEmpty)
+        SegmentedButton<bool>(
+          segments: [
+            ButtonSegment(
+              value: false,
+              icon: const Icon(Icons.home_work_outlined),
+              label: Text(l10n.registerInCenter),
+            ),
+            ButtonSegment(
+              value: true,
+              icon: const Icon(Icons.house_outlined),
+              label: Text(l10n.registerPrivateHouse),
+            ),
+          ],
+          selected: {draft.isPrivateHouse},
+          onSelectionChanged: (s) => onChanged(
+            draft.copyWith(
+              displacementType: s.first ? 'outside_center' : 'inside_center',
+            ),
+          ),
+        ),
+        const SizedBox(height: 16),
+        if (draft.isPrivateHouse) ...[
+          Text(
+            l10n.registerPrivateHouseHint,
+            style: theme.textTheme.bodyMedium,
+          ),
+          const SizedBox(height: 8),
+          TextFormField(
+            initialValue: draft.hostName,
+            textCapitalization: TextCapitalization.words,
+            decoration: InputDecoration(labelText: l10n.registerHostName),
+            onChanged: (v) => onChanged(draft.copyWith(hostName: v)),
+          ),
+          const SizedBox(height: 16),
+          if (puroks.isNotEmpty) ...[
+            DropdownButtonFormField<int?>(
+              initialValue: puroks.any((p) => p.id == draft.hostPurokId)
+                  ? draft.hostPurokId
+                  : null,
+              isExpanded: true,
+              decoration: InputDecoration(labelText: l10n.registerHostPurok),
+              items: [
+                DropdownMenuItem<int?>(
+                  value: null,
+                  child: Text(l10n.purokNone),
+                ),
+                for (final p in puroks)
+                  DropdownMenuItem<int?>(value: p.id, child: Text(p.name)),
+              ],
+              onChanged: (id) =>
+                  onChanged(draft.copyWith(hostPurokId: (value: id))),
+            ),
+            const SizedBox(height: 16),
+          ],
+          TextFormField(
+            initialValue: draft.hostAddress,
+            decoration: InputDecoration(
+              labelText: l10n.registerHostAddress,
+              helperText: l10n.registerHostWhere,
+              helperMaxLines: 2,
+            ),
+            onChanged: (v) => onChanged(draft.copyWith(hostAddress: v)),
+          ),
+        ] else if (centers.isEmpty)
           EmptyNote(message: l10n.staffOwnCentersEmpty)
         else
           RadioGroup<int>(
@@ -727,7 +793,15 @@ class _ReviewStep extends ConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(l10n.registerStepPlace, style: theme.textTheme.bodyMedium),
-              Text(center?.name ?? '', style: theme.textTheme.titleMedium),
+              Text(
+                draft.isPrivateHouse
+                    ? l10n.privateHouseWith((draft.hostName ?? '').trim())
+                    : center?.name ?? '',
+                style: theme.textTheme.titleMedium,
+              ),
+              if (draft.isPrivateHouse &&
+                  (draft.hostAddress ?? '').trim().isNotEmpty)
+                Text(draft.hostAddress!.trim()),
               if (eventName != null) Text(eventName!),
             ],
           ),

@@ -263,6 +263,17 @@ class _DetailBody extends ConsumerWidget {
               orElse: () => _fallbackLabel(draft.evacuationCenterId),
             ),
           ),
+        if (draft.isPrivateHouse) ...[
+          _SummaryRow(
+            label: l10n.registerHostName,
+            value: draft.hostName ?? '',
+          ),
+          if ((draft.hostAddress ?? '').trim().isNotEmpty)
+            _SummaryRow(
+              label: l10n.registerHostAddress,
+              value: draft.hostAddress!,
+            ),
+        ],
         _SummaryRow(
           label: l10n.staffReg4psBeneficiaryLabel,
           value: draft.is4psBeneficiary

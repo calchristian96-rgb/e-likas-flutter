@@ -10,7 +10,23 @@ class FamilyRecord {
     required this.isLegacyBulkEntry,
     this.headSex,
     this.isChildHeaded,
+    this.inPrivateHouse = false,
+    this.hostName,
+    this.hostWhere,
+    this.countStatusKey,
+    this.countStatusLabel,
   });
+
+  /// Staying with relatives or friends (`in_private_house`: the latest
+  /// stay is outside_center), with the host and where the house is.
+  final bool inPrivateHouse;
+  final String? hostName;
+  final String? hostWhere;
+
+  /// `count_status` (backend 5bb30d1): validated, submitted, returned,
+  /// late_entry or not_submitted, with the server's own label.
+  final String? countStatusKey;
+  final String? countStatusLabel;
 
   final int id;
   final List<FamilyRecordMember> members;

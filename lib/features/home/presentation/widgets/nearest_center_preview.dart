@@ -274,6 +274,6 @@ class _CenterTile extends StatelessWidget {
 
 String formatDistance(BuildContext context, double meters) => meters < 1000
     ? AppLocalizations.of(context).distanceMetersAway(meters.round())
-    : AppLocalizations.of(context).distanceKmAway(
-        (meters / 1000).toStringAsFixed(1),
-      );
+    : AppLocalizations.of(
+        context,
+      ).distanceKmAway((meters / 1000).toStringAsFixed(1));

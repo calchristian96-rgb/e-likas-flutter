@@ -2557,7 +2557,7 @@ abstract class AppLocalizations {
   /// No description provided for @staffRegDisplacementOutsideCenter.
   ///
   /// In en, this message translates to:
-  /// **'Outside evacuation center'**
+  /// **'Private house'**
   String get staffRegDisplacementOutsideCenter;
 
   /// No description provided for @staffRegFieldEvacuationCenter.
@@ -5523,6 +5523,96 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No action needed. Stay alert.'**
   String get adviceNormal;
+
+  /// No description provided for @registerWhereStaying.
+  ///
+  /// In en, this message translates to:
+  /// **'Where is the family staying?'**
+  String get registerWhereStaying;
+
+  /// No description provided for @registerInCenter.
+  ///
+  /// In en, this message translates to:
+  /// **'In a center'**
+  String get registerInCenter;
+
+  /// No description provided for @registerPrivateHouse.
+  ///
+  /// In en, this message translates to:
+  /// **'Private house'**
+  String get registerPrivateHouse;
+
+  /// No description provided for @registerPrivateHouseHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Staying with relatives or friends.'**
+  String get registerPrivateHouseHint;
+
+  /// No description provided for @registerHostName.
+  ///
+  /// In en, this message translates to:
+  /// **'Name of the relative or friend'**
+  String get registerHostName;
+
+  /// No description provided for @registerHostPurok.
+  ///
+  /// In en, this message translates to:
+  /// **'Purok of the house'**
+  String get registerHostPurok;
+
+  /// No description provided for @registerHostAddress.
+  ///
+  /// In en, this message translates to:
+  /// **'Address of the house'**
+  String get registerHostAddress;
+
+  /// No description provided for @registerHostWhere.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the address or choose the purok.'**
+  String get registerHostWhere;
+
+  /// No description provided for @privateHouseWith.
+  ///
+  /// In en, this message translates to:
+  /// **'Private house, with {host}'**
+  String privateHouseWith(String host);
+
+  /// No description provided for @privateHousesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Private houses'**
+  String get privateHousesTitle;
+
+  /// No description provided for @privateHousesSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Families staying with relatives or friends'**
+  String get privateHousesSubtitle;
+
+  /// No description provided for @privateHousesSummary.
+  ///
+  /// In en, this message translates to:
+  /// **'{families}, {persons}'**
+  String privateHousesSummary(String families, String persons);
+
+  /// No description provided for @privateHousesNone.
+  ///
+  /// In en, this message translates to:
+  /// **'No family is staying in a private house.'**
+  String get privateHousesNone;
+
+  /// No description provided for @privateHouseDetailsPending.
+  ///
+  /// In en, this message translates to:
+  /// **'Details pending'**
+  String get privateHouseDetailsPending;
+
+  /// No description provided for @cswdPrivateHouseFamilies.
+  ///
+  /// In en, this message translates to:
+  /// **'Families in private houses'**
+  String get cswdPrivateHouseFamilies;
 }
 
 class _AppLocalizationsDelegate

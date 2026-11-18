@@ -417,7 +417,7 @@
   "staffRegFieldEvacuationEvent": "Evacuation Event",
   "staffRegFieldDisplacementType": "Uri ng Paglikas",
   "staffRegDisplacementInsideCenter": "Nasa loob ng evacuation center",
-  "staffRegDisplacementOutsideCenter": "Nasa labas ng evacuation center",
+  "staffRegDisplacementOutsideCenter": "Pribadong bahay",
   "staffRegFieldEvacuationCenter": "Evacuation Center",
   "staffRegMemberCardTitle": "Miyembro {number}",
   "staffRegHeadOfFamilyBadge": "Puno ng Pamilya",
@@ -1116,5 +1116,21 @@
   "adviceFlooding": "May ulat ng baha. Lumipat sa mataas na lugar kung tumataas ang tubig.",
   "advicePreemptive": "Preemptive na paglikas: pumunta na sa inyong evacuation center.",
   "adviceForced": "Sapilitang paglikas: umalis na at pumunta sa inyong evacuation center.",
-  "adviceNormal": "Walang kailangang gawin. Manatiling alerto."
+  "adviceNormal": "Walang kailangang gawin. Manatiling alerto.",
+
+  "registerWhereStaying": "Saan tumutuloy ang pamilya?",
+  "registerInCenter": "Sa center",
+  "registerPrivateHouse": "Pribadong bahay",
+  "registerPrivateHouseHint": "Nakikitira sa kamag-anak o kaibigan.",
+  "registerHostName": "Pangalan ng kamag-anak o kaibigan",
+  "registerHostPurok": "Purok ng bahay",
+  "registerHostAddress": "Address ng bahay",
+  "registerHostWhere": "Ilagay ang address o piliin ang purok.",
+  "privateHouseWith": "Pribadong bahay, kasama si {host}",
+  "privateHousesTitle": "Mga pribadong bahay",
+  "privateHousesSubtitle": "Mga pamilyang nakikitira sa kamag-anak o kaibigan",
+  "privateHousesSummary": "{families}, {persons}",
+  "privateHousesNone": "Walang pamilyang nakikitira sa pribadong bahay.",
+  "privateHouseDetailsPending": "Kulang pa ang detalye",
+  "cswdPrivateHouseFamilies": "Pamilya sa pribadong bahay"
 }

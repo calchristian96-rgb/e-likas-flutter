@@ -1412,8 +1412,7 @@ class AppLocalizationsFil extends AppLocalizations {
       'Nasa loob ng evacuation center';
 
   @override
-  String get staffRegDisplacementOutsideCenter =>
-      'Nasa labas ng evacuation center';
+  String get staffRegDisplacementOutsideCenter => 'Pribadong bahay';
 
   @override
   String get staffRegFieldEvacuationCenter => 'Evacuation Center';
@@ -3330,4 +3329,55 @@ class AppLocalizationsFil extends AppLocalizations {
 
   @override
   String get adviceNormal => 'Walang kailangang gawin. Manatiling alerto.';
+
+  @override
+  String get registerWhereStaying => 'Saan tumutuloy ang pamilya?';
+
+  @override
+  String get registerInCenter => 'Sa center';
+
+  @override
+  String get registerPrivateHouse => 'Pribadong bahay';
+
+  @override
+  String get registerPrivateHouseHint => 'Nakikitira sa kamag-anak o kaibigan.';
+
+  @override
+  String get registerHostName => 'Pangalan ng kamag-anak o kaibigan';
+
+  @override
+  String get registerHostPurok => 'Purok ng bahay';
+
+  @override
+  String get registerHostAddress => 'Address ng bahay';
+
+  @override
+  String get registerHostWhere => 'Ilagay ang address o piliin ang purok.';
+
+  @override
+  String privateHouseWith(String host) {
+    return 'Pribadong bahay, kasama si $host';
+  }
+
+  @override
+  String get privateHousesTitle => 'Mga pribadong bahay';
+
+  @override
+  String get privateHousesSubtitle =>
+      'Mga pamilyang nakikitira sa kamag-anak o kaibigan';
+
+  @override
+  String privateHousesSummary(String families, String persons) {
+    return '$families, $persons';
+  }
+
+  @override
+  String get privateHousesNone =>
+      'Walang pamilyang nakikitira sa pribadong bahay.';
+
+  @override
+  String get privateHouseDetailsPending => 'Kulang pa ang detalye';
+
+  @override
+  String get cswdPrivateHouseFamilies => 'Pamilya sa pribadong bahay';
 }

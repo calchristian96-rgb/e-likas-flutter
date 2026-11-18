@@ -109,6 +109,21 @@ class _RegisteredFamilyDetailSheet extends ConsumerWidget {
           const SizedBox(height: 6),
           ...recordAsync.when(
             data: (record) => [
+              if (record.inPrivateHouse)
+                _DetailRow(
+                  icon: Icons.house_outlined,
+                  label: [
+                    l10n.privateHouseWith(record.hostName ?? ''),
+                    if ((record.hostWhere ?? '').isNotEmpty) record.hostWhere!,
+                  ].join(' · '),
+                ),
+              if (record.countStatusLabel != null)
+                _DetailRow(
+                  icon: record.countStatusKey == 'late_entry'
+                      ? Icons.schedule
+                      : Icons.fact_check_outlined,
+                  label: record.countStatusLabel!,
+                ),
               // Only while someone is still checked in.
               if (record.members.any((m) => m.hasOpenStay))
                 Align(

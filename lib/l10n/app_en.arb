@@ -697,7 +697,7 @@
   "staffRegFieldEvacuationEvent": "Evacuation Event",
   "staffRegFieldDisplacementType": "Displacement Type",
   "staffRegDisplacementInsideCenter": "Inside evacuation center",
-  "staffRegDisplacementOutsideCenter": "Outside evacuation center",
+  "staffRegDisplacementOutsideCenter": "Private house",
   "staffRegFieldEvacuationCenter": "Evacuation Center",
   "staffRegMemberCardTitle": "Member {number}",
   "@staffRegMemberCardTitle": {
@@ -1780,5 +1780,23 @@
   "adviceFlooding": "Flooding is reported. Move to higher ground if water rises.",
   "advicePreemptive": "Preemptive evacuation: go to your evacuation center now.",
   "adviceForced": "Forced evacuation: leave now and go to your evacuation center.",
-  "adviceNormal": "No action needed. Stay alert."
+  "adviceNormal": "No action needed. Stay alert.",
+
+  "registerWhereStaying": "Where is the family staying?",
+  "registerInCenter": "In a center",
+  "registerPrivateHouse": "Private house",
+  "registerPrivateHouseHint": "Staying with relatives or friends.",
+  "registerHostName": "Name of the relative or friend",
+  "registerHostPurok": "Purok of the house",
+  "registerHostAddress": "Address of the house",
+  "registerHostWhere": "Enter the address or choose the purok.",
+  "privateHouseWith": "Private house, with {host}",
+  "@privateHouseWith": {"placeholders":{"host":{"type":"String"}}},
+  "privateHousesTitle": "Private houses",
+  "privateHousesSubtitle": "Families staying with relatives or friends",
+  "privateHousesSummary": "{families}, {persons}",
+  "@privateHousesSummary": {"placeholders":{"families":{"type":"String"},"persons":{"type":"String"}}},
+  "privateHousesNone": "No family is staying in a private house.",
+  "privateHouseDetailsPending": "Details pending",
+  "cswdPrivateHouseFamilies": "Families in private houses"
 }

@@ -41,6 +41,7 @@ import '../../features/family_registration/presentation/register/register_family
 import '../../features/monitoring/monitoring_page.dart';
 import '../../features/outbox/presentation/sync_page.dart';
 import '../../features/notifications/notifications.dart';
+import '../../features/private_houses/private_houses.dart';
 import '../../features/staff_home/cswd_home_page.dart';
 import '../../features/staff_home/staff_home_page.dart';
 import '../../features/staff_shell/staff_shell.dart';
@@ -570,6 +571,14 @@ final GoRouter appRouter = GoRouter(
                   path: 'notifications',
                   builder: (context, state) => const NotificationsPage(),
                 ),
+                GoRoute(
+                  path: 'private-houses/:barangayId',
+                  builder: (context, state) => PrivateHousesPage(
+                    barangayId:
+                        int.tryParse(state.pathParameters['barangayId'] ?? '') ??
+                        0,
+                  ),
+                ),
               ],
             ),
           ],
@@ -586,6 +595,16 @@ final GoRouter appRouter = GoRouter(
                     barangayId:
                         int.tryParse(state.pathParameters['id'] ?? '') ?? 0,
                   ),
+                  routes: [
+                    GoRoute(
+                      path: 'private-houses',
+                      builder: (context, state) => PrivateHousesPage(
+                        barangayId:
+                            int.tryParse(state.pathParameters['id'] ?? '') ??
+                            0,
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),

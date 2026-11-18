@@ -16,6 +16,7 @@ import '../barangay_status/presentation/barangay_status_card.dart'
 import '../evacuation_centers/presentation/widgets/center_status_display.dart';
 import '../monitoring/monitoring_page.dart';
 import '../notifications/notifications.dart';
+import '../private_houses/private_houses.dart';
 import '../staff_auth/domain/entities/staff_session.dart';
 import '../staff_shell/current_event.dart';
 
@@ -81,6 +82,12 @@ class CswdHomePage extends ConsumerWidget {
         if (((b as Map<String, dynamic>)['short'] as num? ?? 0) > 0) b,
     ];
     final notSent = ref.watch(countsNotSentProvider).value ?? const [];
+    // Families staying with relatives or friends, city-wide.
+    final privateHouses = ref.watch(privateHousesProvider(null)).value;
+    final privateFamilies = privateHouses?.barangays.values.fold<int>(
+      0,
+      (sum, b) => sum + b.families,
+    );
     final warning = theme.extension<AppSemanticColors>()!.warning;
 
     return Scaffold(
@@ -95,6 +102,7 @@ class CswdHomePage extends ConsumerWidget {
           }
           ref.invalidate(countsNotSentProvider);
           ref.invalidate(notificationsProvider);
+          ref.invalidate(privateHousesProvider(null));
         },
         child: ListView(
           physics: const AlwaysScrollableScrollPhysics(),
@@ -123,6 +131,10 @@ class CswdHomePage extends ConsumerWidget {
                 StatItem(l10n.monitoringFamilies, n('families')),
                 StatItem(l10n.monitoringInside, n('inside')),
                 StatItem(l10n.monitoringCentersInUse, n('centers_in_use')),
+                StatItem(
+                  l10n.cswdPrivateHouseFamilies,
+                  '${privateFamilies ?? '–'}',
+                ),
               ],
             ),
             SectionTitle(l10n.cswdBarangaysByStatus),
@@ -484,6 +496,12 @@ class CswdBarangayDetailPage extends ConsumerWidget {
                     ),
                   ],
                 ],
+              ),
+              const SizedBox(height: 8),
+              PrivateHousesCard(
+                barangayId: barangayId,
+                onOpen: () =>
+                    context.go('/staff/barangays/$barangayId/private-houses'),
               ),
               SectionTitle(l10n.monitoringCenters),
               for (final c in d['centers'] as List? ?? const []) ...[

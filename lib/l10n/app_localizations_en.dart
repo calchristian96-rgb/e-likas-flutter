@@ -1388,7 +1388,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get staffRegDisplacementInsideCenter => 'Inside evacuation center';
 
   @override
-  String get staffRegDisplacementOutsideCenter => 'Outside evacuation center';
+  String get staffRegDisplacementOutsideCenter => 'Private house';
 
   @override
   String get staffRegFieldEvacuationCenter => 'Evacuation Center';
@@ -3291,4 +3291,54 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get adviceNormal => 'No action needed. Stay alert.';
+
+  @override
+  String get registerWhereStaying => 'Where is the family staying?';
+
+  @override
+  String get registerInCenter => 'In a center';
+
+  @override
+  String get registerPrivateHouse => 'Private house';
+
+  @override
+  String get registerPrivateHouseHint => 'Staying with relatives or friends.';
+
+  @override
+  String get registerHostName => 'Name of the relative or friend';
+
+  @override
+  String get registerHostPurok => 'Purok of the house';
+
+  @override
+  String get registerHostAddress => 'Address of the house';
+
+  @override
+  String get registerHostWhere => 'Enter the address or choose the purok.';
+
+  @override
+  String privateHouseWith(String host) {
+    return 'Private house, with $host';
+  }
+
+  @override
+  String get privateHousesTitle => 'Private houses';
+
+  @override
+  String get privateHousesSubtitle =>
+      'Families staying with relatives or friends';
+
+  @override
+  String privateHousesSummary(String families, String persons) {
+    return '$families, $persons';
+  }
+
+  @override
+  String get privateHousesNone => 'No family is staying in a private house.';
+
+  @override
+  String get privateHouseDetailsPending => 'Details pending';
+
+  @override
+  String get cswdPrivateHouseFamilies => 'Families in private houses';
 }

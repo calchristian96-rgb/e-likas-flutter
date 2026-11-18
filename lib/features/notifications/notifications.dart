@@ -46,8 +46,9 @@ final notificationsProvider = FutureProvider.autoDispose<NotificationsState>((
           title: n['title'] as String? ?? '',
           message: n['message'] as String? ?? '',
           read: n['read'] == true,
-          createdAt: DateTime.tryParse(n['created_at'] as String? ?? '')
-              ?.toLocal(),
+          createdAt: DateTime.tryParse(
+            n['created_at'] as String? ?? '',
+          )?.toLocal(),
         ),
     ],
   );

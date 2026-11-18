@@ -13,6 +13,7 @@ import '../box_relief/round_families_page.dart';
 import '../count_submissions/final_count_card.dart';
 import '../monitoring/monitoring_page.dart';
 import '../outbox/domain/pending_action.dart';
+import '../private_houses/private_houses.dart';
 import '../outbox/presentation/outbox_providers.dart';
 import '../staff_auth/domain/entities/staff_session.dart';
 import '../staff_shell/current_event.dart';
@@ -124,6 +125,15 @@ class OfficialHomePage extends ConsumerWidget {
                 ),
               ],
             ),
+            if (session.barangayId != null) ...[
+              const SizedBox(height: 8),
+              PrivateHousesCard(
+                barangayId: session.barangayId!,
+                onOpen: () => context.go(
+                  '/staff/home/private-houses/${session.barangayId}',
+                ),
+              ),
+            ],
             const SizedBox(height: 16),
             _BigButton(
               icon: Icons.person_add_alt_1_outlined,

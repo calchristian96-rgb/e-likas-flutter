@@ -13,7 +13,23 @@ class FamilyRegistrationDraft {
     this.is4psBeneficiary = false,
     this.members = const [],
     this.purokId,
+    this.hostName,
+    this.hostAddress,
+    this.hostPurokId,
   });
+
+  /// A private house (outside_center, backend bd4627b): who the family
+  /// stays with, and where: an address or a purok of the barangay.
+  final String? hostName;
+  final String? hostAddress;
+  final int? hostPurokId;
+
+  bool get isPrivateHouse => displacementType == 'outside_center';
+
+  /// The host is named and the house can be found.
+  bool get hasHost =>
+      (hostName ?? '').trim().isNotEmpty &&
+      ((hostAddress ?? '').trim().isNotEmpty || hostPurokId != null);
 
   /// The home's purok (backend step 6), optional.
   final int? purokId;
@@ -62,6 +78,7 @@ class FamilyRegistrationDraft {
     if (displacementType == 'inside_center' && evacuationCenterId == null) {
       return false;
     }
+    if (isPrivateHouse && !hasHost) return false;
     if (members.isEmpty || !hasExactlyOneHead) return false;
     for (final member in members) {
       if (member.firstName.trim().isEmpty || member.lastName.trim().isEmpty) {
@@ -86,6 +103,9 @@ class FamilyRegistrationDraft {
     bool? is4psBeneficiary,
     List<FamilyMemberDraft>? members,
     ({int? value})? purokId,
+    String? hostName,
+    String? hostAddress,
+    ({int? value})? hostPurokId,
   }) {
     return FamilyRegistrationDraft(
       evacuationEventId: evacuationEventId ?? this.evacuationEventId,
@@ -98,6 +118,9 @@ class FamilyRegistrationDraft {
       is4psBeneficiary: is4psBeneficiary ?? this.is4psBeneficiary,
       members: members ?? this.members,
       purokId: purokId == null ? this.purokId : purokId.value,
+      hostName: hostName ?? this.hostName,
+      hostAddress: hostAddress ?? this.hostAddress,
+      hostPurokId: hostPurokId == null ? this.hostPurokId : hostPurokId.value,
     );
   }
 
@@ -105,6 +128,11 @@ class FamilyRegistrationDraft {
   /// the backend's `nullable|string|max:255` rule, which treats an
   /// absent/blank address as "not provided" rather than a blank
   /// string value.
+  static String? _blankToNull(String? v) {
+    final t = v?.trim();
+    return (t == null || t.isEmpty) ? null : t;
+  }
+
   String? get _normalizedHomeAddress {
     final trimmed = homeAddress?.trim();
     return (trimmed == null || trimmed.isEmpty) ? null : trimmed;
@@ -115,7 +143,13 @@ class FamilyRegistrationDraft {
     'barangay_id': barangayId,
     'home_address': _normalizedHomeAddress,
     'displacement_type': displacementType,
-    if (evacuationCenterId != null) 'evacuation_center_id': evacuationCenterId,
+    if (!isPrivateHouse && evacuationCenterId != null)
+      'evacuation_center_id': evacuationCenterId,
+    if (isPrivateHouse) ...{
+      'host_name': hostName?.trim(),
+      'host_address': _blankToNull(hostAddress),
+      'host_purok_id': ?hostPurokId,
+    },
     'is_4ps_beneficiary': is4psBeneficiary,
     'purok_id': ?purokId,
     'members': members.map((m) => m.toJson()).toList(),
@@ -133,6 +167,9 @@ class FamilyRegistrationDraft {
           .map((m) => FamilyMemberDraft.fromJson(m as Map<String, dynamic>))
           .toList(),
       purokId: json['purok_id'] as int?,
+      hostName: json['host_name'] as String?,
+      hostAddress: json['host_address'] as String?,
+      hostPurokId: json['host_purok_id'] as int?,
     );
   }
 }

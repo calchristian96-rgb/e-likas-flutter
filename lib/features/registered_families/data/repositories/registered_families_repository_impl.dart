@@ -132,6 +132,18 @@ class RegisteredFamiliesRepositoryImpl implements RegisteredFamiliesRepository {
       isLegacyBulkEntry: json['is_legacy_bulk_entry'] as bool? ?? false,
       headSex: json['head_sex'] as String?,
       isChildHeaded: json['is_child_headed'] as bool?,
+      inPrivateHouse:
+          json['in_private_house'] == true ||
+          (json['host_name'] as String?)?.isNotEmpty == true,
+      hostName: json['host_name'] as String?,
+      hostWhere: [
+        ?((json['host_purok'] as Map<String, dynamic>?)?['name'] as String?),
+        ?(json['host_address'] as String?),
+      ].where((s) => s.trim().isNotEmpty).join(', '),
+      countStatusKey:
+          (json['count_status'] as Map<String, dynamic>?)?['key'] as String?,
+      countStatusLabel:
+          (json['count_status'] as Map<String, dynamic>?)?['label'] as String?,
       members: [
         for (final m in members) _toRecordMember(m, headId: head?['id']),
       ],

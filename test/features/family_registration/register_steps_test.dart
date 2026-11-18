@@ -100,4 +100,40 @@ void main() {
     expect(saved.displacementType, 'inside_center');
     expect(saved.members, hasLength(2));
   });
+
+  testWidgets('a private house: host name and purok, no center sent', (
+    tester,
+  ) async {
+    final queue = await _pump(tester, draft: registerDraft);
+    await tester.tap(find.text('Next'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Next'));
+    await tester.pumpAndSettle();
+    expect(find.text('Where is the family staying?'), findsOneWidget);
+
+    await tester.tap(find.text('Private house'));
+    await tester.pumpAndSettle();
+    // No host yet: Next waits.
+    expect(_primary(tester).onPressed, isNull);
+    await tester.enterText(
+      find.widgetWithText(TextFormField, 'Name of the relative or friend'),
+      'Carmen Reyes',
+    );
+    await tester.enterText(
+      find.widgetWithText(TextFormField, 'Address of the house'),
+      'Zone 3, near the chapel',
+    );
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Next'));
+    await tester.pumpAndSettle();
+    expect(find.text('Private house, with Carmen Reyes'), findsOneWidget);
+
+    await tester.tap(find.text('Save'));
+    await tester.pumpAndSettle();
+    final json = queue.saved.single.toJson();
+    expect(json['displacement_type'], 'outside_center');
+    expect(json['host_name'], 'Carmen Reyes');
+    expect(json['host_address'], 'Zone 3, near the chapel');
+    expect(json.containsKey('evacuation_center_id'), isFalse);
+  });
 }
