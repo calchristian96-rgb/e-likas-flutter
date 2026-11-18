@@ -32,7 +32,7 @@ void main() {
       testApp(const StaffHomePage(), overrides: homeOverrides(official)),
     );
 
-    expect(find.text('Typhoon Pepito'), findsOneWidget);
+    expect(find.text('Event: Typhoon Pepito'), findsOneWidget);
     // Status with the quick buttons it may still switch to.
     expect(find.text('Flooding reported'), findsOneWidget);
     expect(find.widgetWithText(OutlinedButton, 'Watch'), findsOneWidget);

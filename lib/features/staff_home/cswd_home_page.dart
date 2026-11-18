@@ -275,10 +275,15 @@ class _ReadinessCard extends ConsumerWidget {
 }
 
 /// `GET /gis/situation`: every barangay's status (CSWD).
-final citySituationProvider = FutureProvider.autoDispose<Map<String, dynamic>>(
-  (ref) async =>
-      (await ref.watch(staffReadCacheProvider).get('/gis/situation')).data,
-);
+final citySituationProvider = FutureProvider.autoDispose<Map<String, dynamic>>((
+  ref,
+) async {
+  final event = await ref.watch(currentStaffEventProvider.future);
+  return (await ref
+          .watch(staffReadCacheProvider)
+          .get('/gis/situation', query: {'evacuation_event_id': ?event?.id}))
+      .data;
+});
 
 /// Barangays (Part 4.3): every barangay with its status word, most
 /// urgent first; a row opens the barangay.
@@ -355,11 +360,16 @@ class CswdBarangaysPage extends ConsumerWidget {
 }
 
 final barangayPanelProvider = FutureProvider.autoDispose
-    .family<Map<String, dynamic>, int>(
-      (ref, id) async =>
-          (await ref.watch(staffReadCacheProvider).get('/gis/barangays/$id'))
-              .data,
-    );
+    .family<Map<String, dynamic>, int>((ref, id) async {
+      final event = await ref.watch(currentStaffEventProvider.future);
+      return (await ref
+              .watch(staffReadCacheProvider)
+              .get(
+                '/gis/barangays/$id',
+                query: {'evacuation_event_id': ?event?.id},
+              ))
+          .data;
+    });
 
 /// One barangay (Part 4.3): its status, evacuees, centers and relief,
 /// and for CSWDO, ordering a preemptive or forced evacuation (online

@@ -11,6 +11,7 @@ import '../../core/widgets/demo_badge.dart';
 import '../../core/widgets/error_state.dart';
 import '../../core/widgets/stat_strip.dart';
 import '../../l10n/app_localizations.dart';
+import '../staff_shell/current_event.dart';
 import '../barangay_status/presentation/barangay_status_card.dart'
     show barangayStatusColor;
 
@@ -34,9 +35,13 @@ class MonitoringSection {
 
 final monitoringSectionProvider = FutureProvider.autoDispose
     .family<MonitoringSection, String>((ref, section) async {
+      final selected = await ref.watch(currentStaffEventProvider.future);
       final read = await ref
           .watch(staffReadCacheProvider)
-          .get('/monitoring/$section');
+          .get(
+            '/monitoring/$section',
+            query: {'evacuation_event_id': ?selected?.id},
+          );
       final event = read.data['evacuation_event'] as Map<String, dynamic>?;
       return MonitoringSection(
         data: read.data['data'] as Map<String, dynamic>?,

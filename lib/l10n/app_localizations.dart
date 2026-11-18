@@ -5613,6 +5613,72 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Families in private houses'**
   String get cswdPrivateHouseFamilies;
+
+  /// No description provided for @eventSwitchCurrent.
+  ///
+  /// In en, this message translates to:
+  /// **'Event: {name}'**
+  String eventSwitchCurrent(String name);
+
+  /// No description provided for @eventSwitchChange.
+  ///
+  /// In en, this message translates to:
+  /// **'Change'**
+  String get eventSwitchChange;
+
+  /// No description provided for @eventSwitchTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Work on which event?'**
+  String get eventSwitchTitle;
+
+  /// No description provided for @eventSwitchOpen.
+  ///
+  /// In en, this message translates to:
+  /// **'Open events'**
+  String get eventSwitchOpen;
+
+  /// No description provided for @eventSwitchClosedEvents.
+  ///
+  /// In en, this message translates to:
+  /// **'Closed events (read-only)'**
+  String get eventSwitchClosedEvents;
+
+  /// No description provided for @eventSwitchClosed.
+  ///
+  /// In en, this message translates to:
+  /// **'Closed'**
+  String get eventSwitchClosed;
+
+  /// No description provided for @eventSwitchClosedReadOnly.
+  ///
+  /// In en, this message translates to:
+  /// **'Closed: read-only'**
+  String get eventSwitchClosedReadOnly;
+
+  /// No description provided for @eventSwitchNowWorkingOn.
+  ///
+  /// In en, this message translates to:
+  /// **'Now working on \"{name}\".'**
+  String eventSwitchNowWorkingOn(String name);
+
+  /// No description provided for @eventSwitchNeedsConnection.
+  ///
+  /// In en, this message translates to:
+  /// **'Changing the event needs a connection.'**
+  String get eventSwitchNeedsConnection;
+
+  /// No description provided for @registerSavesTo.
+  ///
+  /// In en, this message translates to:
+  /// **'Saves to: {name}'**
+  String registerSavesTo(String name);
+
+  /// No description provided for @registerClosedEvent.
+  ///
+  /// In en, this message translates to:
+  /// **'\"{name}\" is closed. A closed event is read-only. Change the event to register a family.'**
+  String registerClosedEvent(String name);
 }
 
 class _AppLocalizationsDelegate

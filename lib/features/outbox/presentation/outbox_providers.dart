@@ -8,6 +8,7 @@ import '../../family_registration/presentation/providers/lookup_providers.dart';
 import '../../family_registration/presentation/providers/pending_queue_provider.dart';
 import '../../home/presentation/providers/home_provider.dart';
 import '../../staff_auth/presentation/providers/staff_auth_provider.dart';
+import '../../staff_shell/current_event.dart';
 import '../data/outbox_repository.dart';
 import '../domain/pending_action.dart';
 
@@ -91,6 +92,7 @@ class StaffSyncAll {
     // the server (backend EventFlow): read the events again.
     if (families.processed > 0 || result.sent > 0) {
       _ref.invalidate(evacuationEventsLookupProvider);
+      _ref.invalidate(selectedEventProvider);
     }
     return OutboxRunResult(
       sent: result.sent + families.processed,

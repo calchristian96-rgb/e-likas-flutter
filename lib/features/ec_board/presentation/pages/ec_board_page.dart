@@ -10,6 +10,7 @@ import '../../../../core/widgets/empty_state.dart';
 import '../../../../core/widgets/error_state.dart';
 import '../../../../core/widgets/sync_now_action.dart';
 import '../../../../l10n/app_localizations.dart';
+import '../../../staff_shell/current_event.dart';
 import '../../../re_enrollment/returning_families_page.dart';
 import '../../../staff_auth/domain/entities/staff_session.dart';
 import '../../../staff_auth/presentation/providers/staff_auth_provider.dart';
@@ -61,6 +62,12 @@ class _EcBoardPageState extends ConsumerState<EcBoardPage> {
 
   void _ensureEventSelected(List<EvacuationEventLookup> events) {
     if (_selectedEventId != null) return;
+    // The user's selected event (the switcher, shared with the web).
+    final selected = ref.read(currentStaffEventProvider).value;
+    if (selected != null && events.any((e) => e.id == selected.id)) {
+      _selectedEventId = selected.id;
+      return;
+    }
     final open = events.where((e) => e.isOpen).toList();
     if (open.isNotEmpty) {
       _selectedEventId = open.first.id;
@@ -105,6 +112,8 @@ class _EcBoardPageState extends ConsumerState<EcBoardPage> {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     final eventsAsync = ref.watch(evacuationEventsLookupProvider);
+    // Wait for the selected event before choosing the board's event.
+    final selectedAsync = ref.watch(currentStaffEventProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -118,6 +127,9 @@ class _EcBoardPageState extends ConsumerState<EcBoardPage> {
       ),
       body: eventsAsync.when(
         data: (events) {
+          if (selectedAsync.isLoading) {
+            return const Center(child: CircularProgressIndicator());
+          }
           _ensureEventSelected(events);
           final eventId = _selectedEventId;
           if (eventId == null) {

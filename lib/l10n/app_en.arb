@@ -1798,5 +1798,21 @@
   "@privateHousesSummary": {"placeholders":{"families":{"type":"String"},"persons":{"type":"String"}}},
   "privateHousesNone": "No family is staying in a private house.",
   "privateHouseDetailsPending": "Details pending",
-  "cswdPrivateHouseFamilies": "Families in private houses"
+  "cswdPrivateHouseFamilies": "Families in private houses",
+
+  "eventSwitchCurrent": "Event: {name}",
+  "@eventSwitchCurrent": {"placeholders":{"name":{"type":"String"}}},
+  "eventSwitchChange": "Change",
+  "eventSwitchTitle": "Work on which event?",
+  "eventSwitchOpen": "Open events",
+  "eventSwitchClosedEvents": "Closed events (read-only)",
+  "eventSwitchClosed": "Closed",
+  "eventSwitchClosedReadOnly": "Closed: read-only",
+  "eventSwitchNowWorkingOn": "Now working on \"{name}\".",
+  "@eventSwitchNowWorkingOn": {"placeholders":{"name":{"type":"String"}}},
+  "eventSwitchNeedsConnection": "Changing the event needs a connection.",
+  "registerSavesTo": "Saves to: {name}",
+  "@registerSavesTo": {"placeholders":{"name":{"type":"String"}}},
+  "registerClosedEvent": "\"{name}\" is closed. A closed event is read-only. Change the event to register a family.",
+  "@registerClosedEvent": {"placeholders":{"name":{"type":"String"}}}
 }

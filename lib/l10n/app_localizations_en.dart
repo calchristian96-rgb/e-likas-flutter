@@ -3341,4 +3341,46 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get cswdPrivateHouseFamilies => 'Families in private houses';
+
+  @override
+  String eventSwitchCurrent(String name) {
+    return 'Event: $name';
+  }
+
+  @override
+  String get eventSwitchChange => 'Change';
+
+  @override
+  String get eventSwitchTitle => 'Work on which event?';
+
+  @override
+  String get eventSwitchOpen => 'Open events';
+
+  @override
+  String get eventSwitchClosedEvents => 'Closed events (read-only)';
+
+  @override
+  String get eventSwitchClosed => 'Closed';
+
+  @override
+  String get eventSwitchClosedReadOnly => 'Closed: read-only';
+
+  @override
+  String eventSwitchNowWorkingOn(String name) {
+    return 'Now working on \"$name\".';
+  }
+
+  @override
+  String get eventSwitchNeedsConnection =>
+      'Changing the event needs a connection.';
+
+  @override
+  String registerSavesTo(String name) {
+    return 'Saves to: $name';
+  }
+
+  @override
+  String registerClosedEvent(String name) {
+    return '\"$name\" is closed. A closed event is read-only. Change the event to register a family.';
+  }
 }

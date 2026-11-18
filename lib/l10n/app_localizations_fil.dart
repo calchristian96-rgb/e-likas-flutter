@@ -3380,4 +3380,46 @@ class AppLocalizationsFil extends AppLocalizations {
 
   @override
   String get cswdPrivateHouseFamilies => 'Pamilya sa pribadong bahay';
+
+  @override
+  String eventSwitchCurrent(String name) {
+    return 'Event: $name';
+  }
+
+  @override
+  String get eventSwitchChange => 'Palitan';
+
+  @override
+  String get eventSwitchTitle => 'Aling event ang gagawin?';
+
+  @override
+  String get eventSwitchOpen => 'Mga bukas na event';
+
+  @override
+  String get eventSwitchClosedEvents => 'Mga saradong event (basahin lang)';
+
+  @override
+  String get eventSwitchClosed => 'Sarado';
+
+  @override
+  String get eventSwitchClosedReadOnly => 'Sarado: basahin lang';
+
+  @override
+  String eventSwitchNowWorkingOn(String name) {
+    return 'Ginagawa na ang \"$name\".';
+  }
+
+  @override
+  String get eventSwitchNeedsConnection =>
+      'Kailangan ng koneksyon para palitan ang event.';
+
+  @override
+  String registerSavesTo(String name) {
+    return 'Ise-save sa: $name';
+  }
+
+  @override
+  String registerClosedEvent(String name) {
+    return 'Sarado ang \"$name\". Basahin lang ang saradong event. Palitan ang event para magparehistro ng pamilya.';
+  }
 }

@@ -1132,5 +1132,17 @@
   "privateHousesSummary": "{families}, {persons}",
   "privateHousesNone": "Walang pamilyang nakikitira sa pribadong bahay.",
   "privateHouseDetailsPending": "Kulang pa ang detalye",
-  "cswdPrivateHouseFamilies": "Pamilya sa pribadong bahay"
+  "cswdPrivateHouseFamilies": "Pamilya sa pribadong bahay",
+
+  "eventSwitchCurrent": "Event: {name}",
+  "eventSwitchChange": "Palitan",
+  "eventSwitchTitle": "Aling event ang gagawin?",
+  "eventSwitchOpen": "Mga bukas na event",
+  "eventSwitchClosedEvents": "Mga saradong event (basahin lang)",
+  "eventSwitchClosed": "Sarado",
+  "eventSwitchClosedReadOnly": "Sarado: basahin lang",
+  "eventSwitchNowWorkingOn": "Ginagawa na ang \"{name}\".",
+  "eventSwitchNeedsConnection": "Kailangan ng koneksyon para palitan ang event.",
+  "registerSavesTo": "Ise-save sa: {name}",
+  "registerClosedEvent": "Sarado ang \"{name}\". Basahin lang ang saradong event. Palitan ang event para magparehistro ng pamilya."
 }

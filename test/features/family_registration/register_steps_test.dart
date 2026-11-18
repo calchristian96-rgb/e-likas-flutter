@@ -8,6 +8,9 @@ import 'package:elikas_mobile/features/family_registration/presentation/provider
 import 'package:elikas_mobile/features/family_registration/presentation/register/register_family_page.dart';
 import 'package:elikas_mobile/features/outbox/domain/pending_action.dart';
 import 'package:elikas_mobile/features/outbox/presentation/outbox_providers.dart';
+import 'package:elikas_mobile/features/family_registration/domain/entities/lookup_entities.dart';
+import 'package:elikas_mobile/features/staff_shell/current_event.dart';
+import 'package:flutter_riverpod/misc.dart' show Override;
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -40,7 +43,11 @@ class _NoSync extends StaffSyncAll {
 FilledButton _primary(WidgetTester tester) =>
     tester.widget<FilledButton>(find.byType(FilledButton).last);
 
-Future<_Queue> _pump(WidgetTester tester, {Object? draft}) async {
+Future<_Queue> _pump(
+  WidgetTester tester, {
+  Object? draft,
+  List<Override> extra = const [],
+}) async {
   SharedPreferences.setMockInitialValues({
     if (draft != null) 'elikas.registerDraft.4': jsonEncode(draft),
   });
@@ -55,6 +62,7 @@ Future<_Queue> _pump(WidgetTester tester, {Object? draft}) async {
         ...registerOverrides,
         pendingQueueRepositoryProvider.overrideWithValue(queue),
         staffSyncAllProvider.overrideWith(_NoSync.new),
+        ...extra,
       ],
     ),
   );
@@ -99,6 +107,29 @@ void main() {
     expect(saved.purokId, 7);
     expect(saved.displacementType, 'inside_center');
     expect(saved.members, hasLength(2));
+  });
+
+  testWidgets('a closed selected event: read-only, nothing to save', (
+    tester,
+  ) async {
+    await _pump(
+      tester,
+      draft: registerDraft,
+      extra: [
+        currentStaffEventProvider.overrideWith(
+          (ref) async => const EvacuationEventLookup(
+            id: 60,
+            name: 'Typhoon Kristine',
+            status: 'closed',
+          ),
+        ),
+      ],
+    );
+    expect(
+      find.textContaining('"Typhoon Kristine" is closed.'),
+      findsOneWidget,
+    );
+    expect(find.text('Next'), findsNothing);
   });
 
   testWidgets('a private house: host name and purok, no center sent', (

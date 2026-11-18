@@ -575,7 +575,9 @@ final GoRouter appRouter = GoRouter(
                   path: 'private-houses/:barangayId',
                   builder: (context, state) => PrivateHousesPage(
                     barangayId:
-                        int.tryParse(state.pathParameters['barangayId'] ?? '') ??
+                        int.tryParse(
+                          state.pathParameters['barangayId'] ?? '',
+                        ) ??
                         0,
                   ),
                 ),
@@ -600,8 +602,7 @@ final GoRouter appRouter = GoRouter(
                       path: 'private-houses',
                       builder: (context, state) => PrivateHousesPage(
                         barangayId:
-                            int.tryParse(state.pathParameters['id'] ?? '') ??
-                            0,
+                            int.tryParse(state.pathParameters['id'] ?? '') ?? 0,
                       ),
                     ),
                   ],

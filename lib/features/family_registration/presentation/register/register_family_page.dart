@@ -186,6 +186,8 @@ class _RegisterFlowState extends ConsumerState<_RegisterFlow> {
       l10n.registerStepReview,
     ];
     final noEvent = eventAsync.hasValue && event == null;
+    // The selected event is closed: read-only, nothing to register into.
+    final closed = event != null && !event.isOpen;
 
     return Scaffold(
       appBar: AppBar(
@@ -204,7 +206,7 @@ class _RegisterFlowState extends ConsumerState<_RegisterFlow> {
           ),
         ],
       ),
-      bottomNavigationBar: noEvent || !_loaded
+      bottomNavigationBar: noEvent || closed || !_loaded
           ? null
           : BottomActionBar(
               children: [
@@ -236,6 +238,18 @@ class _RegisterFlowState extends ConsumerState<_RegisterFlow> {
                 EmptyNote(
                   icon: Icons.event_busy_outlined,
                   message: l10n.staffNoOpenEvent,
+                ),
+              ],
+            )
+          : closed
+          ? ListView(
+              padding: pagePadding(context),
+              children: [
+                const StaffEventBar(),
+                const SizedBox(height: 16),
+                EmptyNote(
+                  icon: Icons.lock_outline,
+                  message: l10n.registerClosedEvent(event.name),
                 ),
               ],
             )
@@ -802,7 +816,7 @@ class _ReviewStep extends ConsumerWidget {
               if (draft.isPrivateHouse &&
                   (draft.hostAddress ?? '').trim().isNotEmpty)
                 Text(draft.hostAddress!.trim()),
-              if (eventName != null) Text(eventName!),
+              if (eventName != null) Text(l10n.registerSavesTo(eventName!)),
             ],
           ),
         ),
