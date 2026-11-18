@@ -6188,6 +6188,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{family} moved to {center}.'**
   String cswdMoved(String family, String center);
+
+  /// No description provided for @capacityEstimated.
+  ///
+  /// In en, this message translates to:
+  /// **'{figure} est.'**
+  String capacityEstimated(String figure);
+
+  /// No description provided for @capacityResidentEstimated.
+  ///
+  /// In en, this message translates to:
+  /// **'{figure} (estimated)'**
+  String capacityResidentEstimated(String figure);
+
+  /// No description provided for @capacityOccupancyUnknown.
+  ///
+  /// In en, this message translates to:
+  /// **'{occupancy} / – (capacity unknown)'**
+  String capacityOccupancyUnknown(int occupancy);
+
+  /// No description provided for @capacityBasisPeak.
+  ///
+  /// In en, this message translates to:
+  /// **'Estimated from the 2025 peak'**
+  String get capacityBasisPeak;
+
+  /// No description provided for @capacityBasisMedian.
+  ///
+  /// In en, this message translates to:
+  /// **'Estimated: median of the same type of center'**
+  String get capacityBasisMedian;
+
+  /// No description provided for @cswdTransfersWaiting.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 transfer request waiting} other{{count} transfer requests waiting}}'**
+  String cswdTransfersWaiting(int count);
 }
 
 class _AppLocalizationsDelegate

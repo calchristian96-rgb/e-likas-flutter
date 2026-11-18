@@ -1233,5 +1233,12 @@
   "cswdMoveTitle": "Ilipat ang {family}?",
   "cswdMoveReason": "Dahilan",
   "cswdMoveReasonRequired": "Kailangan. Itatala sa activity log.",
-  "cswdMoved": "Nailipat ang {family} sa {center}."
+  "cswdMoved": "Nailipat ang {family} sa {center}.",
+
+  "capacityEstimated": "{figure} tantiya",
+  "capacityResidentEstimated": "{figure} (tantiya)",
+  "capacityOccupancyUnknown": "{occupancy} / – (hindi alam ang kapasidad)",
+  "capacityBasisPeak": "Tinantiya mula sa pinakamataas noong 2025",
+  "capacityBasisMedian": "Tinantiya: median ng parehong uri ng center",
+  "cswdTransfersWaiting": "{count, plural, =1{1 kahilingan sa paglipat ang naghihintay} other{{count} kahilingan sa paglipat ang naghihintay}}"
 }

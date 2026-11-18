@@ -23,7 +23,19 @@ class EvacuationCenter {
     this.createdBy,
     this.campManagerName,
     this.campManagerContact,
+    this.capacitySource,
   });
+
+  /// Where [capacityPersons] comes from (backend 6b6bab3): official,
+  /// estimated (2025 peak or the median of its type) or unknown.
+  final String? capacitySource;
+
+  /// No capacity at all: never a percentage, never full.
+  bool get isCapacityUnknown =>
+      capacitySource == 'unknown' || capacityPersons <= 0;
+
+  bool get isCapacityEstimated =>
+      capacitySource == 'estimated' && !isCapacityUnknown;
 
   final int id;
   final String name;
@@ -129,8 +141,11 @@ class EvacuationCenter {
 
   /// Whether both occupancy fields are available to display — false
   /// for centers sourced from the `/nearest` endpoint.
+  /// An unknown capacity has no percentage and is never full.
   bool get hasOccupancyData =>
-      currentOccupancy != null && occupancyPercent != null;
+      currentOccupancy != null &&
+      occupancyPercent != null &&
+      !isCapacityUnknown;
 
   /// `max(capacity - currentOccupancy, 0)`, or null when
   /// [currentOccupancy] isn't available to compute it from (the
@@ -140,7 +155,7 @@ class EvacuationCenter {
   /// *available* slots, not a negative number of them.
   int? get availableSlots {
     final occupancy = currentOccupancy;
-    if (occupancy == null) return null;
+    if (occupancy == null || isCapacityUnknown) return null;
     final remaining = capacityPersons - occupancy;
     return remaining < 0 ? 0 : remaining;
   }
@@ -165,6 +180,7 @@ class EvacuationCenter {
       createdBy: createdBy,
       campManagerName: campManagerName,
       campManagerContact: campManagerContact,
+      capacitySource: capacitySource,
     );
   }
 }

@@ -36,6 +36,9 @@ class EvacuationCenters extends Table {
   TextColumn get campManagerName => text().nullable()();
   TextColumn get campManagerContact => text().nullable()();
 
+  /// official | estimated | unknown (backend 6b6bab3).
+  TextColumn get capacitySource => text().nullable()();
+
   @override
   Set<Column> get primaryKey => {id};
 }

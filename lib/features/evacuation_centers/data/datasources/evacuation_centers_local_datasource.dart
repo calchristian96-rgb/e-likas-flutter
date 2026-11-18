@@ -94,6 +94,7 @@ class EvacuationCentersLocalDatasource {
       createdBy: Value(m.createdBy),
       campManagerName: Value(m.campManagerName),
       campManagerContact: Value(m.campManagerContact),
+      capacitySource: Value(m.capacitySource),
     );
   }
 
@@ -117,6 +118,7 @@ class EvacuationCentersLocalDatasource {
       createdBy: row.createdBy,
       campManagerName: row.campManagerName,
       campManagerContact: row.campManagerContact,
+      capacitySource: row.capacitySource,
     );
   }
 }

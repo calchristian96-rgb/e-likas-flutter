@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:elikas_mobile/features/evacuation_centers/presentation/widgets/capacity_text.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -150,11 +151,14 @@ class _CenterCard extends StatelessWidget {
             children: [
               Expanded(
                 child: Text(
-                  occupancy == null
+                  occupancy == null || public == null
                       ? l10n.homeNoOccupancyYet
-                      : (capacity ?? 0) > 0
-                      ? '$occupancy / $capacity'
-                      : l10n.monitoringInsideNoCapacity(occupancy),
+                      : capacityFigure(
+                          l10n,
+                          capacity: capacity,
+                          source: public.capacitySource,
+                          occupancy: occupancy,
+                        ),
                   style: theme.textTheme.titleLarge?.copyWith(
                     fontFeatures: const [FontFeature.tabularFigures()],
                   ),

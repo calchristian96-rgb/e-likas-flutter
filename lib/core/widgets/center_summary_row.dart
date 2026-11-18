@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:elikas_mobile/features/evacuation_centers/presentation/widgets/capacity_text.dart';
+import 'package:elikas_mobile/l10n/app_localizations.dart';
 
 import '../../features/evacuation_centers/domain/entities/evacuation_center.dart';
 import '../../features/evacuation_centers/presentation/widgets/center_status_display.dart';
@@ -61,9 +63,13 @@ class CenterSummaryRow extends StatelessWidget {
                         label: localizedCenterStatus(context, center.status),
                         color: statusColor,
                       ),
-                      if (center.hasOccupancyData)
+                      if (center.currentOccupancy != null)
                         Text(
-                          '${center.currentOccupancy} / ${center.capacityPersons}',
+                          centerCapacityFigure(
+                            AppLocalizations.of(context),
+                            center,
+                            resident: true,
+                          ),
                           style: theme.textTheme.bodySmall,
                         ),
                     ],

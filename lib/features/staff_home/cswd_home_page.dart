@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:elikas_mobile/features/evacuation_centers/presentation/widgets/capacity_text.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -65,6 +66,24 @@ final cityLateEntriesProvider = FutureProvider.autoDispose<int>((ref) async {
   return (read.data['late_entries_total'] as num?)?.toInt() ?? 0;
 });
 
+/// Pending transfer requests in the selected event
+/// (`GET /dashboard/city` `actions.transfer_requests_pending`); 0 when the
+/// dashboard cannot be read.
+final cityTransfersPendingProvider = FutureProvider.autoDispose<int>((
+  ref,
+) async {
+  final event = await ref.watch(currentStaffEventProvider.future);
+  try {
+    final read = await ref
+        .watch(staffReadCacheProvider)
+        .get('/dashboard/city', query: {'evacuation_event_id': ?event?.id});
+    final actions = read.data['actions'] as Map<String, dynamic>? ?? const {};
+    return (actions['transfer_requests_pending'] as num?)?.toInt() ?? 0;
+  } catch (_) {
+    return 0;
+  }
+});
+
 /// CSWDO's home (Part 4.2): the event and its status, city totals, how
 /// many barangays are in each status, and what needs attention: full or
 /// nearly full centers, barangays short of boxes, final counts not sent.
@@ -94,7 +113,9 @@ class CswdHomePage extends ConsumerWidget {
     final centers = ref.watch(monitoringSectionProvider('centers')).value;
     final full = [
       for (final c in centers?.data?['centers'] as List? ?? const [])
-        if (((c as Map<String, dynamic>)['percent'] as num? ?? 0) >= 90) c,
+        if ((c as Map<String, dynamic>)['capacity_source'] != 'unknown' &&
+            ((c['percent'] as num?) ?? 0) >= 90)
+          c,
     ];
     final relief = ref.watch(monitoringSectionProvider('relief')).value;
     final rounds = relief?.data?['rounds'] as List? ?? const [];
@@ -105,6 +126,7 @@ class CswdHomePage extends ConsumerWidget {
     ];
     final notSent = ref.watch(countsNotSentProvider).value ?? const [];
     final lateEntries = ref.watch(cityLateEntriesProvider).value ?? 0;
+    final transfersPending = ref.watch(cityTransfersPendingProvider).value ?? 0;
     // Families staying with relatives or friends, city-wide.
     final privateHouses = ref.watch(privateHousesProvider(null)).value;
     final privateFamilies = privateHouses?.barangays.values.fold<int>(
@@ -126,6 +148,7 @@ class CswdHomePage extends ConsumerWidget {
           ref.invalidate(countsNotSentProvider);
           ref.invalidate(cityLateEntriesProvider);
           ref.invalidate(transferRequestsProvider);
+          ref.invalidate(cityTransfersPendingProvider);
           ref.invalidate(notificationsProvider);
           ref.invalidate(privateHousesProvider(null));
         },
@@ -185,7 +208,8 @@ class CswdHomePage extends ConsumerWidget {
             if (full.isEmpty &&
                 shortBoxes.isEmpty &&
                 notSent.isEmpty &&
-                lateEntries == 0)
+                lateEntries == 0 &&
+                transfersPending == 0)
               EmptyNote(
                 icon: Icons.check_circle_outline,
                 message: l10n.monitoringNothingUrgent,
@@ -213,6 +237,11 @@ class CswdHomePage extends ConsumerWidget {
                   notSent.take(5).join(', '),
                 ),
               ),
+            if (transfersPending > 0)
+              _Warning(
+                text: l10n.cswdTransfersWaiting(transfersPending),
+                onTap: () => context.go('/staff/home/transfers'),
+              ),
             if (lateEntries > 0)
               _Warning(text: l10n.cswdLateEntriesPending(lateEntries)),
             const SizedBox(height: 8),
@@ -238,9 +267,10 @@ class CswdHomePage extends ConsumerWidget {
 }
 
 class _Warning extends StatelessWidget {
-  const _Warning({required this.text});
+  const _Warning({required this.text, this.onTap});
 
   final String text;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -248,6 +278,7 @@ class _Warning extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(bottom: 8),
       child: AppCard(
+        onTap: onTap,
         child: Row(
           children: [
             Icon(Icons.error_outline, color: theme.colorScheme.error),
@@ -581,14 +612,25 @@ class CswdBarangayDetailPage extends ConsumerWidget {
                                   '',
                               style: theme.textTheme.titleMedium,
                             ),
-                            Text(
-                              c['capacity_persons'] == null
-                                  ? l10n.monitoringInsideNoCapacity(
+                            Tooltip(
+                              message:
+                                  capacityBasisTooltip(
+                                    l10n,
+                                    c['capacity_basis'] as String?,
+                                  ) ??
+                                  '',
+                              child: Text(
+                                capacityFigure(
+                                  l10n,
+                                  capacity: (c['capacity_persons'] as num?)
+                                      ?.toInt(),
+                                  source: c['capacity_source'] as String?,
+                                  occupancy:
                                       (c['current_occupancy'] as num?)
-                                              ?.toInt() ??
-                                          0,
-                                    )
-                                  : '${c['current_occupancy'] ?? 0} / ${c['capacity_persons']}',
+                                          ?.toInt() ??
+                                      0,
+                                ),
+                              ),
                             ),
                           ],
                         ),

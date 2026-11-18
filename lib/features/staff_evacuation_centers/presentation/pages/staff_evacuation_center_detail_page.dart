@@ -1,5 +1,6 @@
 import '../../../../core/widgets/ui_kit.dart';
 import 'package:flutter/material.dart';
+import 'package:elikas_mobile/features/evacuation_centers/presentation/widgets/capacity_text.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../app/theme/app_theme.dart';
@@ -136,7 +137,7 @@ class _CenterDetailContent extends StatelessWidget {
               ),
             _InfoChip(
               label: l10n.overviewCapacity,
-              value: '${center.capacityPersons}',
+              value: centerCapacityFigure(l10n, center, withOccupancy: false),
             ),
             if (center.currentOccupancy != null)
               _InfoChip(

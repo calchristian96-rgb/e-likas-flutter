@@ -1,5 +1,6 @@
 import '../../../../core/widgets/ui_kit.dart';
 import 'package:flutter/material.dart';
+import 'package:elikas_mobile/features/evacuation_centers/presentation/widgets/capacity_text.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../widgets/center_directions.dart';
@@ -139,7 +140,12 @@ class _CenterDetailsBody extends StatelessWidget {
           children: [
             _StatChip(
               label: l10n.overviewCapacity,
-              value: '${center.capacityPersons}',
+              value: centerCapacityFigure(
+                l10n,
+                center,
+                withOccupancy: false,
+                resident: true,
+              ),
             ),
             if (center.currentOccupancy != null)
               _StatChip(
@@ -151,7 +157,7 @@ class _CenterDetailsBody extends StatelessWidget {
                 label: l10n.overviewAvailableSlots,
                 value: '${center.availableSlots}',
               ),
-            if (center.occupancyPercent != null)
+            if (showsOccupancyPercent(center))
               _StatChip(
                 label: l10n.overviewOccupancyPercent,
                 value: '${center.occupancyPercent!.toStringAsFixed(0)}%',

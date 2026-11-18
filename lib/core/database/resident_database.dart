@@ -22,9 +22,10 @@ class ResidentDatabase extends _$ResidentDatabase {
   ResidentDatabase.forExecutor(super.executor);
 
   @override
-  int get schemaVersion => 3;
+  int get schemaVersion => 4;
 
-  /// Schema 2 adds [BarangayStatuses]; schema 3 adds `alerts.is_drill`.
+  /// Schema 2 adds [BarangayStatuses]; schema 3 adds `alerts.is_drill`;
+  /// schema 4 adds `evacuation_centers.capacity_source`.
   /// Everything here is regenerable from the public API, but an upgrade
   /// still keeps the cached rows.
   @override
@@ -33,6 +34,9 @@ class ResidentDatabase extends _$ResidentDatabase {
     onUpgrade: (m, from, to) async {
       if (from < 2) await m.createTable(barangayStatuses);
       if (from < 3) await m.addColumn(alerts, alerts.isDrill);
+      if (from < 4) {
+        await m.addColumn(evacuationCenters, evacuationCenters.capacitySource);
+      }
     },
   );
 }

@@ -3769,4 +3769,37 @@ class AppLocalizationsEn extends AppLocalizations {
   String cswdMoved(String family, String center) {
     return '$family moved to $center.';
   }
+
+  @override
+  String capacityEstimated(String figure) {
+    return '$figure est.';
+  }
+
+  @override
+  String capacityResidentEstimated(String figure) {
+    return '$figure (estimated)';
+  }
+
+  @override
+  String capacityOccupancyUnknown(int occupancy) {
+    return '$occupancy / – (capacity unknown)';
+  }
+
+  @override
+  String get capacityBasisPeak => 'Estimated from the 2025 peak';
+
+  @override
+  String get capacityBasisMedian =>
+      'Estimated: median of the same type of center';
+
+  @override
+  String cswdTransfersWaiting(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count transfer requests waiting',
+      one: '1 transfer request waiting',
+    );
+    return '$_temp0';
+  }
 }

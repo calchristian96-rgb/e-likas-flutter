@@ -96,6 +96,9 @@ Map<String, dynamic> _section(Map<String, dynamic> data) => {
 /// What the barangay official's and CSWDO's homes read, shaped like the
 /// backend (main b0ff476).
 final homeAnswers = <String, Map<String, dynamic>>{
+  '/dashboard/city': {
+    'actions': {'transfer_requests_pending': 2, 'count_submissions_pending': 3},
+  },
   '/selected-event': {
     'selected': _event,
     'chosen': false,

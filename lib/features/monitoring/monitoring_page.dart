@@ -2,6 +2,7 @@ import '../../core/widgets/ui_kit.dart';
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:elikas_mobile/features/evacuation_centers/presentation/widgets/capacity_text.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../app/theme/app_theme.dart';
@@ -209,9 +210,17 @@ class _MonitoringPageState extends ConsumerState<MonitoringPage> {
                 ].join(' · '),
               ),
               trailing: Text(
-                capacity == null
-                    ? l10n.monitoringInsideNoCapacity(inside)
-                    : '$inside / $capacity · $percent%',
+                capacity == null || center['capacity_source'] == 'unknown'
+                    ? capacityFigure(l10n, capacity: null, occupancy: inside)
+                    : [
+                        capacityFigure(
+                          l10n,
+                          capacity: capacity,
+                          source: center['capacity_source'] as String?,
+                          occupancy: inside,
+                        ),
+                        if (percent != null) '$percent%',
+                      ].join(' · '),
                 style: theme.textTheme.labelLarge?.copyWith(color: color),
               ),
             ),

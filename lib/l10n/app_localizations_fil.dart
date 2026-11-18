@@ -3808,4 +3808,37 @@ class AppLocalizationsFil extends AppLocalizations {
   String cswdMoved(String family, String center) {
     return 'Nailipat ang $family sa $center.';
   }
+
+  @override
+  String capacityEstimated(String figure) {
+    return '$figure tantiya';
+  }
+
+  @override
+  String capacityResidentEstimated(String figure) {
+    return '$figure (tantiya)';
+  }
+
+  @override
+  String capacityOccupancyUnknown(int occupancy) {
+    return '$occupancy / – (hindi alam ang kapasidad)';
+  }
+
+  @override
+  String get capacityBasisPeak => 'Tinantiya mula sa pinakamataas noong 2025';
+
+  @override
+  String get capacityBasisMedian =>
+      'Tinantiya: median ng parehong uri ng center';
+
+  @override
+  String cswdTransfersWaiting(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count kahilingan sa paglipat ang naghihintay',
+      one: '1 kahilingan sa paglipat ang naghihintay',
+    );
+    return '$_temp0';
+  }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:elikas_mobile/features/evacuation_centers/presentation/widgets/capacity_text.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -245,8 +246,8 @@ class _CenterTile extends StatelessWidget {
                     Text(
                       [
                         if (distance != null) formatDistance(context, distance),
-                        if (occupancy != null && center.capacityPersons > 0)
-                          '$occupancy / ${center.capacityPersons}',
+                        if (occupancy != null)
+                          centerCapacityFigure(l10n, center, resident: true),
                       ].join(' · '),
                       style: theme.textTheme.bodyMedium,
                     ),

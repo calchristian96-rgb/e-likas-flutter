@@ -42,7 +42,11 @@ class EvacuationCenterModel {
     this.createdBy,
     this.campManagerName,
     this.campManagerContact,
+    this.capacitySource,
   });
+
+  /// official | estimated | unknown; null when the endpoint does not say.
+  final String? capacitySource;
 
   /// The backend's own numeric id, used directly as the Drift primary
   /// key too — no separate auto-increment id. The backend's id is
@@ -129,6 +133,7 @@ class EvacuationCenterModel {
       currentOccupancy: json['current_occupancy'] as int?,
       occupancyPercent: (json['occupancy_percent'] as num?)?.toDouble(),
       status: json['status'] as String,
+      capacitySource: json['capacity_source'] as String?,
       distanceMeters: (json['distance_meters'] as num?)?.toDouble(),
       photoUrl: json['photo_url'] as String?,
     );
@@ -172,6 +177,7 @@ class EvacuationCenterModel {
       currentOccupancy: properties['current_occupancy'] as int,
       occupancyPercent: (properties['occupancy_percent'] as num).toDouble(),
       status: properties['status'] as String,
+      capacitySource: properties['capacity_source'] as String?,
       distanceMeters: null,
       photoUrl: properties['photo_url'] as String?,
     );
@@ -201,6 +207,7 @@ class EvacuationCenterModel {
       currentOccupancy: (json['current_occupancy'] as num?)?.toInt(),
       occupancyPercent: (json['occupancy_percent'] as num?)?.toDouble(),
       status: json['status'] as String,
+      capacitySource: json['capacity_source'] as String?,
       photoUrl: json['photo_url'] as String?,
       createdBy: (json['created_by'] as num?)?.toInt(),
       campManagerName: json['camp_manager_name'] as String?,
@@ -274,6 +281,7 @@ class EvacuationCenterModel {
       createdBy: createdBy ?? existing.createdBy,
       campManagerName: campManagerName ?? existing.campManagerName,
       campManagerContact: campManagerContact ?? existing.campManagerContact,
+      capacitySource: capacitySource ?? existing.capacitySource,
     );
   }
 
@@ -297,6 +305,7 @@ class EvacuationCenterModel {
       createdBy: createdBy,
       campManagerName: campManagerName,
       campManagerContact: campManagerContact,
+      capacitySource: capacitySource,
     );
   }
 }

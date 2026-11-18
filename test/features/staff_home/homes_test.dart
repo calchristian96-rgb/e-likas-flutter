@@ -78,6 +78,8 @@ void main() {
       findsOneWidget,
     );
     expect(find.textContaining('do this on the web'), findsOneWidget);
+    // GET /dashboard/city actions.transfer_requests_pending.
+    expect(find.text('2 transfer requests waiting'), findsOneWidget);
     // Unread notifications on the bell.
     expect(find.text('2'), findsOneWidget);
     // Not the official's buttons.
