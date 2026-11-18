@@ -13,7 +13,9 @@ import '../box_relief/round_families_page.dart';
 import '../count_submissions/final_count_card.dart';
 import '../monitoring/monitoring_page.dart';
 import '../outbox/domain/pending_action.dart';
+import '../notifications/notifications.dart';
 import '../private_houses/private_houses.dart';
+import '../transfers/transfers.dart';
 import '../outbox/presentation/outbox_providers.dart';
 import '../staff_auth/domain/entities/staff_session.dart';
 import '../staff_shell/current_event.dart';
@@ -93,12 +95,15 @@ class OfficialHomePage extends ConsumerWidget {
               ? l10n.staffTabHome
               : l10n.residentBarangayStatusOf(session.barangayName!),
         ),
+        actions: const [NotificationsBell(), SizedBox(width: 8)],
       ),
       body: RefreshIndicator(
         onRefresh: () async {
           ref.invalidate(monitoringSectionProvider('overview'));
           ref.invalidate(ownSituationProvider);
           ref.invalidate(barangayBoxesProvider);
+          ref.invalidate(transferRequestsProvider);
+          ref.invalidate(notificationsProvider);
           await ref.read(staffSyncAllProvider)();
         },
         child: ListView(
@@ -139,6 +144,11 @@ class OfficialHomePage extends ConsumerWidget {
                   '/staff/home/private-houses/${session.barangayId}',
                 ),
               ),
+            ],
+            if (session.can(StaffPermission.transfersReceive) ||
+                session.can(StaffPermission.transfersRequest)) ...[
+              const SizedBox(height: 8),
+              TransfersCard(onOpen: () => context.go('/staff/home/transfers')),
             ],
             const SizedBox(height: 16),
             _BigButton(

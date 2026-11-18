@@ -24,6 +24,7 @@ import '../private_houses/private_houses.dart';
 import '../staff_auth/domain/entities/staff_session.dart';
 import '../staff_auth/presentation/providers/staff_auth_provider.dart';
 import '../staff_shell/current_event.dart';
+import '../transfers/transfers.dart';
 
 /// Barangays with families in the event and no final count sent yet
 /// (`GET /count-submissions/barangays`, CSWD).
@@ -123,6 +124,7 @@ class CswdHomePage extends ConsumerWidget {
           }
           ref.invalidate(countsNotSentProvider);
           ref.invalidate(cityLateEntriesProvider);
+          ref.invalidate(transferRequestsProvider);
           ref.invalidate(notificationsProvider);
           ref.invalidate(privateHousesProvider(null));
         },
@@ -159,6 +161,10 @@ class CswdHomePage extends ConsumerWidget {
                 ),
               ],
             ),
+            if (session.can(StaffPermission.transfersManage)) ...[
+              const SizedBox(height: 16),
+              TransfersCard(onOpen: () => context.go('/staff/home/transfers')),
+            ],
             SectionTitle(l10n.cswdBarangaysByStatus),
             Wrap(
               spacing: 8,

@@ -7,6 +7,7 @@ import '../../core/network/staff_api_client.dart';
 import '../../core/utils/data_freshness_formatter.dart';
 import '../../core/widgets/ui_kit.dart';
 import '../../l10n/app_localizations.dart';
+import '../transfers/transfers.dart';
 
 class AppNotification {
   const AppNotification({
@@ -15,7 +16,11 @@ class AppNotification {
     required this.message,
     required this.read,
     this.createdAt,
+    this.href,
   });
+
+  /// The web path it points to, e.g. /transfer-requests.
+  final String? href;
 
   final String id;
   final String title;
@@ -46,6 +51,7 @@ final notificationsProvider = FutureProvider.autoDispose<NotificationsState>((
           title: n['title'] as String? ?? '',
           message: n['message'] as String? ?? '',
           read: n['read'] == true,
+          href: n['href'] as String?,
           createdAt: DateTime.tryParse(
             n['created_at'] as String? ?? '',
           )?.toLocal(),
@@ -53,6 +59,14 @@ final notificationsProvider = FutureProvider.autoDispose<NotificationsState>((
     ],
   );
 });
+
+/// The app screen for a notification's web `href`, or null when the
+/// app has none.
+String? appPathForHref(String? href) {
+  final path = Uri.tryParse(href ?? '')?.path ?? '';
+  if (path.startsWith('/transfer-requests')) return '/staff/home/transfers';
+  return null;
+}
 
 /// The bell with its unread badge.
 class NotificationsBell extends ConsumerWidget {
@@ -127,6 +141,12 @@ class _NotificationsPageState extends ConsumerState<NotificationsPage> {
                   for (final n in s.items) ...[
                     AppCard(
                       highlight: !n.read,
+                      onTap: appPathForHref(n.href) == null
+                          ? null
+                          : () {
+                              ref.invalidate(transferRequestsProvider);
+                              context.go(appPathForHref(n.href)!);
+                            },
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [

@@ -3588,4 +3588,201 @@ class AppLocalizationsFil extends AppLocalizations {
   String cswdOfficialSubmits(String name) {
     return 'Ang opisyal ng $name ang magpapadala ng bilang.';
   }
+
+  @override
+  String get transfersTitle => 'Mga paglipat';
+
+  @override
+  String get transfersSubtitle =>
+      'Paglipat ng pamilya sa center ng ibang barangay';
+
+  @override
+  String transfersWaitingAnswer(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count kahilingan ang naghihintay ng sagot',
+      one: '1 kahilingan ang naghihintay ng sagot',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get transfersAll => 'Lahat';
+
+  @override
+  String get transfersNone => 'Walang kahilingan sa paglipat.';
+
+  @override
+  String get transferPending => 'Naghihintay';
+
+  @override
+  String get transferAccepted => 'Tinanggap';
+
+  @override
+  String get transferDeclined => 'Tinanggihan';
+
+  @override
+  String get transferEscalated => 'Ipinasa sa CSWD';
+
+  @override
+  String transferIncoming(String barangay) {
+    return 'Mula sa $barangay';
+  }
+
+  @override
+  String transferOutgoing(String barangay) {
+    return 'Papunta sa $barangay';
+  }
+
+  @override
+  String transferBetween(String from, String to) {
+    return '$from papunta sa $to';
+  }
+
+  @override
+  String transferMoveSummary(
+    String families,
+    String persons,
+    String from,
+    String to,
+  ) {
+    return '$families ($persons) mula $from papunta sa $to';
+  }
+
+  @override
+  String transferFamilyLine(String head, String persons) {
+    return '$head: $persons';
+  }
+
+  @override
+  String transferReasonLine(String reason) {
+    return 'Dahilan: $reason';
+  }
+
+  @override
+  String transferRequestedBy(String who, String time) {
+    return 'Hiniling ni $who, $time';
+  }
+
+  @override
+  String transferWaitingMinutes(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Naghihintay ng $count minuto',
+      one: 'Naghihintay ng 1 minuto',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String transferEscalatedNote(String time) {
+    return 'Walang sagot sa loob ng 30 minuto: sinabihan ang CSWD noong $time at maaari itong magpasya.';
+  }
+
+  @override
+  String transferDecidedBy(String who, String time) {
+    return 'Sinagot ni $who, $time';
+  }
+
+  @override
+  String transferByCswd(String name) {
+    return '$name (CSWD)';
+  }
+
+  @override
+  String transferDeclineReasonLine(String reason) {
+    return 'Bakit tinanggihan: $reason';
+  }
+
+  @override
+  String get transferAccept => 'Tanggapin';
+
+  @override
+  String get transferDecline => 'Tanggihan';
+
+  @override
+  String get transferAcceptTitle => 'Tanggapin ang mga pamilyang ito?';
+
+  @override
+  String get transferDeclineTitle => 'Tanggihan ang kahilingang ito?';
+
+  @override
+  String get transferDeclineReason => 'Bakit? (makikita ito ng nagpadala)';
+
+  @override
+  String get transferNeedsConnection =>
+      'Kailangan ng koneksyon. Hindi sine-save ang paglipat para ipadala mamaya.';
+
+  @override
+  String get transferAskTitle => 'Humiling sa center ng ibang barangay';
+
+  @override
+  String transferFromCenter(String center) {
+    return 'Mula sa $center';
+  }
+
+  @override
+  String get transferStepFamilies => 'Mga pamilyang ililipat';
+
+  @override
+  String get transferStepFamiliesHint =>
+      'Mga pamilya ng inyong barangay sa center na ito.';
+
+  @override
+  String get transferStepCenter => 'Ilipat sila sa';
+
+  @override
+  String get transferPickFamiliesFirst => 'Piliin muna ang mga pamilya.';
+
+  @override
+  String get transferNoCenterWithSpace =>
+      'Walang center ng ibang barangay na may lugar.';
+
+  @override
+  String get transferStepReason => 'Dahilan';
+
+  @override
+  String get transferReason => 'Bakit sila ililipat?';
+
+  @override
+  String get transferReasonHint => 'Makikita ito ng tatanggap na barangay.';
+
+  @override
+  String transferRoomFor(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'May lugar para sa $count',
+      one: 'May lugar para sa 1',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String transferAboutKm(String km) {
+    return 'mga $km km';
+  }
+
+  @override
+  String get capacityUnknownTag => 'Hindi alam ang kapasidad';
+
+  @override
+  String get capacityEstimatedShort => 'tantiya';
+
+  @override
+  String get transferSend => 'Ipadala ang kahilingan';
+
+  @override
+  String transferSendTitle(String barangay) {
+    return 'Hilingin sa $barangay na tanggapin ang mga pamilyang ito?';
+  }
+
+  @override
+  String get transferStayUntilAccepted =>
+      'Mananatili ang mga pamilya sa kanilang center hanggang tanggapin ito.';
+
+  @override
+  String get transferSent => 'Naipadala ang kahilingan sa paglipat.';
 }

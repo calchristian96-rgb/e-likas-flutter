@@ -5877,6 +5877,281 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{name}\'s official submits the count.'**
   String cswdOfficialSubmits(String name);
+
+  /// No description provided for @transfersTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Transfers'**
+  String get transfersTitle;
+
+  /// No description provided for @transfersSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Moving families to another barangay\'s center'**
+  String get transfersSubtitle;
+
+  /// No description provided for @transfersWaitingAnswer.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 request waiting for an answer} other{{count} requests waiting for an answer}}'**
+  String transfersWaitingAnswer(int count);
+
+  /// No description provided for @transfersAll.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get transfersAll;
+
+  /// No description provided for @transfersNone.
+  ///
+  /// In en, this message translates to:
+  /// **'No transfer requests.'**
+  String get transfersNone;
+
+  /// No description provided for @transferPending.
+  ///
+  /// In en, this message translates to:
+  /// **'Pending'**
+  String get transferPending;
+
+  /// No description provided for @transferAccepted.
+  ///
+  /// In en, this message translates to:
+  /// **'Accepted'**
+  String get transferAccepted;
+
+  /// No description provided for @transferDeclined.
+  ///
+  /// In en, this message translates to:
+  /// **'Declined'**
+  String get transferDeclined;
+
+  /// No description provided for @transferEscalated.
+  ///
+  /// In en, this message translates to:
+  /// **'Escalated to CSWD'**
+  String get transferEscalated;
+
+  /// No description provided for @transferIncoming.
+  ///
+  /// In en, this message translates to:
+  /// **'From {barangay}'**
+  String transferIncoming(String barangay);
+
+  /// No description provided for @transferOutgoing.
+  ///
+  /// In en, this message translates to:
+  /// **'To {barangay}'**
+  String transferOutgoing(String barangay);
+
+  /// No description provided for @transferBetween.
+  ///
+  /// In en, this message translates to:
+  /// **'{from} to {to}'**
+  String transferBetween(String from, String to);
+
+  /// No description provided for @transferMoveSummary.
+  ///
+  /// In en, this message translates to:
+  /// **'{families} ({persons}) from {from} to {to}'**
+  String transferMoveSummary(
+    String families,
+    String persons,
+    String from,
+    String to,
+  );
+
+  /// No description provided for @transferFamilyLine.
+  ///
+  /// In en, this message translates to:
+  /// **'{head}: {persons}'**
+  String transferFamilyLine(String head, String persons);
+
+  /// No description provided for @transferReasonLine.
+  ///
+  /// In en, this message translates to:
+  /// **'Reason: {reason}'**
+  String transferReasonLine(String reason);
+
+  /// No description provided for @transferRequestedBy.
+  ///
+  /// In en, this message translates to:
+  /// **'Asked by {who}, {time}'**
+  String transferRequestedBy(String who, String time);
+
+  /// No description provided for @transferWaitingMinutes.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{Waiting 1 minute} other{Waiting {count} minutes}}'**
+  String transferWaitingMinutes(int count);
+
+  /// No description provided for @transferEscalatedNote.
+  ///
+  /// In en, this message translates to:
+  /// **'No answer in 30 minutes: CSWD was told at {time} and can decide it.'**
+  String transferEscalatedNote(String time);
+
+  /// No description provided for @transferDecidedBy.
+  ///
+  /// In en, this message translates to:
+  /// **'Answered by {who}, {time}'**
+  String transferDecidedBy(String who, String time);
+
+  /// No description provided for @transferByCswd.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} (CSWD)'**
+  String transferByCswd(String name);
+
+  /// No description provided for @transferDeclineReasonLine.
+  ///
+  /// In en, this message translates to:
+  /// **'Why declined: {reason}'**
+  String transferDeclineReasonLine(String reason);
+
+  /// No description provided for @transferAccept.
+  ///
+  /// In en, this message translates to:
+  /// **'Accept'**
+  String get transferAccept;
+
+  /// No description provided for @transferDecline.
+  ///
+  /// In en, this message translates to:
+  /// **'Decline'**
+  String get transferDecline;
+
+  /// No description provided for @transferAcceptTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Accept these families?'**
+  String get transferAcceptTitle;
+
+  /// No description provided for @transferDeclineTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Decline this request?'**
+  String get transferDeclineTitle;
+
+  /// No description provided for @transferDeclineReason.
+  ///
+  /// In en, this message translates to:
+  /// **'Why? (the sender sees this)'**
+  String get transferDeclineReason;
+
+  /// No description provided for @transferNeedsConnection.
+  ///
+  /// In en, this message translates to:
+  /// **'Needs a connection. Transfers are never saved to send later.'**
+  String get transferNeedsConnection;
+
+  /// No description provided for @transferAskTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Ask another barangay\'s center'**
+  String get transferAskTitle;
+
+  /// No description provided for @transferFromCenter.
+  ///
+  /// In en, this message translates to:
+  /// **'From {center}'**
+  String transferFromCenter(String center);
+
+  /// No description provided for @transferStepFamilies.
+  ///
+  /// In en, this message translates to:
+  /// **'Families to move'**
+  String get transferStepFamilies;
+
+  /// No description provided for @transferStepFamiliesHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Your barangay\'s families at this center.'**
+  String get transferStepFamiliesHint;
+
+  /// No description provided for @transferStepCenter.
+  ///
+  /// In en, this message translates to:
+  /// **'Move them to'**
+  String get transferStepCenter;
+
+  /// No description provided for @transferPickFamiliesFirst.
+  ///
+  /// In en, this message translates to:
+  /// **'Tick the families first.'**
+  String get transferPickFamiliesFirst;
+
+  /// No description provided for @transferNoCenterWithSpace.
+  ///
+  /// In en, this message translates to:
+  /// **'No other barangay\'s center has space.'**
+  String get transferNoCenterWithSpace;
+
+  /// No description provided for @transferStepReason.
+  ///
+  /// In en, this message translates to:
+  /// **'Reason'**
+  String get transferStepReason;
+
+  /// No description provided for @transferReason.
+  ///
+  /// In en, this message translates to:
+  /// **'Why are they moving?'**
+  String get transferReason;
+
+  /// No description provided for @transferReasonHint.
+  ///
+  /// In en, this message translates to:
+  /// **'The receiving barangay sees this.'**
+  String get transferReasonHint;
+
+  /// No description provided for @transferRoomFor.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{Room for 1} other{Room for {count}}}'**
+  String transferRoomFor(int count);
+
+  /// No description provided for @transferAboutKm.
+  ///
+  /// In en, this message translates to:
+  /// **'about {km} km'**
+  String transferAboutKm(String km);
+
+  /// No description provided for @capacityUnknownTag.
+  ///
+  /// In en, this message translates to:
+  /// **'Capacity unknown'**
+  String get capacityUnknownTag;
+
+  /// No description provided for @capacityEstimatedShort.
+  ///
+  /// In en, this message translates to:
+  /// **'est.'**
+  String get capacityEstimatedShort;
+
+  /// No description provided for @transferSend.
+  ///
+  /// In en, this message translates to:
+  /// **'Send request'**
+  String get transferSend;
+
+  /// No description provided for @transferSendTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Ask {barangay} to take these families?'**
+  String transferSendTitle(String barangay);
+
+  /// No description provided for @transferStayUntilAccepted.
+  ///
+  /// In en, this message translates to:
+  /// **'The families stay at their center until it is accepted.'**
+  String get transferStayUntilAccepted;
+
+  /// No description provided for @transferSent.
+  ///
+  /// In en, this message translates to:
+  /// **'Transfer request sent.'**
+  String get transferSent;
 }
 
 class _AppLocalizationsDelegate

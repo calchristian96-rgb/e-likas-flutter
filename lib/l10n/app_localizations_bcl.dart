@@ -3549,4 +3549,201 @@ class AppLocalizationsBcl extends AppLocalizations {
   String cswdOfficialSubmits(String name) {
     return '$name\'s official submits the count.';
   }
+
+  @override
+  String get transfersTitle => 'Transfers';
+
+  @override
+  String get transfersSubtitle =>
+      'Moving families to another barangay\'s center';
+
+  @override
+  String transfersWaitingAnswer(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count requests waiting for an answer',
+      one: '1 request waiting for an answer',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get transfersAll => 'All';
+
+  @override
+  String get transfersNone => 'No transfer requests.';
+
+  @override
+  String get transferPending => 'Pending';
+
+  @override
+  String get transferAccepted => 'Accepted';
+
+  @override
+  String get transferDeclined => 'Declined';
+
+  @override
+  String get transferEscalated => 'Escalated to CSWD';
+
+  @override
+  String transferIncoming(String barangay) {
+    return 'From $barangay';
+  }
+
+  @override
+  String transferOutgoing(String barangay) {
+    return 'To $barangay';
+  }
+
+  @override
+  String transferBetween(String from, String to) {
+    return '$from to $to';
+  }
+
+  @override
+  String transferMoveSummary(
+    String families,
+    String persons,
+    String from,
+    String to,
+  ) {
+    return '$families ($persons) from $from to $to';
+  }
+
+  @override
+  String transferFamilyLine(String head, String persons) {
+    return '$head: $persons';
+  }
+
+  @override
+  String transferReasonLine(String reason) {
+    return 'Reason: $reason';
+  }
+
+  @override
+  String transferRequestedBy(String who, String time) {
+    return 'Asked by $who, $time';
+  }
+
+  @override
+  String transferWaitingMinutes(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Waiting $count minutes',
+      one: 'Waiting 1 minute',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String transferEscalatedNote(String time) {
+    return 'No answer in 30 minutes: CSWD was told at $time and can decide it.';
+  }
+
+  @override
+  String transferDecidedBy(String who, String time) {
+    return 'Answered by $who, $time';
+  }
+
+  @override
+  String transferByCswd(String name) {
+    return '$name (CSWD)';
+  }
+
+  @override
+  String transferDeclineReasonLine(String reason) {
+    return 'Why declined: $reason';
+  }
+
+  @override
+  String get transferAccept => 'Accept';
+
+  @override
+  String get transferDecline => 'Decline';
+
+  @override
+  String get transferAcceptTitle => 'Accept these families?';
+
+  @override
+  String get transferDeclineTitle => 'Decline this request?';
+
+  @override
+  String get transferDeclineReason => 'Why? (the sender sees this)';
+
+  @override
+  String get transferNeedsConnection =>
+      'Needs a connection. Transfers are never saved to send later.';
+
+  @override
+  String get transferAskTitle => 'Ask another barangay\'s center';
+
+  @override
+  String transferFromCenter(String center) {
+    return 'From $center';
+  }
+
+  @override
+  String get transferStepFamilies => 'Families to move';
+
+  @override
+  String get transferStepFamiliesHint =>
+      'Your barangay\'s families at this center.';
+
+  @override
+  String get transferStepCenter => 'Move them to';
+
+  @override
+  String get transferPickFamiliesFirst => 'Tick the families first.';
+
+  @override
+  String get transferNoCenterWithSpace =>
+      'No other barangay\'s center has space.';
+
+  @override
+  String get transferStepReason => 'Reason';
+
+  @override
+  String get transferReason => 'Why are they moving?';
+
+  @override
+  String get transferReasonHint => 'The receiving barangay sees this.';
+
+  @override
+  String transferRoomFor(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Room for $count',
+      one: 'Room for 1',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String transferAboutKm(String km) {
+    return 'about $km km';
+  }
+
+  @override
+  String get capacityUnknownTag => 'Capacity unknown';
+
+  @override
+  String get capacityEstimatedShort => 'est.';
+
+  @override
+  String get transferSend => 'Send request';
+
+  @override
+  String transferSendTitle(String barangay) {
+    return 'Ask $barangay to take these families?';
+  }
+
+  @override
+  String get transferStayUntilAccepted =>
+      'The families stay at their center until it is accepted.';
+
+  @override
+  String get transferSent => 'Transfer request sent.';
 }

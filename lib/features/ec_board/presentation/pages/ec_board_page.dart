@@ -11,6 +11,7 @@ import '../../../../core/widgets/error_state.dart';
 import '../../../../core/widgets/sync_now_action.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../staff_shell/current_event.dart';
+import '../../../transfers/transfer_request_page.dart';
 import '../../../re_enrollment/returning_families_page.dart';
 import '../../../staff_auth/domain/entities/staff_session.dart';
 import '../../../staff_auth/presentation/providers/staff_auth_provider.dart';
@@ -336,6 +337,29 @@ class _EcBoardBody extends ConsumerWidget {
               centerId: centerId,
               evacuationEventId: selectedEventId,
             ),
+            // Full here: ask another barangay's center (online only).
+            if (ref
+                    .watch(staffAuthProvider)
+                    .value
+                    ?.can(StaffPermission.transfersRequest) ??
+                false) ...[
+              const SizedBox(height: 8),
+              OutlinedButton.icon(
+                style: OutlinedButton.styleFrom(
+                  minimumSize: const Size.fromHeight(48),
+                ),
+                icon: const Icon(Icons.swap_horiz),
+                label: Text(l10n.transferAskTitle),
+                onPressed: () => Navigator.of(context).push(
+                  MaterialPageRoute<void>(
+                    builder: (_) => TransferRequestPage(
+                      centerId: centerId,
+                      eventId: selectedEventId,
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ],
         ],
       ),

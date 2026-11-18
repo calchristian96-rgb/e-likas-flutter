@@ -42,6 +42,7 @@ import '../../features/monitoring/monitoring_page.dart';
 import '../../features/outbox/presentation/sync_page.dart';
 import '../../features/notifications/notifications.dart';
 import '../../features/private_houses/private_houses.dart';
+import '../../features/transfers/transfers.dart';
 import '../../features/staff_home/cswd_home_page.dart';
 import '../../features/staff_home/staff_home_page.dart';
 import '../../features/staff_shell/staff_shell.dart';
@@ -570,6 +571,10 @@ final GoRouter appRouter = GoRouter(
                 GoRoute(
                   path: 'notifications',
                   builder: (context, state) => const NotificationsPage(),
+                ),
+                GoRoute(
+                  path: 'transfers',
+                  builder: (context, state) => const TransfersPage(),
                 ),
                 GoRoute(
                   path: 'private-houses/:barangayId',
