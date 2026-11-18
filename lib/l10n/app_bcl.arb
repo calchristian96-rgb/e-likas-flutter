@@ -3057,5 +3057,21 @@
   "eventSwitchNowWorkingOn": "Now working on \"{name}\".",
   "eventSwitchNeedsConnection": "Changing the event needs a connection.",
   "registerSavesTo": "Saves to: {name}",
-  "registerClosedEvent": "\"{name}\" is closed. A closed event is read-only. Change the event to register a family."
+  "registerClosedEvent": "\"{name}\" is closed. A closed event is read-only. Change the event to register a family.",
+
+  "lateEntriesCount": "{count, plural, =1{1 late entry} other{{count} late entries}}",
+  "lateEntriesAdded": "Added: {families}, {persons}",
+  "lateEntriesRemoved": "Removed: {families}, {persons}",
+  "lateEntriesSince": "since {time}",
+  "lateEntriesNotInValidated": "Not in the validated count, which never changes. Submit an updated count to include them.",
+  "lateEntriesNotInCount": "Not in your final count yet. Submit an updated count to include them.",
+  "lateEntriesTodo": "{count, plural, =1{1 late entry, not yet in your final count} other{{count} late entries, not yet in your final count}}",
+  "cswdLateEntriesPending": "{count, plural, =1{1 late entry pending, not yet in a final count} other{{count} late entries pending, not yet in a final count}}",
+  "finalCountValidatedAsOf": "Validated: {families}, report as of {time}",
+  "finalCountCentersPrivate": "In centers: {centers} · In private houses: {private}",
+  "finalCountCheckIncomplete": "{count, plural, =1{Check: 1 family has incomplete details.} other{Check: {count} families have incomplete details.}}",
+  "finalCountCheckDuplicates": "{count, plural, =1{Check: 1 possible duplicate.} other{Check: {count} possible duplicates.}}",
+  "finalCountAfterThis": "After this, new evacuees are marked as late entries.",
+  "finalCountReviewFirst": "Review first",
+  "finalCountSubmitShort": "Submit"
 }

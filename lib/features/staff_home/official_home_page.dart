@@ -64,11 +64,17 @@ class OfficialHomePage extends ConsumerWidget {
         ),
       if (count != null &&
           count.eventActive &&
-          (count.submitted == null || count.changedSinceSubmission))
+          (count.submitted == null ||
+              count.hasLateEntries ||
+              count.changedSinceSubmission))
         _TodoCard(
-          icon: Icons.fact_check_outlined,
+          icon: count.hasLateEntries
+              ? Icons.schedule
+              : Icons.fact_check_outlined,
           text: count.submitted == null
               ? l10n.homeTodoFinalCountNotSent
+              : count.hasLateEntries
+              ? l10n.lateEntriesTodo(count.lateEntries!.total)
               : l10n.finalCountChanged,
           onTap: () => context.go('/staff/home/barangay'),
         ),

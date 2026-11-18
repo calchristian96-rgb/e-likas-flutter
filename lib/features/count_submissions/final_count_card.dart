@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../app/theme/app_theme.dart';
 import '../../core/cache/staff_read_cache.dart';
 import '../../core/utils/data_freshness_formatter.dart';
+import '../../core/utils/philippine_time.dart';
 import '../../l10n/app_localizations.dart';
 import '../outbox/domain/pending_action.dart';
 import '../outbox/presentation/outbox_providers.dart';
@@ -54,6 +55,65 @@ class CountFigures {
       personsOutside == o.personsOutside;
 }
 
+/// Families and persons added or removed after the barangay's latest
+/// submission (backend 5bb30d1): not in the validated count or DROMIC
+/// until a submission that includes them is validated. A validated
+/// submission never changes.
+class LateEntries {
+  const LateEntries({
+    required this.families,
+    required this.persons,
+    required this.removedFamilies,
+    required this.removedPersons,
+    required this.total,
+    this.since,
+    this.submissionStatus,
+  });
+
+  static LateEntries? fromJson(Object? j) {
+    if (j is! Map<String, dynamic>) return null;
+    int i(String k) => (j[k] as num?)?.toInt() ?? 0;
+    return LateEntries(
+      families: i('families'),
+      persons: i('persons'),
+      removedFamilies: i('removed_families'),
+      removedPersons: i('removed_persons'),
+      total: i('total'),
+      since: DateTime.tryParse(j['since'] as String? ?? '')?.toLocal(),
+      submissionStatus: j['submission_status'] as String?,
+    );
+  }
+
+  final int families;
+  final int persons;
+  final int removedFamilies;
+  final int removedPersons;
+  final int total;
+
+  /// The latest submission's time: entries after it are late.
+  final DateTime? since;
+  final String? submissionStatus;
+}
+
+/// "System checks" before a submission: warnings only, never a block.
+class CountChecks {
+  const CountChecks({
+    required this.incompleteFamilies,
+    required this.possibleDuplicates,
+  });
+
+  static CountChecks fromJson(Object? j) {
+    final m = j is Map<String, dynamic> ? j : const <String, dynamic>{};
+    return CountChecks(
+      incompleteFamilies: (m['incomplete_families'] as num?)?.toInt() ?? 0,
+      possibleDuplicates: (m['possible_duplicates'] as num?)?.toInt() ?? 0,
+    );
+  }
+
+  final int incompleteFamilies;
+  final int possibleDuplicates;
+}
+
 /// `GET /count-submissions/computed` (backend step 9).
 class ComputedCount {
   const ComputedCount({
@@ -65,7 +125,31 @@ class ComputedCount {
     this.submissionVersion,
     this.reviewNote,
     this.validatedFamilies,
+    this.validatedPersons,
+    this.lateEntries,
+    this.checks = const CountChecks(
+      incompleteFamilies: 0,
+      possibleDuplicates: 0,
+    ),
+    this.submittedAt,
+    this.reviewedAt,
+    this.barangayName,
+    this.hasOfficialAccount = true,
   });
+
+  final int? validatedPersons;
+
+  /// Null before the barangay's first submission.
+  final LateEntries? lateEntries;
+  final CountChecks checks;
+  final DateTime? submittedAt;
+  final DateTime? reviewedAt;
+  final String? barangayName;
+
+  /// Without one, CSWD submits the count for the barangay.
+  final bool hasOfficialAccount;
+
+  bool get hasLateEntries => (lateEntries?.total ?? 0) > 0;
 
   final int eventId;
   final bool eventActive;
@@ -106,6 +190,18 @@ class ComputedCount {
       submissionVersion: (current?['version'] as num?)?.toInt(),
       reviewNote: current?['review_note'] as String?,
       validatedFamilies: (need?['families'] as num?)?.toInt(),
+      validatedPersons: (need?['persons'] as num?)?.toInt(),
+      lateEntries: LateEntries.fromJson(j['late_entries']),
+      checks: CountChecks.fromJson(j['checks']),
+      submittedAt: DateTime.tryParse(
+        current?['submitted_at'] as String? ?? '',
+      )?.toLocal(),
+      reviewedAt: DateTime.tryParse(
+        current?['reviewed_at'] as String? ?? '',
+      )?.toLocal(),
+      barangayName:
+          (j['barangay'] as Map<String, dynamic>?)?['name'] as String?,
+      hasOfficialAccount: j['has_official_account'] != false,
     );
   }
 }
@@ -159,8 +255,23 @@ class FinalCountCard extends ConsumerWidget {
               ),
               style: Theme.of(context).textTheme.titleMedium,
             ),
+            const SizedBox(height: 4),
+            Text(
+              l10n.finalCountCentersPrivate(
+                l10n.countFamilies(count.computed.familiesInside),
+                l10n.countFamilies(count.computed.familiesOutside),
+              ),
+            ),
+            if (count.checks.incompleteFamilies > 0)
+              Text(
+                l10n.finalCountCheckIncomplete(count.checks.incompleteFamilies),
+              ),
+            if (count.checks.possibleDuplicates > 0)
+              Text(
+                l10n.finalCountCheckDuplicates(count.checks.possibleDuplicates),
+              ),
             const SizedBox(height: 8),
-            Text(l10n.finalCountComputedNote),
+            Text(l10n.finalCountAfterThis),
             const SizedBox(height: 16),
             TextField(
               controller: note,
@@ -175,11 +286,11 @@ class FinalCountCard extends ConsumerWidget {
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(false),
-            child: Text(l10n.cancel),
+            child: Text(l10n.finalCountReviewFirst),
           ),
           FilledButton(
             onPressed: () => Navigator.of(context).pop(true),
-            child: Text(l10n.finalCountSubmit),
+            child: Text(l10n.finalCountSubmitShort),
           ),
         ],
       ),
@@ -221,9 +332,14 @@ class FinalCountCard extends ConsumerWidget {
     );
     final (statusText, statusColor) = switch (count.submissionStatus) {
       'validated' => (
-        l10n.finalCountValidated(
-          l10n.countFamilies(count.validatedFamilies ?? 0),
-        ),
+        count.reviewedAt == null
+            ? l10n.finalCountValidated(
+                l10n.countFamilies(count.validatedFamilies ?? 0),
+              )
+            : l10n.finalCountValidatedAsOf(
+                l10n.countFamilies(count.validatedFamilies ?? 0),
+                formatShortDateTime(count.reviewedAt!),
+              ),
         semantic.success,
       ),
       'returned' => (l10n.finalCountReturned, theme.colorScheme.error),
@@ -271,7 +387,9 @@ class FinalCountCard extends ConsumerWidget {
               ),
               if (count.reviewNote != null && count.reviewNote!.isNotEmpty)
                 Text(count.reviewNote!, style: theme.textTheme.bodySmall),
-              if (count.changedSinceSubmission)
+              if (count.hasLateEntries)
+                _LateEntriesNote(late: count.lateEntries!)
+              else if (count.changedSinceSubmission)
                 Text(l10n.finalCountChanged, style: theme.textTheme.bodySmall),
               if (result.fromCache)
                 Text(
@@ -295,6 +413,70 @@ class FinalCountCard extends ConsumerWidget {
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+/// "3 late entries (11 persons) since 2:00 PM: not in your final count"
+/// with what the next submission will add.
+class _LateEntriesNote extends StatelessWidget {
+  const _LateEntriesNote({required this.late});
+
+  final LateEntries late;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    final theme = Theme.of(context);
+    final semantic = theme.extension<AppSemanticColors>()!;
+    return Container(
+      margin: const EdgeInsets.only(top: 8),
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: semantic.warning.withValues(alpha: 0.10),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: semantic.warning.withValues(alpha: 0.5)),
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Icon(Icons.schedule, color: semantic.warning),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  l10n.lateEntriesCount(late.total),
+                  style: theme.textTheme.titleSmall,
+                ),
+                Text(
+                  [
+                    if (late.families > 0)
+                      l10n.lateEntriesAdded(
+                        l10n.countFamilies(late.families),
+                        l10n.countPersons(late.persons),
+                      ),
+                    if (late.removedFamilies > 0 || late.removedPersons > 0)
+                      l10n.lateEntriesRemoved(
+                        l10n.countFamilies(late.removedFamilies),
+                        l10n.countPersons(late.removedPersons),
+                      ),
+                    if (late.since != null)
+                      l10n.lateEntriesSince(formatShortDateTime(late.since!)),
+                  ].join(' · '),
+                ),
+                Text(
+                  late.submissionStatus == 'validated'
+                      ? l10n.lateEntriesNotInValidated
+                      : l10n.lateEntriesNotInCount,
+                  style: theme.textTheme.bodySmall,
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }

@@ -43,6 +43,21 @@ final countsNotSentProvider = FutureProvider.autoDispose<List<String>>((
   ];
 });
 
+/// Families and persons registered or removed after their barangay's
+/// latest final count, city-wide (`late_entries_total`): not in any
+/// validated count yet.
+final cityLateEntriesProvider = FutureProvider.autoDispose<int>((ref) async {
+  final event = await ref.watch(currentStaffEventProvider.future);
+  if (event == null) return 0;
+  final read = await ref
+      .watch(staffReadCacheProvider)
+      .get(
+        '/count-submissions/barangays',
+        query: {'evacuation_event_id': event.id},
+      );
+  return (read.data['late_entries_total'] as num?)?.toInt() ?? 0;
+});
+
 /// CSWDO's home (Part 4.2): the event and its status, city totals, how
 /// many barangays are in each status, and what needs attention: full or
 /// nearly full centers, barangays short of boxes, final counts not sent.
@@ -82,6 +97,7 @@ class CswdHomePage extends ConsumerWidget {
         if (((b as Map<String, dynamic>)['short'] as num? ?? 0) > 0) b,
     ];
     final notSent = ref.watch(countsNotSentProvider).value ?? const [];
+    final lateEntries = ref.watch(cityLateEntriesProvider).value ?? 0;
     // Families staying with relatives or friends, city-wide.
     final privateHouses = ref.watch(privateHousesProvider(null)).value;
     final privateFamilies = privateHouses?.barangays.values.fold<int>(
@@ -101,6 +117,7 @@ class CswdHomePage extends ConsumerWidget {
             ref.invalidate(monitoringSectionProvider(s));
           }
           ref.invalidate(countsNotSentProvider);
+          ref.invalidate(cityLateEntriesProvider);
           ref.invalidate(notificationsProvider);
           ref.invalidate(privateHousesProvider(null));
         },
@@ -153,7 +170,10 @@ class CswdHomePage extends ConsumerWidget {
               ],
             ),
             SectionTitle(l10n.monitoringNeedsAttention),
-            if (full.isEmpty && shortBoxes.isEmpty && notSent.isEmpty)
+            if (full.isEmpty &&
+                shortBoxes.isEmpty &&
+                notSent.isEmpty &&
+                lateEntries == 0)
               EmptyNote(
                 icon: Icons.check_circle_outline,
                 message: l10n.monitoringNothingUrgent,
@@ -181,6 +201,8 @@ class CswdHomePage extends ConsumerWidget {
                   notSent.take(5).join(', '),
                 ),
               ),
+            if (lateEntries > 0)
+              _Warning(text: l10n.cswdLateEntriesPending(lateEntries)),
             const SizedBox(height: 8),
             AppCard(
               child: Row(

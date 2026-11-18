@@ -5679,6 +5679,96 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'\"{name}\" is closed. A closed event is read-only. Change the event to register a family.'**
   String registerClosedEvent(String name);
+
+  /// No description provided for @lateEntriesCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 late entry} other{{count} late entries}}'**
+  String lateEntriesCount(int count);
+
+  /// No description provided for @lateEntriesAdded.
+  ///
+  /// In en, this message translates to:
+  /// **'Added: {families}, {persons}'**
+  String lateEntriesAdded(String families, String persons);
+
+  /// No description provided for @lateEntriesRemoved.
+  ///
+  /// In en, this message translates to:
+  /// **'Removed: {families}, {persons}'**
+  String lateEntriesRemoved(String families, String persons);
+
+  /// No description provided for @lateEntriesSince.
+  ///
+  /// In en, this message translates to:
+  /// **'since {time}'**
+  String lateEntriesSince(String time);
+
+  /// No description provided for @lateEntriesNotInValidated.
+  ///
+  /// In en, this message translates to:
+  /// **'Not in the validated count, which never changes. Submit an updated count to include them.'**
+  String get lateEntriesNotInValidated;
+
+  /// No description provided for @lateEntriesNotInCount.
+  ///
+  /// In en, this message translates to:
+  /// **'Not in your final count yet. Submit an updated count to include them.'**
+  String get lateEntriesNotInCount;
+
+  /// No description provided for @lateEntriesTodo.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 late entry, not yet in your final count} other{{count} late entries, not yet in your final count}}'**
+  String lateEntriesTodo(int count);
+
+  /// No description provided for @cswdLateEntriesPending.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 late entry pending, not yet in a final count} other{{count} late entries pending, not yet in a final count}}'**
+  String cswdLateEntriesPending(int count);
+
+  /// No description provided for @finalCountValidatedAsOf.
+  ///
+  /// In en, this message translates to:
+  /// **'Validated: {families}, report as of {time}'**
+  String finalCountValidatedAsOf(String families, String time);
+
+  /// No description provided for @finalCountCentersPrivate.
+  ///
+  /// In en, this message translates to:
+  /// **'In centers: {centers} · In private houses: {private}'**
+  String finalCountCentersPrivate(String centers, String private);
+
+  /// No description provided for @finalCountCheckIncomplete.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{Check: 1 family has incomplete details.} other{Check: {count} families have incomplete details.}}'**
+  String finalCountCheckIncomplete(int count);
+
+  /// No description provided for @finalCountCheckDuplicates.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{Check: 1 possible duplicate.} other{Check: {count} possible duplicates.}}'**
+  String finalCountCheckDuplicates(int count);
+
+  /// No description provided for @finalCountAfterThis.
+  ///
+  /// In en, this message translates to:
+  /// **'After this, new evacuees are marked as late entries.'**
+  String get finalCountAfterThis;
+
+  /// No description provided for @finalCountReviewFirst.
+  ///
+  /// In en, this message translates to:
+  /// **'Review first'**
+  String get finalCountReviewFirst;
+
+  /// No description provided for @finalCountSubmitShort.
+  ///
+  /// In en, this message translates to:
+  /// **'Submit'**
+  String get finalCountSubmitShort;
 }
 
 class _AppLocalizationsDelegate

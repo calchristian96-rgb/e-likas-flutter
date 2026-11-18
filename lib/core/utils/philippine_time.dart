@@ -1,3 +1,5 @@
+import 'package:intl/intl.dart';
+
 /// The current moment, expressed in Philippine Standard Time
 /// (Asia/Manila, UTC+08:00) regardless of the device's own configured
 /// timezone.
@@ -20,3 +22,10 @@
 DateTime philippineNow() {
   return DateTime.now().toUtc().add(const Duration(hours: 8));
 }
+
+/// [moment] as Manila wall-clock time, e.g. "Nov 17, 3:00 PM": the
+/// times the server reports (orders, final counts, late entries) are
+/// shown in Asia/Manila whatever the phone's own zone.
+String formatShortDateTime(DateTime moment) => DateFormat(
+  'MMM d, h:mm a',
+).format(moment.toUtc().add(const Duration(hours: 8)));

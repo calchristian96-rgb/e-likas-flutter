@@ -1144,5 +1144,21 @@
   "eventSwitchNowWorkingOn": "Ginagawa na ang \"{name}\".",
   "eventSwitchNeedsConnection": "Kailangan ng koneksyon para palitan ang event.",
   "registerSavesTo": "Ise-save sa: {name}",
-  "registerClosedEvent": "Sarado ang \"{name}\". Basahin lang ang saradong event. Palitan ang event para magparehistro ng pamilya."
+  "registerClosedEvent": "Sarado ang \"{name}\". Basahin lang ang saradong event. Palitan ang event para magparehistro ng pamilya.",
+
+  "lateEntriesCount": "{count, plural, =1{1 huling entry} other{{count} huling entry}}",
+  "lateEntriesAdded": "Nadagdag: {families}, {persons}",
+  "lateEntriesRemoved": "Inalis: {families}, {persons}",
+  "lateEntriesSince": "mula {time}",
+  "lateEntriesNotInValidated": "Wala sa validated na bilang, na hindi nagbabago. Magpadala ng updated na bilang para maisama sila.",
+  "lateEntriesNotInCount": "Wala pa sa inyong final count. Magpadala ng updated na bilang para maisama sila.",
+  "lateEntriesTodo": "{count, plural, =1{1 huling entry, wala pa sa final count} other{{count} huling entry, wala pa sa final count}}",
+  "cswdLateEntriesPending": "{count, plural, =1{1 huling entry na naghihintay, wala pa sa final count} other{{count} huling entry na naghihintay, wala pa sa final count}}",
+  "finalCountValidatedAsOf": "Validated: {families}, ulat noong {time}",
+  "finalCountCentersPrivate": "Sa center: {centers} · Sa pribadong bahay: {private}",
+  "finalCountCheckIncomplete": "{count, plural, =1{Suriin: 1 pamilya ang kulang ang detalye.} other{Suriin: {count} pamilya ang kulang ang detalye.}}",
+  "finalCountCheckDuplicates": "{count, plural, =1{Suriin: 1 posibleng doble.} other{Suriin: {count} posibleng doble.}}",
+  "finalCountAfterThis": "Pagkatapos nito, mamarkahang huling entry ang mga bagong lumikas.",
+  "finalCountReviewFirst": "Suriin muna",
+  "finalCountSubmitShort": "Ipadala"
 }

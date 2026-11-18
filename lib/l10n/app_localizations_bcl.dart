@@ -3383,4 +3383,102 @@ class AppLocalizationsBcl extends AppLocalizations {
   String registerClosedEvent(String name) {
     return '\"$name\" is closed. A closed event is read-only. Change the event to register a family.';
   }
+
+  @override
+  String lateEntriesCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count late entries',
+      one: '1 late entry',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String lateEntriesAdded(String families, String persons) {
+    return 'Added: $families, $persons';
+  }
+
+  @override
+  String lateEntriesRemoved(String families, String persons) {
+    return 'Removed: $families, $persons';
+  }
+
+  @override
+  String lateEntriesSince(String time) {
+    return 'since $time';
+  }
+
+  @override
+  String get lateEntriesNotInValidated =>
+      'Not in the validated count, which never changes. Submit an updated count to include them.';
+
+  @override
+  String get lateEntriesNotInCount =>
+      'Not in your final count yet. Submit an updated count to include them.';
+
+  @override
+  String lateEntriesTodo(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count late entries, not yet in your final count',
+      one: '1 late entry, not yet in your final count',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String cswdLateEntriesPending(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count late entries pending, not yet in a final count',
+      one: '1 late entry pending, not yet in a final count',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String finalCountValidatedAsOf(String families, String time) {
+    return 'Validated: $families, report as of $time';
+  }
+
+  @override
+  String finalCountCentersPrivate(String centers, String private) {
+    return 'In centers: $centers · In private houses: $private';
+  }
+
+  @override
+  String finalCountCheckIncomplete(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Check: $count families have incomplete details.',
+      one: 'Check: 1 family has incomplete details.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String finalCountCheckDuplicates(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Check: $count possible duplicates.',
+      one: 'Check: 1 possible duplicate.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get finalCountAfterThis =>
+      'After this, new evacuees are marked as late entries.';
+
+  @override
+  String get finalCountReviewFirst => 'Review first';
+
+  @override
+  String get finalCountSubmitShort => 'Submit';
 }

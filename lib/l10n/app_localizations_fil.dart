@@ -3422,4 +3422,102 @@ class AppLocalizationsFil extends AppLocalizations {
   String registerClosedEvent(String name) {
     return 'Sarado ang \"$name\". Basahin lang ang saradong event. Palitan ang event para magparehistro ng pamilya.';
   }
+
+  @override
+  String lateEntriesCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count huling entry',
+      one: '1 huling entry',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String lateEntriesAdded(String families, String persons) {
+    return 'Nadagdag: $families, $persons';
+  }
+
+  @override
+  String lateEntriesRemoved(String families, String persons) {
+    return 'Inalis: $families, $persons';
+  }
+
+  @override
+  String lateEntriesSince(String time) {
+    return 'mula $time';
+  }
+
+  @override
+  String get lateEntriesNotInValidated =>
+      'Wala sa validated na bilang, na hindi nagbabago. Magpadala ng updated na bilang para maisama sila.';
+
+  @override
+  String get lateEntriesNotInCount =>
+      'Wala pa sa inyong final count. Magpadala ng updated na bilang para maisama sila.';
+
+  @override
+  String lateEntriesTodo(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count huling entry, wala pa sa final count',
+      one: '1 huling entry, wala pa sa final count',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String cswdLateEntriesPending(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count huling entry na naghihintay, wala pa sa final count',
+      one: '1 huling entry na naghihintay, wala pa sa final count',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String finalCountValidatedAsOf(String families, String time) {
+    return 'Validated: $families, ulat noong $time';
+  }
+
+  @override
+  String finalCountCentersPrivate(String centers, String private) {
+    return 'Sa center: $centers · Sa pribadong bahay: $private';
+  }
+
+  @override
+  String finalCountCheckIncomplete(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Suriin: $count pamilya ang kulang ang detalye.',
+      one: 'Suriin: 1 pamilya ang kulang ang detalye.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String finalCountCheckDuplicates(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Suriin: $count posibleng doble.',
+      one: 'Suriin: 1 posibleng doble.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get finalCountAfterThis =>
+      'Pagkatapos nito, mamarkahang huling entry ang mga bagong lumikas.';
+
+  @override
+  String get finalCountReviewFirst => 'Suriin muna';
+
+  @override
+  String get finalCountSubmitShort => 'Ipadala';
 }
