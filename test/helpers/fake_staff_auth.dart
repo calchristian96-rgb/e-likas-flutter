@@ -53,6 +53,10 @@ const official = StaffSession(
     'box_relief.distribute',
     'situation.update',
     'puroks.view',
+    'evacuees.manage',
+    'evacuees.transfer',
+    'transfers.request',
+    'transfers.receive',
   },
 );
 
@@ -62,7 +66,16 @@ const cswd = StaffSession(
   email: 'carlo@example.test',
   role: 'cswd_personnel',
   roleDisplayName: 'CSWD Personnel',
-  permissions: {'operations.access', 'scope.all_barangays', 'page.monitoring'},
+  permissions: {
+    'operations.access',
+    'scope.all_barangays',
+    'page.monitoring',
+    'situation.update',
+    'situation.set_evacuation',
+    'count_submissions.submit_on_behalf',
+    'evacuees.transfer',
+    'transfers.manage',
+  },
 );
 
 const administrator = StaffSession(

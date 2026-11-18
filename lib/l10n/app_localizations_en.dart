@@ -3518,4 +3518,35 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get cswdOrderRecord => 'Record order';
+
+  @override
+  String cswdRegisteredNow(String families, String persons) {
+    return 'Registered now: $families, $persons';
+  }
+
+  @override
+  String get cswdSubmitForBarangay => 'Submit for this barangay';
+
+  @override
+  String cswdSubmitForTitle(String name) {
+    return 'Submit the final count for $name?';
+  }
+
+  @override
+  String get cswdSubmitForBody =>
+      'The system\'s count at this moment, labelled \"Submitted by CSWD for the barangay\". After this, new evacuees are marked as late entries.';
+
+  @override
+  String cswdSubmitForDone(String name) {
+    return 'Final count submitted for $name.';
+  }
+
+  @override
+  String get cswdSubmitNeedsConnection =>
+      'Submitting for a barangay needs a connection.';
+
+  @override
+  String cswdOfficialSubmits(String name) {
+    return '$name\'s official submits the count.';
+  }
 }

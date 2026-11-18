@@ -230,6 +230,24 @@ final homeAnswers = <String, Map<String, dynamic>>{
     ],
   },
   '/box-relief/rounds/1/families': roundFamilies(),
+  // Binatagan has no official account here: CSWD submits for it.
+  '/count-submissions/computed': {
+    'evacuation_event': _event,
+    'barangay': {'id': 13, 'name': 'Binatagan'},
+    'computed': {
+      'families': 42,
+      'families_inside_ec': 37,
+      'families_outside_ec': 5,
+      'persons': 150,
+      'persons_inside_ec': 132,
+      'persons_outside_ec': 18,
+    },
+    'late_entries': null,
+    'checks': {'incomplete_families': 0, 'possible_duplicates': 1},
+    'current_submission': null,
+    'validated_need': null,
+    'has_official_account': false,
+  },
   '/gis/barangays/13': {
     'barangay': {'id': 13, 'name': 'Binatagan'},
     'status': {
@@ -258,9 +276,15 @@ final homeAnswers = <String, Map<String, dynamic>>{
 
 /// Signed in as [session], one active event, the answers above, and
 /// [waiting] actions still to send.
-List<Override> homeOverrides(StaffSession session, {int waiting = 3}) => [
+List<Override> homeOverrides(
+  StaffSession session, {
+  int waiting = 3,
+  Map<String, Map<String, dynamic>>? answers,
+}) => [
   ...signedInAs(session),
-  staffReadCacheProvider.overrideWithValue(FakeReadCache(homeAnswers)),
+  staffReadCacheProvider.overrideWithValue(
+    FakeReadCache(answers ?? homeAnswers),
+  ),
   evacuationEventsLookupProvider.overrideWith(
     (ref) async => const [
       EvacuationEventLookup(id: 24, name: 'Typhoon Pepito', status: 'active'),

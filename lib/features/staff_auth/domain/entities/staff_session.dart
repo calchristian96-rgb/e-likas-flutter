@@ -107,6 +107,13 @@ abstract final class StaffPermission {
   static const boxDistribute = 'box_relief.distribute';
   static const situationUpdate = 'situation.update';
   static const puroksView = 'puroks.view';
+  static const countSubmitOnBehalf = 'count_submissions.submit_on_behalf';
+  static const setEvacuation = 'situation.set_evacuation';
+  static const evacueesManage = 'evacuees.manage';
+  static const evacueesTransfer = 'evacuees.transfer';
+  static const transfersRequest = 'transfers.request';
+  static const transfersReceive = 'transfers.receive';
+  static const transfersManage = 'transfers.manage';
 
   /// For a session cached before the backend sent `permissions` (an app
   /// upgraded while offline): the same map as the backend, by role,
@@ -123,15 +130,23 @@ abstract final class StaffPermission {
       boxDistribute,
       situationUpdate,
       puroksView,
+      evacueesManage,
+      evacueesTransfer,
+      transfersRequest,
+      transfersReceive,
     },
+    // families.re_enroll is officials only now (backend 75792e7).
     'cswd_personnel' => const {
       operationsAccess,
       allBarangays,
       monitoring,
       centersSetStatus,
-      reEnroll,
       situationUpdate,
       puroksView,
+      countSubmitOnBehalf,
+      setEvacuation,
+      evacueesTransfer,
+      transfersManage,
     },
     _ => const {},
   };

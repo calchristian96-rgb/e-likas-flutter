@@ -5835,6 +5835,48 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Record order'**
   String get cswdOrderRecord;
+
+  /// No description provided for @cswdRegisteredNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Registered now: {families}, {persons}'**
+  String cswdRegisteredNow(String families, String persons);
+
+  /// No description provided for @cswdSubmitForBarangay.
+  ///
+  /// In en, this message translates to:
+  /// **'Submit for this barangay'**
+  String get cswdSubmitForBarangay;
+
+  /// No description provided for @cswdSubmitForTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Submit the final count for {name}?'**
+  String cswdSubmitForTitle(String name);
+
+  /// No description provided for @cswdSubmitForBody.
+  ///
+  /// In en, this message translates to:
+  /// **'The system\'s count at this moment, labelled \"Submitted by CSWD for the barangay\". After this, new evacuees are marked as late entries.'**
+  String get cswdSubmitForBody;
+
+  /// No description provided for @cswdSubmitForDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Final count submitted for {name}.'**
+  String cswdSubmitForDone(String name);
+
+  /// No description provided for @cswdSubmitNeedsConnection.
+  ///
+  /// In en, this message translates to:
+  /// **'Submitting for a barangay needs a connection.'**
+  String get cswdSubmitNeedsConnection;
+
+  /// No description provided for @cswdOfficialSubmits.
+  ///
+  /// In en, this message translates to:
+  /// **'{name}\'s official submits the count.'**
+  String cswdOfficialSubmits(String name);
 }
 
 class _AppLocalizationsDelegate

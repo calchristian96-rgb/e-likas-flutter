@@ -1854,5 +1854,17 @@
   "cswdOrderWhen": "When?",
   "cswdOrderNow": "Now",
   "cswdOrderChangeTime": "Earlier today",
-  "cswdOrderRecord": "Record order"
+  "cswdOrderRecord": "Record order",
+
+  "cswdRegisteredNow": "Registered now: {families}, {persons}",
+  "@cswdRegisteredNow": {"placeholders":{"families":{"type":"String"},"persons":{"type":"String"}}},
+  "cswdSubmitForBarangay": "Submit for this barangay",
+  "cswdSubmitForTitle": "Submit the final count for {name}?",
+  "@cswdSubmitForTitle": {"placeholders":{"name":{"type":"String"}}},
+  "cswdSubmitForBody": "The system's count at this moment, labelled \"Submitted by CSWD for the barangay\". After this, new evacuees are marked as late entries.",
+  "cswdSubmitForDone": "Final count submitted for {name}.",
+  "@cswdSubmitForDone": {"placeholders":{"name":{"type":"String"}}},
+  "cswdSubmitNeedsConnection": "Submitting for a barangay needs a connection.",
+  "cswdOfficialSubmits": "{name}'s official submits the count.",
+  "@cswdOfficialSubmits": {"placeholders":{"name":{"type":"String"}}}
 }

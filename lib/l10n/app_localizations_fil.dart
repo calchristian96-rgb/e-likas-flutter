@@ -3557,4 +3557,35 @@ class AppLocalizationsFil extends AppLocalizations {
 
   @override
   String get cswdOrderRecord => 'Itala ang utos';
+
+  @override
+  String cswdRegisteredNow(String families, String persons) {
+    return 'Nakarehistro ngayon: $families, $persons';
+  }
+
+  @override
+  String get cswdSubmitForBarangay => 'Ipadala para sa barangay na ito';
+
+  @override
+  String cswdSubmitForTitle(String name) {
+    return 'Ipadala ang final count para sa $name?';
+  }
+
+  @override
+  String get cswdSubmitForBody =>
+      'Ang bilang ng sistema sa sandaling ito, may tatak na \"Ipinadala ng CSWD para sa barangay\". Pagkatapos nito, mamarkahang huling entry ang mga bagong lumikas.';
+
+  @override
+  String cswdSubmitForDone(String name) {
+    return 'Naipadala ang final count para sa $name.';
+  }
+
+  @override
+  String get cswdSubmitNeedsConnection =>
+      'Kailangan ng koneksyon para magpadala para sa barangay.';
+
+  @override
+  String cswdOfficialSubmits(String name) {
+    return 'Ang opisyal ng $name ang magpapadala ng bilang.';
+  }
 }

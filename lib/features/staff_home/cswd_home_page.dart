@@ -17,9 +17,12 @@ import '../barangay_status/staff/barangay_page.dart'
     show EvacuationOrder, EvacuationOrderLine;
 import '../evacuation_centers/presentation/widgets/center_status_display.dart';
 import '../monitoring/monitoring_page.dart';
+import '../count_submissions/final_count_card.dart'
+    show ComputedCount, CountFigures;
 import '../notifications/notifications.dart';
 import '../private_houses/private_houses.dart';
 import '../staff_auth/domain/entities/staff_session.dart';
+import '../staff_auth/presentation/providers/staff_auth_provider.dart';
 import '../staff_shell/current_event.dart';
 
 /// Barangays with families in the event and no final count sent yet
@@ -536,6 +539,7 @@ class CswdBarangayDetailPage extends ConsumerWidget {
                 onOpen: () =>
                     context.go('/staff/barangays/$barangayId/private-houses'),
               ),
+              _CswdFinalCount(barangayId: barangayId, name: name),
               SectionTitle(l10n.monitoringCenters),
               for (final c in d['centers'] as List? ?? const []) ...[
                 AppCard(
@@ -743,6 +747,178 @@ class _OrderDialogState extends State<_OrderDialog> {
           child: Text(l10n.cswdOrderRecord),
         ),
       ],
+    );
+  }
+}
+
+/// A barangay's count as the system computes it now, with its latest
+/// submission (`GET /count-submissions/computed` with `barangay_id`).
+final barangayComputedProvider = FutureProvider.autoDispose
+    .family<ComputedCount?, int>((ref, barangayId) async {
+      final event = await ref.watch(currentStaffEventProvider.future);
+      if (event == null) return null;
+      final read = await ref
+          .watch(staffReadCacheProvider)
+          .get(
+            '/count-submissions/computed',
+            query: {'evacuation_event_id': event.id, 'barangay_id': barangayId},
+          );
+      return ComputedCount.fromJson(read.data);
+    });
+
+/// The barangay's final count on the CSWDO side (Part 5): the registered
+/// count now, the latest submission and its late entries; for a barangay
+/// with no official account, "Submit for this barangay" (online only).
+class _CswdFinalCount extends ConsumerWidget {
+  const _CswdFinalCount({required this.barangayId, required this.name});
+
+  final int barangayId;
+  final String name;
+
+  Future<void> _submit(
+    BuildContext context,
+    WidgetRef ref,
+    ComputedCount count,
+  ) async {
+    final l10n = AppLocalizations.of(context);
+    final messenger = ScaffoldMessenger.of(context);
+    if (!await ref.read(connectivityServiceProvider).hasConnection) {
+      messenger.showSnackBar(
+        SnackBar(content: Text(l10n.cswdSubmitNeedsConnection)),
+      );
+      return;
+    }
+    if (!context.mounted) return;
+    final c = count.computed;
+    final ok = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(l10n.cswdSubmitForTitle(name)),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              l10n.finalCountFigures(
+                l10n.countFamilies(c.families),
+                l10n.countPersons(c.persons),
+              ),
+              style: Theme.of(context).textTheme.titleMedium,
+            ),
+            Text(
+              l10n.finalCountCentersPrivate(
+                l10n.countFamilies(c.familiesInside),
+                l10n.countFamilies(c.familiesOutside),
+              ),
+            ),
+            if (count.checks.incompleteFamilies > 0)
+              Text(
+                l10n.finalCountCheckIncomplete(count.checks.incompleteFamilies),
+              ),
+            if (count.checks.possibleDuplicates > 0)
+              Text(
+                l10n.finalCountCheckDuplicates(count.checks.possibleDuplicates),
+              ),
+            const SizedBox(height: 8),
+            Text(l10n.cswdSubmitForBody),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: Text(l10n.cancel),
+          ),
+          FilledButton(
+            onPressed: () => Navigator.of(context).pop(true),
+            child: Text(l10n.finalCountSubmitShort),
+          ),
+        ],
+      ),
+    );
+    if (ok != true) return;
+    try {
+      final response = await ref
+          .read(staffApiClientProvider)
+          .post(
+            '/barangays/$barangayId/count-submissions',
+            data: {'evacuation_event_id': count.eventId},
+          );
+      ref.invalidate(barangayComputedProvider(barangayId));
+      ref.invalidate(countsNotSentProvider);
+      final message = (response.data as Map?)?['message'] as String?;
+      messenger.showSnackBar(
+        SnackBar(content: Text(message ?? l10n.cswdSubmitForDone(name))),
+      );
+    } on DioException catch (e) {
+      messenger.showSnackBar(
+        SnackBar(content: Text(mapStaffDioError(e).message)),
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context);
+    final theme = Theme.of(context);
+    final session = ref.watch(staffAuthProvider).value;
+    final count = ref.watch(barangayComputedProvider(barangayId)).value;
+    if (count == null) return const SizedBox.shrink();
+    final CountFigures c = count.computed;
+    final status = switch (count.submissionStatus) {
+      'validated' => l10n.finalCountValidated(
+        l10n.countFamilies(count.validatedFamilies ?? 0),
+      ),
+      'returned' => l10n.finalCountReturned,
+      'pending' => l10n.finalCountWaiting,
+      _ => l10n.finalCountNotSubmitted,
+    };
+    final mayOnBehalf =
+        (session?.can(StaffPermission.countSubmitOnBehalf) ?? false) &&
+        !count.hasOfficialAccount;
+    final canSend =
+        count.eventActive &&
+        !(count.submissionStatus == 'pending' && !count.changedSinceSubmission);
+    return Padding(
+      padding: const EdgeInsets.only(top: 16),
+      child: AppCard(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(l10n.finalCountTitle, style: theme.textTheme.titleMedium),
+            const SizedBox(height: 4),
+            Text(
+              l10n.cswdRegisteredNow(
+                l10n.countFamilies(c.families),
+                l10n.countPersons(c.persons),
+              ),
+            ),
+            Text(
+              status,
+              style: theme.textTheme.bodyMedium?.copyWith(
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            if (count.hasLateEntries)
+              Text(l10n.lateEntriesTodo(count.lateEntries!.total)),
+            const SizedBox(height: 8),
+            if (!count.hasOfficialAccount && !mayOnBehalf)
+              const SizedBox.shrink()
+            else if (count.hasOfficialAccount)
+              Text(
+                l10n.cswdOfficialSubmits(name),
+                style: theme.textTheme.bodySmall,
+              )
+            else if (canSend)
+              FilledButton(
+                style: FilledButton.styleFrom(
+                  minimumSize: const Size.fromHeight(48),
+                ),
+                onPressed: () => _submit(context, ref, count),
+                child: Text(l10n.cswdSubmitForBarangay),
+              ),
+          ],
+        ),
+      ),
     );
   }
 }

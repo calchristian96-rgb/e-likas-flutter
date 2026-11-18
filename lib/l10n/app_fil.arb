@@ -1172,5 +1172,13 @@
   "cswdOrderWhen": "Kailan?",
   "cswdOrderNow": "Ngayon",
   "cswdOrderChangeTime": "Mas maaga ngayong araw",
-  "cswdOrderRecord": "Itala ang utos"
+  "cswdOrderRecord": "Itala ang utos",
+
+  "cswdRegisteredNow": "Nakarehistro ngayon: {families}, {persons}",
+  "cswdSubmitForBarangay": "Ipadala para sa barangay na ito",
+  "cswdSubmitForTitle": "Ipadala ang final count para sa {name}?",
+  "cswdSubmitForBody": "Ang bilang ng sistema sa sandaling ito, may tatak na \"Ipinadala ng CSWD para sa barangay\". Pagkatapos nito, mamarkahang huling entry ang mga bagong lumikas.",
+  "cswdSubmitForDone": "Naipadala ang final count para sa {name}.",
+  "cswdSubmitNeedsConnection": "Kailangan ng koneksyon para magpadala para sa barangay.",
+  "cswdOfficialSubmits": "Ang opisyal ng {name} ang magpapadala ng bilang."
 }
