@@ -1929,5 +1929,14 @@
   "transferSendTitle": "Ask {barangay} to take these families?",
   "@transferSendTitle": {"placeholders":{"barangay":{"type":"String"}}},
   "transferStayUntilAccepted": "The families stay at their center until it is accepted.",
-  "transferSent": "Transfer request sent."
+  "transferSent": "Transfer request sent.",
+
+  "cswdMove": "Move",
+  "cswdMoveHint": "Move a family to any center. A reason is required.",
+  "cswdMoveTitle": "Move {family}?",
+  "@cswdMoveTitle": {"placeholders":{"family":{"type":"String"}}},
+  "cswdMoveReason": "Reason",
+  "cswdMoveReasonRequired": "Required. Saved in the activity log.",
+  "cswdMoved": "{family} moved to {center}.",
+  "@cswdMoved": {"placeholders":{"family":{"type":"String"},"center":{"type":"String"}}}
 }

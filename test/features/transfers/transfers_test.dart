@@ -73,7 +73,7 @@ void main() {
       expect(find.text('From Binatagan'), findsOneWidget);
       expect(find.text('Escalated to CSWD'), findsOneWidget);
       expect(find.text('Bea Bituin: 4 persons'), findsOneWidget);
-        expect(find.text('Waiting 41 minutes'), findsOneWidget);
+      expect(find.text('Waiting 41 minutes'), findsOneWidget);
       expect(find.text('Declined'), findsWidgets);
       expect(find.text('Why declined: Our court is full too.'), findsOneWidget);
       expect(find.text('Accept'), findsOneWidget);

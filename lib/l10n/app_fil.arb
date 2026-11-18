@@ -1226,5 +1226,12 @@
   "transferSend": "Ipadala ang kahilingan",
   "transferSendTitle": "Hilingin sa {barangay} na tanggapin ang mga pamilyang ito?",
   "transferStayUntilAccepted": "Mananatili ang mga pamilya sa kanilang center hanggang tanggapin ito.",
-  "transferSent": "Naipadala ang kahilingan sa paglipat."
+  "transferSent": "Naipadala ang kahilingan sa paglipat.",
+
+  "cswdMove": "Ilipat",
+  "cswdMoveHint": "Ilipat ang pamilya sa kahit anong center. Kailangan ng dahilan.",
+  "cswdMoveTitle": "Ilipat ang {family}?",
+  "cswdMoveReason": "Dahilan",
+  "cswdMoveReasonRequired": "Kailangan. Itatala sa activity log.",
+  "cswdMoved": "Nailipat ang {family} sa {center}."
 }

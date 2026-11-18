@@ -6152,6 +6152,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Transfer request sent.'**
   String get transferSent;
+
+  /// No description provided for @cswdMove.
+  ///
+  /// In en, this message translates to:
+  /// **'Move'**
+  String get cswdMove;
+
+  /// No description provided for @cswdMoveHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Move a family to any center. A reason is required.'**
+  String get cswdMoveHint;
+
+  /// No description provided for @cswdMoveTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Move {family}?'**
+  String cswdMoveTitle(String family);
+
+  /// No description provided for @cswdMoveReason.
+  ///
+  /// In en, this message translates to:
+  /// **'Reason'**
+  String get cswdMoveReason;
+
+  /// No description provided for @cswdMoveReasonRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Required. Saved in the activity log.'**
+  String get cswdMoveReasonRequired;
+
+  /// No description provided for @cswdMoved.
+  ///
+  /// In en, this message translates to:
+  /// **'{family} moved to {center}.'**
+  String cswdMoved(String family, String center);
 }
 
 class _AppLocalizationsDelegate

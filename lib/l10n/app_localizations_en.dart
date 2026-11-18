@@ -3746,4 +3746,27 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get transferSent => 'Transfer request sent.';
+
+  @override
+  String get cswdMove => 'Move';
+
+  @override
+  String get cswdMoveHint =>
+      'Move a family to any center. A reason is required.';
+
+  @override
+  String cswdMoveTitle(String family) {
+    return 'Move $family?';
+  }
+
+  @override
+  String get cswdMoveReason => 'Reason';
+
+  @override
+  String get cswdMoveReasonRequired => 'Required. Saved in the activity log.';
+
+  @override
+  String cswdMoved(String family, String center) {
+    return '$family moved to $center.';
+  }
 }

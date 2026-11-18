@@ -24,6 +24,7 @@ import '../private_houses/private_houses.dart';
 import '../staff_auth/domain/entities/staff_session.dart';
 import '../staff_auth/presentation/providers/staff_auth_provider.dart';
 import '../staff_shell/current_event.dart';
+import '../transfers/cswd_move_page.dart';
 import '../transfers/transfers.dart';
 
 /// Barangays with families in the event and no final count sent yet
@@ -549,6 +550,26 @@ class CswdBarangayDetailPage extends ConsumerWidget {
               SectionTitle(l10n.monitoringCenters),
               for (final c in d['centers'] as List? ?? const []) ...[
                 AppCard(
+                  // CSWDO opens a center's families to move one (Part 7).
+                  onTap:
+                      open &&
+                          eventId != null &&
+                          (ref
+                                  .watch(staffAuthProvider)
+                                  .value
+                                  ?.can(StaffPermission.evacueesTransfer) ??
+                              false)
+                      ? () => Navigator.of(context).push(
+                          MaterialPageRoute<void>(
+                            builder: (_) => CswdCenterFamiliesPage(
+                              centerId:
+                                  (c as Map<String, dynamic>)['id'] as int,
+                              centerName: c['name'] as String? ?? '',
+                              eventId: eventId,
+                            ),
+                          ),
+                        )
+                      : null,
                   child: Row(
                     children: [
                       Expanded(

@@ -3785,4 +3785,27 @@ class AppLocalizationsFil extends AppLocalizations {
 
   @override
   String get transferSent => 'Naipadala ang kahilingan sa paglipat.';
+
+  @override
+  String get cswdMove => 'Ilipat';
+
+  @override
+  String get cswdMoveHint =>
+      'Ilipat ang pamilya sa kahit anong center. Kailangan ng dahilan.';
+
+  @override
+  String cswdMoveTitle(String family) {
+    return 'Ilipat ang $family?';
+  }
+
+  @override
+  String get cswdMoveReason => 'Dahilan';
+
+  @override
+  String get cswdMoveReasonRequired => 'Kailangan. Itatala sa activity log.';
+
+  @override
+  String cswdMoved(String family, String center) {
+    return 'Nailipat ang $family sa $center.';
+  }
 }
