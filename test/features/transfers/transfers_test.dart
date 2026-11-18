@@ -60,6 +60,20 @@ Future<FakeStaffApi> _pumpList(
 }
 
 void main() {
+  test('a demo request with no requester shows the sending barangay', () {
+    final requests = [
+      for (final r in transferRequestsAnswer['requests'] as List)
+        TransferRequest.fromJson(r as Map<String, dynamic>),
+    ];
+    final demo = requests.first;
+    expect(demo.requestedBy, isNull);
+    expect(demo.sender, 'Binatagan');
+    expect(demo.isEscalated, isTrue);
+    // The receiving side never gets a family id.
+    expect(demo.familyList.single.id, isNull);
+    expect(requests.last.sender, 'Tomolin Official');
+  });
+
   test('a transfer notification opens Transfers (href only, no id)', () {
     expect(appPathForHref('/transfer-requests'), '/staff/home/transfers');
     expect(appPathForHref('/families/12'), isNull);
@@ -73,6 +87,8 @@ void main() {
       expect(find.text('From Binatagan'), findsOneWidget);
       expect(find.text('Escalated to CSWD'), findsOneWidget);
       expect(find.text('Bea Bituin: 4 persons'), findsOneWidget);
+      // A demo request: "Asked by Binatagan", never "Asked by ,".
+      expect(find.textContaining('Asked by Binatagan,'), findsOneWidget);
       expect(find.text('Waiting 41 minutes'), findsOneWidget);
       expect(find.text('Declined'), findsWidgets);
       expect(find.text('Why declined: Our court is full too.'), findsOneWidget);

@@ -101,6 +101,7 @@ class TransferRequest {
   final List<TransferFamily> familyList;
   final String? note;
 
+  /// Null for a demo request (docs 4.5): show the sending barangay.
   final String? requestedBy;
   final DateTime? requestedAt;
   final String? decidedBy;
@@ -120,8 +121,10 @@ class TransferRequest {
   bool get isPending => status == 'pending';
   bool get isEscalated => isPending && escalatedAt != null;
 
-  /// Who sent it.
-  String get sender => requestedBy ?? '';
+  /// Who sent it: the requester, or for a demo request (no requester)
+  /// the sending barangay.
+  String get sender =>
+      (requestedBy ?? '').trim().isNotEmpty ? requestedBy! : fromBarangay;
 }
 
 class TransferRequests {
