@@ -15,6 +15,7 @@ import '../../../../core/widgets/offline_banner.dart';
 import '../../../../core/widgets/staff_mode_banner.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../alerts/presentation/providers/alerts_summary_provider.dart';
+import '../../../barangay_status/presentation/barangay_status_providers.dart';
 import '../../../barangay_status/presentation/resident_area.dart';
 import '../../../evacuation_centers/presentation/providers/evacuation_centers_provider.dart';
 import '../../../settings/presentation/providers/offline_data_provider.dart';
@@ -189,6 +190,9 @@ class _HomePageState extends ConsumerState<HomePage> {
                               isUnavailable: alertsAsync.hasError,
                               isOffline: !isConnected,
                               lastChecked: _lastUpdated,
+                              situation: ref
+                                  .watch(barangayStatusBoardProvider)
+                                  .value,
                             ),
                           ),
                           const SizedBox(height: 16),

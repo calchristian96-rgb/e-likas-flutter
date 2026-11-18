@@ -8,6 +8,7 @@ import 'package:elikas_mobile/core/error/result.dart';
 import 'package:elikas_mobile/core/location/location_service.dart';
 import 'package:elikas_mobile/core/network/staff_api_client.dart';
 import 'package:elikas_mobile/features/alerts/presentation/providers/alerts_summary_provider.dart';
+import 'package:elikas_mobile/features/barangay_status/data/barangay_outlines.dart';
 import 'package:elikas_mobile/features/barangay_status/domain/barangay_status.dart';
 import 'package:elikas_mobile/features/barangay_status/presentation/barangay_status_providers.dart';
 import 'package:elikas_mobile/features/evacuation_centers/presentation/providers/evacuation_centers_provider.dart';
@@ -43,8 +44,9 @@ class _Here implements LocationService {
   @override
   Future<Result<Position>> getCurrentPosition() async => Success(
     Position(
-      latitude: 13.2,
-      longitude: 123.5,
+      // Inside Binatagan (Pob.) in the bundled boundaries.
+      latitude: 13.24197,
+      longitude: 123.52493,
       timestamp: DateTime(2026, 11, 17),
       accuracy: 10,
       altitude: 0,
@@ -82,11 +84,17 @@ const _school = EvacuationCenter(
 
 /// A resident in Binatagan under a preemptive evacuation, online.
 final residentOverrides = <Override>[
+  // The bundled boundaries, read here (asset loading is not reliable
+  // across golden tests).
+  barangayOutlinesProvider.overrideWith(
+    (ref) async =>
+        parseBarangayOutlines(File(barangayOutlinesAsset).readAsStringSync()),
+  ),
   locationServiceProvider.overrideWithValue(_Here()),
   allEvacuationCentersProvider.overrideWith((ref) async => const [_school]),
   nearestEvacuationCentersProvider(
-    13.2,
-    123.5,
+    13.24197,
+    123.52493,
   ).overrideWith((ref) async => const [_school]),
   alertsSummaryProvider.overrideWith((ref) async => (latest: null, count: 0)),
   residentBarangayProvider.overrideWith(_Binatagan.new),
@@ -98,6 +106,7 @@ final residentOverrides = <Override>[
         BarangayStatus(
           id: 13,
           name: 'Binatagan',
+          psgcCode: '050508013',
           status: 'preemptive_evacuation',
           label: 'Preemptive evacuation',
         ),
@@ -164,6 +173,8 @@ void main() {
   for (final (name, location, session, extra)
       in <(String, String, StaffSession?, List<Override>)>[
         ('resident_home', '/home', null, residentOverrides),
+        // A barangay official on the public view: the amber banner.
+        ('public_signed_in', '/home', official, residentOverrides),
         ('settings', '/settings', official, const []),
         ('staff_more', '/staff/more', official, const []),
         ('ec_board', '/staff/centers', official, [ownCenters]),

@@ -3826,4 +3826,38 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get noSavedCopyYet =>
       'Nothing is saved on this phone yet: connect once to save it for offline use.';
+
+  @override
+  String get situationEvacuationOrdered => 'Evacuation ordered';
+
+  @override
+  String situationEvacuatingBarangays(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count barangays are under preemptive or forced evacuation.',
+      one: '1 barangay is under preemptive or forced evacuation.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get situationOnWatch => 'On watch';
+
+  @override
+  String situationWatchingBarangays(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count barangays are on watch or have flooding reported.',
+      one: '1 barangay is on watch or has flooding reported.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get situationMonitoring => 'Being monitored';
+
+  @override
+  String get situationNoEvacuation => 'No barangay has to evacuate.';
 }

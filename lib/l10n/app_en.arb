@@ -1960,5 +1960,14 @@
   "@staffBannerSignedIn": {"placeholders":{"name":{"type":"String"}}},
   "staffBannerBack": "Staff Mode",
 
-  "noSavedCopyYet": "Nothing is saved on this phone yet: connect once to save it for offline use."
+  "noSavedCopyYet": "Nothing is saved on this phone yet: connect once to save it for offline use.",
+
+  "situationEvacuationOrdered": "Evacuation ordered",
+  "situationEvacuatingBarangays": "{count, plural, =1{1 barangay is under preemptive or forced evacuation.} other{{count} barangays are under preemptive or forced evacuation.}}",
+  "@situationEvacuatingBarangays": {"placeholders":{"count":{"type":"int"}}},
+  "situationOnWatch": "On watch",
+  "situationWatchingBarangays": "{count, plural, =1{1 barangay is on watch or has flooding reported.} other{{count} barangays are on watch or have flooding reported.}}",
+  "@situationWatchingBarangays": {"placeholders":{"count":{"type":"int"}}},
+  "situationMonitoring": "Being monitored",
+  "situationNoEvacuation": "No barangay has to evacuate."
 }

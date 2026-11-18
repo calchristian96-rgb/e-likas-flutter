@@ -1249,5 +1249,12 @@
   "staffBannerSignedIn": "Naka-login bilang staff: {name}",
   "staffBannerBack": "Staff Mode",
 
-  "noSavedCopyYet": "Wala pang naka-save sa phone na ito: kumonekta minsan para ma-save ito para sa offline."
+  "noSavedCopyYet": "Wala pang naka-save sa phone na ito: kumonekta minsan para ma-save ito para sa offline.",
+
+  "situationEvacuationOrdered": "May utos na paglikas",
+  "situationEvacuatingBarangays": "{count, plural, =1{1 barangay ang nasa preemptive o sapilitang paglikas.} other{{count} barangay ang nasa preemptive o sapilitang paglikas.}}",
+  "situationOnWatch": "Binabantayan",
+  "situationWatchingBarangays": "{count, plural, =1{1 barangay ang binabantayan o may ulat ng baha.} other{{count} barangay ang binabantayan o may ulat ng baha.}}",
+  "situationMonitoring": "Binabantayan ng CSWDO",
+  "situationNoEvacuation": "Walang barangay na kailangang lumikas."
 }

@@ -73,6 +73,14 @@ class ResidentArea {
   int? get id => status?.id;
 }
 
+/// "Binatagan (Pob.)" in the boundaries file is "Binatagan" on the
+/// server: compared without the bracketed part, case-insensitively.
+bool _sameName(String a, String b) {
+  String plain(String s) =>
+      s.replaceAll(RegExp(r'\s*\(.*?\)'), '').trim().toLowerCase();
+  return plain(a) == plain(b);
+}
+
 /// Null without a location, or outside Ligao.
 final residentAreaProvider = FutureProvider<ResidentArea?>((ref) async {
   final position = await ref.watch(residentPositionProvider.future);
@@ -89,14 +97,14 @@ final residentAreaProvider = FutureProvider<ResidentArea?>((ref) async {
   BarangayStatus? status;
   for (final b in board?.barangays ?? const <BarangayStatus>[]) {
     if (b.psgcCode == outline.psgcCode ||
-        (b.psgcCode == null &&
-            b.name.toLowerCase() == outline.name.toLowerCase())) {
+        (b.psgcCode == null && _sameName(b.name, outline.name))) {
       status = b;
       break;
     }
   }
   return ResidentArea(
-    name: outline.name,
+    // The server's name ("Binatagan"), not the file's "Binatagan (Pob.)".
+    name: status?.name ?? outline.name,
     psgcCode: outline.psgcCode,
     status: status,
     board: board,

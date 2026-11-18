@@ -77,6 +77,55 @@ void main() {
     expect(find.text('Typhoon Pepito'), findsOneWidget);
   });
 
+  testWidgets('"Binatagan (Pob.)" in the file is the server\'s "Binatagan"', (
+    tester,
+  ) async {
+    await tester.pumpWidget(
+      testApp(
+        const Scaffold(body: SingleChildScrollView(child: YourAreaCard())),
+        overrides: [
+          residentPositionProvider.overrideWith(
+            (ref) async => const Success(LatLng(13.02, 123.02)),
+          ),
+          barangayOutlinesProvider.overrideWith(
+            (ref) async => const [
+              BarangayOutline(
+                psgcCode: '050508013',
+                name: 'Binatagan (Pob.)',
+                rings: [
+                  [
+                    LatLng(13.0, 123.0),
+                    LatLng(13.0, 123.1),
+                    LatLng(13.1, 123.1),
+                    LatLng(13.1, 123.0),
+                  ],
+                ],
+              ),
+            ],
+          ),
+          // No psgc on the board: matched by name.
+          barangayStatusBoardProvider.overrideWith(
+            (ref) async => const BarangayStatusBoard(
+              eventName: 'Typhoon Pepito',
+              eventStatus: 'active',
+              barangays: [
+                BarangayStatus(
+                  id: 13,
+                  name: 'Binatagan',
+                  status: 'watch',
+                  label: 'Watch',
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+    await tester.pumpAndSettle();
+    expect(find.text('Your area: Brgy. Binatagan'), findsOneWidget);
+    expect(find.text('Watch'), findsOneWidget);
+  });
+
   testWidgets('no location, or outside Ligao: no card, nothing to choose', (
     tester,
   ) async {

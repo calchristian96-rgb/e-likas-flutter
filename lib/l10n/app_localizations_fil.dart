@@ -3865,4 +3865,38 @@ class AppLocalizationsFil extends AppLocalizations {
   @override
   String get noSavedCopyYet =>
       'Wala pang naka-save sa phone na ito: kumonekta minsan para ma-save ito para sa offline.';
+
+  @override
+  String get situationEvacuationOrdered => 'May utos na paglikas';
+
+  @override
+  String situationEvacuatingBarangays(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count barangay ang nasa preemptive o sapilitang paglikas.',
+      one: '1 barangay ang nasa preemptive o sapilitang paglikas.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get situationOnWatch => 'Binabantayan';
+
+  @override
+  String situationWatchingBarangays(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count barangay ang binabantayan o may ulat ng baha.',
+      one: '1 barangay ang binabantayan o may ulat ng baha.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get situationMonitoring => 'Binabantayan ng CSWDO';
+
+  @override
+  String get situationNoEvacuation => 'Walang barangay na kailangang lumikas.';
 }

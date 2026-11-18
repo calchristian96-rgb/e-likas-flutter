@@ -6260,6 +6260,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Nothing is saved on this phone yet: connect once to save it for offline use.'**
   String get noSavedCopyYet;
+
+  /// No description provided for @situationEvacuationOrdered.
+  ///
+  /// In en, this message translates to:
+  /// **'Evacuation ordered'**
+  String get situationEvacuationOrdered;
+
+  /// No description provided for @situationEvacuatingBarangays.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 barangay is under preemptive or forced evacuation.} other{{count} barangays are under preemptive or forced evacuation.}}'**
+  String situationEvacuatingBarangays(int count);
+
+  /// No description provided for @situationOnWatch.
+  ///
+  /// In en, this message translates to:
+  /// **'On watch'**
+  String get situationOnWatch;
+
+  /// No description provided for @situationWatchingBarangays.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 barangay is on watch or has flooding reported.} other{{count} barangays are on watch or have flooding reported.}}'**
+  String situationWatchingBarangays(int count);
+
+  /// No description provided for @situationMonitoring.
+  ///
+  /// In en, this message translates to:
+  /// **'Being monitored'**
+  String get situationMonitoring;
+
+  /// No description provided for @situationNoEvacuation.
+  ///
+  /// In en, this message translates to:
+  /// **'No barangay has to evacuate.'**
+  String get situationNoEvacuation;
 }
 
 class _AppLocalizationsDelegate

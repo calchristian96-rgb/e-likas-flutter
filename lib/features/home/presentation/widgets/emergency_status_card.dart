@@ -3,10 +3,12 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../app/theme/app_theme.dart';
+import '../../../../core/utils/data_freshness_formatter.dart';
 import '../../../../core/widgets/status_badge.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../alerts/domain/entities/alert.dart';
 import '../../../alerts/presentation/widgets/alert_type_display.dart';
+import '../../../barangay_status/domain/barangay_status.dart';
 
 /// Large status card at the top of the Home Dashboard — the one place
 /// a resident should be able to tell, at a glance, exactly how urgent
@@ -37,7 +39,14 @@ class EmergencyStatusCard extends StatelessWidget {
     this.isUnavailable = false,
     this.isOffline = false,
     this.lastChecked,
+    this.situation,
   });
+
+  /// The barangays' statuses in the open event. With no alert, the card
+  /// says what is really happening ("Evacuation ordered in 2
+  /// barangays") instead of "Normal Monitoring" while barangays
+  /// evacuate.
+  final BarangayStatusBoard? situation;
 
   final Alert? latestAlert;
   final bool isLoading;
@@ -124,6 +133,85 @@ class EmergencyStatusCard extends StatelessWidget {
     // hidden or skipped just because there's nothing urgent to show;
     // residents should be able to see confirmation that the app *did*
     // check and found nothing active, not silence.
+    final board = situation;
+    if (alert == null && board != null && board.hasOpenEvent) {
+      final evacuating = board.barangays
+          .where(
+            (b) =>
+                b.status == BarangayStatusKey.preemptiveEvacuation ||
+                b.status == BarangayStatusKey.forcedEvacuation,
+          )
+          .length;
+      final watching = board.barangays
+          .where(
+            (b) =>
+                b.status == BarangayStatusKey.watch ||
+                b.status == BarangayStatusKey.floodingReported,
+          )
+          .length;
+      final (color, icon, title, body) = evacuating > 0
+          ? (
+              theme.colorScheme.error,
+              Icons.campaign_outlined,
+              l10n.situationEvacuationOrdered,
+              l10n.situationEvacuatingBarangays(evacuating),
+            )
+          : watching > 0
+          ? (
+              semanticColors.warning,
+              Icons.visibility_outlined,
+              l10n.situationOnWatch,
+              l10n.situationWatchingBarangays(watching),
+            )
+          : (
+              theme.colorScheme.primary,
+              Icons.event_note_outlined,
+              l10n.situationMonitoring,
+              l10n.situationNoEvacuation,
+            );
+      return _CardShell(
+        color: color,
+        child: InkWell(
+          onTap: () => context.go('/map'),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Icon(icon, size: 30, color: color),
+              const SizedBox(width: 14),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      title,
+                      style: theme.textTheme.titleSmall?.copyWith(color: color),
+                    ),
+                    const SizedBox(height: 2),
+                    Text(body, style: theme.textTheme.bodyMedium),
+                    const SizedBox(height: 4),
+                    Text(
+                      board.eventName!,
+                      style: theme.textTheme.bodySmall?.copyWith(
+                        color: theme.colorScheme.onSurfaceVariant,
+                      ),
+                    ),
+                    if (board.isFromCache && board.lastSyncedAt != null)
+                      Text(
+                        l10n.residentStatusSavedCopy(
+                          formatElapsedSince(board.lastSyncedAt!),
+                        ),
+                        style: theme.textTheme.bodySmall,
+                      ),
+                  ],
+                ),
+              ),
+              Icon(Icons.chevron_right, color: color),
+            ],
+          ),
+        ),
+      );
+    }
+
     if (alert == null) {
       return _CardShell(
         color: semanticColors.success,
