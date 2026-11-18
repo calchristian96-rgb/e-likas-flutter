@@ -13,6 +13,8 @@ import '../../core/widgets/ui_kit.dart';
 import '../../l10n/app_localizations.dart';
 import '../barangay_status/presentation/barangay_status_card.dart'
     show barangayStatusColor;
+import '../barangay_status/staff/barangay_page.dart'
+    show EvacuationOrder, EvacuationOrderLine;
 import '../evacuation_centers/presentation/widgets/center_status_display.dart';
 import '../monitoring/monitoring_page.dart';
 import '../notifications/notifications.dart';
@@ -408,6 +410,7 @@ class CswdBarangayDetailPage extends ConsumerWidget {
     required int eventId,
     required String status,
     required String label,
+    required String eventName,
   }) async {
     final l10n = AppLocalizations.of(context);
     final messenger = ScaffoldMessenger.of(context);
@@ -418,29 +421,17 @@ class CswdBarangayDetailPage extends ConsumerWidget {
       return;
     }
     if (!context.mounted) return;
-    final ok = await showDialog<bool>(
+    // Who ordered it and when (backend cb20427), then the confirmation.
+    final order = await showDialog<_OrderAnswer>(
       context: context,
-      builder: (context) => AlertDialog(
-        title: Text(l10n.cswdOrderTitle(label.toLowerCase(), name)),
-        content: Text(l10n.cswdOrderBody),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(false),
-            child: Text(l10n.cancel),
-          ),
-          FilledButton(
-            style: FilledButton.styleFrom(
-              backgroundColor: Theme.of(context).colorScheme.error,
-            ),
-            onPressed: () => Navigator.of(context).pop(true),
-            child: Text(l10n.cswdOrderConfirm(label)),
-          ),
-        ],
+      builder: (context) => _OrderDialog(
+        title: l10n.cswdOrderRecordTitle(label.toLowerCase(), name, eventName),
+        label: label,
       ),
     );
-    if (ok != true) return;
+    if (order == null) return;
     try {
-      await ref
+      final response = await ref
           .read(staffApiClientProvider)
           .post(
             '/gis/barangay-status',
@@ -448,12 +439,19 @@ class CswdBarangayDetailPage extends ConsumerWidget {
               'evacuation_event_id': eventId,
               'barangay_id': barangayId,
               'status': status,
+              'ordered_by': order.orderedBy,
+              if (order.orderedBy == 'other') 'ordered_by_other': order.other,
+              if (order.orderedAt != null)
+                'ordered_at': order.orderedAt!.toUtc().toIso8601String(),
             },
           );
       ref.invalidate(barangayPanelProvider(barangayId));
       ref.invalidate(citySituationProvider);
+      final message = (response.data as Map?)?['message'] as String?;
       messenger.showSnackBar(
-        SnackBar(content: Text(l10n.barangayStatusOrdered(label, name))),
+        SnackBar(
+          content: Text(message ?? l10n.barangayStatusOrdered(label, name)),
+        ),
       );
     } on DioException catch (e) {
       messenger.showSnackBar(
@@ -509,6 +507,9 @@ class CswdBarangayDetailPage extends ConsumerWidget {
                   context,
                   status['status'] as String? ?? 'normal',
                 ),
+              ),
+              EvacuationOrderLine(
+                order: EvacuationOrder.fromJson(status['order']),
               ),
               if ((status['note'] as String?)?.isNotEmpty ?? false) ...[
                 const SizedBox(height: 4),
@@ -589,6 +590,11 @@ class CswdBarangayDetailPage extends ConsumerWidget {
                       eventId: eventId,
                       status: o['key'] as String,
                       label: o['label'] as String? ?? '',
+                      eventName:
+                          (situation?['evacuation_event']
+                                  as Map<String, dynamic>?)?['name']
+                              as String? ??
+                          '',
                     ),
                     child: Text(o['label'] as String? ?? ''),
                   ),
@@ -599,6 +605,144 @@ class CswdBarangayDetailPage extends ConsumerWidget {
           },
         ),
       ),
+    );
+  }
+}
+
+typedef _OrderAnswer = ({String orderedBy, String? other, DateTime? orderedAt});
+
+/// "Record a forced evacuation order for Binatagan in Typhoon Rolly?":
+/// who ordered it (the City Mayor, CDRRMO, or someone named), and when
+/// (now, or a time today that is not in the future).
+class _OrderDialog extends StatefulWidget {
+  const _OrderDialog({required this.title, required this.label});
+
+  final String title;
+  final String label;
+
+  @override
+  State<_OrderDialog> createState() => _OrderDialogState();
+}
+
+class _OrderDialogState extends State<_OrderDialog> {
+  String? _by;
+  final _other = TextEditingController();
+  TimeOfDay? _time;
+
+  @override
+  void dispose() {
+    _other.dispose();
+    super.dispose();
+  }
+
+  bool get _ready =>
+      _by != null && (_by != 'other' || _other.text.trim().isNotEmpty);
+
+  DateTime? get _orderedAt {
+    final t = _time;
+    if (t == null) return null;
+    final now = DateTime.now();
+    return DateTime(now.year, now.month, now.day, t.hour, t.minute);
+  }
+
+  Future<void> _pickTime() async {
+    final picked = await showTimePicker(
+      context: context,
+      initialTime: _time ?? TimeOfDay.now(),
+    );
+    if (picked == null) return;
+    final now = DateTime.now();
+    final at = DateTime(
+      now.year,
+      now.month,
+      now.day,
+      picked.hour,
+      picked.minute,
+    );
+    // Never in the future (the server refuses it).
+    setState(() => _time = at.isAfter(now) ? TimeOfDay.now() : picked);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    final theme = Theme.of(context);
+    return AlertDialog(
+      title: Text(widget.title),
+      content: SingleChildScrollView(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(l10n.cswdOrderBody),
+            const SizedBox(height: 16),
+            Text(l10n.cswdOrderWhoOrdered, style: theme.textTheme.titleSmall),
+            RadioGroup<String>(
+              groupValue: _by,
+              onChanged: (v) => setState(() => _by = v),
+              child: Column(
+                children: [
+                  for (final (value, text) in [
+                    ('city_mayor', l10n.cswdOrderByMayor),
+                    ('cdrrmo', l10n.cswdOrderByCdrrmo),
+                    ('other', l10n.cswdOrderByOther),
+                  ])
+                    RadioListTile<String>(
+                      contentPadding: EdgeInsets.zero,
+                      value: value,
+                      title: Text(text),
+                    ),
+                ],
+              ),
+            ),
+            if (_by == 'other')
+              TextField(
+                controller: _other,
+                maxLength: 100,
+                textCapitalization: TextCapitalization.words,
+                decoration: InputDecoration(
+                  labelText: l10n.cswdOrderByOtherName,
+                ),
+                onChanged: (_) => setState(() {}),
+              ),
+            const SizedBox(height: 8),
+            Text(l10n.cswdOrderWhen, style: theme.textTheme.titleSmall),
+            Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    _time == null ? l10n.cswdOrderNow : _time!.format(context),
+                  ),
+                ),
+                TextButton(
+                  style: TextButton.styleFrom(minimumSize: const Size(48, 48)),
+                  onPressed: _pickTime,
+                  child: Text(l10n.cswdOrderChangeTime),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.of(context).pop(),
+          child: Text(l10n.cancel),
+        ),
+        FilledButton(
+          style: FilledButton.styleFrom(
+            backgroundColor: theme.colorScheme.error,
+          ),
+          onPressed: !_ready
+              ? null
+              : () => Navigator.of(context).pop((
+                  orderedBy: _by!,
+                  other: _by == 'other' ? _other.text.trim() : null,
+                  orderedAt: _orderedAt,
+                )),
+          child: Text(l10n.cswdOrderRecord),
+        ),
+      ],
     );
   }
 }

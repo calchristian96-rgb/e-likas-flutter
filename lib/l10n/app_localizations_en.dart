@@ -3481,4 +3481,41 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get finalCountSubmitShort => 'Submit';
+
+  @override
+  String orderedByAt(String who, String time) {
+    return 'Ordered by $who, $time';
+  }
+
+  @override
+  String cswdOrderRecordTitle(String status, String name, String event) {
+    return 'Record a $status order for $name in $event?';
+  }
+
+  @override
+  String get cswdOrderWhoOrdered => 'Who ordered it?';
+
+  @override
+  String get cswdOrderByMayor => 'The City Mayor';
+
+  @override
+  String get cswdOrderByCdrrmo => 'CDRRMO';
+
+  @override
+  String get cswdOrderByOther => 'Someone else';
+
+  @override
+  String get cswdOrderByOtherName => 'Name who ordered it';
+
+  @override
+  String get cswdOrderWhen => 'When?';
+
+  @override
+  String get cswdOrderNow => 'Now';
+
+  @override
+  String get cswdOrderChangeTime => 'Earlier today';
+
+  @override
+  String get cswdOrderRecord => 'Record order';
 }

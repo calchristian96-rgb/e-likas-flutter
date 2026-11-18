@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 
 import '../../../core/cache/staff_read_cache.dart';
 import '../../../core/utils/data_freshness_formatter.dart';
+import '../../../core/utils/philippine_time.dart';
 import '../../../core/widgets/error_state.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../outbox/domain/pending_action.dart';
@@ -25,6 +26,69 @@ class SituationStatusOption {
   final bool maySet;
 }
 
+/// A preemptive or forced evacuation is recorded as an order (backend
+/// cb20427): who ordered it, when, and the server's own summary, e.g.
+/// "Forced evacuation ordered by the City Mayor at 3:00 PM, recorded by
+/// Ana Cruz". Null for a status that is not an order.
+class EvacuationOrder {
+  const EvacuationOrder({this.orderedByLabel, this.orderedAt, this.summary});
+
+  static EvacuationOrder? fromJson(Object? j) {
+    if (j is! Map<String, dynamic>) return null;
+    return EvacuationOrder(
+      orderedByLabel: j['ordered_by_label'] as String?,
+      orderedAt: DateTime.tryParse(j['ordered_at'] as String? ?? ''),
+      summary: j['summary'] as String?,
+    );
+  }
+
+  final String? orderedByLabel;
+  final DateTime? orderedAt;
+  final String? summary;
+
+  /// The server's summary, else "Ordered by {who}, {time}" in Manila time.
+  String text(AppLocalizations l10n) {
+    if ((summary ?? '').isNotEmpty) return summary!;
+    return l10n.orderedByAt(
+      orderedByLabel ?? '',
+      orderedAt == null ? '' : formatShortDateTime(orderedAt!),
+    );
+  }
+}
+
+/// "Ordered by …" under a status, when it is an evacuation order.
+class EvacuationOrderLine extends StatelessWidget {
+  const EvacuationOrderLine({super.key, required this.order});
+
+  final EvacuationOrder? order;
+
+  @override
+  Widget build(BuildContext context) {
+    if (order == null) return const SizedBox.shrink();
+    final theme = Theme.of(context);
+    return Padding(
+      padding: const EdgeInsets.only(top: 4),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Icon(
+            Icons.campaign_outlined,
+            size: 20,
+            color: theme.colorScheme.error,
+          ),
+          const SizedBox(width: 8),
+          Expanded(
+            child: Text(
+              order!.text(AppLocalizations.of(context)),
+              style: theme.textTheme.bodyMedium,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 /// The official's barangay in `GET /gis/situation` (backend map-api.md).
 class OwnSituation {
   const OwnSituation({
@@ -37,7 +101,11 @@ class OwnSituation {
     this.note,
     this.setBy,
     this.setAt,
+    this.order,
   });
+
+  /// Set by CSWD only: the order behind a preemptive or forced status.
+  final EvacuationOrder? order;
 
   final int? eventId;
 
@@ -71,6 +139,7 @@ class OwnSituation {
       setBy: (row['set_by'] as Map<String, dynamic>?)?['name'] as String?,
       setAt: DateTime.tryParse(row['set_at'] as String? ?? '')?.toLocal(),
       mayUpdate: row['may_update'] == true,
+      order: EvacuationOrder.fromJson(row['order']),
       options: [
         for (final s in j['statuses'] as List? ?? const [])
           SituationStatusOption(
@@ -202,6 +271,8 @@ class StaffBarangayPage extends ConsumerWidget {
                               ),
                               style: theme.textTheme.bodySmall,
                             ),
+                          if (queued.isEmpty)
+                            EvacuationOrderLine(order: s.order),
                           if (s.note != null && s.note!.isNotEmpty) ...[
                             const SizedBox(height: 8),
                             Text(s.note!),

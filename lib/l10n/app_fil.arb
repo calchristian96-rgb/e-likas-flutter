@@ -1160,5 +1160,17 @@
   "finalCountCheckDuplicates": "{count, plural, =1{Suriin: 1 posibleng doble.} other{Suriin: {count} posibleng doble.}}",
   "finalCountAfterThis": "Pagkatapos nito, mamarkahang huling entry ang mga bagong lumikas.",
   "finalCountReviewFirst": "Suriin muna",
-  "finalCountSubmitShort": "Ipadala"
+  "finalCountSubmitShort": "Ipadala",
+
+  "orderedByAt": "Iniutos ng {who}, {time}",
+  "cswdOrderRecordTitle": "Itala ang utos na {status} para sa {name} sa {event}?",
+  "cswdOrderWhoOrdered": "Sino ang nag-utos?",
+  "cswdOrderByMayor": "Ang City Mayor",
+  "cswdOrderByCdrrmo": "CDRRMO",
+  "cswdOrderByOther": "Iba pa",
+  "cswdOrderByOtherName": "Pangalan ng nag-utos",
+  "cswdOrderWhen": "Kailan?",
+  "cswdOrderNow": "Ngayon",
+  "cswdOrderChangeTime": "Mas maaga ngayong araw",
+  "cswdOrderRecord": "Itala ang utos"
 }

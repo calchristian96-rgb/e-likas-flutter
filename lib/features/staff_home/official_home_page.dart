@@ -239,6 +239,7 @@ class _QuickStatusCard extends ConsumerWidget {
             label: label,
             color: barangayStatusColor(context, s.status),
           ),
+          if (queued.isEmpty) EvacuationOrderLine(order: s.order),
           if (s.open && s.mayUpdate && quick.isNotEmpty) ...[
             const SizedBox(height: 12),
             Wrap(

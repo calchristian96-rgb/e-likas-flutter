@@ -3073,5 +3073,17 @@
   "finalCountCheckDuplicates": "{count, plural, =1{Check: 1 possible duplicate.} other{Check: {count} possible duplicates.}}",
   "finalCountAfterThis": "After this, new evacuees are marked as late entries.",
   "finalCountReviewFirst": "Review first",
-  "finalCountSubmitShort": "Submit"
+  "finalCountSubmitShort": "Submit",
+
+  "orderedByAt": "Ordered by {who}, {time}",
+  "cswdOrderRecordTitle": "Record a {status} order for {name} in {event}?",
+  "cswdOrderWhoOrdered": "Who ordered it?",
+  "cswdOrderByMayor": "The City Mayor",
+  "cswdOrderByCdrrmo": "CDRRMO",
+  "cswdOrderByOther": "Someone else",
+  "cswdOrderByOtherName": "Name who ordered it",
+  "cswdOrderWhen": "When?",
+  "cswdOrderNow": "Now",
+  "cswdOrderChangeTime": "Earlier today",
+  "cswdOrderRecord": "Record order"
 }

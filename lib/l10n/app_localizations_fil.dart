@@ -3520,4 +3520,41 @@ class AppLocalizationsFil extends AppLocalizations {
 
   @override
   String get finalCountSubmitShort => 'Ipadala';
+
+  @override
+  String orderedByAt(String who, String time) {
+    return 'Iniutos ng $who, $time';
+  }
+
+  @override
+  String cswdOrderRecordTitle(String status, String name, String event) {
+    return 'Itala ang utos na $status para sa $name sa $event?';
+  }
+
+  @override
+  String get cswdOrderWhoOrdered => 'Sino ang nag-utos?';
+
+  @override
+  String get cswdOrderByMayor => 'Ang City Mayor';
+
+  @override
+  String get cswdOrderByCdrrmo => 'CDRRMO';
+
+  @override
+  String get cswdOrderByOther => 'Iba pa';
+
+  @override
+  String get cswdOrderByOtherName => 'Pangalan ng nag-utos';
+
+  @override
+  String get cswdOrderWhen => 'Kailan?';
+
+  @override
+  String get cswdOrderNow => 'Ngayon';
+
+  @override
+  String get cswdOrderChangeTime => 'Mas maaga ngayong araw';
+
+  @override
+  String get cswdOrderRecord => 'Itala ang utos';
 }

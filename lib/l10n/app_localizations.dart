@@ -5769,6 +5769,72 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Submit'**
   String get finalCountSubmitShort;
+
+  /// No description provided for @orderedByAt.
+  ///
+  /// In en, this message translates to:
+  /// **'Ordered by {who}, {time}'**
+  String orderedByAt(String who, String time);
+
+  /// No description provided for @cswdOrderRecordTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Record a {status} order for {name} in {event}?'**
+  String cswdOrderRecordTitle(String status, String name, String event);
+
+  /// No description provided for @cswdOrderWhoOrdered.
+  ///
+  /// In en, this message translates to:
+  /// **'Who ordered it?'**
+  String get cswdOrderWhoOrdered;
+
+  /// No description provided for @cswdOrderByMayor.
+  ///
+  /// In en, this message translates to:
+  /// **'The City Mayor'**
+  String get cswdOrderByMayor;
+
+  /// No description provided for @cswdOrderByCdrrmo.
+  ///
+  /// In en, this message translates to:
+  /// **'CDRRMO'**
+  String get cswdOrderByCdrrmo;
+
+  /// No description provided for @cswdOrderByOther.
+  ///
+  /// In en, this message translates to:
+  /// **'Someone else'**
+  String get cswdOrderByOther;
+
+  /// No description provided for @cswdOrderByOtherName.
+  ///
+  /// In en, this message translates to:
+  /// **'Name who ordered it'**
+  String get cswdOrderByOtherName;
+
+  /// No description provided for @cswdOrderWhen.
+  ///
+  /// In en, this message translates to:
+  /// **'When?'**
+  String get cswdOrderWhen;
+
+  /// No description provided for @cswdOrderNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Now'**
+  String get cswdOrderNow;
+
+  /// No description provided for @cswdOrderChangeTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Earlier today'**
+  String get cswdOrderChangeTime;
+
+  /// No description provided for @cswdOrderRecord.
+  ///
+  /// In en, this message translates to:
+  /// **'Record order'**
+  String get cswdOrderRecord;
 }
 
 class _AppLocalizationsDelegate
