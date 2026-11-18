@@ -7,6 +7,7 @@ import 'package:elikas_mobile/features/staff_auth/domain/entities/staff_session.
 import 'package:flutter_riverpod/misc.dart' show Override;
 
 import 'fake_staff_auth.dart';
+import 'transfer_fixtures.dart';
 
 /// Staff reads answered from [answers] by path (query ignored); any
 /// other path fails as if offline with nothing saved.
@@ -96,6 +97,37 @@ Map<String, dynamic> _section(Map<String, dynamic> data) => {
 /// What the barangay official's and CSWDO's homes read, shaped like the
 /// backend (main b0ff476).
 final homeAnswers = <String, Map<String, dynamic>>{
+  '/private-house-families': {
+    'evacuation_event': _event,
+    'barangays': [
+      {
+        'barangay': {'id': 13, 'name': 'Binatagan'},
+        'families': 2,
+        'persons': 7,
+      },
+    ],
+    'families': [
+      {
+        'id': 3601,
+        'label': 'Rosa Santos',
+        'member_count': 3,
+        'host_name': 'Carmen Reyes',
+        'host_address': 'Zone 3, near the chapel',
+        'host_purok': {'id': 8, 'name': 'Purok 2'},
+        'incomplete': true,
+      },
+      {
+        'id': 3602,
+        'label': 'Lito Cruz',
+        'member_count': 4,
+        'host_name': 'Nena Cruz',
+        'host_address': null,
+        'host_purok': {'id': 7, 'name': 'Purok 1'},
+        'incomplete': false,
+      },
+    ],
+  },
+  '/transfer-requests': transferRequestsAnswer,
   '/dashboard/city': {
     'actions': {'transfer_requests_pending': 2, 'count_submissions_pending': 3},
   },

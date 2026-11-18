@@ -170,6 +170,8 @@ void main() {
         ('relief_boxes', '/staff/relief/round/1', official, const []),
         ('relief_overview', '/staff/relief', official, const []),
         ('cswd_barangays', '/staff/barangays', cswd, const []),
+        ('transfers', '/staff/home/transfers', official, const []),
+        ('private_houses', '/staff/home/private-houses/13', official, const []),
         ('cswd_barangay_detail', '/staff/barangays/13', cswd, const []),
         ('notifications', '/staff/home/notifications', cswd, const []),
       ]) {

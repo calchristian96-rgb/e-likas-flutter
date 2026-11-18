@@ -13,6 +13,31 @@ import 'harness.dart';
 void main() {
   setUpAll(loadFonts);
 
+  // Step 3 with a private house (Part 1).
+  testWidgets('register step 3, private house', (tester) async {
+    SharedPreferences.setMockInitialValues({
+      'elikas.registerDraft.4': jsonEncode({
+        ...registerDraft,
+        'displacement_type': 'outside_center',
+        'host_name': 'Carmen Reyes',
+        'host_address': 'Zone 3, near the chapel',
+        'host_purok_id': 8,
+      }),
+    });
+    await shoot(
+      tester,
+      const RegisterFamilyPage(),
+      'register_step3_private',
+      overrides: registerOverrides,
+      before: (tester) async {
+        for (var i = 0; i < 2; i++) {
+          await tester.tap(find.text('Next'));
+          await tester.pumpAndSettle();
+        }
+      },
+    );
+  });
+
   for (final scale in [1.0, 1.3]) {
     for (var step = 0; step < 4; step++) {
       testWidgets('register step ${step + 1} at $scale', (tester) async {

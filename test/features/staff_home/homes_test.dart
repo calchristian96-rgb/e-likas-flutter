@@ -81,7 +81,10 @@ void main() {
     // GET /dashboard/city actions.transfer_requests_pending.
     expect(find.text('2 transfer requests waiting'), findsOneWidget);
     // Unread notifications on the bell.
-    expect(find.text('2'), findsOneWidget);
+    expect(
+      find.descendant(of: find.byType(Badge), matching: find.text('2')),
+      findsOneWidget,
+    );
     // Not the official's buttons.
     expect(find.text('Register family'), findsNothing);
   });
