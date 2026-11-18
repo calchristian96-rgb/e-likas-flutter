@@ -3802,4 +3802,7 @@ class AppLocalizationsBcl extends AppLocalizations {
     );
     return '$_temp0';
   }
+
+  @override
+  String get pressBackAgainToExit => 'Press back again to exit';
 }

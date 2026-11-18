@@ -1240,5 +1240,7 @@
   "capacityOccupancyUnknown": "{occupancy} / – (hindi alam ang kapasidad)",
   "capacityBasisPeak": "Tinantiya mula sa pinakamataas noong 2025",
   "capacityBasisMedian": "Tinantiya: median ng parehong uri ng center",
-  "cswdTransfersWaiting": "{count, plural, =1{1 kahilingan sa paglipat ang naghihintay} other{{count} kahilingan sa paglipat ang naghihintay}}"
+  "cswdTransfersWaiting": "{count, plural, =1{1 kahilingan sa paglipat ang naghihintay} other{{count} kahilingan sa paglipat ang naghihintay}}",
+
+  "pressBackAgainToExit": "Pindutin ulit ang back para lumabas"
 }

@@ -6224,6 +6224,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{count, plural, =1{1 transfer request waiting} other{{count} transfer requests waiting}}'**
   String cswdTransfersWaiting(int count);
+
+  /// No description provided for @pressBackAgainToExit.
+  ///
+  /// In en, this message translates to:
+  /// **'Press back again to exit'**
+  String get pressBackAgainToExit;
 }
 
 class _AppLocalizationsDelegate

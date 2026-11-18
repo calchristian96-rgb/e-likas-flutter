@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+
+import '../../core/widgets/shell_back_handler.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../l10n/app_localizations.dart';
@@ -94,24 +96,30 @@ class StaffShell extends StatelessWidget {
             navigationShell.goBranch(tabs.first.branch);
           });
         }
-        return Scaffold(
-          // Syncs on open, on reconnect and on resume (C15).
-          body: StaffAutoSync(child: navigationShell),
-          bottomNavigationBar: NavigationBar(
-            selectedIndex: selected,
-            labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
-            onDestinationSelected: (i) => navigationShell.goBranch(
-              tabs[i].branch,
-              initialLocation: tabs[i].branch == navigationShell.currentIndex,
+        // Back on a tab's first screen: to Home, then "press again to
+        // exit" (Home is the first tab every account has).
+        return ShellBackHandler(
+          navigationShell: navigationShell,
+          homeBranch: tabs.first.branch,
+          child: Scaffold(
+            // Syncs on open, on reconnect and on resume (C15).
+            body: StaffAutoSync(child: navigationShell),
+            bottomNavigationBar: NavigationBar(
+              selectedIndex: selected,
+              labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
+              onDestinationSelected: (i) => navigationShell.goBranch(
+                tabs[i].branch,
+                initialLocation: tabs[i].branch == navigationShell.currentIndex,
+              ),
+              destinations: [
+                for (final t in tabs)
+                  NavigationDestination(
+                    icon: Icon(t.icon),
+                    selectedIcon: Icon(t.selectedIcon),
+                    label: t.label(l10n),
+                  ),
+              ],
             ),
-            destinations: [
-              for (final t in tabs)
-                NavigationDestination(
-                  icon: Icon(t.icon),
-                  selectedIcon: Icon(t.selectedIcon),
-                  label: t.label(l10n),
-                ),
-            ],
           ),
         );
       },

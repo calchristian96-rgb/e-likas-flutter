@@ -3841,4 +3841,7 @@ class AppLocalizationsFil extends AppLocalizations {
     );
     return '$_temp0';
   }
+
+  @override
+  String get pressBackAgainToExit => 'Pindutin ulit ang back para lumabas';
 }

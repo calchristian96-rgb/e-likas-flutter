@@ -233,7 +233,7 @@ class _CenterTile extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         InkWell(
-          onTap: () => context.go('/nearest-center'),
+          onTap: () => context.push('/nearest-center'),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

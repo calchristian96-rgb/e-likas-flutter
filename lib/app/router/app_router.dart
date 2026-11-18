@@ -45,6 +45,7 @@ import '../../features/private_houses/private_houses.dart';
 import '../../features/transfers/transfers.dart';
 import '../../features/staff_home/cswd_home_page.dart';
 import '../../features/staff_home/staff_home_page.dart';
+import '../../core/widgets/shell_back_handler.dart';
 import '../../features/staff_shell/staff_shell.dart';
 import '../../features/staff_workspace/presentation/pages/staff_workspace_page.dart';
 import '../../l10n/app_localizations.dart';
@@ -264,56 +265,61 @@ class _AppShellState extends ConsumerState<AppShell>
 
     final theme = Theme.of(context);
     final l10n = AppLocalizations.of(context);
-    return Scaffold(
-      body: widget.navigationShell,
-      // A subtle top border + shadow on the nav surface itself, layered
-      // on top of NavigationBarTheme's brand colors/indicator pill
-      // (see AppTheme) — purely cosmetic, the destinations/routing
-      // below are untouched.
-      bottomNavigationBar: DecoratedBox(
-        decoration: BoxDecoration(
-          color: theme.colorScheme.surface,
-          border: Border(top: BorderSide(color: theme.colorScheme.outline)),
-          boxShadow: [
-            BoxShadow(
-              color: theme.colorScheme.shadow.withValues(alpha: 0.05),
-              blurRadius: 8,
-              offset: const Offset(0, -2),
-            ),
-          ],
-        ),
-        child: NavigationBar(
-          selectedIndex: widget.navigationShell.currentIndex,
-          onDestinationSelected: widget.navigationShell.goBranch,
-          // Not const any more: labels now come from AppLocalizations,
-          // which varies by the resident's selected language.
-          destinations: [
-            NavigationDestination(
-              icon: const Icon(Icons.home_outlined),
-              selectedIcon: const Icon(Icons.home),
-              label: l10n.navHome,
-            ),
-            NavigationDestination(
-              icon: const Icon(Icons.notifications_outlined),
-              selectedIcon: const Icon(Icons.notifications),
-              label: l10n.navAlerts,
-            ),
-            NavigationDestination(
-              icon: const Icon(Icons.map_outlined),
-              selectedIcon: const Icon(Icons.map),
-              label: l10n.navMap,
-            ),
-            NavigationDestination(
-              icon: const Icon(Icons.phone_in_talk_outlined),
-              selectedIcon: const Icon(Icons.phone_in_talk),
-              label: l10n.navHotlines,
-            ),
-            NavigationDestination(
-              icon: const Icon(Icons.settings_outlined),
-              selectedIcon: const Icon(Icons.settings),
-              label: l10n.navSettings,
-            ),
-          ],
+    // Back on a tab's first screen: to Home, then "press again to exit".
+    return ShellBackHandler(
+      navigationShell: widget.navigationShell,
+      homeBranch: 0,
+      child: Scaffold(
+        body: widget.navigationShell,
+        // A subtle top border + shadow on the nav surface itself, layered
+        // on top of NavigationBarTheme's brand colors/indicator pill
+        // (see AppTheme) — purely cosmetic, the destinations/routing
+        // below are untouched.
+        bottomNavigationBar: DecoratedBox(
+          decoration: BoxDecoration(
+            color: theme.colorScheme.surface,
+            border: Border(top: BorderSide(color: theme.colorScheme.outline)),
+            boxShadow: [
+              BoxShadow(
+                color: theme.colorScheme.shadow.withValues(alpha: 0.05),
+                blurRadius: 8,
+                offset: const Offset(0, -2),
+              ),
+            ],
+          ),
+          child: NavigationBar(
+            selectedIndex: widget.navigationShell.currentIndex,
+            onDestinationSelected: widget.navigationShell.goBranch,
+            // Not const any more: labels now come from AppLocalizations,
+            // which varies by the resident's selected language.
+            destinations: [
+              NavigationDestination(
+                icon: const Icon(Icons.home_outlined),
+                selectedIcon: const Icon(Icons.home),
+                label: l10n.navHome,
+              ),
+              NavigationDestination(
+                icon: const Icon(Icons.notifications_outlined),
+                selectedIcon: const Icon(Icons.notifications),
+                label: l10n.navAlerts,
+              ),
+              NavigationDestination(
+                icon: const Icon(Icons.map_outlined),
+                selectedIcon: const Icon(Icons.map),
+                label: l10n.navMap,
+              ),
+              NavigationDestination(
+                icon: const Icon(Icons.phone_in_talk_outlined),
+                selectedIcon: const Icon(Icons.phone_in_talk),
+                label: l10n.navHotlines,
+              ),
+              NavigationDestination(
+                icon: const Icon(Icons.settings_outlined),
+                selectedIcon: const Icon(Icons.settings),
+                label: l10n.navSettings,
+              ),
+            ],
+          ),
         ),
       ),
     );

@@ -1949,5 +1949,7 @@
   "capacityBasisPeak": "Estimated from the 2025 peak",
   "capacityBasisMedian": "Estimated: median of the same type of center",
   "cswdTransfersWaiting": "{count, plural, =1{1 transfer request waiting} other{{count} transfer requests waiting}}",
-  "@cswdTransfersWaiting": {"placeholders":{"count":{"type":"int"}}}
+  "@cswdTransfersWaiting": {"placeholders":{"count":{"type":"int"}}},
+
+  "pressBackAgainToExit": "Press back again to exit"
 }
