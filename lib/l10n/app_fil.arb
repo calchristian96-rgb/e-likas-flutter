@@ -1247,5 +1247,7 @@
   "yourAreaTitle": "Ang lugar mo: Brgy. {name}",
   "yourAreaStatusUnavailable": "Wala pang status. Hilahin pababa para i-refresh kapag online.",
   "staffBannerSignedIn": "Naka-login bilang staff: {name}",
-  "staffBannerBack": "Staff Mode"
+  "staffBannerBack": "Staff Mode",
+
+  "noSavedCopyYet": "Wala pang naka-save sa phone na ito: kumonekta minsan para ma-save ito para sa offline."
 }

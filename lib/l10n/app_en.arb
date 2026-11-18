@@ -1958,5 +1958,7 @@
   "yourAreaStatusUnavailable": "Status not available yet. Pull down to refresh when online.",
   "staffBannerSignedIn": "Signed in as staff: {name}",
   "@staffBannerSignedIn": {"placeholders":{"name":{"type":"String"}}},
-  "staffBannerBack": "Staff Mode"
+  "staffBannerBack": "Staff Mode",
+
+  "noSavedCopyYet": "Nothing is saved on this phone yet: connect once to save it for offline use."
 }

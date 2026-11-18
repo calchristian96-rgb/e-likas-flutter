@@ -3861,4 +3861,8 @@ class AppLocalizationsFil extends AppLocalizations {
 
   @override
   String get staffBannerBack => 'Staff Mode';
+
+  @override
+  String get noSavedCopyYet =>
+      'Wala pang naka-save sa phone na ito: kumonekta minsan para ma-save ito para sa offline.';
 }

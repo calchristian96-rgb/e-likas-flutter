@@ -1,6 +1,7 @@
 import '../../../../core/connectivity/connectivity_service.dart';
 import '../../../../core/error/failure.dart';
 import '../../../../core/error/result.dart';
+import '../../../../core/network/fetch_within_budget.dart';
 import '../../../../core/sync/sync_timestamps.dart';
 import '../../../../core/utils/distance_calculator.dart';
 import '../../domain/entities/center_facility.dart';
@@ -31,15 +32,26 @@ class EvacuationCentersRepositoryImpl implements EvacuationCentersRepository {
   Future<Result<EvacuationCentersSnapshot>> getAllCenters() async {
     if (await _connectivity.hasConnection) {
       try {
-        final models = await _remote.getAllCenters();
-        await _local.replaceCenters(models);
-        await _syncTimestamps.markSynced(SyncDomain.evacuationCenters);
-        return Success(
-          EvacuationCentersSnapshot(
-            centers: models.map((m) => m.toEntity()).toList(),
-            isFromCache: false,
-          ),
+        // A slow server never holds back the saved list for long.
+        final models = await fetchWithinBudget(
+          () async {
+            final fresh = await _remote.getAllCenters();
+            await _local.replaceCenters(fresh);
+            await _syncTimestamps.markSynced(SyncDomain.evacuationCenters);
+            return fresh;
+          },
+          hasSaved:
+              await _syncTimestamps.getSynced(SyncDomain.evacuationCenters) !=
+              null,
         );
+        if (models != null) {
+          return Success(
+            EvacuationCentersSnapshot(
+              centers: models.map((m) => m.toEntity()).toList(),
+              isFromCache: false,
+            ),
+          );
+        }
       } catch (_) {
         // Network reported as available but the request still failed
         // — fall through to cache rather than surface an error the
@@ -102,29 +114,14 @@ class EvacuationCentersRepositoryImpl implements EvacuationCentersRepository {
     // `EvacuationCenter::nearestTo()`'s own explicit `WHERE latitude
     // IS NOT NULL AND longitude IS NOT NULL` guard — so this keeps the
     // offline fallback's behavior consistent with the online path.
-    final withDistance =
-        cached
-            .map((m) => m.toEntity())
-            // Same rule as the server's nearest search: a place to go
-            // now is active or on standby, never full or closed.
-            .where(
-              (entity) =>
-                  entity.hasCoordinates &&
-                  (entity.status == 'active' || entity.status == 'on_standby'),
-            )
-            .map((entity) {
-              final meters = DistanceCalculator.metersBetween(
-                lat1: latitude,
-                lon1: longitude,
-                lat2: entity.latitude!,
-                lon2: entity.longitude!,
-              );
-              return entity.copyWithDistance(meters);
-            })
-            .toList()
-          ..sort((a, b) => a.distanceMeters!.compareTo(b.distanceMeters!));
-
-    return Success(withDistance.take(limit).toList());
+    return Success(
+      rankNearestCenters(
+        [for (final m in cached) m.toEntity()],
+        latitude: latitude,
+        longitude: longitude,
+        limit: limit,
+      ),
+    );
   }
 
   /// Live-only, no cache/offline fallback — deliberately simpler than
@@ -176,4 +173,29 @@ class EvacuationCentersRepositoryImpl implements EvacuationCentersRepository {
       return false;
     }
   }
+}
+
+/// The [limit] centers nearest to a position, each with its distance.
+/// Same rule as the server's nearest search: a place to go now is active
+/// or on standby, never full or closed, and needs a map location.
+List<EvacuationCenter> rankNearestCenters(
+  List<EvacuationCenter> centers, {
+  required double latitude,
+  required double longitude,
+  int limit = 10,
+}) {
+  final ranked = [
+    for (final c in centers)
+      if (c.hasCoordinates &&
+          (c.status == 'active' || c.status == 'on_standby'))
+        c.copyWithDistance(
+          DistanceCalculator.metersBetween(
+            lat1: latitude,
+            lon1: longitude,
+            lat2: c.latitude!,
+            lon2: c.longitude!,
+          ),
+        ),
+  ]..sort((a, b) => a.distanceMeters!.compareTo(b.distanceMeters!));
+  return ranked.take(limit).toList();
 }

@@ -3822,4 +3822,8 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get staffBannerBack => 'Staff Mode';
+
+  @override
+  String get noSavedCopyYet =>
+      'Nothing is saved on this phone yet: connect once to save it for offline use.';
 }

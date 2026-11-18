@@ -77,10 +77,7 @@ class LatestAlertCard extends StatelessWidget {
       );
     }
     if (errorMessage != null) {
-      return ErrorState(
-        message: '${l10n.couldNotLoadAlerts} — $errorMessage',
-        onRetry: onRetry,
-      );
+      return ErrorState(message: l10n.couldNotLoadAlerts, onRetry: onRetry);
     }
     final currentAlert = alert;
     if (currentAlert == null) {

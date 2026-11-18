@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:elikas_mobile/core/error/friendly_error.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/widgets/empty_state.dart';
@@ -200,7 +201,11 @@ class _EvacuationCentersListPageState
                 loading: () => const Center(child: CircularProgressIndicator()),
                 error: (error, _) => _CenteredInScrollView(
                   child: ErrorState(
-                    message: '${l10n.couldNotLoadCenters} — $error',
+                    message: friendlyLoadError(
+                      l10n,
+                      l10n.couldNotLoadCenters,
+                      error,
+                    ),
                     onRetry: () =>
                         ref.invalidate(allEvacuationCentersSnapshotProvider),
                   ),

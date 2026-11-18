@@ -1,5 +1,6 @@
 import '../../../../core/widgets/ui_kit.dart';
 import 'package:flutter/material.dart';
+import 'package:elikas_mobile/core/error/friendly_error.dart';
 import 'package:elikas_mobile/features/evacuation_centers/presentation/widgets/capacity_text.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -63,7 +64,7 @@ class EvacuationCenterDetailsPage extends ConsumerWidget {
           child: Padding(
             padding: const EdgeInsets.all(24),
             child: ErrorState(
-              message: '${l10n.couldNotLoadCenters} — $error',
+              message: friendlyLoadError(l10n, l10n.couldNotLoadCenters, error),
               onRetry: () => ref.invalidate(centerByIdProvider(centerId)),
             ),
           ),

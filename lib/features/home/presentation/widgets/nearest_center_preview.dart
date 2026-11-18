@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:elikas_mobile/core/error/friendly_error.dart';
 import 'package:elikas_mobile/features/evacuation_centers/presentation/widgets/capacity_text.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -158,8 +159,8 @@ class _NearestResult extends ConsumerWidget {
         icon: Icons.location_searching,
       ),
       // The resident's words only, never the technical error.
-      AsyncError() => ErrorState(
-        message: l10n.couldNotLoadNearbyCenters,
+      AsyncError(:final error) => ErrorState(
+        message: friendlyLoadError(l10n, l10n.couldNotLoadNearbyCenters, error),
         onRetry: () => ref.invalidate(
           nearestEvacuationCentersProvider(latitude, longitude),
         ),

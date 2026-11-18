@@ -6,6 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../../core/connectivity/connectivity_service.dart';
 import '../../../core/database/resident_database.dart';
 import '../../../core/network/api_client.dart';
+import '../../../core/network/fetch_within_budget.dart';
 import '../../../core/sync/sync_timestamps.dart';
 import '../domain/barangay_status.dart';
 
@@ -33,14 +34,23 @@ class BarangayStatusRepository {
   Future<BarangayStatusBoard> getBoard() async {
     if (await _connectivity.hasConnection) {
       try {
-        final response = await _api.get(path);
-        final data =
-            (response.data as Map<String, dynamic>)['data']
-                as Map<String, dynamic>;
-        final board = parse(data);
-        await _save(board);
-        await _syncTimestamps.markSynced(SyncDomain.barangayStatus);
-        return board;
+        // A slow server never holds back the saved board for long.
+        final board = await fetchWithinBudget(
+          () async {
+            final response = await _api.get(path);
+            final data =
+                (response.data as Map<String, dynamic>)['data']
+                    as Map<String, dynamic>;
+            final fresh = parse(data);
+            await _save(fresh);
+            await _syncTimestamps.markSynced(SyncDomain.barangayStatus);
+            return fresh;
+          },
+          hasSaved:
+              await _syncTimestamps.getSynced(SyncDomain.barangayStatus) !=
+              null,
+        );
+        if (board != null) return board;
       } catch (_) {
         // Fall back to the saved copy below.
       }

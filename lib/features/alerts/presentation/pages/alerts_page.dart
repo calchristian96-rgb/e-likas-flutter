@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:elikas_mobile/core/error/friendly_error.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
-import '../../../../core/error/failure.dart';
 import '../../../../core/widgets/empty_state.dart';
 import '../../../../core/widgets/error_state.dart';
 import '../../../../core/widgets/filter_chip_row.dart';
@@ -305,12 +305,8 @@ class _AlertsListPageState extends ConsumerState<AlertsListPage> {
     );
   }
 
-  String _describeError(Object error, AppLocalizations l10n) {
-    if (error is Failure) {
-      return '${l10n.couldNotLoadAlerts} — ${error.message}';
-    }
-    return '${l10n.couldNotLoadAlerts} — $error';
-  }
+  String _describeError(Object error, AppLocalizations l10n) =>
+      friendlyLoadError(l10n, l10n.couldNotLoadAlerts, error);
 }
 
 class _SortButton extends StatelessWidget {

@@ -6254,6 +6254,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Staff Mode'**
   String get staffBannerBack;
+
+  /// No description provided for @noSavedCopyYet.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing is saved on this phone yet: connect once to save it for offline use.'**
+  String get noSavedCopyYet;
 }
 
 class _AppLocalizationsDelegate

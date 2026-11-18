@@ -1,6 +1,7 @@
 import '../../../../core/connectivity/connectivity_service.dart';
 import '../../../../core/error/failure.dart';
 import '../../../../core/error/result.dart';
+import '../../../../core/network/fetch_within_budget.dart';
 import '../../../../core/sync/sync_timestamps.dart';
 import '../../domain/entities/alert.dart';
 import '../../domain/repositories/alerts_repository.dart';
@@ -27,13 +28,22 @@ class AlertsRepositoryImpl implements AlertsRepository {
   Future<Result<AlertsFeed>> getAlerts({int limit = 20}) async {
     if (await _connectivity.hasConnection) {
       try {
-        final page = await _remote.getAlerts(perPage: limit);
-        await _local.cacheAlerts(page.alerts);
-        await _syncTimestamps.markSynced(SyncDomain.alerts);
-        return Success((
-          alerts: page.alerts.map((m) => m.toEntity()).toList(),
-          totalCount: page.totalCount,
-        ));
+        // A slow server never holds back the saved alerts for long.
+        final page = await fetchWithinBudget(
+          () async {
+            final fresh = await _remote.getAlerts(perPage: limit);
+            await _local.cacheAlerts(fresh.alerts);
+            await _syncTimestamps.markSynced(SyncDomain.alerts);
+            return fresh;
+          },
+          hasSaved: await _syncTimestamps.getSynced(SyncDomain.alerts) != null,
+        );
+        if (page != null) {
+          return Success((
+            alerts: page.alerts.map((m) => m.toEntity()).toList(),
+            totalCount: page.totalCount,
+          ));
+        }
       } catch (_) {
         // Network reported as available but the request still failed
         // — fall through to cache rather than surface an error the

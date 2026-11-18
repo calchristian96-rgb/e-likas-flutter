@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:elikas_mobile/core/error/friendly_error.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -82,7 +83,11 @@ class EvacuationMapPage extends ConsumerWidget {
               loading: () => const Center(child: CircularProgressIndicator()),
               error: (error, _) => Center(
                 child: ErrorState(
-                  message: '${l10n.couldNotLoadMapData} — $error',
+                  message: friendlyLoadError(
+                    l10n,
+                    l10n.couldNotLoadMapData,
+                    error,
+                  ),
                   icon: Icons.map_outlined,
                   onRetry: () => ref.invalidate(mapDataProvider),
                 ),

@@ -1,11 +1,11 @@
 import '../../../../core/widgets/ui_kit.dart';
 import 'package:flutter/material.dart';
+import 'package:elikas_mobile/core/error/friendly_error.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:share_plus/share_plus.dart' show ShareParams, SharePlus;
 
-import '../../../../core/error/failure.dart';
 import '../../../../core/widgets/error_state.dart';
 import '../../../../core/widgets/status_badge.dart';
 import '../../../../l10n/app_localizations.dart';
@@ -58,10 +58,8 @@ class AlertDetailsPage extends ConsumerWidget {
     );
   }
 
-  String _describeError(Object error, AppLocalizations l10n) {
-    if (error is Failure) return error.message;
-    return '${l10n.couldNotLoadAlerts} — $error';
-  }
+  String _describeError(Object error, AppLocalizations l10n) =>
+      friendlyLoadError(l10n, l10n.couldNotLoadAlerts, error);
 
   /// Title + message + date/time, plainly labelled as coming from
   /// E-LIKAS — no location, no device info, nothing beyond what's

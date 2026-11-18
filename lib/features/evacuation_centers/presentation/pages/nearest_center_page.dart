@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:elikas_mobile/core/error/friendly_error.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:go_router/go_router.dart';
@@ -209,7 +210,11 @@ class _NearestCentersBody extends ConsumerWidget {
       loading: () => const Center(child: CircularProgressIndicator()),
       error: (error, _) => _CenteredScrollable(
         child: ErrorState(
-          message: '${l10n.couldNotLoadNearbyCenters} — $error',
+          message: friendlyLoadError(
+            l10n,
+            l10n.couldNotLoadNearbyCenters,
+            error,
+          ),
           onRetry: () => ref.invalidate(
             nearestEvacuationCentersProvider(latitude, longitude),
           ),

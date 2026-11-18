@@ -22,7 +22,7 @@ import '../theme/app_theme.dart';
 class SplashPage extends ConsumerStatefulWidget {
   const SplashPage({super.key});
 
-  static const Duration minimumDisplayDuration = Duration(milliseconds: 1800);
+  static const Duration minimumDisplayDuration = Duration(milliseconds: 800);
 
   @override
   ConsumerState<SplashPage> createState() => _SplashPageState();

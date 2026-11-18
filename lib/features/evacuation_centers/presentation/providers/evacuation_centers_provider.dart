@@ -14,7 +14,6 @@ import '../../domain/entities/evacuation_center.dart';
 import '../../domain/entities/evacuation_centers_snapshot.dart';
 import '../../domain/repositories/evacuation_centers_repository.dart';
 import '../../domain/usecases/get_all_evacuation_centers.dart';
-import '../../domain/usecases/get_nearest_evacuation_centers.dart';
 
 part 'evacuation_centers_provider.g.dart';
 
@@ -90,14 +89,8 @@ Future<List<EvacuationCenter>> nearestEvacuationCenters(
   double latitude,
   double longitude,
 ) async {
-  final repository = ref.watch(evacuationCentersRepositoryProvider);
-  final result = await GetNearestEvacuationCenters(
-    repository,
-  ).call(latitude: latitude, longitude: longitude);
-  return switch (result) {
-    Success(:final value) => value,
-    Failed(:final failure) => throw failure,
-  };
+  final centers = await ref.watch(allEvacuationCentersProvider.future);
+  return rankNearestCenters(centers, latitude: latitude, longitude: longitude);
 }
 
 /// A single center's facilities checklist for the details page's
