@@ -3805,4 +3805,21 @@ class AppLocalizationsBcl extends AppLocalizations {
 
   @override
   String get pressBackAgainToExit => 'Press back again to exit';
+
+  @override
+  String yourAreaTitle(String name) {
+    return 'Your area: Brgy. $name';
+  }
+
+  @override
+  String get yourAreaStatusUnavailable =>
+      'Status not available yet. Pull down to refresh when online.';
+
+  @override
+  String staffBannerSignedIn(String name) {
+    return 'Signed in as staff: $name';
+  }
+
+  @override
+  String get staffBannerBack => 'Staff Mode';
 }

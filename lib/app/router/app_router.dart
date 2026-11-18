@@ -46,6 +46,8 @@ import '../../features/transfers/transfers.dart';
 import '../../features/staff_home/cswd_home_page.dart';
 import '../../features/staff_home/staff_home_page.dart';
 import '../../core/widgets/shell_back_handler.dart';
+import '../../core/widgets/staff_mode_banner.dart';
+import '../../features/staff_auth/presentation/providers/staff_auth_provider.dart';
 import '../../features/staff_shell/staff_shell.dart';
 import '../../features/staff_workspace/presentation/pages/staff_workspace_page.dart';
 import '../../l10n/app_localizations.dart';
@@ -270,7 +272,20 @@ class _AppShellState extends ConsumerState<AppShell>
       navigationShell: widget.navigationShell,
       homeBranch: 0,
       child: Scaffold(
-        body: widget.navigationShell,
+        // Signed-in staff see an amber banner above every resident tab.
+        body: Column(
+          children: [
+            const StaffModeBanner(),
+            Expanded(
+              child: MediaQuery.removePadding(
+                context: context,
+                // The banner already sits under the status bar.
+                removeTop: ref.watch(staffAuthProvider).value != null,
+                child: widget.navigationShell,
+              ),
+            ),
+          ],
+        ),
         // A subtle top border + shadow on the nav surface itself, layered
         // on top of NavigationBarTheme's brand colors/indicator pill
         // (see AppTheme) — purely cosmetic, the destinations/routing

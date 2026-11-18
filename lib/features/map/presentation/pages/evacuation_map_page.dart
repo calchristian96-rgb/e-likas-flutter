@@ -20,6 +20,7 @@ import '../../../../core/widgets/search_field.dart';
 import '../../../../core/widgets/status_badge.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../barangay_status/data/barangay_outlines.dart';
+import '../../../barangay_status/presentation/resident_area.dart';
 import '../../../barangay_status/domain/barangay_status.dart';
 import '../../../barangay_status/presentation/barangay_status_layer.dart';
 import '../../../barangay_status/presentation/barangay_status_providers.dart';
@@ -358,7 +359,9 @@ class _MapViewState extends ConsumerState<_MapView> {
     final l10n = AppLocalizations.of(context);
     final outlines = ref.watch(barangayOutlinesProvider).value;
     final statusBoard = ref.watch(barangayStatusBoardProvider).value;
-    final ownBarangayId = ref.watch(residentBarangayProvider)?.id;
+    final ownBarangayId =
+        ref.watch(residentAreaProvider).value?.id ??
+        ref.watch(residentBarangayProvider)?.id;
     EvacuationCenter? firstPlottableCenter;
     for (final c in widget.centers) {
       if (c.hasCoordinates) {

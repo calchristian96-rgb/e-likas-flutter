@@ -6230,6 +6230,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Press back again to exit'**
   String get pressBackAgainToExit;
+
+  /// No description provided for @yourAreaTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your area: Brgy. {name}'**
+  String yourAreaTitle(String name);
+
+  /// No description provided for @yourAreaStatusUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Status not available yet. Pull down to refresh when online.'**
+  String get yourAreaStatusUnavailable;
+
+  /// No description provided for @staffBannerSignedIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Signed in as staff: {name}'**
+  String staffBannerSignedIn(String name);
+
+  /// No description provided for @staffBannerBack.
+  ///
+  /// In en, this message translates to:
+  /// **'Staff Mode'**
+  String get staffBannerBack;
 }
 
 class _AppLocalizationsDelegate

@@ -3155,5 +3155,10 @@
   "capacityBasisMedian": "Estimated: median of the same type of center",
   "cswdTransfersWaiting": "{count, plural, =1{1 transfer request waiting} other{{count} transfer requests waiting}}",
 
-  "pressBackAgainToExit": "Press back again to exit"
+  "pressBackAgainToExit": "Press back again to exit",
+
+  "yourAreaTitle": "Your area: Brgy. {name}",
+  "yourAreaStatusUnavailable": "Status not available yet. Pull down to refresh when online.",
+  "staffBannerSignedIn": "Signed in as staff: {name}",
+  "staffBannerBack": "Staff Mode"
 }

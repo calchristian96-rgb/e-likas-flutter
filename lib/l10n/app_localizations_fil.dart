@@ -3844,4 +3844,21 @@ class AppLocalizationsFil extends AppLocalizations {
 
   @override
   String get pressBackAgainToExit => 'Pindutin ulit ang back para lumabas';
+
+  @override
+  String yourAreaTitle(String name) {
+    return 'Ang lugar mo: Brgy. $name';
+  }
+
+  @override
+  String get yourAreaStatusUnavailable =>
+      'Wala pang status. Hilahin pababa para i-refresh kapag online.';
+
+  @override
+  String staffBannerSignedIn(String name) {
+    return 'Naka-login bilang staff: $name';
+  }
+
+  @override
+  String get staffBannerBack => 'Staff Mode';
 }

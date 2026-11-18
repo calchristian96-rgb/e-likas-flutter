@@ -12,16 +12,16 @@ import '../../../../core/utils/philippine_time.dart';
 import '../../../../core/widgets/connectivity_badge.dart';
 import '../../../../core/widgets/last_updated_label.dart';
 import '../../../../core/widgets/offline_banner.dart';
+import '../../../../core/widgets/staff_mode_banner.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../alerts/presentation/providers/alerts_summary_provider.dart';
-import '../../../barangay_status/presentation/barangay_status_card.dart';
+import '../../../barangay_status/presentation/resident_area.dart';
 import '../../../evacuation_centers/presentation/providers/evacuation_centers_provider.dart';
 import '../../../settings/presentation/providers/offline_data_provider.dart';
 import '../../../staff_auth/presentation/providers/staff_auth_provider.dart';
 import '../../domain/dashboard_summary.dart';
 import '../providers/home_provider.dart';
 import '../widgets/emergency_status_card.dart';
-import '../widgets/hotlines_quick_card.dart';
 import '../widgets/nearest_center_preview.dart';
 import '../widgets/quick_action_card.dart';
 import '../widgets/section_header.dart';
@@ -167,9 +167,12 @@ class _HomePageState extends ConsumerState<HomePage> {
                       // AsyncValue.error, so the bool result here isn't
                       // needed — this callback's only job is to let the
                       // pull-to-refresh spinner finish.
-                      onRefresh: () => ref
-                          .read(offlineDataOverviewProvider.notifier)
-                          .syncAll(),
+                      onRefresh: () {
+                        ref.invalidate(residentPositionProvider);
+                        return ref
+                            .read(offlineDataOverviewProvider.notifier)
+                            .syncAll();
+                      },
                       child: ListView(
                         physics: const AlwaysScrollableScrollPhysics(),
                         padding: const EdgeInsets.fromLTRB(16, 16, 16, 24),
@@ -189,13 +192,11 @@ class _HomePageState extends ConsumerState<HomePage> {
                             ),
                           ),
                           const SizedBox(height: 16),
-                          const BarangayStatusCard(),
-                          const SizedBox(height: 24),
+                          // Where the phone is now: its barangay's
+                          // status and what to do (hidden without a
+                          // location).
+                          const YourAreaCard(),
                           const NearestCenterPreview(),
-                          const SizedBox(height: 24),
-                          SectionHeader(title: l10n.emergencyHotlines),
-                          const SizedBox(height: 8),
-                          const HotlinesQuickCard(),
                           const SizedBox(height: 24),
                           SectionHeader(title: l10n.quickActions),
                           const SizedBox(height: 8),
@@ -441,19 +442,19 @@ class _StaffSignInButton extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context);
     final signedIn = ref.watch(staffAuthProvider).value != null;
+    final ink = signedIn ? staffModeInk : Colors.white;
     return TextButton.icon(
       onPressed: () => context.go('/staff'),
-      icon: const Icon(Icons.badge_outlined, color: Colors.white, size: 20),
+      icon: Icon(Icons.badge_outlined, color: ink, size: 20),
       label: Text(
         signedIn ? l10n.staffModeButton : l10n.staffSignInButton,
-        style: const TextStyle(
-          color: Colors.white,
-          fontWeight: FontWeight.w600,
-        ),
+        style: TextStyle(color: ink, fontWeight: FontWeight.w700),
       ),
       style: TextButton.styleFrom(
         minimumSize: const Size(48, 48),
-        backgroundColor: Colors.white.withValues(alpha: 0.12),
+        backgroundColor: signedIn
+            ? staffModeAmber
+            : Colors.white.withValues(alpha: 0.12),
         padding: const EdgeInsets.symmetric(horizontal: 12),
       ),
     );

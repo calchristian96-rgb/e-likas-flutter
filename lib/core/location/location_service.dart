@@ -10,6 +10,20 @@ part 'location_service.g.dart';
 /// resident's position asks the same way, once, instead of each screen
 /// reimplementing the enabled/denied/deniedForever branching.
 class LocationService {
+  /// A fix this recent is used at once (the resident has not moved far).
+  static const _recentEnough = Duration(minutes: 5);
+
+  /// How long to wait for a fresh fix before using the last known one.
+  static const _fixTimeLimit = Duration(seconds: 12);
+
+  static Future<Position?> _lastKnown() async {
+    try {
+      return await Geolocator.getLastKnownPosition();
+    } catch (_) {
+      return null;
+    }
+  }
+
   Future<Result<Position>> getCurrentPosition() async {
     final serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
@@ -46,10 +60,18 @@ class LocationService {
       );
     }
 
+    final last = await _lastKnown();
+    if (last != null &&
+        DateTime.now().difference(last.timestamp) < _recentEnough) {
+      return Success(last);
+    }
     try {
-      final position = await Geolocator.getCurrentPosition();
+      final position = await Geolocator.getCurrentPosition(
+        locationSettings: const LocationSettings(timeLimit: _fixTimeLimit),
+      );
       return Success(position);
     } catch (_) {
+      if (last != null) return Success(last);
       return const Failed(
         LocationFailure(
           'Could not determine current location.',

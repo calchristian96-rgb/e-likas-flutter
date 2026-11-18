@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/error/result.dart';
-import '../../../../core/location/location_service.dart';
+import '../../../barangay_status/presentation/resident_area.dart';
 import '../../../../core/widgets/empty_state.dart';
 import '../../../../core/widgets/error_state.dart';
 import '../../../../core/widgets/loading_skeleton.dart';
@@ -24,42 +24,31 @@ import 'section_header.dart';
 /// logic, just a condensed presentation of the same result. If location
 /// can't be resolved (services off, permission denied), that's shown
 /// honestly as an unavailable state rather than fabricating a center.
-class NearestCenterPreview extends ConsumerStatefulWidget {
+class NearestCenterPreview extends ConsumerWidget {
   const NearestCenterPreview({super.key});
 
-  @override
-  ConsumerState<NearestCenterPreview> createState() =>
-      _NearestCenterPreviewState();
-}
-
-class _NearestCenterPreviewState extends ConsumerState<NearestCenterPreview> {
-  Result<({double latitude, double longitude})>? _position;
-
-  @override
-  void initState() {
-    super.initState();
-    _requestPosition();
-  }
-
-  Future<void> _requestPosition() async {
-    setState(() => _position = null);
-    final locationService = ref.read(locationServiceProvider);
-    final result = await locationService.getCurrentPosition();
-    if (!mounted) return;
-    setState(() {
-      _position = switch (result) {
-        Success(:final value) => Success((
-          latitude: value.latitude,
-          longitude: value.longitude,
-        )),
-        Failed(:final failure) => Failed(failure),
-      };
-    });
-  }
+  static const _skeleton = Row(
+    children: [
+      LoadingSkeleton(height: 40, width: 40, borderRadius: 10),
+      SizedBox(width: 12),
+      Expanded(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            LoadingSkeleton(height: 14, width: 140),
+            SizedBox(height: 8),
+            LoadingSkeleton(height: 12),
+          ],
+        ),
+      ),
+    ],
+  );
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context);
+    // The same position as the "Your area" card: asked once.
+    final position = ref.watch(residentPositionProvider);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -68,42 +57,20 @@ class _NearestCenterPreviewState extends ConsumerState<NearestCenterPreview> {
         Card(
           child: Padding(
             padding: const EdgeInsets.all(14),
-            child: _buildBody(),
+            child: switch (position.value) {
+              null => _skeleton,
+              Failed() => _UnavailableState(
+                onRetry: () => ref.invalidate(residentPositionProvider),
+              ),
+              Success(:final value) => _NearestResult(
+                latitude: value.latitude,
+                longitude: value.longitude,
+              ),
+            },
           ),
         ),
       ],
     );
-  }
-
-  Widget _buildBody() {
-    final position = _position;
-
-    if (position == null) {
-      return const Row(
-        children: [
-          LoadingSkeleton(height: 40, width: 40, borderRadius: 10),
-          SizedBox(width: 12),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                LoadingSkeleton(height: 14, width: 140),
-                SizedBox(height: 8),
-                LoadingSkeleton(height: 12),
-              ],
-            ),
-          ),
-        ],
-      );
-    }
-
-    return switch (position) {
-      Failed() => _UnavailableState(onRetry: _requestPosition),
-      Success(:final value) => _NearestResult(
-        latitude: value.latitude,
-        longitude: value.longitude,
-      ),
-    };
   }
 }
 
@@ -190,8 +157,9 @@ class _NearestResult extends ConsumerWidget {
         message: l10n.noNearbyEvacuationCenters,
         icon: Icons.location_searching,
       ),
-      AsyncError(:final error) => ErrorState(
-        message: '${l10n.couldNotLoadNearbyCenters} — $error',
+      // The resident's words only, never the technical error.
+      AsyncError() => ErrorState(
+        message: l10n.couldNotLoadNearbyCenters,
         onRetry: () => ref.invalidate(
           nearestEvacuationCentersProvider(latitude, longitude),
         ),

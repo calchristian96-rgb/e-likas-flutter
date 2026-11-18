@@ -52,9 +52,8 @@ GoRouter _router() => GoRouter(
     ),
     GoRoute(
       path: '/detail',
-      builder: (context, state) => Scaffold(
-        appBar: AppBar(title: const Text('Detail screen')),
-      ),
+      builder: (context, state) =>
+          Scaffold(appBar: AppBar(title: const Text('Detail screen'))),
     ),
   ],
 );

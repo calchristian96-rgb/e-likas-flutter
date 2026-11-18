@@ -1242,5 +1242,10 @@
   "capacityBasisMedian": "Tinantiya: median ng parehong uri ng center",
   "cswdTransfersWaiting": "{count, plural, =1{1 kahilingan sa paglipat ang naghihintay} other{{count} kahilingan sa paglipat ang naghihintay}}",
 
-  "pressBackAgainToExit": "Pindutin ulit ang back para lumabas"
+  "pressBackAgainToExit": "Pindutin ulit ang back para lumabas",
+
+  "yourAreaTitle": "Ang lugar mo: Brgy. {name}",
+  "yourAreaStatusUnavailable": "Wala pang status. Hilahin pababa para i-refresh kapag online.",
+  "staffBannerSignedIn": "Naka-login bilang staff: {name}",
+  "staffBannerBack": "Staff Mode"
 }

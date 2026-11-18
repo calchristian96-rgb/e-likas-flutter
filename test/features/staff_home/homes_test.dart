@@ -1,19 +1,9 @@
-import 'package:elikas_mobile/features/barangay_status/domain/barangay_status.dart';
-import 'package:elikas_mobile/features/barangay_status/presentation/barangay_status_card.dart';
-import 'package:elikas_mobile/features/barangay_status/presentation/barangay_status_providers.dart';
-import 'package:elikas_mobile/features/home/presentation/widgets/hotlines_quick_card.dart';
 import 'package:elikas_mobile/features/staff_home/staff_home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../../helpers/fake_staff_auth.dart';
 import '../../helpers/home_fixtures.dart';
-
-class _Chosen extends ResidentBarangayNotifier {
-  @override
-  ResidentBarangay? build() =>
-      const ResidentBarangay(id: 13, name: 'Binatagan');
-}
 
 Future<void> _pumpTall(WidgetTester tester, Widget app) async {
   tester.view.devicePixelRatio = 2;
@@ -87,48 +77,5 @@ void main() {
     );
     // Not the official's buttons.
     expect(find.text('Register family'), findsNothing);
-  });
-
-  testWidgets("the resident home's status card says what to do", (
-    tester,
-  ) async {
-    await tester.pumpWidget(
-      testApp(
-        const Scaffold(body: BarangayStatusCard()),
-        overrides: [
-          residentBarangayProvider.overrideWith(_Chosen.new),
-          barangayStatusBoardProvider.overrideWith(
-            (ref) async => const BarangayStatusBoard(
-              eventName: 'Typhoon Pepito',
-              eventStatus: 'active',
-              barangays: [
-                BarangayStatus(
-                  id: 13,
-                  name: 'Binatagan',
-                  status: 'preemptive_evacuation',
-                  label: 'Preemptive evacuation',
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-    await tester.pumpAndSettle();
-    expect(find.text('Preemptive evacuation'), findsOneWidget);
-    expect(
-      find.text('Preemptive evacuation: go to your evacuation center now.'),
-      findsOneWidget,
-    );
-  });
-
-  testWidgets('the resident home lists hotlines with a call button', (
-    tester,
-  ) async {
-    await tester.pumpWidget(testApp(const Scaffold(body: HotlinesQuickCard())));
-    await tester.pumpAndSettle();
-    expect(find.text('911'), findsOneWidget);
-    expect(find.byIcon(Icons.call), findsNWidgets(3));
-    expect(find.text('All hotlines'), findsOneWidget);
   });
 }

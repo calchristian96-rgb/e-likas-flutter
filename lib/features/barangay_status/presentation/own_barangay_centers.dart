@@ -7,6 +7,17 @@ import '../../../l10n/app_localizations.dart';
 import '../../evacuation_centers/domain/entities/evacuation_center.dart';
 import '../../evacuation_centers/presentation/providers/evacuation_centers_provider.dart';
 import 'barangay_status_providers.dart';
+import 'resident_area.dart';
+
+/// The barangay the resident is in (from the phone's location), else
+/// one chosen on an older version of the app.
+final _ownBarangayProvider = Provider.autoDispose<ResidentBarangay?>((ref) {
+  final area = ref.watch(residentAreaProvider).value;
+  if (area?.id != null) {
+    return ResidentBarangay(id: area!.id!, name: area.name);
+  }
+  return ref.watch(residentBarangayProvider);
+});
 
 /// The approved centers of the resident's own barangay, matched by
 /// `barangay_id` (never by name), by name. Includes centers with no map
@@ -14,7 +25,7 @@ import 'barangay_status_providers.dart';
 /// none today (backend map-api.md).
 final ownBarangayCentersProvider =
     FutureProvider.autoDispose<List<EvacuationCenter>>((ref) async {
-      final own = ref.watch(residentBarangayProvider);
+      final own = ref.watch(_ownBarangayProvider);
       if (own == null) return const [];
       final centers = await ref.watch(allEvacuationCentersProvider.future);
       return [
@@ -30,7 +41,7 @@ class OwnBarangayCentersSection extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final own = ref.watch(residentBarangayProvider);
+    final own = ref.watch(_ownBarangayProvider);
     final centers = ref.watch(ownBarangayCentersProvider).value;
     if (own == null || centers == null || centers.isEmpty) {
       return const SizedBox.shrink();
