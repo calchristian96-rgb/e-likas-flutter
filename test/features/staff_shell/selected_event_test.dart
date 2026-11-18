@@ -96,6 +96,8 @@ void main() {
     );
     await tester.pumpAndSettle();
     expect(find.text('Event: DEMO - Typhoon Drill'), findsOneWidget);
+    // Its status: Monitoring until the first check-in makes it Active.
+    expect(find.text('Active'), findsOneWidget);
 
     await tester.tap(find.text('Change'));
     await tester.pumpAndSettle();

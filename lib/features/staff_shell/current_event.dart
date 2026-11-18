@@ -146,13 +146,21 @@ class StaffEventBar extends ConsumerWidget {
           ),
         ),
         if (current.isDemo) ...[const SizedBox(width: 8), const DemoBadge()],
-        if (!current.isOpen) ...[
-          const SizedBox(width: 8),
-          StatusChip(
-            label: l10n.eventSwitchClosed,
-            color: const Color(0xFF374151),
-          ),
-        ],
+        // Monitoring until the first check-in or an evacuation order
+        // makes it Active (backend EventFlow).
+        const SizedBox(width: 8),
+        StatusChip(
+          label: switch (current.status) {
+            'active' => l10n.eventStatusActive,
+            'monitoring' => l10n.eventStatusMonitoring,
+            _ => l10n.eventSwitchClosed,
+          },
+          color: switch (current.status) {
+            'active' => const Color(0xFFB45309),
+            'monitoring' => const Color(0xFF2563EB),
+            _ => const Color(0xFF374151),
+          },
+        ),
         if (choices > 1)
           TextButton(
             style: TextButton.styleFrom(minimumSize: const Size(48, 48)),

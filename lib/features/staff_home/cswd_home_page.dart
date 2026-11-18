@@ -4,7 +4,6 @@ import 'package:elikas_mobile/features/evacuation_centers/presentation/widgets/c
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../app/theme/app_theme.dart';
 import '../../core/cache/staff_read_cache.dart';
 import '../../core/connectivity/connectivity_service.dart';
 import '../../core/network/staff_api_client.dart';
@@ -97,7 +96,6 @@ class CswdHomePage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context);
-    final theme = Theme.of(context);
     final event = ref.watch(currentStaffEventProvider).value;
     final active = event?.status == 'active';
     final overview = ref.watch(monitoringSectionProvider('overview')).value;
@@ -133,7 +131,6 @@ class CswdHomePage extends ConsumerWidget {
       0,
       (sum, b) => sum + b.families,
     );
-    final warning = theme.extension<AppSemanticColors>()!.warning;
 
     return Scaffold(
       appBar: AppBar(
@@ -157,17 +154,6 @@ class CswdHomePage extends ConsumerWidget {
           padding: pagePadding(context),
           children: [
             const StaffEventBar(),
-            if (event != null) ...[
-              const SizedBox(height: 4),
-              StatusChip(
-                label: switch (event.status) {
-                  'active' => l10n.eventStatusActive,
-                  'monitoring' => l10n.eventStatusMonitoring,
-                  _ => event.status,
-                },
-                color: active ? warning : theme.colorScheme.primary,
-              ),
-            ],
             if (!active) ...[
               const SizedBox(height: 16),
               const _ReadinessCard(),
