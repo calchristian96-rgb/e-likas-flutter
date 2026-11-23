@@ -32,6 +32,26 @@ import '../test/helpers/fake_staff_api.dart';
 import '../test/helpers/fake_staff_auth.dart';
 import '../test/helpers/home_fixtures.dart';
 import 'harness.dart';
+import 'package:elikas_mobile/core/push/push_providers.dart';
+import 'package:elikas_mobile/core/push/push_service.dart';
+
+/// Push stays silent in screenshots: no Firebase, no permission prompt.
+class _SilentPush implements PushBackend {
+  @override
+  Future<void> init() async {}
+  @override
+  Future<bool> requestPermission() async => false;
+  @override
+  Future<void> subscribe(String topic) async {}
+  @override
+  Future<void> unsubscribe(String topic) async {}
+  @override
+  Stream<PushMessage> get onForeground => const Stream.empty();
+  @override
+  Stream<PushMessage> get onOpened => const Stream.empty();
+  @override
+  Future<PushMessage?> initialMessage() async => null;
+}
 
 class _NoSync extends StaffSyncAll {
   _NoSync(super.ref);
@@ -126,7 +146,101 @@ final offlineSafe = <Override>[
   connectivityStatusProvider.overrideWith((ref) => Stream.value(true)),
   staffSyncAllProvider.overrideWith(_NoSync.new),
   staffApiClientProvider.overrideWithValue(FakeStaffApi()),
+  pushServiceProvider.overrideWithValue(PushService(_SilentPush())),
 ];
+
+/// What the 0.4.0 screens read (apps-api-2026-11-22.md sections 3, 5).
+final newAnswers = <String, Map<String, dynamic>>{
+  ...homeAnswers,
+  '/families-to-evacuate': {
+    'summary': {'families': 5, 'persons': 19, 'checked_in': 2},
+    'can': {'manage': true, 'check_in': true},
+    'families': [
+      for (final (id, head, purok, status) in [
+        (1, 'Maria Santos', 3, 'expected'),
+        (2, 'Jose Cruz', 3, 'checked_in'),
+        (3, 'Ana Reyes', 1, 'expected'),
+        (4, 'Lito Bautista', 1, 'checked_in'),
+        (5, 'Rosa Dela Cruz', null, 'expected'),
+      ])
+        {
+          'id': id,
+          'head': head,
+          'members_count': 3 + id % 3,
+          'purok': purok == null
+              ? null
+              : {
+                  'id': purok,
+                  'name': 'Purok $purok',
+                  'is_high_risk': purok == 3,
+                },
+          'status': status,
+          'from_past_event': id == 3,
+        },
+    ],
+  },
+  '/facility-requests': {
+    'data': [
+      {
+        'id': 7,
+        'evacuation_center': {'id': 71, 'name': 'Binatagan Elementary School'},
+        'facility_type': 'toilet_female',
+        'quantity_needed': 10,
+        'quantity_approved': 6,
+        'unit': 'pieces',
+        'status': 'sent',
+        'may_receive': true,
+      },
+      {
+        'id': 8,
+        'evacuation_center': {'id': 71, 'name': 'Binatagan Elementary School'},
+        'item': 'Water containers',
+        'quantity_needed': 20,
+        'status': 'received',
+      },
+    ],
+  },
+  '/facility-requests/suggestions': {
+    'suggestions': [
+      {
+        'evacuation_center': {'id': 72, 'name': 'Binatagan Covered Court'},
+        'facility_type': 'handwashing_facility',
+        'quantity_needed': 3,
+        'unit': 'stations',
+        'reason': 'For a full center: 3 more',
+      },
+    ],
+  },
+  '/monitoring/evacuees': {
+    'evacuation_event': {
+      'id': 24,
+      'name': 'Typhoon Pepito',
+      'status': 'active',
+    },
+    'data': {
+      'barangays': [
+        {
+          'barangay': {'id': 13, 'name': 'Binatagan'},
+          'families': 6,
+          'persons': 22,
+          'list': {'families': 12, 'persons': 47, 'checked_in': 5},
+        },
+        {
+          'barangay': {'id': 49, 'name': 'Tomolin'},
+          'families': 30,
+          'persons': 101,
+          'list': {'families': 32, 'persons': 110, 'checked_in': 28},
+        },
+        {
+          'barangay': {'id': 4, 'name': 'Bay'},
+          'families': 3,
+          'persons': 9,
+          'list': null,
+        },
+      ],
+    },
+  },
+};
 
 OwnCenter _center(int id, String name, String status, int occ, int cap) =>
     OwnCenter(
@@ -160,7 +274,8 @@ final ownCenters = ownCentersProvider.overrideWith(
 void main() {
   setUpAll(loadFonts);
   setUp(() async {
-    SharedPreferences.setMockInitialValues({});
+    // The push permission reason was already shown.
+    SharedPreferences.setMockInitialValues({'push_permission_asked_v1': true});
     await BackendOverrideService.initialize();
     TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
         .setMockMethodCallHandler(
@@ -185,6 +300,22 @@ void main() {
         ('private_houses', '/staff/home/private-houses/13', official, const []),
         ('cswd_barangay_detail', '/staff/barangays/13', cswd, const []),
         ('notifications', '/staff/home/notifications', cswd, const []),
+        // 0.4.0.
+        (
+          'families_to_evacuate',
+          '/staff/home/families-to-evacuate',
+          official,
+          [ownCenters],
+        ),
+        (
+          'facility_requests',
+          '/staff/home/facility-requests',
+          official,
+          [ownCenters],
+        ),
+        ('evacuation_progress', '/staff/home/progress', cswd, const []),
+        ('report_problem', '/staff/more/report', official, const []),
+        ('prepare', '/prepare', null, residentOverrides),
       ]) {
     testWidgets(name, (tester) async {
       await shootRoute(
@@ -193,7 +324,9 @@ void main() {
         location,
         name,
         overrides: [
-          ...(session == null ? signedInAs(null) : homeOverrides(session)),
+          ...(session == null
+              ? signedInAs(null)
+              : homeOverrides(session, answers: newAnswers)),
           ...offlineSafe,
           ...extra,
         ],

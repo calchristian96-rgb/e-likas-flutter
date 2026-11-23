@@ -104,6 +104,8 @@ Future<void> shootRoute(
   tester.view.physicalSize = const Size(720, 1280);
   tester.view.devicePixelRatio = 2;
   addTearDown(tester.view.reset);
+  // Real shadows, as on a phone (tests draw them as solid outlines).
+  debugDisableShadows = false;
   router.go(location);
   await tester.pumpWidget(
     ProviderScope(
@@ -130,8 +132,13 @@ Future<void> shootRoute(
     await tester.pumpAndSettle();
   }
   await precacheImages(tester);
-  await expectLater(
-    find.byType(MaterialApp),
-    matchesGoldenFile('goldens/$name.png'),
-  );
+  try {
+    await expectLater(
+      find.byType(MaterialApp),
+      matchesGoldenFile('goldens/$name.png'),
+    );
+  } finally {
+    // The test framework checks it is back on before tearDown.
+    debugDisableShadows = true;
+  }
 }
