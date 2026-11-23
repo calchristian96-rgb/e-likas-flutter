@@ -4164,4 +4164,116 @@ class AppLocalizationsBcl extends AppLocalizations {
 
   @override
   String get todoOpenCenters => 'Open centers';
+
+  @override
+  String get listTitle => 'Families to evacuate';
+
+  @override
+  String get listNotEvacuees =>
+      'A listed family is not an evacuee: it counts only once it is checked in.';
+
+  @override
+  String get listAdd => 'Add family';
+
+  @override
+  String get listAdded => 'Family added to the list.';
+
+  @override
+  String get listFromPast => 'From past events';
+
+  @override
+  String get listNewFamily => 'New family';
+
+  @override
+  String get listSearchPast => 'Search by name';
+
+  @override
+  String get listNoPastFamilies => 'No family from past events matches.';
+
+  @override
+  String get listFromPastEvent => 'From a past event';
+
+  @override
+  String get listHeadFirstName => 'Head\'s first name';
+
+  @override
+  String get listHeadLastName => 'Head\'s last name';
+
+  @override
+  String get listMembersCount => 'Members, with the head';
+
+  @override
+  String get listPurok => 'Purok';
+
+  @override
+  String get listContactNumber => 'Contact number (optional)';
+
+  @override
+  String get listNote => 'Note (optional)';
+
+  @override
+  String get listCheckedIn => 'Checked in';
+
+  @override
+  String get listCheckedInTag => 'Checked in';
+
+  @override
+  String get listCheckIn => 'Check in';
+
+  @override
+  String listCheckInTitle(String head) {
+    return 'Check in $head';
+  }
+
+  @override
+  String listCheckInQueued(String head) {
+    return '$head: check-in saved. It is sent when online.';
+  }
+
+  @override
+  String listedCheckInSummary(String head, String place) {
+    return 'Check in $head at $place';
+  }
+
+  @override
+  String get listAtCenter => 'Evacuation center';
+
+  @override
+  String get listHostName => 'Host\'s name';
+
+  @override
+  String get listHostPurok => 'Host\'s purok';
+
+  @override
+  String get listHostAddress => 'Host\'s address';
+
+  @override
+  String get listHighRisk => 'High risk';
+
+  @override
+  String get listHighRiskPuroks => 'High-risk puroks';
+
+  @override
+  String get listHighRiskHint =>
+      'Mark the puroks at high risk. Their families come first on the list.';
+
+  @override
+  String get listRiskFlood => 'High risk of flooding';
+
+  @override
+  String get listRiskLandslide => 'High risk of landslide';
+
+  @override
+  String get listRemove => 'Remove from the list';
+
+  @override
+  String listRemoveTitle(String head) {
+    return 'Remove $head from the list?';
+  }
+
+  @override
+  String get listNeedsConnection => 'Needs a connection.';
+
+  @override
+  String get pendingCswdApproval => 'Pending CSWD approval';
 }

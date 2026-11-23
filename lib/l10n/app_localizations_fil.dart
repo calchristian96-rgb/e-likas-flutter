@@ -4238,4 +4238,117 @@ class AppLocalizationsFil extends AppLocalizations {
 
   @override
   String get todoOpenCenters => 'Buksan ang mga center';
+
+  @override
+  String get listTitle => 'Mga pamilyang ililikas';
+
+  @override
+  String get listNotEvacuees =>
+      'Ang nakalistang pamilya ay hindi pa evacuee: bibilangin lang ito kapag naka-check in na.';
+
+  @override
+  String get listAdd => 'Magdagdag ng pamilya';
+
+  @override
+  String get listAdded => 'Naidagdag ang pamilya sa listahan.';
+
+  @override
+  String get listFromPast => 'Mula sa mga nakaraang event';
+
+  @override
+  String get listNewFamily => 'Bagong pamilya';
+
+  @override
+  String get listSearchPast => 'Maghanap ayon sa pangalan';
+
+  @override
+  String get listNoPastFamilies =>
+      'Walang tugmang pamilya mula sa mga nakaraang event.';
+
+  @override
+  String get listFromPastEvent => 'Mula sa nakaraang event';
+
+  @override
+  String get listHeadFirstName => 'Pangalan ng puno ng pamilya';
+
+  @override
+  String get listHeadLastName => 'Apelyido ng puno ng pamilya';
+
+  @override
+  String get listMembersCount => 'Bilang ng miyembro, kasama ang puno';
+
+  @override
+  String get listPurok => 'Purok';
+
+  @override
+  String get listContactNumber => 'Numero ng contact (opsyonal)';
+
+  @override
+  String get listNote => 'Paalala (opsyonal)';
+
+  @override
+  String get listCheckedIn => 'Naka-check in';
+
+  @override
+  String get listCheckedInTag => 'Naka-check in';
+
+  @override
+  String get listCheckIn => 'I-check in';
+
+  @override
+  String listCheckInTitle(String head) {
+    return 'I-check in si $head';
+  }
+
+  @override
+  String listCheckInQueued(String head) {
+    return '$head: naitala ang check-in. Ipapadala kapag may koneksyon.';
+  }
+
+  @override
+  String listedCheckInSummary(String head, String place) {
+    return 'I-check in si $head sa $place';
+  }
+
+  @override
+  String get listAtCenter => 'Evacuation center';
+
+  @override
+  String get listHostName => 'Pangalan ng host';
+
+  @override
+  String get listHostPurok => 'Purok ng host';
+
+  @override
+  String get listHostAddress => 'Address ng host';
+
+  @override
+  String get listHighRisk => 'Mataas ang panganib';
+
+  @override
+  String get listHighRiskPuroks => 'Mga purok na mataas ang panganib';
+
+  @override
+  String get listHighRiskHint =>
+      'Markahan ang mga purok na mataas ang panganib. Mauuna sa listahan ang kanilang mga pamilya.';
+
+  @override
+  String get listRiskFlood => 'Mataas ang panganib ng baha';
+
+  @override
+  String get listRiskLandslide => 'Mataas ang panganib ng pagguho ng lupa';
+
+  @override
+  String get listRemove => 'Alisin sa listahan';
+
+  @override
+  String listRemoveTitle(String head) {
+    return 'Alisin si $head sa listahan?';
+  }
+
+  @override
+  String get listNeedsConnection => 'Kailangan ng koneksyon.';
+
+  @override
+  String get pendingCswdApproval => 'Hinihintay ang pag-apruba ng CSWD';
 }

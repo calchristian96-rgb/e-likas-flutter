@@ -65,6 +65,14 @@ class StaffApiClient {
     return _dio.patch(path, data: data).timeout(timeout);
   }
 
+  Future<Response<dynamic>> delete(
+    String path, {
+    Object? data,
+    Duration timeout = const Duration(seconds: 15),
+  }) {
+    return _dio.delete(path, data: data).timeout(timeout);
+  }
+
   Future<Response<dynamic>> put(
     String path, {
     Object? data,

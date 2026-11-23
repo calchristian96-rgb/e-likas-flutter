@@ -183,7 +183,7 @@ class OfficialPlanCard extends ConsumerWidget {
                   formatCount(checkedIn),
                   formatCount(listed),
                 ),
-          onTap: null,
+          onTap: () => context.go('/staff/home/families-to-evacuate'),
         ),
         _PlanTile(
           icon: Icons.meeting_room_outlined,

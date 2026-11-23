@@ -6518,6 +6518,210 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Open centers'**
   String get todoOpenCenters;
+
+  /// No description provided for @listTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Families to evacuate'**
+  String get listTitle;
+
+  /// No description provided for @listNotEvacuees.
+  ///
+  /// In en, this message translates to:
+  /// **'A listed family is not an evacuee: it counts only once it is checked in.'**
+  String get listNotEvacuees;
+
+  /// No description provided for @listAdd.
+  ///
+  /// In en, this message translates to:
+  /// **'Add family'**
+  String get listAdd;
+
+  /// No description provided for @listAdded.
+  ///
+  /// In en, this message translates to:
+  /// **'Family added to the list.'**
+  String get listAdded;
+
+  /// No description provided for @listFromPast.
+  ///
+  /// In en, this message translates to:
+  /// **'From past events'**
+  String get listFromPast;
+
+  /// No description provided for @listNewFamily.
+  ///
+  /// In en, this message translates to:
+  /// **'New family'**
+  String get listNewFamily;
+
+  /// No description provided for @listSearchPast.
+  ///
+  /// In en, this message translates to:
+  /// **'Search by name'**
+  String get listSearchPast;
+
+  /// No description provided for @listNoPastFamilies.
+  ///
+  /// In en, this message translates to:
+  /// **'No family from past events matches.'**
+  String get listNoPastFamilies;
+
+  /// No description provided for @listFromPastEvent.
+  ///
+  /// In en, this message translates to:
+  /// **'From a past event'**
+  String get listFromPastEvent;
+
+  /// No description provided for @listHeadFirstName.
+  ///
+  /// In en, this message translates to:
+  /// **'Head\'s first name'**
+  String get listHeadFirstName;
+
+  /// No description provided for @listHeadLastName.
+  ///
+  /// In en, this message translates to:
+  /// **'Head\'s last name'**
+  String get listHeadLastName;
+
+  /// No description provided for @listMembersCount.
+  ///
+  /// In en, this message translates to:
+  /// **'Members, with the head'**
+  String get listMembersCount;
+
+  /// No description provided for @listPurok.
+  ///
+  /// In en, this message translates to:
+  /// **'Purok'**
+  String get listPurok;
+
+  /// No description provided for @listContactNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact number (optional)'**
+  String get listContactNumber;
+
+  /// No description provided for @listNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Note (optional)'**
+  String get listNote;
+
+  /// No description provided for @listCheckedIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Checked in'**
+  String get listCheckedIn;
+
+  /// No description provided for @listCheckedInTag.
+  ///
+  /// In en, this message translates to:
+  /// **'Checked in'**
+  String get listCheckedInTag;
+
+  /// No description provided for @listCheckIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Check in'**
+  String get listCheckIn;
+
+  /// No description provided for @listCheckInTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Check in {head}'**
+  String listCheckInTitle(String head);
+
+  /// No description provided for @listCheckInQueued.
+  ///
+  /// In en, this message translates to:
+  /// **'{head}: check-in saved. It is sent when online.'**
+  String listCheckInQueued(String head);
+
+  /// No description provided for @listedCheckInSummary.
+  ///
+  /// In en, this message translates to:
+  /// **'Check in {head} at {place}'**
+  String listedCheckInSummary(String head, String place);
+
+  /// No description provided for @listAtCenter.
+  ///
+  /// In en, this message translates to:
+  /// **'Evacuation center'**
+  String get listAtCenter;
+
+  /// No description provided for @listHostName.
+  ///
+  /// In en, this message translates to:
+  /// **'Host\'s name'**
+  String get listHostName;
+
+  /// No description provided for @listHostPurok.
+  ///
+  /// In en, this message translates to:
+  /// **'Host\'s purok'**
+  String get listHostPurok;
+
+  /// No description provided for @listHostAddress.
+  ///
+  /// In en, this message translates to:
+  /// **'Host\'s address'**
+  String get listHostAddress;
+
+  /// No description provided for @listHighRisk.
+  ///
+  /// In en, this message translates to:
+  /// **'High risk'**
+  String get listHighRisk;
+
+  /// No description provided for @listHighRiskPuroks.
+  ///
+  /// In en, this message translates to:
+  /// **'High-risk puroks'**
+  String get listHighRiskPuroks;
+
+  /// No description provided for @listHighRiskHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark the puroks at high risk. Their families come first on the list.'**
+  String get listHighRiskHint;
+
+  /// No description provided for @listRiskFlood.
+  ///
+  /// In en, this message translates to:
+  /// **'High risk of flooding'**
+  String get listRiskFlood;
+
+  /// No description provided for @listRiskLandslide.
+  ///
+  /// In en, this message translates to:
+  /// **'High risk of landslide'**
+  String get listRiskLandslide;
+
+  /// No description provided for @listRemove.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove from the list'**
+  String get listRemove;
+
+  /// No description provided for @listRemoveTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove {head} from the list?'**
+  String listRemoveTitle(String head);
+
+  /// No description provided for @listNeedsConnection.
+  ///
+  /// In en, this message translates to:
+  /// **'Needs a connection.'**
+  String get listNeedsConnection;
+
+  /// No description provided for @pendingCswdApproval.
+  ///
+  /// In en, this message translates to:
+  /// **'Pending CSWD approval'**
+  String get pendingCswdApproval;
 }
 
 class _AppLocalizationsDelegate

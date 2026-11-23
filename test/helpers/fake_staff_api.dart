@@ -71,6 +71,13 @@ class FakeStaffApi extends StaffApiClient {
   }) => _respond('POST $path', data);
 
   @override
+  Future<Response<dynamic>> delete(
+    String path, {
+    Object? data,
+    Duration timeout = const Duration(seconds: 15),
+  }) => _respond('DELETE $path', data);
+
+  @override
   Future<Response<dynamic>> patch(
     String path, {
     Object? data,
