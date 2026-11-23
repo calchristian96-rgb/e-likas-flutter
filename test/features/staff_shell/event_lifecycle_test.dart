@@ -40,6 +40,10 @@ void main() {
             official,
             answers: {
               ...homeAnswers,
+              '/dashboard/barangay': {
+                ...barangayDashboardAnswer,
+                'status': {'status': 'normal', 'may_say_arriving': true},
+              },
               '/selected-event': {
                 'selected': _monitored,
                 'chosen': false,

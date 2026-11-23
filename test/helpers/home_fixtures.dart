@@ -128,6 +128,8 @@ final homeAnswers = <String, Map<String, dynamic>>{
     ],
   },
   '/transfer-requests': transferRequestsAnswer,
+  // GET /dashboard/barangay (apps-api-2026-11-22.md section 7).
+  '/dashboard/barangay': barangayDashboardAnswer,
   '/dashboard/city': {
     'actions': {'transfer_requests_pending': 2, 'count_submissions_pending': 3},
   },
@@ -338,3 +340,37 @@ List<Override> homeOverrides(
   ),
   computedCountProvider.overrideWith((ref) async => null),
 ];
+
+/// The official's dashboard: plan, list, To do, status.
+final barangayDashboardAnswer = <String, dynamic>{
+  'evacuation_event': _event,
+  'status': {'status': 'watch', 'may_say_arriving': false},
+  'plan': {
+    'forecast': {
+      'families_low': 40,
+      'families_high': 1250,
+      'persons_low': 150,
+      'persons_high': 4300,
+      'plan_families': 1250,
+      'above_seen': false,
+    },
+    'space': {'capacity_persons': 3800, 'persons_high': 4300, 'short': 500},
+    'centers_ready': {'ready': 2, 'total': 4},
+  },
+  'list': {'families': 12, 'persons': 47, 'checked_in': 5},
+  'todo': [
+    {
+      'kind': 'center_capacity',
+      'text': '3 of your 4 centers have no capacity or only an estimate',
+      'detail':
+          '1 unknown, 2 estimated. Enter each center\'s capacity on its page.',
+      'href': '/evacuation-centers?filter=attention',
+    },
+    {
+      'kind': 'supplies_short',
+      'text': 'Binatagan Hall is short of 3 items',
+      'detail': 'Toilets and water containers.',
+      'action': {'label': 'Request supplies', 'kind': 'request_supplies'},
+    },
+  ],
+};

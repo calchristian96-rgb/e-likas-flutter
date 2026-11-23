@@ -4146,4 +4146,96 @@ class AppLocalizationsFil extends AppLocalizations {
   String registrationOpenBody(String event) {
     return 'Active na ang $event. Iparehistro ang mga pamilya, i-check in ang mga nakalistang pamilya at mamigay ng relief.';
   }
+
+  @override
+  String get planTitle => 'Plano';
+
+  @override
+  String get planForTitle => 'Paghandaan ang';
+
+  @override
+  String planForRange(String low, String high) {
+    return 'Tantiya: $low hanggang $high pamilya';
+  }
+
+  @override
+  String get planAboveSeen => 'Mas mataas sa anumang nakita na dati';
+
+  @override
+  String get planNoForecast => 'Wala pang tantiya para sa event na ito.';
+
+  @override
+  String get planNoForecastVolcanic =>
+      'Wala pang tantiya para sa pagputok ng bulkan. Magplano batay sa mga barangay na nasa loob ng danger zone.';
+
+  @override
+  String get planYourList => 'Inyong listahan';
+
+  @override
+  String get planListNone => 'Wala pang nakalistang pamilya';
+
+  @override
+  String get planListAdd => 'Ilista ang mga pamilyang inaasahang lilikas.';
+
+  @override
+  String planListCheckedIn(String checkedIn, String families) {
+    return '$checkedIn sa $families ang naka-check in';
+  }
+
+  @override
+  String get planSpaceTitle => 'Espasyo sa center kumpara sa tantiya';
+
+  @override
+  String planSpaceFigure(String space, String needed) {
+    return '$space na espasyo para sa $needed katao';
+  }
+
+  @override
+  String planSpaceShort(int count) {
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Kulang ng $countString espasyo',
+      one: 'Kulang ng 1 espasyo',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get planSpaceEnough => 'Sapat ang espasyo para sa tantiya';
+
+  @override
+  String get planSpaceUnknown =>
+      'Hindi alam ang espasyo: ilagay ang kapasidad ng inyong mga center.';
+
+  @override
+  String planCentersWithoutCapacity(String centers) {
+    return '$centers na walang kapasidad';
+  }
+
+  @override
+  String get planCentersReady => 'Mga center na handa';
+
+  @override
+  String planOfTotal(String count, String total) {
+    return '$count sa $total';
+  }
+
+  @override
+  String statusUpdatedAgo(String ago) {
+    return 'Na-update $ago';
+  }
+
+  @override
+  String get statusChange => 'Palitan ang status';
+
+  @override
+  String get todoRequestSupplies => 'Humiling ng supplies';
+
+  @override
+  String get todoOpenCenters => 'Buksan ang mga center';
 }

@@ -6386,6 +6386,138 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{event} is now Active. Register families, check in your listed families and give relief.'**
   String registrationOpenBody(String event);
+
+  /// No description provided for @planTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Plan'**
+  String get planTitle;
+
+  /// No description provided for @planForTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Plan for'**
+  String get planForTitle;
+
+  /// No description provided for @planForRange.
+  ///
+  /// In en, this message translates to:
+  /// **'Forecast {low} to {high} families'**
+  String planForRange(String low, String high);
+
+  /// No description provided for @planAboveSeen.
+  ///
+  /// In en, this message translates to:
+  /// **'Above anything seen before'**
+  String get planAboveSeen;
+
+  /// No description provided for @planNoForecast.
+  ///
+  /// In en, this message translates to:
+  /// **'No forecast for this event yet.'**
+  String get planNoForecast;
+
+  /// No description provided for @planNoForecastVolcanic.
+  ///
+  /// In en, this message translates to:
+  /// **'No forecast for volcanic events yet. Plan using the barangays inside the danger zone.'**
+  String get planNoForecastVolcanic;
+
+  /// No description provided for @planYourList.
+  ///
+  /// In en, this message translates to:
+  /// **'Your list'**
+  String get planYourList;
+
+  /// No description provided for @planListNone.
+  ///
+  /// In en, this message translates to:
+  /// **'No families listed yet'**
+  String get planListNone;
+
+  /// No description provided for @planListAdd.
+  ///
+  /// In en, this message translates to:
+  /// **'List the families you expect to evacuate.'**
+  String get planListAdd;
+
+  /// No description provided for @planListCheckedIn.
+  ///
+  /// In en, this message translates to:
+  /// **'{checkedIn} of {families} checked in'**
+  String planListCheckedIn(String checkedIn, String families);
+
+  /// No description provided for @planSpaceTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Center space vs forecast'**
+  String get planSpaceTitle;
+
+  /// No description provided for @planSpaceFigure.
+  ///
+  /// In en, this message translates to:
+  /// **'{space} spaces for {needed} persons'**
+  String planSpaceFigure(String space, String needed);
+
+  /// No description provided for @planSpaceShort.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{Short of 1 space} other{Short of {count} spaces}}'**
+  String planSpaceShort(int count);
+
+  /// No description provided for @planSpaceEnough.
+  ///
+  /// In en, this message translates to:
+  /// **'Enough space for the forecast'**
+  String get planSpaceEnough;
+
+  /// No description provided for @planSpaceUnknown.
+  ///
+  /// In en, this message translates to:
+  /// **'Space unknown: enter your centers\' capacities.'**
+  String get planSpaceUnknown;
+
+  /// No description provided for @planCentersWithoutCapacity.
+  ///
+  /// In en, this message translates to:
+  /// **'{centers} without a capacity'**
+  String planCentersWithoutCapacity(String centers);
+
+  /// No description provided for @planCentersReady.
+  ///
+  /// In en, this message translates to:
+  /// **'Centers ready'**
+  String get planCentersReady;
+
+  /// No description provided for @planOfTotal.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} of {total}'**
+  String planOfTotal(String count, String total);
+
+  /// No description provided for @statusUpdatedAgo.
+  ///
+  /// In en, this message translates to:
+  /// **'Updated {ago}'**
+  String statusUpdatedAgo(String ago);
+
+  /// No description provided for @statusChange.
+  ///
+  /// In en, this message translates to:
+  /// **'Change status'**
+  String get statusChange;
+
+  /// No description provided for @todoRequestSupplies.
+  ///
+  /// In en, this message translates to:
+  /// **'Request supplies'**
+  String get todoRequestSupplies;
+
+  /// No description provided for @todoOpenCenters.
+  ///
+  /// In en, this message translates to:
+  /// **'Open centers'**
+  String get todoOpenCenters;
 }
 
 class _AppLocalizationsDelegate

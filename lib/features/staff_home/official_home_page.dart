@@ -22,6 +22,8 @@ import '../staff_shell/current_event.dart';
 import '../../core/widgets/lock_note.dart';
 import '../staff_shell/event_lock.dart';
 import 'barangay_dashboard.dart';
+import '../../core/utils/formatters.dart';
+import 'official_plan.dart';
 
 /// Families of the latest round still without a box, or null with no
 /// round (or nothing known yet).
@@ -86,6 +88,10 @@ class OfficialHomePage extends ConsumerWidget {
               : l10n.finalCountChanged,
           onTap: () => context.go('/staff/home/barangay'),
         ),
+      // The server's To do (capacity missing or estimated, map location,
+      // facilities checklist, supplies short), each with its action.
+      for (final item in dashboard?.todo ?? const <Map<String, dynamic>>[])
+        DashboardTodoCard(item: item),
       if ((sync?.needAttention ?? 0) > 0)
         _TodoCard(
           icon: Icons.error_outline,
@@ -110,6 +116,7 @@ class OfficialHomePage extends ConsumerWidget {
           ref.invalidate(barangayBoxesProvider);
           ref.invalidate(transferRequestsProvider);
           ref.invalidate(notificationsProvider);
+          ref.invalidate(barangayDashboardProvider);
           await ref.read(staffSyncAllProvider)();
         },
         child: ListView(
@@ -135,6 +142,10 @@ class OfficialHomePage extends ConsumerWidget {
               const SizedBox(height: 16),
             ],
             _QuickStatusCard(session: session),
+            if (dashboard != null) ...[
+              const SizedBox(height: 8),
+              OfficialPlanCard(dashboard: dashboard),
+            ],
             const SizedBox(height: 16),
             StatStrip(
               items: [
@@ -267,6 +278,14 @@ class _QuickStatusCard extends ConsumerWidget {
             color: barangayStatusColor(context, s.status),
           ),
           if (queued.isEmpty) EvacuationOrderLine(order: s.order),
+          if (queued.isEmpty && s.setAt != null)
+            Padding(
+              padding: const EdgeInsets.only(top: 4),
+              child: Text(
+                l10n.statusUpdatedAgo(formatAgo(l10n, s.setAt!)),
+                style: theme.textTheme.bodySmall,
+              ),
+            ),
           if (s.open && s.mayUpdate && quick.isNotEmpty) ...[
             const SizedBox(height: 12),
             Wrap(
@@ -281,6 +300,16 @@ class _QuickStatusCard extends ConsumerWidget {
               ],
             ),
           ],
+          if (s.open && s.mayUpdate)
+            Align(
+              alignment: AlignmentDirectional.centerEnd,
+              child: TextButton.icon(
+                style: TextButton.styleFrom(minimumSize: const Size(48, 48)),
+                onPressed: () => context.go('/staff/home/barangay'),
+                icon: const Icon(Icons.edit_outlined),
+                label: Text(l10n.statusChange),
+              ),
+            ),
         ],
       ),
     );

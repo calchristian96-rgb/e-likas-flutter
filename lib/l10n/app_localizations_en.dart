@@ -4132,4 +4132,96 @@ class AppLocalizationsEn extends AppLocalizations {
   String registrationOpenBody(String event) {
     return '$event is now Active. Register families, check in your listed families and give relief.';
   }
+
+  @override
+  String get planTitle => 'Plan';
+
+  @override
+  String get planForTitle => 'Plan for';
+
+  @override
+  String planForRange(String low, String high) {
+    return 'Forecast $low to $high families';
+  }
+
+  @override
+  String get planAboveSeen => 'Above anything seen before';
+
+  @override
+  String get planNoForecast => 'No forecast for this event yet.';
+
+  @override
+  String get planNoForecastVolcanic =>
+      'No forecast for volcanic events yet. Plan using the barangays inside the danger zone.';
+
+  @override
+  String get planYourList => 'Your list';
+
+  @override
+  String get planListNone => 'No families listed yet';
+
+  @override
+  String get planListAdd => 'List the families you expect to evacuate.';
+
+  @override
+  String planListCheckedIn(String checkedIn, String families) {
+    return '$checkedIn of $families checked in';
+  }
+
+  @override
+  String get planSpaceTitle => 'Center space vs forecast';
+
+  @override
+  String planSpaceFigure(String space, String needed) {
+    return '$space spaces for $needed persons';
+  }
+
+  @override
+  String planSpaceShort(int count) {
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Short of $countString spaces',
+      one: 'Short of 1 space',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get planSpaceEnough => 'Enough space for the forecast';
+
+  @override
+  String get planSpaceUnknown =>
+      'Space unknown: enter your centers\' capacities.';
+
+  @override
+  String planCentersWithoutCapacity(String centers) {
+    return '$centers without a capacity';
+  }
+
+  @override
+  String get planCentersReady => 'Centers ready';
+
+  @override
+  String planOfTotal(String count, String total) {
+    return '$count of $total';
+  }
+
+  @override
+  String statusUpdatedAgo(String ago) {
+    return 'Updated $ago';
+  }
+
+  @override
+  String get statusChange => 'Change status';
+
+  @override
+  String get todoRequestSupplies => 'Request supplies';
+
+  @override
+  String get todoOpenCenters => 'Open centers';
 }
