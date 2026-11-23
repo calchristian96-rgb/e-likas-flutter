@@ -4527,4 +4527,8 @@ class AppLocalizationsFil extends AppLocalizations {
 
   @override
   String get facilityRequestWhichCenter => 'Para sa aling center?';
+
+  @override
+  String get finalCountNothingNew =>
+      'Walang bago mula sa inyong validated na bilang.';
 }

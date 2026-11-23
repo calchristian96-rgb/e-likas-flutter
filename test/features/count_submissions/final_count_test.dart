@@ -58,4 +58,34 @@ void main() {
     final validated = ComputedCount.fromJson(_computed(status: 'validated'));
     expect(validated.validatedFamilies, 41);
   });
+
+  test('validated and nothing new: Submit stays off until late entries', () {
+    final validated = ComputedCount.fromJson(_computed(status: 'validated'));
+    expect(validated.nothingNewSinceValidated, isTrue);
+    expect(validated.canSubmit, isFalse);
+    final late = ComputedCount.fromJson({
+      ..._computed(status: 'validated'),
+      'late_entries': {
+        'since': '2026-11-17T06:00:00+00:00',
+        'submission_id': 12,
+        'submission_status': 'validated',
+        'families': 3,
+        'persons': 11,
+        'removed_families': 0,
+        'removed_persons': 0,
+        'total': 3,
+      },
+    });
+    expect(late.nothingNewSinceValidated, isFalse);
+    expect(late.canSubmit, isTrue);
+  });
+
+  test('a count CSWD submitted on behalf carries its note', () {
+    final data = _computed(status: 'validated');
+    (data['current_submission'] as Map<String, dynamic>)['note'] =
+        'Submitted by CSWD on behalf of Binatagan. Reason: No answer for two days.';
+    final c = ComputedCount.fromJson(data);
+    expect(c.submittedOnBehalf, isTrue);
+    expect(c.submissionNote, contains('Reason: No answer for two days.'));
+  });
 }

@@ -4451,4 +4451,7 @@ class AppLocalizationsBcl extends AppLocalizations {
 
   @override
   String get facilityRequestWhichCenter => 'For which center?';
+
+  @override
+  String get finalCountNothingNew => 'Nothing new since your validated count.';
 }

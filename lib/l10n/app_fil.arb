@@ -1374,5 +1374,6 @@
   "facilitySuggestedHint": "Ang kulang sa bawat center kapag puno ito, bawas ang nahiling na.",
   "facilitySuggestedNone": "Walang mungkahi: kumpleto na ayon sa pamantayan, o nahiling na.",
   "facilityYourRequests": "Inyong mga hiling",
-  "facilityRequestWhichCenter": "Para sa aling center?"
+  "facilityRequestWhichCenter": "Para sa aling center?",
+  "finalCountNothingNew": "Walang bago mula sa inyong validated na bilang."
 }

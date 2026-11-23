@@ -92,10 +92,10 @@ void main() {
       findsOneWidget,
     );
     expect(find.text('3 late entries'), findsOneWidget);
-    expect(
-      find.text('Added: 3 families, 11 persons · since Nov 17, 2:00 PM'),
-      findsOneWidget,
-    );
+    expect(find.text('Added: 3 families, 11 persons'), findsOneWidget);
+    // Shown as chips (0.4.0 Part 9).
+    expect(find.text('since Nov 17, 2:00 PM'), findsOneWidget);
+    expect(find.byType(Chip), findsNWidgets(2));
     expect(
       find.textContaining('validated count, which never changes'),
       findsOneWidget,

@@ -137,7 +137,22 @@ class ComputedCount {
     this.reviewedAt,
     this.barangayName,
     this.hasOfficialAccount = true,
+    this.submissionNote,
+    this.submittedOnBehalf = false,
   });
+
+  /// The current submission's note. A count CSWD submitted for the
+  /// barangay reads "Submitted by CSWD on behalf of {barangay}. Reason:
+  /// ..." (apps-api-2026-11-23.md section 5): shown as it comes.
+  final String? submissionNote;
+  final bool submittedOnBehalf;
+
+  /// A validated count with no late entries and nothing changed: there
+  /// is nothing new to submit (the web disables "Submit updated count").
+  bool get nothingNewSinceValidated =>
+      submissionStatus == 'validated' &&
+      !hasLateEntries &&
+      !changedSinceSubmission;
 
   final int? validatedPersons;
 
@@ -175,6 +190,7 @@ class ComputedCount {
   /// and nothing changed.
   bool get canSubmit =>
       eventActive &&
+      !nothingNewSinceValidated &&
       !(submissionStatus == 'pending' && !changedSinceSubmission);
 
   factory ComputedCount.fromJson(Map<String, dynamic> j) {
@@ -204,6 +220,13 @@ class ComputedCount {
       barangayName:
           (j['barangay'] as Map<String, dynamic>?)?['name'] as String?,
       hasOfficialAccount: j['has_official_account'] != false,
+      submissionNote: current?['note'] as String?,
+      submittedOnBehalf:
+          current?['submitted_on_behalf'] == true ||
+          ((current?['note'] as String?)?.startsWith(
+                'Submitted by CSWD on behalf of',
+              ) ??
+              false),
     );
   }
 }
@@ -387,6 +410,9 @@ class FinalCountCard extends ConsumerWidget {
                   fontWeight: FontWeight.w600,
                 ),
               ),
+              if (count.submittedOnBehalf &&
+                  (count.submissionNote ?? '').isNotEmpty)
+                OnBehalfNote(note: count.submissionNote!),
               if (count.reviewNote != null && count.reviewNote!.isNotEmpty)
                 Text(count.reviewNote!, style: theme.textTheme.bodySmall),
               if (count.hasLateEntries)
@@ -401,6 +427,22 @@ class FinalCountCard extends ConsumerWidget {
               if (ref.watch(eventMonitoredProvider)) ...[
                 const SizedBox(height: 16),
                 const LockNote(),
+              ] else if (count.eventActive &&
+                  count.nothingNewSinceValidated &&
+                  !queued) ...[
+                const SizedBox(height: 16),
+                FilledButton(
+                  style: FilledButton.styleFrom(
+                    minimumSize: const Size.fromHeight(48),
+                  ),
+                  onPressed: null,
+                  child: Text(l10n.finalCountSubmitUpdated),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  l10n.finalCountNothingNew,
+                  style: theme.textTheme.bodySmall,
+                ),
               ] else if (count.canSubmit && !queued) ...[
                 const SizedBox(height: 16),
                 FilledButton(
@@ -456,21 +498,35 @@ class _LateEntriesNote extends StatelessWidget {
                   l10n.lateEntriesCount(late.total),
                   style: theme.textTheme.titleSmall,
                 ),
-                Text(
-                  [
+                const SizedBox(height: 4),
+                Wrap(
+                  spacing: 8,
+                  runSpacing: 4,
+                  children: [
                     if (late.families > 0)
-                      l10n.lateEntriesAdded(
-                        l10n.countFamilies(late.families),
-                        l10n.countPersons(late.persons),
+                      _LateChip(
+                        icon: Icons.person_add_alt_1_outlined,
+                        text: l10n.lateEntriesAdded(
+                          l10n.countFamilies(late.families),
+                          l10n.countPersons(late.persons),
+                        ),
                       ),
                     if (late.removedFamilies > 0 || late.removedPersons > 0)
-                      l10n.lateEntriesRemoved(
-                        l10n.countFamilies(late.removedFamilies),
-                        l10n.countPersons(late.removedPersons),
+                      _LateChip(
+                        icon: Icons.person_remove_outlined,
+                        text: l10n.lateEntriesRemoved(
+                          l10n.countFamilies(late.removedFamilies),
+                          l10n.countPersons(late.removedPersons),
+                        ),
                       ),
                     if (late.since != null)
-                      l10n.lateEntriesSince(formatShortDateTime(late.since!)),
-                  ].join(' · '),
+                      _LateChip(
+                        icon: Icons.schedule,
+                        text: l10n.lateEntriesSince(
+                          formatShortDateTime(late.since!),
+                        ),
+                      ),
+                  ],
                 ),
                 Text(
                   late.submissionStatus == 'validated'
@@ -481,6 +537,48 @@ class _LateEntriesNote extends StatelessWidget {
               ],
             ),
           ),
+        ],
+      ),
+    );
+  }
+}
+
+class _LateChip extends StatelessWidget {
+  const _LateChip({required this.icon, required this.text});
+
+  final IconData icon;
+  final String text;
+
+  @override
+  Widget build(BuildContext context) => Chip(
+    visualDensity: VisualDensity.compact,
+    avatar: Icon(icon, size: 16),
+    label: Text(text),
+  );
+}
+
+/// "Submitted by CSWD on behalf of Binatagan. Reason: ...", the
+/// submission's own note, with who did it.
+class OnBehalfNote extends StatelessWidget {
+  const OnBehalfNote({super.key, required this.note});
+
+  final String note;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return Padding(
+      padding: const EdgeInsets.only(top: 8),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Icon(
+            Icons.account_balance_outlined,
+            size: 20,
+            color: theme.colorScheme.primary,
+          ),
+          const SizedBox(width: 8),
+          Expanded(child: Text(note, style: theme.textTheme.bodyMedium)),
         ],
       ),
     );

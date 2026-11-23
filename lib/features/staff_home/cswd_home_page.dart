@@ -18,7 +18,7 @@ import '../barangay_status/staff/barangay_page.dart'
 import '../evacuation_centers/presentation/widgets/center_status_display.dart';
 import '../monitoring/monitoring_page.dart';
 import '../count_submissions/final_count_card.dart'
-    show ComputedCount, CountFigures;
+    show ComputedCount, CountFigures, OnBehalfNote;
 import '../notifications/notifications.dart';
 import '../private_houses/private_houses.dart';
 import '../staff_auth/domain/entities/staff_session.dart';
@@ -952,6 +952,9 @@ class _CswdFinalCount extends ConsumerWidget {
             ),
             if (count.hasLateEntries)
               Text(l10n.lateEntriesTodo(count.lateEntries!.total)),
+            if (count.submittedOnBehalf &&
+                (count.submissionNote ?? '').isNotEmpty)
+              OnBehalfNote(note: count.submissionNote!),
             const SizedBox(height: 8),
             if (!count.hasOfficialAccount && !mayOnBehalf)
               const SizedBox.shrink()

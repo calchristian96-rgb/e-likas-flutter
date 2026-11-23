@@ -3293,5 +3293,6 @@
   "facilitySuggestedHint": "What each center is short of for a full center, minus what you already asked.",
   "facilitySuggestedNone": "Nothing to suggest: your centers have what the standards ask, or it is already requested.",
   "facilityYourRequests": "Your requests",
-  "facilityRequestWhichCenter": "For which center?"
+  "facilityRequestWhichCenter": "For which center?",
+  "finalCountNothingNew": "Nothing new since your validated count."
 }

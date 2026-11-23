@@ -7004,6 +7004,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'For which center?'**
   String get facilityRequestWhichCenter;
+
+  /// No description provided for @finalCountNothingNew.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing new since your validated count.'**
+  String get finalCountNothingNew;
 }
 
 class _AppLocalizationsDelegate
