@@ -16,7 +16,29 @@ class StaffSession {
     this.barangayName,
     this.permissions = const {},
     this.isFromCache = false,
+    this.username,
+    this.mustChangePassword = false,
   });
+
+  /// `brgy.<barangay>` for the administrator-made official accounts.
+  final String? username;
+
+  /// On a temporary password: change it before anything else.
+  final bool mustChangePassword;
+
+  StaffSession copyWith({bool? mustChangePassword}) => StaffSession(
+    id: id,
+    name: name,
+    email: email,
+    role: role,
+    roleDisplayName: roleDisplayName,
+    barangayId: barangayId,
+    barangayName: barangayName,
+    permissions: permissions,
+    isFromCache: isFromCache,
+    username: username,
+    mustChangePassword: mustChangePassword ?? this.mustChangePassword,
+  );
 
   final int id;
   final String name;
@@ -77,6 +99,8 @@ class StaffSession {
           ? {for (final p in rawPermissions) p.toString()}
           : StaffPermission.legacyForRole(json['role'] as String?),
       isFromCache: isFromCache,
+      username: json['username'] as String?,
+      mustChangePassword: json['must_change_password'] == true,
     );
   }
 
@@ -91,6 +115,8 @@ class StaffSession {
     if (barangayId != null && barangayName != null)
       'barangay': {'id': barangayId, 'name': barangayName},
     'permissions': permissions.toList()..sort(),
+    'username': ?username,
+    'must_change_password': mustChangePassword,
   };
 }
 

@@ -28,6 +28,10 @@ class StaffApiClient {
   final SecureTokenStorage _tokenStorage;
   final Dio _dio;
 
+  /// Set by the staff session: called when any answer is 403
+  /// `password_change_required`.
+  static void Function()? onPasswordChangeRequired;
+
   Interceptor _authInterceptor() {
     return InterceptorsWrapper(
       onRequest: (options, handler) async {
@@ -36,6 +40,16 @@ class StaffApiClient {
           options.headers['Authorization'] = 'Bearer $token';
         }
         handler.next(options);
+      },
+      onError: (err, handler) {
+        final body = err.response?.data;
+        final errors = body is Map ? body['errors'] : null;
+        if (err.response?.statusCode == 403 &&
+            errors is Map &&
+            errors['code'] == 'password_change_required') {
+          onPasswordChangeRequired?.call();
+        }
+        handler.next(err);
       },
     );
   }

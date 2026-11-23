@@ -1563,7 +1563,7 @@ class AppLocalizationsFil extends AppLocalizations {
   String get staffLoginTitle => 'Staff Sign In';
 
   @override
-  String get staffLoginEmailLabel => 'Email';
+  String get staffLoginEmailLabel => 'Email o username';
 
   @override
   String get staffLoginPasswordLabel => 'Password';
@@ -4531,4 +4531,114 @@ class AppLocalizationsFil extends AppLocalizations {
   @override
   String get finalCountNothingNew =>
       'Walang bago mula sa inyong validated na bilang.';
+
+  @override
+  String get alertLevelEmergency => 'Emergency';
+
+  @override
+  String get alertLevelAdvisory => 'Abiso';
+
+  @override
+  String get alertLevelInfo => 'Impormasyon';
+
+  @override
+  String get alertLevelAllClear => 'Ligtas na';
+
+  @override
+  String get alertNew => 'Bago';
+
+  @override
+  String get passwordChangeTitle => 'Pumili ng sariling password';
+
+  @override
+  String get passwordChangeBody =>
+      'Pansamantalang password ang ginamit mo. Pumili ng sarili bago magpatuloy. Matatapos ang sign-in mo sa ibang telepono.';
+
+  @override
+  String get passwordCurrent => 'Pansamantalang (kasalukuyang) password';
+
+  @override
+  String get passwordNew => 'Bagong password (hindi bababa sa 10 karakter)';
+
+  @override
+  String get passwordConfirm => 'Ulitin ang bagong password';
+
+  @override
+  String get passwordTooShort => 'Hindi bababa sa 10 karakter.';
+
+  @override
+  String get passwordSameAsOld => 'Pumili ng password na iba sa pansamantala.';
+
+  @override
+  String get passwordMismatch => 'Hindi magkapareho ang dalawang password.';
+
+  @override
+  String get passwordSave => 'I-save ang password';
+
+  @override
+  String get passwordShow => 'Ipakita o itago ang password';
+
+  @override
+  String get maintenanceDefault =>
+      'Ina-update ang E-LIKAS. Subukan muli mamaya.';
+
+  @override
+  String get reportTitle => 'Mag-ulat ng problema';
+
+  @override
+  String get reportSubtitle => 'Sabihin sa administrator ang nangyaring mali';
+
+  @override
+  String get reportIntro =>
+      'Binabasa ng administrator ang bawat ulat at sumasagot dito.';
+
+  @override
+  String get reportWhatHappened => 'Ano ang nangyari?';
+
+  @override
+  String get reportWhatHappenedHint =>
+      'Hindi bababa sa 10 karakter. Ano ang ginawa mo, ano ang inaasahan mo, ano ang nakita mo.';
+
+  @override
+  String get reportScreen => 'Screen';
+
+  @override
+  String get reportPhoto => 'Larawan (opsyonal)';
+
+  @override
+  String get reportPhotoPrivacy =>
+      'Huwag isama sa larawan ang pangalan o detalye ng mga evacuee.';
+
+  @override
+  String get reportPhotoCamera => 'Camera';
+
+  @override
+  String get reportPhotoGallery => 'Gallery';
+
+  @override
+  String get reportPhotoRemove => 'Alisin ang larawan';
+
+  @override
+  String get reportPhotoFailed => 'Hindi makuha ang larawan.';
+
+  @override
+  String get reportSend => 'Ipadala ang ulat';
+
+  @override
+  String get reportSent =>
+      'Naipadala ang ulat. Sasagot dito ang administrator.';
+
+  @override
+  String get reportNeedsConnection => 'Kailangan ng koneksyon.';
+
+  @override
+  String get reportYours => 'Inyong mga ulat';
+
+  @override
+  String get reportNone => 'Wala pang ulat.';
+
+  @override
+  String reportReply(String name, String reply) {
+    return 'Sagot ni $name: $reply';
+  }
 }

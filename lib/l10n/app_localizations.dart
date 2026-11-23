@@ -2785,7 +2785,7 @@ abstract class AppLocalizations {
   /// No description provided for @staffLoginEmailLabel.
   ///
   /// In en, this message translates to:
-  /// **'Email'**
+  /// **'Email or username'**
   String get staffLoginEmailLabel;
 
   /// No description provided for @staffLoginPasswordLabel.
@@ -7010,6 +7010,210 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Nothing new since your validated count.'**
   String get finalCountNothingNew;
+
+  /// No description provided for @alertLevelEmergency.
+  ///
+  /// In en, this message translates to:
+  /// **'Emergency'**
+  String get alertLevelEmergency;
+
+  /// No description provided for @alertLevelAdvisory.
+  ///
+  /// In en, this message translates to:
+  /// **'Advisory'**
+  String get alertLevelAdvisory;
+
+  /// No description provided for @alertLevelInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Info'**
+  String get alertLevelInfo;
+
+  /// No description provided for @alertLevelAllClear.
+  ///
+  /// In en, this message translates to:
+  /// **'All clear'**
+  String get alertLevelAllClear;
+
+  /// No description provided for @alertNew.
+  ///
+  /// In en, this message translates to:
+  /// **'New'**
+  String get alertNew;
+
+  /// No description provided for @passwordChangeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose your password'**
+  String get passwordChangeTitle;
+
+  /// No description provided for @passwordChangeBody.
+  ///
+  /// In en, this message translates to:
+  /// **'You signed in with a temporary password. Choose your own before you continue. Your other sign-ins on other phones end.'**
+  String get passwordChangeBody;
+
+  /// No description provided for @passwordCurrent.
+  ///
+  /// In en, this message translates to:
+  /// **'Temporary (current) password'**
+  String get passwordCurrent;
+
+  /// No description provided for @passwordNew.
+  ///
+  /// In en, this message translates to:
+  /// **'New password (at least 10 characters)'**
+  String get passwordNew;
+
+  /// No description provided for @passwordConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'New password again'**
+  String get passwordConfirm;
+
+  /// No description provided for @passwordTooShort.
+  ///
+  /// In en, this message translates to:
+  /// **'At least 10 characters.'**
+  String get passwordTooShort;
+
+  /// No description provided for @passwordSameAsOld.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a password different from the temporary one.'**
+  String get passwordSameAsOld;
+
+  /// No description provided for @passwordMismatch.
+  ///
+  /// In en, this message translates to:
+  /// **'The two passwords are not the same.'**
+  String get passwordMismatch;
+
+  /// No description provided for @passwordSave.
+  ///
+  /// In en, this message translates to:
+  /// **'Save password'**
+  String get passwordSave;
+
+  /// No description provided for @passwordShow.
+  ///
+  /// In en, this message translates to:
+  /// **'Show or hide the password'**
+  String get passwordShow;
+
+  /// No description provided for @maintenanceDefault.
+  ///
+  /// In en, this message translates to:
+  /// **'E-LIKAS is being updated. Try again later.'**
+  String get maintenanceDefault;
+
+  /// No description provided for @reportTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Report a problem'**
+  String get reportTitle;
+
+  /// No description provided for @reportSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Tell the administrator what went wrong'**
+  String get reportSubtitle;
+
+  /// No description provided for @reportIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'The administrator reads every report and answers here.'**
+  String get reportIntro;
+
+  /// No description provided for @reportWhatHappened.
+  ///
+  /// In en, this message translates to:
+  /// **'What happened?'**
+  String get reportWhatHappened;
+
+  /// No description provided for @reportWhatHappenedHint.
+  ///
+  /// In en, this message translates to:
+  /// **'At least 10 characters. What you did, what you expected, what you saw.'**
+  String get reportWhatHappenedHint;
+
+  /// No description provided for @reportScreen.
+  ///
+  /// In en, this message translates to:
+  /// **'Screen'**
+  String get reportScreen;
+
+  /// No description provided for @reportPhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'Photo (optional)'**
+  String get reportPhoto;
+
+  /// No description provided for @reportPhotoPrivacy.
+  ///
+  /// In en, this message translates to:
+  /// **'Do not include evacuees\' names or details in the photo.'**
+  String get reportPhotoPrivacy;
+
+  /// No description provided for @reportPhotoCamera.
+  ///
+  /// In en, this message translates to:
+  /// **'Camera'**
+  String get reportPhotoCamera;
+
+  /// No description provided for @reportPhotoGallery.
+  ///
+  /// In en, this message translates to:
+  /// **'Gallery'**
+  String get reportPhotoGallery;
+
+  /// No description provided for @reportPhotoRemove.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove the photo'**
+  String get reportPhotoRemove;
+
+  /// No description provided for @reportPhotoFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not get the photo.'**
+  String get reportPhotoFailed;
+
+  /// No description provided for @reportSend.
+  ///
+  /// In en, this message translates to:
+  /// **'Send report'**
+  String get reportSend;
+
+  /// No description provided for @reportSent.
+  ///
+  /// In en, this message translates to:
+  /// **'Report sent. The administrator will answer here.'**
+  String get reportSent;
+
+  /// No description provided for @reportNeedsConnection.
+  ///
+  /// In en, this message translates to:
+  /// **'Needs a connection.'**
+  String get reportNeedsConnection;
+
+  /// No description provided for @reportYours.
+  ///
+  /// In en, this message translates to:
+  /// **'Your reports'**
+  String get reportYours;
+
+  /// No description provided for @reportNone.
+  ///
+  /// In en, this message translates to:
+  /// **'No reports yet.'**
+  String get reportNone;
+
+  /// No description provided for @reportReply.
+  ///
+  /// In en, this message translates to:
+  /// **'Reply from {name}: {reply}'**
+  String reportReply(String name, String reply);
 }
 
 class _AppLocalizationsDelegate

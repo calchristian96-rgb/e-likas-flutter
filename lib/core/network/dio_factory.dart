@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 
 import '../env/env.dart';
 import 'network_interceptors.dart';
+import 'device_headers.dart';
 
 /// Shared Dio construction for both the public [ApiClient] and the
 /// staff-only `StaffApiClient` — same base URL, same timeouts, same
@@ -19,6 +20,9 @@ Dio buildDio({List<Interceptor> extraInterceptors = const []}) {
       receiveTimeout: const Duration(seconds: 10),
     ),
   );
+  // X-Device-Id, X-App-Version, X-App-Platform and the sync counts
+  // (apps-api-2026-11-23.md section 2), on every request.
+  dio.interceptors.add(DeviceHeaders.interceptor());
   dio.interceptors.addAll(extraInterceptors);
   dio.interceptors.add(LoggingInterceptor());
   return dio;

@@ -1542,7 +1542,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get staffLoginTitle => 'Staff Sign In';
 
   @override
-  String get staffLoginEmailLabel => 'Email';
+  String get staffLoginEmailLabel => 'Email or username';
 
   @override
   String get staffLoginPasswordLabel => 'Password';
@@ -4514,4 +4514,113 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get finalCountNothingNew => 'Nothing new since your validated count.';
+
+  @override
+  String get alertLevelEmergency => 'Emergency';
+
+  @override
+  String get alertLevelAdvisory => 'Advisory';
+
+  @override
+  String get alertLevelInfo => 'Info';
+
+  @override
+  String get alertLevelAllClear => 'All clear';
+
+  @override
+  String get alertNew => 'New';
+
+  @override
+  String get passwordChangeTitle => 'Choose your password';
+
+  @override
+  String get passwordChangeBody =>
+      'You signed in with a temporary password. Choose your own before you continue. Your other sign-ins on other phones end.';
+
+  @override
+  String get passwordCurrent => 'Temporary (current) password';
+
+  @override
+  String get passwordNew => 'New password (at least 10 characters)';
+
+  @override
+  String get passwordConfirm => 'New password again';
+
+  @override
+  String get passwordTooShort => 'At least 10 characters.';
+
+  @override
+  String get passwordSameAsOld =>
+      'Choose a password different from the temporary one.';
+
+  @override
+  String get passwordMismatch => 'The two passwords are not the same.';
+
+  @override
+  String get passwordSave => 'Save password';
+
+  @override
+  String get passwordShow => 'Show or hide the password';
+
+  @override
+  String get maintenanceDefault => 'E-LIKAS is being updated. Try again later.';
+
+  @override
+  String get reportTitle => 'Report a problem';
+
+  @override
+  String get reportSubtitle => 'Tell the administrator what went wrong';
+
+  @override
+  String get reportIntro =>
+      'The administrator reads every report and answers here.';
+
+  @override
+  String get reportWhatHappened => 'What happened?';
+
+  @override
+  String get reportWhatHappenedHint =>
+      'At least 10 characters. What you did, what you expected, what you saw.';
+
+  @override
+  String get reportScreen => 'Screen';
+
+  @override
+  String get reportPhoto => 'Photo (optional)';
+
+  @override
+  String get reportPhotoPrivacy =>
+      'Do not include evacuees\' names or details in the photo.';
+
+  @override
+  String get reportPhotoCamera => 'Camera';
+
+  @override
+  String get reportPhotoGallery => 'Gallery';
+
+  @override
+  String get reportPhotoRemove => 'Remove the photo';
+
+  @override
+  String get reportPhotoFailed => 'Could not get the photo.';
+
+  @override
+  String get reportSend => 'Send report';
+
+  @override
+  String get reportSent => 'Report sent. The administrator will answer here.';
+
+  @override
+  String get reportNeedsConnection => 'Needs a connection.';
+
+  @override
+  String get reportYours => 'Your reports';
+
+  @override
+  String get reportNone => 'No reports yet.';
+
+  @override
+  String reportReply(String name, String reply) {
+    return 'Reply from $name: $reply';
+  }
 }

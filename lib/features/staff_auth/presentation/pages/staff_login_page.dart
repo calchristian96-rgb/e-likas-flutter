@@ -6,6 +6,9 @@ import '../../../../core/error/result.dart';
 import '../../../../core/widgets/ui_kit.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../providers/staff_auth_provider.dart';
+import '../../../../core/error/failure.dart';
+import '../../../../core/widgets/lock_note.dart';
+import '../../../support/support_requests.dart';
 
 /// Real Sanctum email/password login against `POST /auth/login` —
 /// the only auth endpoint the backend exposes, so there is no
@@ -24,6 +27,10 @@ class _StaffLoginPageState extends ConsumerState<StaffLoginPage> {
   bool _obscurePassword = true;
   bool _submitting = false;
   String? _errorMessage;
+
+  /// The account is locked (423) or the server is in maintenance: the
+  /// lock look, not the error look.
+  bool _locked = false;
 
   @override
   void dispose() {
@@ -58,7 +65,11 @@ class _StaffLoginPageState extends ConsumerState<StaffLoginPage> {
     setState(() => _submitting = false);
 
     if (result case Failed(:final failure)) {
-      setState(() => _errorMessage = failure.message);
+      setState(() {
+        _errorMessage = failure.message;
+        _locked =
+            failure is AccountLockedFailure || failure is MaintenanceFailure;
+      });
       return;
     }
 
@@ -102,17 +113,23 @@ class _StaffLoginPageState extends ConsumerState<StaffLoginPage> {
                   style: Theme.of(context).textTheme.headlineSmall,
                 ),
                 const SizedBox(height: 24),
+                const MaintenanceNote(),
                 if (_errorMessage != null) ...[
-                  _LoginErrorBanner(message: _errorMessage!),
+                  if (_locked)
+                    LockNote(message: _errorMessage)
+                  else
+                    _LoginErrorBanner(message: _errorMessage!),
                   const SizedBox(height: 16),
                 ],
                 TextFormField(
                   controller: _emailController,
-                  keyboardType: TextInputType.emailAddress,
+                  // Email or username: never validated as an email.
+                  keyboardType: TextInputType.text,
+                  autocorrect: false,
                   autofillHints: const [AutofillHints.username],
                   decoration: InputDecoration(
                     labelText: l10n.staffLoginEmailLabel,
-                    prefixIcon: const Icon(Icons.email_outlined),
+                    prefixIcon: const Icon(Icons.person_outline),
                     border: const OutlineInputBorder(),
                   ),
                   validator: (value) {

@@ -24,6 +24,7 @@ import '../staff_shell/event_lock.dart';
 import 'barangay_dashboard.dart';
 import '../../core/utils/formatters.dart';
 import 'official_plan.dart';
+import 'staff_alerts.dart';
 
 /// Families of the latest round still without a box, or null with no
 /// round (or nothing known yet).
@@ -200,6 +201,7 @@ class OfficialHomePage extends ConsumerWidget {
                     : '/staff/relief/round/${round.id}',
               ),
             ),
+            const StaffAlertsSection(),
             SectionTitle(l10n.homeTodo),
             if (todo.isEmpty)
               EmptyNote(

@@ -100,6 +100,23 @@ class EventLockFailure extends ValidationFailure {
 
 enum EventLockKind { monitored, closed, noEvent, other }
 
+/// 423 at sign-in: five failed sign-ins lock the account for 15
+/// minutes. The server's message says when to try again.
+class AccountLockedFailure extends Failure {
+  const AccountLockedFailure(super.message);
+}
+
+/// 503 `maintenance`: the administrator's message; try again later.
+class MaintenanceFailure extends Failure {
+  const MaintenanceFailure(super.message);
+}
+
+/// 403 `password_change_required`: a temporary password must be changed
+/// before anything else.
+class PasswordChangeRequiredFailure extends ForbiddenFailure {
+  const PasswordChangeRequiredFailure([super.message]);
+}
+
 class RateLimitFailure extends Failure {
   const RateLimitFailure([
     super.message = 'Too many requests. Please wait and try again.',

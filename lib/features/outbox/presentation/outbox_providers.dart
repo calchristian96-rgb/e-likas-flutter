@@ -11,6 +11,7 @@ import '../../staff_auth/presentation/providers/staff_auth_provider.dart';
 import '../../staff_shell/current_event.dart';
 import '../data/outbox_repository.dart';
 import '../domain/pending_action.dart';
+import '../../../core/network/device_headers.dart';
 
 /// Scoped to the signed-in account (`ownerStaffId`), like every other
 /// staff queue.
@@ -88,6 +89,10 @@ class StaffSyncAll {
     }
     final result = await _ref.read(outboxRepositoryProvider).run();
     _ref.read(outboxRevisionProvider.notifier).bump();
+    // X-Last-Sync: when the device last finished sending.
+    if (!result.wasOffline && !families.wasOffline && !result.stoppedForAuth) {
+      await DeviceHeaders.markSynced();
+    }
     // The first check-in switches an event in monitoring to active on
     // the server (backend EventFlow): read the events again.
     if (families.processed > 0 || result.sent > 0) {
@@ -170,6 +175,13 @@ class _StaffAutoSyncState extends ConsumerState<StaffAutoSync>
 
   @override
   Widget build(BuildContext context) {
+    // The counts the server sees in X-Sync-Pending and X-Sync-Failed.
+    ref.listen(syncSummaryProvider, (_, next) {
+      final s = next.value;
+      if (s == null) return;
+      DeviceHeaders.syncPending = s.waiting;
+      DeviceHeaders.syncFailed = s.needAttention;
+    });
     ref.listen(connectivityStatusProvider, (previous, next) {
       if (previous?.value == false && next.value == true) _sync();
     });

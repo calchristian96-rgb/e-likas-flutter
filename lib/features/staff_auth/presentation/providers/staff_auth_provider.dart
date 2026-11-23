@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../core/error/result.dart';
@@ -32,6 +34,7 @@ StaffAuthRepository staffAuthRepository(Ref ref) {
 class StaffAuth extends _$StaffAuth {
   @override
   Future<StaffSession?> build() async {
+    StaffApiClient.onPasswordChangeRequired = requirePasswordChange;
     final repo = ref.watch(staffAuthRepositoryProvider);
     final result = await repo.restoreSession();
     return switch (result) {
@@ -50,6 +53,32 @@ class StaffAuth extends _$StaffAuth {
       state = AsyncData(value);
     }
     return result;
+  }
+
+  /// Any answer said a password change is required (an administrator
+  /// reset while signed in): show the change-password screen.
+  void requirePasswordChange() {
+    final s = state.value;
+    if (s == null || s.mustChangePassword) return;
+    state = AsyncData(s.copyWith(mustChangePassword: true));
+  }
+
+  /// `POST /auth/password` worked: the server's user (with
+  /// `must_change_password: false`), or the same session without the flag.
+  Future<void> passwordChanged(Map<String, dynamic>? user) async {
+    final current = state.value;
+    if (current == null) return;
+    final next = user == null || user['id'] == null
+        ? current.copyWith(mustChangePassword: false)
+        : StaffSession.fromJson(user).copyWith(mustChangePassword: false);
+    state = AsyncData(next);
+    // Saved for an offline restart; the next /auth/me saves it anyway.
+    unawaited(
+      ref
+          .read(secureTokenStorageProvider)
+          .writeCachedSession(next.toJson())
+          .catchError((Object _) {}),
+    );
   }
 
   Future<void> logout() async {

@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'app/app.dart';
 import 'core/env/backend_override_service.dart';
 import 'core/notifications/local_notifications.dart';
+import 'core/network/device_headers.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -14,5 +15,6 @@ void main() async {
   // Notification channels (elikas_alerts, elikas_staff): never blocks
   // startup for long, never throws.
   await LocalNotifications.init();
+  await DeviceHeaders.init();
   runApp(const ProviderScope(child: ElikasApp()));
 }

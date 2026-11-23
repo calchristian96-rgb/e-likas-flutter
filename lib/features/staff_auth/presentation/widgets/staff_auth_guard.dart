@@ -6,6 +6,7 @@ import '../../domain/entities/staff_session.dart';
 import '../pages/staff_login_page.dart';
 import '../pages/use_the_web_page.dart';
 import '../providers/staff_auth_provider.dart';
+import '../pages/change_password_page.dart';
 
 /// Gate for every staff screen beyond the login page itself
 /// (Workspace, Register Family, Pending Registrations, ...).
@@ -35,6 +36,9 @@ class StaffAuthGuard extends ConsumerWidget {
         if (!session.hasOperationsAccess) {
           return UseTheWebPage(session: session);
         }
+        // A temporary password: every other call answers 403 until it
+        // is changed (apps-api-2026-11-23.md section 1).
+        if (session.mustChangePassword) return const ChangePasswordPage();
         return builder(context, session);
       },
       loading: () =>

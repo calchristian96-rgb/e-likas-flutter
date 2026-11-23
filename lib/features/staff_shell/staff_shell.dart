@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/widgets/shell_back_handler.dart';
 import 'package:go_router/go_router.dart';
@@ -8,6 +9,7 @@ import '../outbox/presentation/outbox_providers.dart';
 import '../staff_auth/domain/entities/staff_session.dart';
 import '../staff_auth/presentation/widgets/staff_auth_guard.dart';
 import '../staff_home/barangay_dashboard.dart';
+import '../support/support_requests.dart';
 
 /// One tab of Staff Mode: its branch index in the staff shell's
 /// `StatefulShellRoute`, and who sees it.
@@ -105,7 +107,28 @@ class StaffShell extends StatelessWidget {
           child: Scaffold(
             // Syncs on open, on reconnect and on resume (C15).
             body: StaffAutoSync(
-              child: RegistrationOpenWatcher(child: navigationShell),
+              child: RegistrationOpenWatcher(
+                child: Consumer(
+                  builder: (context, ref, _) => Column(
+                    children: [
+                      const SystemNoticesBanner(),
+                      Expanded(
+                        child: MediaQuery.removePadding(
+                          context: context,
+                          // The banner already sits under the status bar.
+                          removeTop:
+                              ref
+                                  .watch(systemNoticesProvider)
+                                  .value
+                                  ?.isNotEmpty ??
+                              false,
+                          child: navigationShell,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
             ),
             bottomNavigationBar: NavigationBar(
               selectedIndex: selected,

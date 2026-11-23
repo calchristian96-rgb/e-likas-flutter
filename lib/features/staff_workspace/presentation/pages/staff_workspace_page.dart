@@ -93,6 +93,15 @@ class _StaffWorkspaceBody extends ConsumerWidget {
               subtitle: l10n.staffMyCentersSubtitle,
               onTap: () => context.push('/staff/more/evacuation-centers'),
             ),
+          if (session.can(StaffPermission.supportReport) ||
+              session.hasOperationsAccess)
+            _WorkspaceAction(
+              icon: Icons.bug_report_outlined,
+              iconColor: theme.colorScheme.primary,
+              label: l10n.reportTitle,
+              subtitle: l10n.reportSubtitle,
+              onTap: () => context.push('/staff/more/report'),
+            ),
           // The resident app (Part 3.1), still signed in.
           _WorkspaceAction(
             icon: Icons.public,

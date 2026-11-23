@@ -23,7 +23,12 @@ Failure mapStaffDioError(DioException err) {
     case 401:
       return AuthFailure(message);
     case 403:
+      if (_errorCode(body) == 'password_change_required') {
+        return PasswordChangeRequiredFailure(message);
+      }
       return ForbiddenFailure(message);
+    case 423:
+      return AccountLockedFailure(message);
     case 404:
       return ServerFailure(
         message.isNotEmpty ? message : 'The requested resource was not found.',
@@ -37,6 +42,9 @@ Failure mapStaffDioError(DioException err) {
       return RateLimitFailure(message);
   }
 
+  if (status == 503 && _errorCode(body) == 'maintenance') {
+    return MaintenanceFailure(message);
+  }
   if (status != null && status >= 500) {
     return const ServerFailure(
       'The server is having trouble right now. Please try again later.',
@@ -123,4 +131,13 @@ EventLockKind? eventLockKindOf(
   return fieldErrors.containsKey('evacuation_event_id')
       ? EventLockKind.other
       : null;
+}
+
+String? _errorCode(Object? body) {
+  if (body is! Map) return null;
+  final errors = body['errors'];
+  if (errors is Map && errors['code'] is String) {
+    return errors['code'] as String;
+  }
+  return body['code'] as String?;
 }

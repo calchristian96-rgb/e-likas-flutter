@@ -110,6 +110,7 @@ dependencies:
   package_info_plus: ^10.2.2
   crypto: ^3.0.7
   open_filex: ^5.0.0
+  image_picker: ^1.2.4
 
 dev_dependencies:
   flutter_test:
