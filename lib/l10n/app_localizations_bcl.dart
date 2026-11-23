@@ -4901,4 +4901,26 @@ class AppLocalizationsBcl extends AppLocalizations {
 
   @override
   String get listAddsWaiting => 'Added on this phone, waiting to sync';
+
+  @override
+  String mayonNear(String km) {
+    return 'Mayon: harani an saindong barangay sa peligrosong lugar, laog nin $km km hale sa 7 km na sona.';
+  }
+
+  @override
+  String floodShare(String pct) {
+    return 'Baha: $pct% kan saindong barangay an halangkaw o sobrang halangkaw an peligro sa baha.';
+  }
+
+  @override
+  String get floodNone =>
+      'Baha: mayong namapa na halangkaw o sobrang halangkaw na peligro sa baha sa saindong barangay.';
+
+  @override
+  String get floodSourceNote =>
+      'Kabtang kan lawak kan barangay na minapa kan MGB na halangkaw o sobrang halangkaw an peligro sa baha (tantiya kan lawak).';
+
+  @override
+  String get hazardsOnPhone =>
+      'Kinuwenta sa telepono na ini hale sa linderos kan barangay (mayo pang koneksyon).';
 }

@@ -30,6 +30,9 @@ class BarangayStatusRepository {
 
   static const path = 'public/gis/barangay-status';
 
+  /// Flood and Mayon per barangay from the last answer (JSON).
+  static const hazardsPrefsKey = 'barangay_hazards_v1';
+
   /// Throws only when there is neither a response nor a saved copy.
   Future<BarangayStatusBoard> getBoard() async {
     if (await _connectivity.hasConnection) {
@@ -68,6 +71,9 @@ class BarangayStatusRepository {
           ? 'volcanic_eruption'
           : event?['event_type'] as String?,
       cityPushTopic: data['city_push_topic'] as String?,
+      mayonBufferKm:
+          ((data['mayon_zones'] as Map<String, dynamic>?)?['buffer_km'] as num?)
+              ?.toDouble(),
       barangays: [
         for (final b in data['barangays'] as List? ?? const [])
           BarangayStatus.fromJson(b as Map<String, dynamic>),
@@ -92,6 +98,21 @@ class BarangayStatusRepository {
       });
     });
     final prefs = await SharedPreferences.getInstance();
+    // Flood and Mayon per barangay, for offline (no table change).
+    await prefs.setString(
+      hazardsPrefsKey,
+      jsonEncode({
+        'buffer_km': board.mayonBufferKm,
+        'barangays': {
+          for (final b in board.barangays)
+            if (b.flood != null || b.mayon != null)
+              '${b.id}': {
+                'flood': b.flood?.toJson(),
+                'mayon': b.mayon?.toJson(),
+              },
+        },
+      }),
+    );
     await prefs.setString(
       _eventPrefsKey,
       jsonEncode({
@@ -111,18 +132,26 @@ class BarangayStatusRepository {
       throw StateError('No barangay status saved on this device yet.');
     }
     Map<String, dynamic> event = const {};
+    Map<String, dynamic> hazards = const {};
     try {
       final prefs = await SharedPreferences.getInstance();
       final raw = prefs.getString(_eventPrefsKey);
       if (raw != null) event = jsonDecode(raw) as Map<String, dynamic>;
+      final rawHazards = prefs.getString(hazardsPrefsKey);
+      if (rawHazards != null) {
+        hazards = jsonDecode(rawHazards) as Map<String, dynamic>;
+      }
     } catch (_) {
       // No event saved: show the statuses without one.
     }
+    final perBarangay =
+        hazards['barangays'] as Map<String, dynamic>? ?? const {};
     return BarangayStatusBoard(
       eventName: event['name'] as String?,
       eventStatus: event['status'] as String?,
       isDrill: event['is_drill'] as bool? ?? false,
       eventType: event['event_type'] as String?,
+      mayonBufferKm: (hazards['buffer_km'] as num?)?.toDouble(),
       isFromCache: true,
       lastSyncedAt: await _syncTimestamps.getSynced(SyncDomain.barangayStatus),
       barangays: [
@@ -133,7 +162,7 @@ class BarangayStatusRepository {
             psgcCode: r.psgcCode,
             status: r.status,
             label: r.label,
-          ),
+          ).withHazards(perBarangay['${r.id}'] as Map<String, dynamic>?),
       ],
     );
   }

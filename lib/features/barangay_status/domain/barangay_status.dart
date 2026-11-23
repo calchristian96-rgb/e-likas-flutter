@@ -10,7 +10,17 @@ class BarangayStatus {
     this.psgcCode,
     this.slug,
     this.pushTopic,
+    this.flood,
+    this.mayon,
   });
+
+  /// Flood susceptibility from the server (apps-api-2026-11-24.md 6);
+  /// null when the barangay has no flood figures.
+  final BarangayFlood? flood;
+
+  /// The Mayon zone from the server; null without an outline (or on an
+  /// old saved copy: the app then works it out on the phone).
+  final BarangayMayon? mayon;
 
   /// e.g. `tula-tula-pequeno`, and its push topic as the API names it
   /// (`elikas-brgy-tula-tula-pequeno`): the app never builds topics.
@@ -43,7 +53,87 @@ class BarangayStatus {
     label: json['label'] as String? ?? 'Normal',
     slug: json['slug'] as String?,
     pushTopic: json['push_topic'] as String?,
+    flood: BarangayFlood.fromJson(json['flood']),
+    mayon: BarangayMayon.fromJson(json['mayon']),
   );
+
+  BarangayStatus withHazards(Map<String, dynamic>? hazards) => BarangayStatus(
+    id: id,
+    name: name,
+    status: status,
+    label: label,
+    psgcCode: psgcCode,
+    slug: slug,
+    pushTopic: pushTopic,
+    flood: BarangayFlood.fromJson(hazards?['flood']),
+    mayon: BarangayMayon.fromJson(hazards?['mayon']),
+  );
+}
+
+/// `flood`: share of the barangay's area (0-100) that MGB maps as very
+/// high or high flood susceptibility.
+class BarangayFlood {
+  const BarangayFlood({
+    required this.veryHighPct,
+    required this.highPct,
+    required this.highOrVeryHighPct,
+  });
+
+  static BarangayFlood? fromJson(Object? raw) {
+    if (raw is! Map) return null;
+    double pct(Object? v) => v is num ? v.toDouble() : 0;
+    return BarangayFlood(
+      veryHighPct: pct(raw['very_high_pct']),
+      highPct: pct(raw['high_pct']),
+      highOrVeryHighPct: pct(raw['high_or_very_high_pct']),
+    );
+  }
+
+  final double veryHighPct;
+  final double highPct;
+  final double highOrVeryHighPct;
+
+  Map<String, dynamic> toJson() => {
+    'very_high_pct': veryHighPct,
+    'high_pct': highPct,
+    'high_or_very_high_pct': highOrVeryHighPct,
+  };
+}
+
+/// `mayon`: the zone by the outline's nearest point to the summit.
+class BarangayMayon {
+  const BarangayMayon({
+    required this.zone,
+    this.label,
+    this.nearestKm,
+    this.toExtendedKm,
+  });
+
+  static BarangayMayon? fromJson(Object? raw) {
+    if (raw is! Map || raw['zone'] is! String) return null;
+    double? km(Object? v) => v is num ? v.toDouble() : null;
+    return BarangayMayon(
+      zone: raw['zone'] as String,
+      label: raw['label'] as String?,
+      nearestKm: km(raw['nearest_km']),
+      toExtendedKm: km(raw['to_extended_km']),
+    );
+  }
+
+  /// inside_6km | inside_7km | near | outside
+  final String zone;
+
+  /// The server's English words ("Inside 6 km", "13.4 km from the summit").
+  final String? label;
+  final double? nearestKm;
+  final double? toExtendedKm;
+
+  Map<String, dynamic> toJson() => {
+    'zone': zone,
+    'label': label,
+    'nearest_km': nearestKm,
+    'to_extended_km': toExtendedKm,
+  };
 }
 
 abstract final class BarangayStatusKey {
@@ -79,7 +169,11 @@ class BarangayStatusBoard {
     this.lastSyncedAt,
     this.eventType,
     this.cityPushTopic,
+    this.mayonBufferKm,
   });
+
+  /// `mayon_zones.buffer_km`: how far beyond 7 km counts as "near".
+  final double? mayonBufferKm;
 
   /// `city_push_topic` (`elikas-city`); null on a saved copy.
   final String? cityPushTopic;

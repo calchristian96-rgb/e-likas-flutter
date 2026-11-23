@@ -3475,5 +3475,15 @@
   "reliefPrivateHouse": "Private house ({host})",
   "listAddSummary": "Add {name} to the families to evacuate",
   "listAddQueued": "Added. It is sent to the list when there is a connection.",
-  "listAddsWaiting": "Added on this phone, waiting to sync"
+  "listAddsWaiting": "Added on this phone, waiting to sync",
+  "mayonNear": "Mayon: harani an saindong barangay sa peligrosong lugar, laog nin {km} km hale sa 7 km na sona.",
+  "@mayonNear": {"description": "NEEDS NATIVE BIKOL REVIEW"},
+  "floodShare": "Baha: {pct}% kan saindong barangay an halangkaw o sobrang halangkaw an peligro sa baha.",
+  "@floodShare": {"description": "NEEDS NATIVE BIKOL REVIEW"},
+  "floodNone": "Baha: mayong namapa na halangkaw o sobrang halangkaw na peligro sa baha sa saindong barangay.",
+  "@floodNone": {"description": "NEEDS NATIVE BIKOL REVIEW"},
+  "floodSourceNote": "Kabtang kan lawak kan barangay na minapa kan MGB na halangkaw o sobrang halangkaw an peligro sa baha (tantiya kan lawak).",
+  "@floodSourceNote": {"description": "NEEDS NATIVE BIKOL REVIEW"},
+  "hazardsOnPhone": "Kinuwenta sa telepono na ini hale sa linderos kan barangay (mayo pang koneksyon).",
+  "@hazardsOnPhone": {"description": "NEEDS NATIVE BIKOL REVIEW"}
 }

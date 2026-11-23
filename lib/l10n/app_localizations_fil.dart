@@ -4978,4 +4978,26 @@ class AppLocalizationsFil extends AppLocalizations {
 
   @override
   String get listAddsWaiting => 'Idinagdag sa phone na ito, naghihintay i-sync';
+
+  @override
+  String mayonNear(String km) {
+    return 'Mayon: malapit ang inyong barangay sa danger zone, nasa loob ng $km km mula sa 7 km na zone.';
+  }
+
+  @override
+  String floodShare(String pct) {
+    return 'Baha: $pct% ng inyong barangay ay mataas o napakataas ang panganib sa baha.';
+  }
+
+  @override
+  String get floodNone =>
+      'Baha: walang naka-mapang mataas o napakataas na panganib sa baha sa inyong barangay.';
+
+  @override
+  String get floodSourceNote =>
+      'Bahagi ng lawak ng barangay na itinuturing ng MGB na mataas o napakataas ang panganib sa baha (tantiya ng lawak).';
+
+  @override
+  String get hazardsOnPhone =>
+      'Kinalkula sa phone na ito mula sa hangganan ng barangay (wala pang koneksyon).';
 }

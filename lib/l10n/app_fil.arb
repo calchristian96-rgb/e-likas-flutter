@@ -1496,5 +1496,10 @@
   "reliefPrivateHouse": "Pribadong bahay ({host})",
   "listAddSummary": "Idagdag si {name} sa mga pamilyang ililikas",
   "listAddQueued": "Naidagdag. Ipapadala sa listahan kapag may koneksyon.",
-  "listAddsWaiting": "Idinagdag sa phone na ito, naghihintay i-sync"
+  "listAddsWaiting": "Idinagdag sa phone na ito, naghihintay i-sync",
+  "mayonNear": "Mayon: malapit ang inyong barangay sa danger zone, nasa loob ng {km} km mula sa 7 km na zone.",
+  "floodShare": "Baha: {pct}% ng inyong barangay ay mataas o napakataas ang panganib sa baha.",
+  "floodNone": "Baha: walang naka-mapang mataas o napakataas na panganib sa baha sa inyong barangay.",
+  "floodSourceNote": "Bahagi ng lawak ng barangay na itinuturing ng MGB na mataas o napakataas ang panganib sa baha (tantiya ng lawak).",
+  "hazardsOnPhone": "Kinalkula sa phone na ito mula sa hangganan ng barangay (wala pang koneksyon)."
 }

@@ -13,6 +13,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../helpers/fake_staff_auth.dart';
 import 'package:elikas_mobile/features/alerts/data/models/alert_model.dart';
+import 'package:elikas_mobile/features/barangay_status/data/barangay_status_repository.dart';
 
 EvacuationCenter _center(
   int id, {
@@ -70,6 +71,8 @@ void main() {
     test('Mayon zones by the nearest distance', () {
       expect(mayonZoneOf(5.2), MayonZone.permanent);
       expect(mayonZoneOf(6.8), MayonZone.extended);
+      // Offline fallback: "near" within 3 km beyond 7 km.
+      expect(mayonZoneOf(8), MayonZone.near);
       expect(mayonZoneOf(12), MayonZone.outside);
     });
   });
@@ -171,6 +174,109 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.text('Forced evacuation: Bay'), findsOneWidget);
     expect(find.text('Nearest open centers'), findsOneWidget);
+  });
+
+  test('barangay-status: flood and Mayon per barangay are parsed', () {
+    final board = BarangayStatusRepository.parse({
+      'evacuation_event': {'name': 'Typhoon Ofel', 'status': 'monitoring'},
+      'city_push_topic': 'elikas-city',
+      'mayon_zones': {
+        'permanent_km': 6,
+        'extended_km': 7,
+        'buffer_km': 3,
+        'label': 'Approximate zone based on distance from the summit.',
+      },
+      'barangays': [
+        {
+          'id': 33,
+          'name': 'Nabonton',
+          'status': 'normal',
+          'label': 'Normal',
+          'flood': {
+            'very_high_pct': 0,
+            'high_pct': 13.99,
+            'high_or_very_high_pct': 14,
+          },
+          'mayon': {
+            'zone': 'near',
+            'label': 'Near (within 3 km of the 7 km zone)',
+            'nearest_km': 8,
+            'to_extended_km': 1,
+            'pct_permanent': 0,
+            'pct_extended': 0,
+          },
+        },
+        {
+          'id': 60,
+          'name': 'No figures',
+          'status': 'normal',
+          'label': 'Normal',
+          'flood': null,
+          'mayon': null,
+        },
+      ],
+    });
+    expect(board.mayonBufferKm, 3);
+    final n = board.byId(33)!;
+    expect(n.flood!.highOrVeryHighPct, 14);
+    expect(n.mayon!.zone, 'near');
+    expect(n.mayon!.nearestKm, 8);
+    expect(board.byId(60)!.flood, isNull);
+    expect(board.byId(60)!.mayon, isNull);
+    expect(floodPercentText(11.7), '12');
+    expect(floodPercentText(0.4), '<1');
+  });
+
+  testWidgets('hazards: the server\'s flood share and Mayon zone', (
+    tester,
+  ) async {
+    await tester.pumpWidget(
+      testApp(
+        const Scaffold(body: SingleChildScrollView(child: HazardsCard())),
+        overrides: [
+          residentAreaProvider.overrideWith(
+            (ref) async => const ResidentArea(
+              name: 'Tuburan',
+              psgcCode: '050508053',
+              status: BarangayStatus(
+                id: 52,
+                name: 'Tuburan',
+                status: 'normal',
+                label: 'Normal',
+                flood: BarangayFlood(
+                  veryHighPct: 6.16,
+                  highPct: 5.57,
+                  highOrVeryHighPct: 11.7,
+                ),
+                mayon: BarangayMayon(
+                  zone: 'outside',
+                  label: '13.4 km from the summit',
+                  nearestKm: 13.4,
+                  toExtendedKm: 6.4,
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+    await tester.pumpAndSettle();
+    expect(
+      find.text(
+        'Flood: 12% of your barangay has high or very high flood '
+        'susceptibility.',
+      ),
+      findsOneWidget,
+    );
+    expect(
+      find.text(
+        'Mayon: your barangay is 13.4 km from the summit, outside the '
+        'danger zones.',
+      ),
+      findsOneWidget,
+    );
+    // From the server: no "worked out on this phone" note.
+    expect(find.textContaining('Worked out on this phone'), findsNothing);
   });
 
   testWidgets('no order: no banner', (tester) async {

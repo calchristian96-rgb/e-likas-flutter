@@ -18,6 +18,7 @@ import '../evacuation_centers/presentation/widgets/center_directions.dart';
 import '../evacuation_centers/presentation/widgets/center_status_display.dart';
 import '../home/presentation/widgets/nearest_center_preview.dart'
     show NearestCenterPreview, formatDistance;
+import '../../app/theme/app_theme.dart';
 
 /// Mayon's summit and its danger zones (apps-api-2026-11-22.md section 1,
 /// Volcanic events): the permanent danger zone is 6 km, the extended one
@@ -26,6 +27,10 @@ abstract final class Mayon {
   static const summit = LatLng(13.2570, 123.6856);
   static const permanentKm = 6.0;
   static const extendedKm = 7.0;
+
+  /// "Near": within this much beyond 7 km (the server's default; the
+  /// server's own `mayon_zones.buffer_km` wins when known).
+  static const bufferKm = 3.0;
 
   static double kmFrom(double lat, double lng) =>
       DistanceCalculator.metersBetween(
@@ -239,13 +244,24 @@ class SafeCentersCard extends ConsumerWidget {
 }
 
 /// Where the resident's barangay stands against Mayon's zones.
-enum MayonZone { permanent, extended, outside }
+enum MayonZone { permanent, extended, near, outside }
 
+/// The zone worked out on the phone (offline fallback only).
 MayonZone mayonZoneOf(double nearestKm) => nearestKm <= Mayon.permanentKm
     ? MayonZone.permanent
     : nearestKm <= Mayon.extendedKm
     ? MayonZone.extended
+    : nearestKm <= Mayon.extendedKm + Mayon.bufferKm
+    ? MayonZone.near
     : MayonZone.outside;
+
+/// "12" for 11.7, "less than 1" style "<1" for 0.4 (never "0" for some).
+String floodPercentText(double pct) =>
+    pct > 0 && pct < 1 ? '<1' : pct.round().toString();
+
+/// "3" for 3.0, "2.5" for 2.5.
+String formatKm(double km) =>
+    km == km.roundToDouble() ? km.toInt().toString() : km.toStringAsFixed(1);
 
 final _ownOutlineProvider = FutureProvider.autoDispose<BarangayOutline?>((
   ref,
@@ -269,9 +285,30 @@ class HazardsCard extends ConsumerWidget {
     final l10n = AppLocalizations.of(context);
     final theme = Theme.of(context);
     final area = ref.watch(residentAreaProvider).value;
-    final outline = ref.watch(_ownOutlineProvider).value;
-    final km = outline == null ? null : Mayon.nearestKm(outline);
-    final zone = km == null ? null : mayonZoneOf(km);
+    final flood = area?.status?.flood;
+    // The server's zone (apps-api-2026-11-24.md 6); worked out on the
+    // phone only when there is none (offline before the first answer).
+    final server = area?.status?.mayon;
+    final outline = server != null
+        ? null
+        : ref.watch(_ownOutlineProvider).value;
+    final localKm = outline == null ? null : Mayon.nearestKm(outline);
+    final MayonZone? zone;
+    final double? km;
+    if (server != null) {
+      km = server.nearestKm;
+      zone = switch (server.zone) {
+        'inside_6km' => MayonZone.permanent,
+        'inside_7km' => MayonZone.extended,
+        'near' => MayonZone.near,
+        _ => MayonZone.outside,
+      };
+    } else {
+      km = localKm;
+      zone = localKm == null ? null : mayonZoneOf(localKm);
+    }
+    final buffer = area?.board?.mayonBufferKm ?? Mayon.bufferKm;
+    final semantic = theme.extension<AppSemanticColors>()!;
     return Padding(
       padding: const EdgeInsets.only(bottom: 16),
       child: AppCard(
@@ -286,29 +323,62 @@ class HazardsCard extends ConsumerWidget {
               style: theme.textTheme.titleMedium,
             ),
             const SizedBox(height: 8),
+            if (flood != null) ...[
+              Row(
+                children: [
+                  Icon(
+                    Icons.water_outlined,
+                    color: flood.veryHighPct > 0
+                        ? theme.colorScheme.error
+                        : flood.highPct > 0
+                        ? semantic.warning
+                        : theme.colorScheme.primary,
+                  ),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      flood.highOrVeryHighPct <= 0
+                          ? l10n.floodNone
+                          : l10n.floodShare(
+                              floodPercentText(flood.highOrVeryHighPct),
+                            ),
+                      style: theme.textTheme.bodyLarge,
+                    ),
+                  ),
+                ],
+              ),
+              Text(l10n.floodSourceNote, style: theme.textTheme.bodySmall),
+              const SizedBox(height: 8),
+            ],
             if (zone != null)
               Row(
                 children: [
                   Icon(
                     Icons.volcano_outlined,
-                    color: zone == MayonZone.outside
-                        ? theme.colorScheme.primary
-                        : theme.colorScheme.error,
+                    color: switch (zone) {
+                      MayonZone.outside => theme.colorScheme.primary,
+                      MayonZone.near => semantic.warning,
+                      _ => theme.colorScheme.error,
+                    },
                   ),
                   const SizedBox(width: 8),
                   Expanded(
                     child: Text(switch (zone) {
                       MayonZone.permanent => l10n.mayonInsidePermanent,
                       MayonZone.extended => l10n.mayonInsideExtended,
-                      MayonZone.outside => l10n.mayonDistance(
-                        km!.toStringAsFixed(1),
-                      ),
+                      MayonZone.near => l10n.mayonNear(formatKm(buffer)),
+                      MayonZone.outside =>
+                        km == null
+                            ? (server?.label ?? '')
+                            : l10n.mayonDistance(km.toStringAsFixed(1)),
                     }, style: theme.textTheme.bodyLarge),
                   ),
                 ],
               ),
             if (zone != null)
               Text(l10n.mayonZoneLabel, style: theme.textTheme.bodySmall),
+            if (zone != null && server == null)
+              Text(l10n.hazardsOnPhone, style: theme.textTheme.bodySmall),
             const SizedBox(height: 8),
             Text(l10n.hazardsWhatToDo, style: theme.textTheme.labelLarge),
             Text(l10n.hazardsWhatToDoHint, style: theme.textTheme.bodySmall),

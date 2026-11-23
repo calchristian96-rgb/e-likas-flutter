@@ -17,6 +17,7 @@ const _body = {
       'is_drill': true,
     },
     'statuses': [],
+    'mayon_zones': {'permanent_km': 6, 'extended_km': 7, 'buffer_km': 3},
     'barangays': [
       {
         'id': 13,
@@ -24,6 +25,17 @@ const _body = {
         'psgc_code': '050508013',
         'status': 'forced_evacuation',
         'label': 'Forced evacuation',
+        'flood': {
+          'very_high_pct': 6.16,
+          'high_pct': 5.57,
+          'high_or_very_high_pct': 11.7,
+        },
+        'mayon': {
+          'zone': 'outside',
+          'label': '13.4 km from the summit',
+          'nearest_km': 13.4,
+          'to_extended_km': 6.4,
+        },
       },
       {
         'id': 1,
@@ -75,6 +87,11 @@ void main() {
       expect(saved.isDrill, isTrue);
       expect(saved.byId(13)!.status, 'forced_evacuation');
       expect(saved.barangays.first.name, 'Abella'); // by name
+      // Flood and Mayon are kept for offline too.
+      expect(saved.byId(13)!.flood!.highOrVeryHighPct, 11.7);
+      expect(saved.byId(13)!.mayon!.zone, 'outside');
+      expect(saved.byId(1)!.mayon, isNull);
+      expect(saved.mayonBufferKm, 3);
     },
   );
 

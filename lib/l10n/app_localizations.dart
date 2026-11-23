@@ -7736,6 +7736,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Added on this phone, waiting to sync'**
   String get listAddsWaiting;
+
+  /// No description provided for @mayonNear.
+  ///
+  /// In en, this message translates to:
+  /// **'Mayon: your barangay is near the danger zone, within {km} km of the 7 km zone.'**
+  String mayonNear(String km);
+
+  /// No description provided for @floodShare.
+  ///
+  /// In en, this message translates to:
+  /// **'Flood: {pct}% of your barangay has high or very high flood susceptibility.'**
+  String floodShare(String pct);
+
+  /// No description provided for @floodNone.
+  ///
+  /// In en, this message translates to:
+  /// **'Flood: no high or very high flood susceptibility is mapped in your barangay.'**
+  String get floodNone;
+
+  /// No description provided for @floodSourceNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Share of the barangay\'s area that MGB maps as high or very high flood susceptibility (an area estimate).'**
+  String get floodSourceNote;
+
+  /// No description provided for @hazardsOnPhone.
+  ///
+  /// In en, this message translates to:
+  /// **'Worked out on this phone from the barangay outline (no connection yet).'**
+  String get hazardsOnPhone;
 }
 
 class _AppLocalizationsDelegate

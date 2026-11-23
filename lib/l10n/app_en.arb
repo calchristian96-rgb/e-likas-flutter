@@ -2292,5 +2292,12 @@
   "listAddSummary": "Add {name} to the families to evacuate",
   "@listAddSummary": {"placeholders": {"name": {"type": "String"}}},
   "listAddQueued": "Added. It is sent to the list when there is a connection.",
-  "listAddsWaiting": "Added on this phone, waiting to sync"
+  "listAddsWaiting": "Added on this phone, waiting to sync",
+  "mayonNear": "Mayon: your barangay is near the danger zone, within {km} km of the 7 km zone.",
+  "@mayonNear": {"placeholders": {"km": {"type": "String"}}},
+  "floodShare": "Flood: {pct}% of your barangay has high or very high flood susceptibility.",
+  "@floodShare": {"placeholders": {"pct": {"type": "String"}}},
+  "floodNone": "Flood: no high or very high flood susceptibility is mapped in your barangay.",
+  "floodSourceNote": "Share of the barangay's area that MGB maps as high or very high flood susceptibility (an area estimate).",
+  "hazardsOnPhone": "Worked out on this phone from the barangay outline (no connection yet)."
 }
