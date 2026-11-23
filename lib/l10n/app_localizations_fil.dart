@@ -4641,4 +4641,96 @@ class AppLocalizationsFil extends AppLocalizations {
   String reportReply(String name, String reply) {
     return 'Sagot ni $name: $reply';
   }
+
+  @override
+  String get cswdNeedsConnection =>
+      'Kailangan ng koneksyon. Agad itong ipinapaalam, kaya hindi ito itinatabi para mamaya.';
+
+  @override
+  String cswdStartTitle(String event) {
+    return 'Mino-monitor ang $event';
+  }
+
+  @override
+  String get cswdStartHint =>
+      'Magbubukas ang pagpaparehistro, relief, paglipat at final count kapag sinimulan ang paglikas.';
+
+  @override
+  String get cswdStartEvacuation => 'Simulan ang paglikas';
+
+  @override
+  String cswdStartConfirmTitle(String event) {
+    return 'Simulan ang paglikas para sa $event?';
+  }
+
+  @override
+  String get cswdStartConfirmBody =>
+      'Magiging Active ang event. Sasabihan ang bawat opisyal ng barangay na bukas na ang pagpaparehistro. Hindi ito maibabalik mula sa app.';
+
+  @override
+  String cswdStartDone(String event) {
+    return 'Active na ang $event.';
+  }
+
+  @override
+  String get cswdAskUpdate => 'Hilingin sa barangay na mag-update';
+
+  @override
+  String cswdAskUpdateTitle(String barangay) {
+    return 'Hilingin sa $barangay na i-update ang status nito?';
+  }
+
+  @override
+  String get cswdAskUpdateBody =>
+      'Makakatanggap ng abiso ang mga opisyal ng barangay. Sila pa rin ang magtatakda ng status.';
+
+  @override
+  String cswdAskUpdateDone(String barangay) {
+    return 'Hiniling sa $barangay na mag-update.';
+  }
+
+  @override
+  String get cswdRemind => 'Paalalahanan';
+
+  @override
+  String get cswdRemindFinalCount => 'Ipaalala ang final count';
+
+  @override
+  String cswdRemindTitle(String barangay) {
+    return 'Paalalahanan ang $barangay na ipadala ang final count?';
+  }
+
+  @override
+  String get cswdRemindBody =>
+      'Makakatanggap ng abiso ang mga opisyal ng barangay.';
+
+  @override
+  String cswdRemindDone(String barangay) {
+    return 'Napaalalahanan ang $barangay.';
+  }
+
+  @override
+  String get cswdProgressTitle => 'Takbo ng paglikas';
+
+  @override
+  String get cswdProgressHint =>
+      'Mga rehistradong pamilya kumpara sa listahan ng bawat barangay. Nauuna ang nahuhuli.';
+
+  @override
+  String cswdProgressLine(String registered, String expected) {
+    return '$registered sa $expected inaasahang pamilya ang rehistrado';
+  }
+
+  @override
+  String cswdProgressNoList(String families) {
+    return '$families rehistrado · walang listahan';
+  }
+
+  @override
+  String cswdProgressListCheckedIn(String checkedIn, String listed) {
+    return '$checkedIn sa $listed nakalistang pamilya ang naka-check in';
+  }
+
+  @override
+  String get cswdProgressNone => 'Wala pang bilang ng barangay.';
 }

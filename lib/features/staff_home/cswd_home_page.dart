@@ -27,6 +27,7 @@ import '../staff_shell/current_event.dart';
 import '../transfers/cswd_move_page.dart';
 import '../transfers/transfers.dart';
 import '../../core/widgets/lock_note.dart';
+import 'cswd_actions.dart';
 
 /// Barangays with families in the event and no final count sent yet
 /// (`GET /count-submissions/barangays`, CSWD).
@@ -155,6 +156,8 @@ class CswdHomePage extends ConsumerWidget {
           padding: pagePadding(context),
           children: [
             const StaffEventBar(),
+            if (session.can(StaffPermission.eventsManage))
+              const StartEvacuationCard(),
             if (!active) ...[
               const SizedBox(height: 16),
               const _ReadinessCard(),
@@ -240,6 +243,15 @@ class CswdHomePage extends ConsumerWidget {
                   Expanded(child: Text(l10n.cswdDoThisOnTheWeb)),
                 ],
               ),
+            ),
+            const SizedBox(height: 8),
+            OutlinedButton.icon(
+              style: OutlinedButton.styleFrom(
+                minimumSize: const Size.fromHeight(48),
+              ),
+              onPressed: () => context.go('/staff/home/progress'),
+              icon: const Icon(Icons.stacked_bar_chart),
+              label: Text(l10n.cswdProgressTitle),
             ),
             const SizedBox(height: 8),
             OutlinedButton(
@@ -541,6 +553,23 @@ class CswdBarangayDetailPage extends ConsumerWidget {
                 const SizedBox(height: 4),
                 Text(status['note'] as String),
               ],
+              if (open)
+                Align(
+                  alignment: AlignmentDirectional.centerStart,
+                  child: TextButton.icon(
+                    style: TextButton.styleFrom(
+                      minimumSize: const Size(48, 48),
+                    ),
+                    onPressed: () => askBarangayToUpdate(
+                      context,
+                      ref,
+                      barangayId: barangayId,
+                      name: name,
+                    ),
+                    icon: const Icon(Icons.campaign_outlined),
+                    label: Text(l10n.cswdAskUpdate),
+                  ),
+                ),
               const SizedBox(height: 16),
               StatStrip(
                 items: [
@@ -958,12 +987,28 @@ class _CswdFinalCount extends ConsumerWidget {
             const SizedBox(height: 8),
             if (!count.hasOfficialAccount && !mayOnBehalf)
               const SizedBox.shrink()
-            else if (count.hasOfficialAccount)
+            else if (count.hasOfficialAccount) ...[
               Text(
                 l10n.cswdOfficialSubmits(name),
                 style: theme.textTheme.bodySmall,
-              )
-            else if (canSend)
+              ),
+              if (count.eventActive &&
+                  (count.submissionStatus != 'validated' ||
+                      count.hasLateEntries))
+                OutlinedButton.icon(
+                  style: OutlinedButton.styleFrom(
+                    minimumSize: const Size.fromHeight(48),
+                  ),
+                  onPressed: () => remindFinalCount(
+                    context,
+                    ref,
+                    barangayId: barangayId,
+                    name: name,
+                  ),
+                  icon: const Icon(Icons.notifications_active_outlined),
+                  label: Text(l10n.cswdRemindFinalCount),
+                ),
+            ] else if (canSend)
               FilledButton(
                 style: FilledButton.styleFrom(
                   minimumSize: const Size.fromHeight(48),

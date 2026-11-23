@@ -7214,6 +7214,138 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Reply from {name}: {reply}'**
   String reportReply(String name, String reply);
+
+  /// No description provided for @cswdNeedsConnection.
+  ///
+  /// In en, this message translates to:
+  /// **'Needs a connection. This tells people now, so it is not saved for later.'**
+  String get cswdNeedsConnection;
+
+  /// No description provided for @cswdStartTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'{event} is being monitored'**
+  String cswdStartTitle(String event);
+
+  /// No description provided for @cswdStartHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Registration, relief, transfers and final counts open when you start the evacuation.'**
+  String get cswdStartHint;
+
+  /// No description provided for @cswdStartEvacuation.
+  ///
+  /// In en, this message translates to:
+  /// **'Start evacuation'**
+  String get cswdStartEvacuation;
+
+  /// No description provided for @cswdStartConfirmTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Start the evacuation for {event}?'**
+  String cswdStartConfirmTitle(String event);
+
+  /// No description provided for @cswdStartConfirmBody.
+  ///
+  /// In en, this message translates to:
+  /// **'The event becomes Active. Every barangay official is told that registration is open. This cannot be undone from the app.'**
+  String get cswdStartConfirmBody;
+
+  /// No description provided for @cswdStartDone.
+  ///
+  /// In en, this message translates to:
+  /// **'{event} is now Active.'**
+  String cswdStartDone(String event);
+
+  /// No description provided for @cswdAskUpdate.
+  ///
+  /// In en, this message translates to:
+  /// **'Ask barangay to update'**
+  String get cswdAskUpdate;
+
+  /// No description provided for @cswdAskUpdateTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Ask {barangay} to update its status?'**
+  String cswdAskUpdateTitle(String barangay);
+
+  /// No description provided for @cswdAskUpdateBody.
+  ///
+  /// In en, this message translates to:
+  /// **'The barangay\'s officials get a notification. Their status stays theirs to set.'**
+  String get cswdAskUpdateBody;
+
+  /// No description provided for @cswdAskUpdateDone.
+  ///
+  /// In en, this message translates to:
+  /// **'{barangay} was asked to update.'**
+  String cswdAskUpdateDone(String barangay);
+
+  /// No description provided for @cswdRemind.
+  ///
+  /// In en, this message translates to:
+  /// **'Remind'**
+  String get cswdRemind;
+
+  /// No description provided for @cswdRemindFinalCount.
+  ///
+  /// In en, this message translates to:
+  /// **'Remind final count'**
+  String get cswdRemindFinalCount;
+
+  /// No description provided for @cswdRemindTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Remind {barangay} to send its final count?'**
+  String cswdRemindTitle(String barangay);
+
+  /// No description provided for @cswdRemindBody.
+  ///
+  /// In en, this message translates to:
+  /// **'The barangay\'s officials get a notification.'**
+  String get cswdRemindBody;
+
+  /// No description provided for @cswdRemindDone.
+  ///
+  /// In en, this message translates to:
+  /// **'{barangay} was reminded.'**
+  String cswdRemindDone(String barangay);
+
+  /// No description provided for @cswdProgressTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Evacuation progress'**
+  String get cswdProgressTitle;
+
+  /// No description provided for @cswdProgressHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Registered families against each barangay\'s list of families to evacuate. Behind first.'**
+  String get cswdProgressHint;
+
+  /// No description provided for @cswdProgressLine.
+  ///
+  /// In en, this message translates to:
+  /// **'{registered} of {expected} expected families registered'**
+  String cswdProgressLine(String registered, String expected);
+
+  /// No description provided for @cswdProgressNoList.
+  ///
+  /// In en, this message translates to:
+  /// **'{families} registered · no list'**
+  String cswdProgressNoList(String families);
+
+  /// No description provided for @cswdProgressListCheckedIn.
+  ///
+  /// In en, this message translates to:
+  /// **'{checkedIn} of {listed} listed families checked in'**
+  String cswdProgressListCheckedIn(String checkedIn, String listed);
+
+  /// No description provided for @cswdProgressNone.
+  ///
+  /// In en, this message translates to:
+  /// **'No barangay figures yet.'**
+  String get cswdProgressNone;
 }
 
 class _AppLocalizationsDelegate

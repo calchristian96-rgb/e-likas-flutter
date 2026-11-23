@@ -4623,4 +4623,95 @@ class AppLocalizationsEn extends AppLocalizations {
   String reportReply(String name, String reply) {
     return 'Reply from $name: $reply';
   }
+
+  @override
+  String get cswdNeedsConnection =>
+      'Needs a connection. This tells people now, so it is not saved for later.';
+
+  @override
+  String cswdStartTitle(String event) {
+    return '$event is being monitored';
+  }
+
+  @override
+  String get cswdStartHint =>
+      'Registration, relief, transfers and final counts open when you start the evacuation.';
+
+  @override
+  String get cswdStartEvacuation => 'Start evacuation';
+
+  @override
+  String cswdStartConfirmTitle(String event) {
+    return 'Start the evacuation for $event?';
+  }
+
+  @override
+  String get cswdStartConfirmBody =>
+      'The event becomes Active. Every barangay official is told that registration is open. This cannot be undone from the app.';
+
+  @override
+  String cswdStartDone(String event) {
+    return '$event is now Active.';
+  }
+
+  @override
+  String get cswdAskUpdate => 'Ask barangay to update';
+
+  @override
+  String cswdAskUpdateTitle(String barangay) {
+    return 'Ask $barangay to update its status?';
+  }
+
+  @override
+  String get cswdAskUpdateBody =>
+      'The barangay\'s officials get a notification. Their status stays theirs to set.';
+
+  @override
+  String cswdAskUpdateDone(String barangay) {
+    return '$barangay was asked to update.';
+  }
+
+  @override
+  String get cswdRemind => 'Remind';
+
+  @override
+  String get cswdRemindFinalCount => 'Remind final count';
+
+  @override
+  String cswdRemindTitle(String barangay) {
+    return 'Remind $barangay to send its final count?';
+  }
+
+  @override
+  String get cswdRemindBody => 'The barangay\'s officials get a notification.';
+
+  @override
+  String cswdRemindDone(String barangay) {
+    return '$barangay was reminded.';
+  }
+
+  @override
+  String get cswdProgressTitle => 'Evacuation progress';
+
+  @override
+  String get cswdProgressHint =>
+      'Registered families against each barangay\'s list of families to evacuate. Behind first.';
+
+  @override
+  String cswdProgressLine(String registered, String expected) {
+    return '$registered of $expected expected families registered';
+  }
+
+  @override
+  String cswdProgressNoList(String families) {
+    return '$families registered · no list';
+  }
+
+  @override
+  String cswdProgressListCheckedIn(String checkedIn, String listed) {
+    return '$checkedIn of $listed listed families checked in';
+  }
+
+  @override
+  String get cswdProgressNone => 'No barangay figures yet.';
 }

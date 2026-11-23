@@ -141,6 +141,7 @@ abstract final class StaffPermission {
   static const transfersReceive = 'transfers.receive';
   static const transfersManage = 'transfers.manage';
   static const centersSetLocation = 'centers.set_location';
+  static const eventsManage = 'events.manage';
   static const familiesToEvacuateManage = 'families_to_evacuate.manage';
   static const supportReport = 'support.report';
 
