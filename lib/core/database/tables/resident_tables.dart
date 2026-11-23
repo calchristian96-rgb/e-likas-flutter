@@ -64,6 +64,12 @@ class Alerts extends Table {
   /// Schema 3: sent for a demo event shown publicly as a drill.
   BoolColumn get isDrill => boolean().withDefault(const Constant(false))();
 
+  /// Schema 5: who the alert is for (`target {kind, label}`), and the
+  /// barangay when it is for one barangay only.
+  TextColumn get targetKind => text().nullable()();
+  TextColumn get targetLabel => text().nullable()();
+  IntColumn get targetBarangayId => integer().nullable()();
+
   @override
   Set<Column> get primaryKey => {id};
 }

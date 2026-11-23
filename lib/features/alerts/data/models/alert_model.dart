@@ -26,6 +26,9 @@ class AlertModel {
     this.recipientSummary,
     this.severity,
     this.isDrill = false,
+    this.targetKind,
+    this.targetLabel,
+    this.targetBarangayId,
   });
 
   /// The backend's own numeric id, doubling as the Drift primary key.
@@ -44,6 +47,12 @@ class AlertModel {
 
   /// Sent for a demo event shown publicly as a drill (`is_drill`).
   final bool isDrill;
+
+  /// `target.kind` (e.g. `city`, `barangay`), `target.label`, and the
+  /// barangay's id when the alert is for one barangay.
+  final String? targetKind;
+  final String? targetLabel;
+  final int? targetBarangayId;
 
   /// `dateSent` as epoch milliseconds **in UTC**, or null when the API
   /// sent no parsable date. See the class doc comment for why this
@@ -75,6 +84,15 @@ class AlertModel {
       status: (json['status'] as String?) ?? 'sent',
       severity: json['severity'] as String?,
       isDrill: json['is_drill'] as bool? ?? false,
+      targetKind: (json['target'] as Map<String, dynamic>?)?['kind'] as String?,
+      targetLabel:
+          (json['target'] as Map<String, dynamic>?)?['label'] as String?,
+      targetBarangayId:
+          (json['barangay_id'] as num?)?.toInt() ??
+          ((json['barangay'] as Map<String, dynamic>?)?['id'] as num?)
+              ?.toInt() ??
+          ((json['target'] as Map<String, dynamic>?)?['barangay_id'] as num?)
+              ?.toInt(),
       dateSentUtcMs: _parseDateToUtcMs(json['date_sent'] ?? json['created_at']),
       evacuationEventName: _nestedOrFlat(
         json,
@@ -101,6 +119,9 @@ class AlertModel {
       status: status,
       severity: severity,
       isDrill: isDrill,
+      targetKind: targetKind,
+      targetLabel: targetLabel,
+      targetBarangayId: targetBarangayId,
       dateSent: dateSentUtcMs == null
           ? null
           : DateTime.fromMillisecondsSinceEpoch(

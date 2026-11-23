@@ -247,7 +247,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get allClearUpdateReceived => 'All-clear update received';
 
   @override
-  String get severityMandatory => 'Mandatory';
+  String get severityMandatory => 'Emergency';
 
   @override
   String get severityAdvisory => 'Advisory';
@@ -4714,4 +4714,156 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get cswdProgressNone => 'No barangay figures yet.';
+
+  @override
+  String orderForcedTitle(String barangay) {
+    return 'Forced evacuation: $barangay';
+  }
+
+  @override
+  String orderPreemptiveTitle(String barangay) {
+    return 'Preemptive evacuation: $barangay';
+  }
+
+  @override
+  String get orderForcedBody =>
+      'Leave now. Go to the nearest open evacuation center and follow your barangay officials.';
+
+  @override
+  String get orderPreemptiveBody =>
+      'Prepare to leave and go to the nearest open evacuation center. Bring your go-bag.';
+
+  @override
+  String get orderGoToCenter => 'Nearest open centers';
+
+  @override
+  String get safeCentersTitle => 'Nearest safe centers';
+
+  @override
+  String get safeCentersHint =>
+      'Open centers only: never full, closed or inside Mayon\'s permanent danger zone.';
+
+  @override
+  String get safeCentersHintVolcanic =>
+      'Volcanic event: centers within 7 km of Mayon\'s summit are left out.';
+
+  @override
+  String get hazardsTitle => 'Hazards';
+
+  @override
+  String hazardsTitleFor(String barangay) {
+    return 'Hazards in $barangay';
+  }
+
+  @override
+  String get mayonInsidePermanent =>
+      'Mayon: part of your barangay is inside the 6 km permanent danger zone.';
+
+  @override
+  String get mayonInsideExtended =>
+      'Mayon: part of your barangay is inside the 7 km extended danger zone.';
+
+  @override
+  String mayonDistance(String km) {
+    return 'Mayon: your barangay is $km km from the summit, outside the danger zones.';
+  }
+
+  @override
+  String get mayonZoneLabel =>
+      'Approximate zone based on distance from the summit. Follow PHIVOLCS bulletins.';
+
+  @override
+  String get hazardsWhatToDo => 'What to do';
+
+  @override
+  String get hazardsWhatToDoHint =>
+      'Typhoon, flood and volcano: short steps, checklists and your family plan.';
+
+  @override
+  String get prepTitle => 'Be prepared';
+
+  @override
+  String get prepSubtitle =>
+      'Go-bag, checklists and your family plan, also offline';
+
+  @override
+  String get prepUnavailable => 'The checklists could not be opened.';
+
+  @override
+  String get prepChecklists => 'Checklists';
+
+  @override
+  String prepProgress(int done, int total) {
+    final intl.NumberFormat doneNumberFormat = intl.NumberFormat.decimalPattern(
+      localeName,
+    );
+    final String doneString = doneNumberFormat.format(done);
+    final intl.NumberFormat totalNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
+    final String totalString = totalNumberFormat.format(total);
+
+    return '$doneString of $totalString ready';
+  }
+
+  @override
+  String prepSource(String agency) {
+    return 'Source: $agency guidance · for team review';
+  }
+
+  @override
+  String get familyPlanTitle => 'Family emergency plan';
+
+  @override
+  String get familyPlanPhoneOnly =>
+      'Kept on this phone only. Never sent anywhere.';
+
+  @override
+  String get familyPlanMeetingPoint => 'Meeting point';
+
+  @override
+  String get familyPlanMeetingPointHint =>
+      'Where the family meets if you are apart.';
+
+  @override
+  String get familyPlanContacts => 'Contact numbers';
+
+  @override
+  String get familyPlanName => 'Name';
+
+  @override
+  String get familyPlanNumber => 'Number';
+
+  @override
+  String get familyPlanAddContact => 'Add a contact';
+
+  @override
+  String get familyPlanSpecialNeeds => 'Members with special needs';
+
+  @override
+  String get familyPlanSpecialNeedsHint =>
+      'Babies, older people, persons with disability, someone who needs medicine.';
+
+  @override
+  String get familyPlanNeed => 'What they need';
+
+  @override
+  String get familyPlanAddPerson => 'Add a person';
+
+  @override
+  String get familyPlanSave => 'Save on this phone';
+
+  @override
+  String get familyPlanSaved => 'Saved on this phone.';
+
+  @override
+  String get textSize => 'Text size';
+
+  @override
+  String get textSizeNormal => 'Normal';
+
+  @override
+  String get textSizeLarge => 'Large';
+
+  @override
+  String get textSizeLarger => 'Larger';
 }

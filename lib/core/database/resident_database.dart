@@ -22,10 +22,11 @@ class ResidentDatabase extends _$ResidentDatabase {
   ResidentDatabase.forExecutor(super.executor);
 
   @override
-  int get schemaVersion => 4;
+  int get schemaVersion => 5;
 
   /// Schema 2 adds [BarangayStatuses]; schema 3 adds `alerts.is_drill`;
-  /// schema 4 adds `evacuation_centers.capacity_source`.
+  /// schema 4 adds `evacuation_centers.capacity_source`; schema 5 adds
+  /// the alert's target (city or one barangay).
   /// Everything here is regenerable from the public API, but an upgrade
   /// still keeps the cached rows.
   @override
@@ -36,6 +37,11 @@ class ResidentDatabase extends _$ResidentDatabase {
       if (from < 3) await m.addColumn(alerts, alerts.isDrill);
       if (from < 4) {
         await m.addColumn(evacuationCenters, evacuationCenters.capacitySource);
+      }
+      if (from < 5) {
+        await m.addColumn(alerts, alerts.targetKind);
+        await m.addColumn(alerts, alerts.targetLabel);
+        await m.addColumn(alerts, alerts.targetBarangayId);
       }
     },
   );

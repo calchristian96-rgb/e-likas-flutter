@@ -6,6 +6,8 @@ import '../../../../core/widgets/accent_card.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../domain/entities/alert.dart';
 import 'alert_type_display.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../../../core/alerts/alert_level.dart';
 
 /// A single alert in the Alerts list.
 ///
@@ -18,7 +20,7 @@ import 'alert_type_display.dart';
 /// [alertDisplayIcon]/[alertDisplayColor]/[alertDisplayLabel] mapping
 /// (severity-first, `alert_type` as fallback) so the details screen
 /// presents the same alert identically.
-class AlertListTile extends StatelessWidget {
+class AlertListTile extends ConsumerWidget {
   const AlertListTile({super.key, required this.alert, this.isLatest = false});
 
   final Alert alert;
@@ -33,10 +35,11 @@ class AlertListTile extends StatelessWidget {
   final bool isLatest;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
     final l10n = AppLocalizations.of(context);
     final color = alertDisplayColor(context, alert.alertType, alert.severity);
+    final isNew = !ref.watch(seenAlertsProvider('resident')).contains(alert.id);
 
     return AccentCard(
       accentColor: color,
@@ -66,6 +69,7 @@ class AlertListTile extends StatelessWidget {
                     ),
                     const SizedBox(height: 2),
                   ],
+                  if (isNew) ...[const NewBadge(), const SizedBox(height: 4)],
                   Row(
                     children: [
                       Expanded(

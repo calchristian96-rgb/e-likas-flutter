@@ -30,7 +30,24 @@ class Alert {
     this.recipientSummary,
     this.severity,
     this.isDrill = false,
+    this.targetKind,
+    this.targetLabel,
+    this.targetBarangayId,
   });
+
+  /// Who the alert is for: `target.kind` / `target.label`, and the
+  /// barangay's id for a one-barangay alert (null for the whole city).
+  final String? targetKind;
+  final String? targetLabel;
+  final int? targetBarangayId;
+
+  /// For the whole city, or for [barangayId]; an alert for another
+  /// barangay is not shown. Unknown barangay: every alert.
+  bool isFor(int? barangayId) {
+    if (targetKind == 'person' || targetKind == 'evacuee') return false;
+    if (targetBarangayId == null || barangayId == null) return true;
+    return targetBarangayId == barangayId;
+  }
 
   final int id;
   final String title;

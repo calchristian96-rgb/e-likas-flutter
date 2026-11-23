@@ -12,6 +12,7 @@ import '../../../../l10n/app_localizations.dart';
 import '../../domain/entities/alert.dart';
 import '../providers/alerts_summary_provider.dart';
 import '../widgets/alert_type_display.dart';
+import '../../../../core/alerts/alert_level.dart';
 
 /// Full text and context for a single alert, reached by tapping a row
 /// in the Alerts list.
@@ -29,6 +30,14 @@ class AlertDetailsPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context);
     final alertAsync = ref.watch(alertByIdProvider(alertId));
+    // Opened: no longer "New" on this phone.
+    if (alertAsync.hasValue) {
+      WidgetsBinding.instance.addPostFrameCallback(
+        (_) => ref.read(seenAlertsProvider('resident').notifier).markSeen([
+          alertId,
+        ]),
+      );
+    }
 
     return Scaffold(
       appBar: AppBar(

@@ -8,6 +8,7 @@ import '../core/widgets/dev_mode_banner.dart';
 import '../l10n/app_localizations.dart';
 import 'router/app_router.dart';
 import 'theme/app_theme.dart';
+import '../core/localization/app_text_scale.dart';
 
 /// Root widget. Resident-facing, no login — this is the entire auth
 /// surface of the app (there isn't one).
@@ -50,8 +51,10 @@ class ElikasApp extends ConsumerWidget {
         const FallbackWidgetsLocalizationsDelegate(),
       ],
       routerConfig: appRouter,
-      builder: (context, child) =>
-          DevModeBanner(child: child ?? const SizedBox.shrink()),
+      // "Larger text" (Settings) on top of the phone's own size.
+      builder: (context, child) => AppTextScaleWrapper(
+        child: DevModeBanner(child: child ?? const SizedBox.shrink()),
+      ),
     );
   }
 }

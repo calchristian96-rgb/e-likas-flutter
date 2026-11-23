@@ -1,40 +1,40 @@
 {
   "@@locale": "bcl",
-  "navHome": "Home",
+  "navHome": "Harong",
   "@navHome": {
-    "description": "PENDING Bikol (Ligao) local-language review — English fallback shown until reviewed."
+    "description": "NEEDS NATIVE BIKOL REVIEW"
   },
-  "navMap": "Mapa",
+  "navMap": "GIS Mapa",
   "@navMap": {
-    "description": "Bikol Central wording (\"mapa\", a shared Spanish-loanword form) — recommend Ligao-local confirmation before final sign-off."
+    "description": "NEEDS NATIVE BIKOL REVIEW"
   },
-  "navNearestCenter": "Nearest Center",
+  "navNearestCenter": "Pinakaharaning Center",
   "@navNearestCenter": {
-    "description": "PENDING Bikol (Ligao) local-language review — English fallback shown until reviewed."
+    "description": "NEEDS NATIVE BIKOL REVIEW"
   },
   "navAlerts": "Mga Alerto",
   "@navAlerts": {
-    "description": "Bikol Central wording (\"mga\" plural marker + the shared loanword \"alerto\") — recommend Ligao-local confirmation before final sign-off. Names the nav tab only, not alert content itself."
+    "description": "NEEDS NATIVE BIKOL REVIEW"
   },
-  "navHotlines": "Mga Hotline",
+  "navHotlines": "Hotlines",
   "@navHotlines": {
-    "description": "PENDING Bikol (Ligao) local-language review — Bikol Central shared loanword form shown until reviewed."
+    "description": "NEEDS NATIVE BIKOL REVIEW"
   },
   "navSettings": "Settings",
   "@navSettings": {
-    "description": "PENDING Bikol (Ligao) local-language review — English fallback shown until reviewed."
+    "description": "NEEDS NATIVE BIKOL REVIEW"
   },
   "online": "Online",
   "@online": {
-    "description": "PENDING Bikol (Ligao) local-language review — English fallback shown until reviewed."
+    "description": "NEEDS NATIVE BIKOL REVIEW"
   },
   "offlineModeLabel": "Offline mode",
   "@offlineModeLabel": {
-    "description": "PENDING Bikol (Ligao) local-language review — English fallback shown until reviewed."
+    "description": "NEEDS NATIVE BIKOL REVIEW"
   },
   "offline": "Offline",
   "@offline": {
-    "description": "PENDING Bikol (Ligao) local-language review — English fallback shown until reviewed."
+    "description": "NEEDS NATIVE BIKOL REVIEW"
   },
   "live": "Live",
   "@live": {
@@ -94,25 +94,25 @@
       }
     }
   },
-  "retry": "Retry",
+  "retry": "Probaran giraray",
   "@retry": {
-    "description": "PENDING Bikol (Ligao) local-language review — English fallback shown until reviewed."
+    "description": "NEEDS NATIVE BIKOL REVIEW"
   },
-  "refresh": "Refresh",
+  "refresh": "I-refresh",
   "@refresh": {
-    "description": "PENDING Bikol (Ligao) local-language review — English fallback shown until reviewed."
+    "description": "NEEDS NATIVE BIKOL REVIEW"
   },
-  "viewAll": "View all",
+  "viewAll": "Hilingon gabos",
   "@viewAll": {
-    "description": "PENDING Bikol (Ligao) local-language review — English fallback shown until reviewed."
+    "description": "NEEDS NATIVE BIKOL REVIEW"
   },
-  "viewDetails": "View details",
+  "viewDetails": "Hilingon an detalye",
   "@viewDetails": {
-    "description": "PENDING Bikol (Ligao) local-language review — English fallback shown until reviewed."
+    "description": "NEEDS NATIVE BIKOL REVIEW"
   },
-  "getDirections": "Get directions",
+  "getDirections": "Direksyon",
   "@getDirections": {
-    "description": "PENDING Bikol (Ligao) local-language review — English fallback shown until reviewed."
+    "description": "NEEDS NATIVE BIKOL REVIEW"
   },
   "openSettings": "Open Settings",
   "@openSettings": {
@@ -122,25 +122,25 @@
   "@copy": {
     "description": "PENDING Bikol (Ligao) local-language review — English fallback shown until reviewed."
   },
-  "call": "Call",
+  "call": "Tawagan",
   "@call": {
-    "description": "PENDING Bikol (Ligao) local-language review — English fallback shown until reviewed."
+    "description": "NEEDS NATIVE BIKOL REVIEW"
   },
-  "dismiss": "Dismiss",
+  "dismiss": "Isara",
   "@dismiss": {
-    "description": "PENDING Bikol (Ligao) local-language review — English fallback shown until reviewed."
+    "description": "NEEDS NATIVE BIKOL REVIEW"
   },
-  "view": "View",
+  "view": "Hilingon",
   "@view": {
-    "description": "PENDING Bikol (Ligao) local-language review — English fallback shown until reviewed."
+    "description": "NEEDS NATIVE BIKOL REVIEW"
   },
-  "tryAgain": "Try again",
+  "tryAgain": "Probaran giraray",
   "@tryAgain": {
-    "description": "PENDING Bikol (Ligao) local-language review — English fallback shown until reviewed."
+    "description": "NEEDS NATIVE BIKOL REVIEW"
   },
   "language": "Tataramon",
   "@language": {
-    "description": "Bikol Central wording (\"tataramon\" = language/speech) — recommend Ligao-local confirmation before final sign-off."
+    "description": "NEEDS NATIVE BIKOL REVIEW"
   },
   "selectLanguage": "Pili nin Tataramon",
   "@selectLanguage": {
@@ -176,21 +176,21 @@
   "@dashboardSummary": {
     "description": "PENDING Bikol (Ligao) local-language review — English fallback shown until reviewed."
   },
-  "quickActions": "Quick actions",
+  "quickActions": "Madaling aksyon",
   "@quickActions": {
-    "description": "PENDING Bikol (Ligao) local-language review — English fallback shown until reviewed."
+    "description": "NEEDS NATIVE BIKOL REVIEW"
   },
   "viewAllEvacuationCenters": "View All Evacuation Centers",
   "@viewAllEvacuationCenters": {
     "description": "PENDING Bikol (Ligao) local-language review — English fallback shown until reviewed."
   },
-  "refreshData": "Refresh Data",
+  "refreshData": "I-refresh an Data",
   "@refreshData": {
-    "description": "PENDING Bikol (Ligao) local-language review — English fallback shown until reviewed."
+    "description": "NEEDS NATIVE BIKOL REVIEW"
   },
-  "emergencyHotlines": "Emergency Hotlines",
+  "emergencyHotlines": "Mga Emergency Hotline",
   "@emergencyHotlines": {
-    "description": "CRITICAL — safety-related. PENDING Bikol (Ligao) local-language review; do not translate without local review. English fallback shown."
+    "description": "NEEDS NATIVE BIKOL REVIEW"
   },
   "statEvacuationCenters": "Evacuation centers",
   "@statEvacuationCenters": {
@@ -212,25 +212,25 @@
   "@nearestEvacuationCenterHeading": {
     "description": "CRITICAL — safety-related. PENDING Bikol (Ligao) local-language review; do not translate without local review. English fallback shown."
   },
-  "recentAlerts": "Recent alerts",
+  "recentAlerts": "Mga bagong alerto",
   "@recentAlerts": {
-    "description": "PENDING Bikol (Ligao) local-language review — English fallback shown until reviewed."
+    "description": "NEEDS NATIVE BIKOL REVIEW"
   },
-  "safetyTips": "Safety tips",
+  "safetyTips": "Mga tips sa kaligtasan",
   "@safetyTips": {
-    "description": "PENDING Bikol (Ligao) local-language review — English fallback shown until reviewed."
+    "description": "NEEDS NATIVE BIKOL REVIEW"
   },
-  "noActiveAlerts": "No active alerts",
+  "noActiveAlerts": "Mayong aktibong alerto",
   "@noActiveAlerts": {
-    "description": "PENDING Bikol (Ligao) local-language review — English fallback shown until reviewed."
+    "description": "NEEDS NATIVE BIKOL REVIEW"
   },
-  "noActiveEmergencyAlerts": "No active emergency alerts",
+  "noActiveEmergencyAlerts": "Mayong aktibong emergency alerto",
   "@noActiveEmergencyAlerts": {
-    "description": "PENDING Bikol (Ligao) local-language review — English fallback shown until reviewed."
+    "description": "NEEDS NATIVE BIKOL REVIEW"
   },
-  "normalMonitoring": "Ligao City is currently under normal monitoring.",
+  "normalMonitoring": "An Ciudad nin Ligao yaon sa normal na pagbantay.",
   "@normalMonitoring": {
-    "description": "PENDING Bikol (Ligao) local-language review — English fallback shown until reviewed."
+    "description": "NEEDS NATIVE BIKOL REVIEW"
   },
   "liveDataUnavailable": "Live data is temporarily unavailable",
   "@liveDataUnavailable": {
@@ -240,17 +240,17 @@
   "@showingSavedInfo": {
     "description": "PENDING Bikol (Ligao) local-language review — English fallback shown until reviewed."
   },
-  "nearestCenterUnavailable": "Nearest center unavailable",
+  "nearestCenterUnavailable": "Dai makua an pinakaharaning center",
   "@nearestCenterUnavailable": {
-    "description": "CRITICAL — safety-related. PENDING Bikol (Ligao) local-language review; do not translate without local review. English fallback shown."
+    "description": "NEEDS NATIVE BIKOL REVIEW"
   },
-  "enableLocationServices": "Enable location services or try again later.",
+  "enableLocationServices": "Buksan an location services o probaran giraray sa ibang oras.",
   "@enableLocationServices": {
-    "description": "CRITICAL — location permission wording. PENDING Bikol (Ligao) local-language review; do not translate without local review. English fallback shown."
+    "description": "NEEDS NATIVE BIKOL REVIEW"
   },
-  "noNearbyEvacuationCenters": "No nearby evacuation centers to show yet.",
+  "noNearbyEvacuationCenters": "Mayo pang harani na evacuation center na maipapahiling.",
   "@noNearbyEvacuationCenters": {
-    "description": "CRITICAL — safety-related. PENDING Bikol (Ligao) local-language review; do not translate without local review. English fallback shown."
+    "description": "NEEDS NATIVE BIKOL REVIEW"
   },
   "youAreViewingLiveData": "You're viewing live data.",
   "@youAreViewingLiveData": {
@@ -260,17 +260,17 @@
   "@checkingForAlerts": {
     "description": "CRITICAL — safety-related. PENDING Bikol (Ligao) local-language review; do not translate without local review. English fallback shown."
   },
-  "alertsTitle": "Alerts",
+  "alertsTitle": "Mga Alerto",
   "@alertsTitle": {
-    "description": "CRITICAL — safety-related. PENDING Bikol (Ligao) local-language review; do not translate without local review. English fallback shown."
+    "description": "NEEDS NATIVE BIKOL REVIEW"
   },
-  "alertDetailsTitle": "Alert details",
+  "alertDetailsTitle": "Detalye kan alerto",
   "@alertDetailsTitle": {
-    "description": "CRITICAL — safety-related. PENDING Bikol (Ligao) local-language review; do not translate without local review. English fallback shown."
+    "description": "NEEDS NATIVE BIKOL REVIEW"
   },
-  "noPublicAlerts": "No public alerts to show yet.",
+  "noPublicAlerts": "Mayo pang publikong alerto na maipapahiling.",
   "@noPublicAlerts": {
-    "description": "CRITICAL — safety-related. PENDING Bikol (Ligao) local-language review; do not translate without local review. English fallback shown."
+    "description": "NEEDS NATIVE BIKOL REVIEW"
   },
   "dateUnavailable": "Date unavailable",
   "@dateUnavailable": {
@@ -288,69 +288,69 @@
   "@evacuationEvent": {
     "description": "CRITICAL — safety-related. PENDING Bikol (Ligao) local-language review; do not translate without local review. English fallback shown."
   },
-  "couldNotLoadAlerts": "Could not load alerts",
+  "couldNotLoadAlerts": "Dai ma-load an mga alerto",
   "@couldNotLoadAlerts": {
-    "description": "CRITICAL — safety-related. PENDING Bikol (Ligao) local-language review; do not translate without local review. English fallback shown."
+    "description": "NEEDS NATIVE BIKOL REVIEW"
   },
-  "newAlertReceived": "New alert received",
+  "newAlertReceived": "May bagong alerto",
   "@newAlertReceived": {
-    "description": "CRITICAL — emergency alert banner headline. PENDING Bikol (Ligao) local-language review; do not translate without local review. English fallback shown."
+    "description": "NEEDS NATIVE BIKOL REVIEW"
   },
-  "newAdvisoryReceived": "New advisory received",
+  "newAdvisoryReceived": "May bagong abiso",
   "@newAdvisoryReceived": {
-    "description": "CRITICAL — emergency alert banner headline. PENDING Bikol (Ligao) local-language review; do not translate without local review. English fallback shown."
+    "description": "NEEDS NATIVE BIKOL REVIEW"
   },
-  "emergencyAlertReceived": "Emergency alert received",
+  "emergencyAlertReceived": "May emergency alerto",
   "@emergencyAlertReceived": {
-    "description": "CRITICAL — emergency alert banner headline (mandatory severity). PENDING Bikol (Ligao) local-language review; do not translate without local review. English fallback shown."
+    "description": "NEEDS NATIVE BIKOL REVIEW"
   },
-  "newInformationAlert": "New information alert",
+  "newInformationAlert": "May bagong impormasyon",
   "@newInformationAlert": {
-    "description": "CRITICAL — emergency alert banner headline. PENDING Bikol (Ligao) local-language review; do not translate without local review. English fallback shown."
+    "description": "NEEDS NATIVE BIKOL REVIEW"
   },
-  "allClearUpdateReceived": "All-clear update received",
+  "allClearUpdateReceived": "Ligtas na: may bagong update",
   "@allClearUpdateReceived": {
-    "description": "CRITICAL — emergency alert banner headline. PENDING Bikol (Ligao) local-language review; do not translate without local review. English fallback shown."
+    "description": "NEEDS NATIVE BIKOL REVIEW"
   },
-  "severityMandatory": "Mandatory",
+  "severityMandatory": "Emergency",
   "@severityMandatory": {
     "description": "CRITICAL — alert severity badge, listed explicitly as requiring local review ('Mandatory evacuation'). English fallback shown."
   },
-  "severityAdvisory": "Advisory",
+  "severityAdvisory": "Abiso",
   "@severityAdvisory": {
-    "description": "CRITICAL — alert severity badge. PENDING Bikol (Ligao) local-language review; do not translate without local review. English fallback shown."
+    "description": "NEEDS NATIVE BIKOL REVIEW"
   },
-  "severityInfo": "Info",
+  "severityInfo": "Impormasyon",
   "@severityInfo": {
-    "description": "PENDING Bikol (Ligao) local-language review — English fallback shown until reviewed."
+    "description": "NEEDS NATIVE BIKOL REVIEW"
   },
-  "severityAllClear": "All clear",
+  "severityAllClear": "Ligtas na",
   "@severityAllClear": {
-    "description": "CRITICAL — alert severity badge, listed explicitly as requiring local review ('All clear'). English fallback shown."
+    "description": "NEEDS NATIVE BIKOL REVIEW"
   },
-  "statusActive": "Active",
+  "statusActive": "Aktibo",
   "@statusActive": {
-    "description": "PENDING Bikol (Ligao) local-language review — English fallback shown until reviewed."
+    "description": "NEEDS NATIVE BIKOL REVIEW"
   },
-  "statusFull": "Full",
+  "statusFull": "Puno",
   "@statusFull": {
-    "description": "PENDING Bikol (Ligao) local-language review — English fallback shown until reviewed."
+    "description": "NEEDS NATIVE BIKOL REVIEW"
   },
-  "statusClosed": "Closed",
+  "statusClosed": "Sarado",
   "@statusClosed": {
-    "description": "PENDING Bikol (Ligao) local-language review — English fallback shown until reviewed."
+    "description": "NEEDS NATIVE BIKOL REVIEW"
   },
-  "statusOnStandby": "On standby",
+  "statusOnStandby": "Andam",
   "@statusOnStandby": {
-    "description": "PENDING Bikol (Ligao) local-language review — English fallback shown until reviewed."
+    "description": "NEEDS NATIVE BIKOL REVIEW"
   },
-  "evacuationCentersTitle": "Evacuation centers",
+  "evacuationCentersTitle": "Mga evacuation center",
   "@evacuationCentersTitle": {
-    "description": "CRITICAL — safety-related. PENDING Bikol (Ligao) local-language review; do not translate without local review. English fallback shown."
+    "description": "NEEDS NATIVE BIKOL REVIEW"
   },
-  "noEvacuationCenters": "No evacuation centers to show yet.",
+  "noEvacuationCenters": "Mayo pang evacuation center na maipapahiling.",
   "@noEvacuationCenters": {
-    "description": "CRITICAL — safety-related. PENDING Bikol (Ligao) local-language review; do not translate without local review. English fallback shown."
+    "description": "NEEDS NATIVE BIKOL REVIEW"
   },
   "evacuationCentersCount": "{count, plural, =1{1 evacuation center} other{{count} evacuation centers}}",
   "@evacuationCentersCount": {
@@ -370,33 +370,33 @@
       }
     }
   },
-  "nearestCenterTitle": "Nearest center",
+  "nearestCenterTitle": "Pinakaharaning center",
   "@nearestCenterTitle": {
-    "description": "CRITICAL — safety-related ('Nearest evacuation center' explicitly listed). PENDING Bikol (Ligao) local-language review. English fallback shown."
+    "description": "NEEDS NATIVE BIKOL REVIEW"
   },
-  "locationPermissionDenied": "Location permission was denied.",
+  "locationPermissionDenied": "Dai tinogotan an paggamit kan lokasyon.",
   "@locationPermissionDenied": {
-    "description": "CRITICAL — location permission wording explicitly listed for review. English fallback shown."
+    "description": "NEEDS NATIVE BIKOL REVIEW"
   },
-  "locationServicesOff": "Location services are turned off.",
+  "locationServicesOff": "Nakagadan an location services.",
   "@locationServicesOff": {
-    "description": "CRITICAL — location permission wording explicitly listed for review. English fallback shown."
+    "description": "NEEDS NATIVE BIKOL REVIEW"
   },
   "locationPermanentlyDenied": "Location permission is permanently denied — enable it in system settings.",
   "@locationPermanentlyDenied": {
     "description": "CRITICAL — location permission wording explicitly listed for review. English fallback shown."
   },
-  "couldNotDetermineLocation": "Could not determine current location.",
+  "couldNotDetermineLocation": "Dai maaraman an saimong lokasyon ngonyan.",
   "@couldNotDetermineLocation": {
-    "description": "CRITICAL — location permission wording explicitly listed for review. English fallback shown."
+    "description": "NEEDS NATIVE BIKOL REVIEW"
   },
-  "couldNotLoadNearbyCenters": "Could not load nearby centers",
+  "couldNotLoadNearbyCenters": "Dai ma-load an mga harani na center",
   "@couldNotLoadNearbyCenters": {
-    "description": "CRITICAL — safety-related. PENDING Bikol (Ligao) local-language review; do not translate without local review. English fallback shown."
+    "description": "NEEDS NATIVE BIKOL REVIEW"
   },
-  "emergencyHotlinesTitle": "Emergency Hotlines",
+  "emergencyHotlinesTitle": "Mga Emergency Hotline",
   "@emergencyHotlinesTitle": {
-    "description": "CRITICAL — 'Call emergency hotline' explicitly listed for review. English fallback shown."
+    "description": "NEEDS NATIVE BIKOL REVIEW"
   },
   "hotlinesOfflineNote": "These numbers are saved on your device and work even without internet.",
   "@hotlinesOfflineNote": {
@@ -414,9 +414,9 @@
   "@weatherNotYetAvailable": {
     "description": "PENDING Bikol (Ligao) local-language review — English fallback shown until reviewed."
   },
-  "cancel": "Cancel",
+  "cancel": "Kanselar",
   "@cancel": {
-    "description": "PENDING Bikol (Ligao) local-language review — English fallback shown until reviewed."
+    "description": "NEEDS NATIVE BIKOL REVIEW"
   },
   "settingsTitle": "Settings",
   "@settingsTitle": {
@@ -434,9 +434,9 @@
   "@settingsOfflineDataSubtitle": {
     "description": "PENDING Bikol (Ligao) local-language review — English fallback shown until reviewed."
   },
-  "settingsSyncNow": "Sync Now",
+  "settingsSyncNow": "I-sync Ngonyan",
   "@settingsSyncNow": {
-    "description": "PENDING Bikol (Ligao) local-language review — English fallback shown until reviewed."
+    "description": "NEEDS NATIVE BIKOL REVIEW"
   },
   "settingsSyncButton": "Sync",
   "@settingsSyncButton": {
@@ -446,17 +446,17 @@
   "@settingsSyncNeverRun": {
     "description": "PENDING Bikol (Ligao) local-language review — English fallback shown until reviewed."
   },
-  "settingsConnectivity": "Connectivity",
+  "settingsConnectivity": "Koneksyon",
   "@settingsConnectivity": {
-    "description": "PENDING Bikol (Ligao) local-language review — English fallback shown until reviewed."
+    "description": "NEEDS NATIVE BIKOL REVIEW"
   },
-  "settingsSectionPreferences": "Preferences",
+  "settingsSectionPreferences": "Mga Gusto",
   "@settingsSectionPreferences": {
-    "description": "PENDING Bikol (Ligao) local-language review — English fallback shown until reviewed."
+    "description": "NEEDS NATIVE BIKOL REVIEW"
   },
-  "appAppearance": "App Appearance",
+  "appAppearance": "Itsura kan App",
   "@appAppearance": {
-    "description": "PENDING Bikol (Ligao) local-language review — English fallback shown until reviewed."
+    "description": "NEEDS NATIVE BIKOL REVIEW"
   },
   "appearanceSystem": "System default",
   "@appearanceSystem": {
@@ -514,9 +514,9 @@
   "@pushNotificationsSubtitle": {
     "description": "PENDING Bikol (Ligao) local-language review — English fallback shown until reviewed."
   },
-  "settingsSectionAbout": "About",
+  "settingsSectionAbout": "Manungod",
   "@settingsSectionAbout": {
-    "description": "PENDING Bikol (Ligao) local-language review — English fallback shown until reviewed."
+    "description": "NEEDS NATIVE BIKOL REVIEW"
   },
   "aboutTagline": "Electronic Ligao Kaligtasan Sistema",
   "@aboutTagline": {
@@ -595,9 +595,9 @@
   "@cacheCleared": {
     "description": "PENDING Bikol (Ligao) local-language review — English fallback shown until reviewed."
   },
-  "hazardMapTitle": "Hazard map",
+  "hazardMapTitle": "Mapa nin peligro",
   "@hazardMapTitle": {
-    "description": "CRITICAL — 'You are in a hazard area' context explicitly listed for review. English fallback shown."
+    "description": "NEEDS NATIVE BIKOL REVIEW"
   },
   "noMapData": "No map data available yet.",
   "@noMapData": {
@@ -615,9 +615,9 @@
   "@legendHazardArea": {
     "description": "CRITICAL — 'You are in a hazard area' explicitly listed for review. English fallback shown."
   },
-  "showMyLocation": "Show my location",
+  "showMyLocation": "Ipahiling an sakong lokasyon",
   "@showMyLocation": {
-    "description": "PENDING Bikol (Ligao) local-language review — English fallback shown until reviewed."
+    "description": "NEEDS NATIVE BIKOL REVIEW"
   },
   "unableToOpenMaps": "Unable to open a maps application on this device.",
   "@unableToOpenMaps": {
@@ -687,9 +687,9 @@
   "@sortBySeverity": {
     "description": "CRITICAL — alert severity concept. PENDING Bikol (Ligao) local-language review; do not translate without local review. English fallback shown."
   },
-  "latestAlertLabel": "Latest",
+  "latestAlertLabel": "Pinakabago",
   "@latestAlertLabel": {
-    "description": "CRITICAL — emergency alert emphasis label. PENDING Bikol (Ligao) local-language review; do not translate without local review. English fallback shown."
+    "description": "NEEDS NATIVE BIKOL REVIEW"
   },
   "shareAlert": "Share alert",
   "@shareAlert": {
@@ -711,17 +711,17 @@
   "@receivedLabel": {
     "description": "PENDING Bikol (Ligao) local-language review — English fallback shown until reviewed."
   },
-  "viewEvacuationCenters": "View evacuation centers",
+  "viewEvacuationCenters": "Hilingon an mga evacuation center",
   "@viewEvacuationCenters": {
-    "description": "CRITICAL — safety-related. PENDING Bikol (Ligao) local-language review; do not translate without local review. English fallback shown."
+    "description": "NEEDS NATIVE BIKOL REVIEW"
   },
   "invalidCenterLink": "That center link isn't valid.",
   "@invalidCenterLink": {
     "description": "CRITICAL — safety-related. PENDING Bikol (Ligao) local-language review; do not translate without local review. English fallback shown."
   },
-  "viewOnMap": "View on map",
+  "viewOnMap": "Hilingon sa mapa",
   "@viewOnMap": {
-    "description": "PENDING Bikol (Ligao) local-language review — English fallback shown until reviewed."
+    "description": "NEEDS NATIVE BIKOL REVIEW"
   },
   "refreshLocation": "Refresh location",
   "@refreshLocation": {
@@ -787,9 +787,9 @@
   "@sortByCapacity": {
     "description": "CRITICAL — center capacity concept. PENDING Bikol (Ligao) local-language review; do not translate without local review. English fallback shown."
   },
-  "centerDetailsTitle": "Center details",
+  "centerDetailsTitle": "Detalye kan center",
   "@centerDetailsTitle": {
-    "description": "CRITICAL — safety-related. PENDING Bikol (Ligao) local-language review; do not translate without local review. English fallback shown."
+    "description": "NEEDS NATIVE BIKOL REVIEW"
   },
   "centerNotFound": "This evacuation center could not be found.",
   "@centerNotFound": {
@@ -803,13 +803,13 @@
   "@overviewCapacity": {
     "description": "CRITICAL — center capacity concept. PENDING Bikol (Ligao) local-language review; do not translate without local review. English fallback shown."
   },
-  "overviewCurrentOccupancy": "Current occupancy",
+  "overviewCurrentOccupancy": "Gabos na yaon ngonyan",
   "@overviewCurrentOccupancy": {
-    "description": "CRITICAL — center occupancy concept. PENDING Bikol (Ligao) local-language review; do not translate without local review. English fallback shown."
+    "description": "NEEDS NATIVE BIKOL REVIEW"
   },
-  "overviewAvailableSlots": "Available slots",
+  "overviewAvailableSlots": "Bakanteng lugar",
   "@overviewAvailableSlots": {
-    "description": "CRITICAL — center capacity concept. PENDING Bikol (Ligao) local-language review; do not translate without local review. English fallback shown."
+    "description": "NEEDS NATIVE BIKOL REVIEW"
   },
   "overviewOccupancyPercent": "Occupancy",
   "@overviewOccupancyPercent": {
@@ -1355,17 +1355,17 @@
   "@updateCheckFailed": {
     "description": "PENDING Bikol (Ligao) local-language review — English fallback shown until reviewed."
   },
-  "normalMonitoringTitle": "Normal Monitoring",
+  "normalMonitoringTitle": "Normal na Pagbantay",
   "@normalMonitoringTitle": {
-    "description": "CRITICAL — emergency-status headline. PENDING Bikol (Ligao) local-language review; do not translate without local review. English fallback shown."
+    "description": "NEEDS NATIVE BIKOL REVIEW"
   },
-  "viewAlert": "View Alert",
+  "viewAlert": "Hilingon an Alerto",
   "@viewAlert": {
-    "description": "CRITICAL — emergency alert action. PENDING Bikol (Ligao) local-language review; do not translate without local review. English fallback shown."
+    "description": "NEEDS NATIVE BIKOL REVIEW"
   },
-  "findNearestCenterAction": "Find Nearest Center",
+  "findNearestCenterAction": "Hanapon an Pinakaharaning Center",
   "@findNearestCenterAction": {
-    "description": "CRITICAL — safety-related ('Nearest evacuation center' explicitly listed). PENDING Bikol (Ligao) local-language review. English fallback shown."
+    "description": "NEEDS NATIVE BIKOL REVIEW"
   },
   "showingSavedAlertInfo": "Showing saved alert information",
   "@showingSavedAlertInfo": {
@@ -2754,7 +2754,8 @@
   "residentBarangayListUnavailable": "The barangay list needs an internet connection the first time.",
   "residentBarangayWhy": "See your barangay's status and its evacuation centers first.",
   "residentBarangayStatusOf": "Brgy. {barangay}",
-  "residentNoOpenEvent": "No disaster event is open.",
+  "residentNoOpenEvent": "Mayong bukas na disaster event.",
+  "@residentNoOpenEvent": {"description": "NEEDS NATIVE BIKOL REVIEW"},
   "residentStatusSavedCopy": "As of {age}",
   "showBarangayStatus": "Barangay status",
   "barangayBoundariesAttribution": "Barangay boundaries: PSA-NAMRIA via HDX (CC BY-IGO)",
@@ -3127,7 +3128,8 @@
   "transferReasonHint": "The receiving barangay sees this.",
   "transferRoomFor": "{count, plural, =1{Room for 1} other{Room for {count}}}",
   "transferAboutKm": "about {km} km",
-  "capacityUnknownTag": "Capacity unknown",
+  "capacityUnknownTag": "Dai aram an kapasidad",
+  "@capacityUnknownTag": {"description": "NEEDS NATIVE BIKOL REVIEW"},
   "capacityEstimatedShort": "est.",
   "transferSend": "Send request",
   "transferSendTitle": "Ask {barangay} to take these families?",
@@ -3150,19 +3152,24 @@
 
   "pressBackAgainToExit": "Press back again to exit",
 
-  "yourAreaTitle": "Your area: Brgy. {name}",
+  "yourAreaTitle": "Saimong lugar: Brgy. {name}",
+  "@yourAreaTitle": {"description": "NEEDS NATIVE BIKOL REVIEW"},
   "yourAreaStatusUnavailable": "Status not available yet. Pull down to refresh when online.",
   "staffBannerSignedIn": "Signed in as staff: {name}",
   "staffBannerBack": "Staff Mode",
 
-  "noSavedCopyYet": "Nothing is saved on this phone yet: connect once to save it for offline use.",
+  "noSavedCopyYet": "Mayo pang naka-save sa teleponong ini: mag-connect minsan tanganing ma-save para sa offline.",
+  "@noSavedCopyYet": {"description": "NEEDS NATIVE BIKOL REVIEW"},
 
-  "situationEvacuationOrdered": "Evacuation ordered",
+  "situationEvacuationOrdered": "May pagboot na magbakwet",
+  "@situationEvacuationOrdered": {"description": "NEEDS NATIVE BIKOL REVIEW"},
   "situationEvacuatingBarangays": "{count, plural, =1{1 barangay is under preemptive or forced evacuation.} other{{count} barangays are under preemptive or forced evacuation.}}",
-  "situationOnWatch": "On watch",
+  "situationOnWatch": "Binabantayan",
+  "@situationOnWatch": {"description": "NEEDS NATIVE BIKOL REVIEW"},
   "situationWatchingBarangays": "{count, plural, =1{1 barangay is on watch or has flooding reported.} other{{count} barangays are on watch or have flooding reported.}}",
   "situationMonitoring": "Being monitored",
-  "situationNoEvacuation": "No barangay has to evacuate.",
+  "situationNoEvacuation": "Mayong barangay na kaipuhan magbakwet.",
+  "@situationNoEvacuation": {"description": "NEEDS NATIVE BIKOL REVIEW"},
   "statusNearlyFull": "Haros puno na",
   "@statusNearlyFull": {"description": "NEEDS NATIVE BIKOL REVIEW"},
   "requestStatusSent": "Sent",
@@ -3355,5 +3362,85 @@
   "cswdProgressLine": "{registered} of {expected} expected families registered",
   "cswdProgressNoList": "{families} registered · no list",
   "cswdProgressListCheckedIn": "{checkedIn} of {listed} listed families checked in",
-  "cswdProgressNone": "No barangay figures yet."
+  "cswdProgressNone": "No barangay figures yet.",
+  "orderForcedTitle": "Pinirit na pagbakwet: {barangay}",
+  "@orderForcedTitle": {"description": "NEEDS NATIVE BIKOL REVIEW"},
+  "orderPreemptiveTitle": "Inot na pagbakwet: {barangay}",
+  "@orderPreemptiveTitle": {"description": "NEEDS NATIVE BIKOL REVIEW"},
+  "orderForcedBody": "Humali na ngonyan. Magpasiring sa pinakaharaning bukas na evacuation center asin sunodon an mga opisyal kan barangay.",
+  "@orderForcedBody": {"description": "NEEDS NATIVE BIKOL REVIEW"},
+  "orderPreemptiveBody": "Mag-andam na humali asin magpasiring sa pinakaharaning bukas na evacuation center. Darahon an go-bag.",
+  "@orderPreemptiveBody": {"description": "NEEDS NATIVE BIKOL REVIEW"},
+  "orderGoToCenter": "Pinakaharaning bukas na center",
+  "@orderGoToCenter": {"description": "NEEDS NATIVE BIKOL REVIEW"},
+  "safeCentersTitle": "Pinakaharaning ligtas na center",
+  "@safeCentersTitle": {"description": "NEEDS NATIVE BIKOL REVIEW"},
+  "safeCentersHint": "Bukas na center sana: dai puno, sarado o yaon sa laog kan permanent danger zone kan Mayon.",
+  "@safeCentersHint": {"description": "NEEDS NATIVE BIKOL REVIEW"},
+  "safeCentersHintVolcanic": "Pagputok kan bulkan: dai kaibahan an center na yaon sa laog kan 7 km hali sa bunganga kan Mayon.",
+  "@safeCentersHintVolcanic": {"description": "NEEDS NATIVE BIKOL REVIEW"},
+  "hazardsTitle": "Mga peligro",
+  "@hazardsTitle": {"description": "NEEDS NATIVE BIKOL REVIEW"},
+  "hazardsTitleFor": "Mga peligro sa {barangay}",
+  "@hazardsTitleFor": {"description": "NEEDS NATIVE BIKOL REVIEW"},
+  "mayonInsidePermanent": "Mayon: may parte kan saindong barangay sa laog kan 6 km permanent danger zone.",
+  "@mayonInsidePermanent": {"description": "NEEDS NATIVE BIKOL REVIEW"},
+  "mayonInsideExtended": "Mayon: may parte kan saindong barangay sa laog kan 7 km extended danger zone.",
+  "@mayonInsideExtended": {"description": "NEEDS NATIVE BIKOL REVIEW"},
+  "mayonDistance": "Mayon: {km} km an rayo kan saindong barangay sa bunganga, luwas sa danger zone.",
+  "@mayonDistance": {"description": "NEEDS NATIVE BIKOL REVIEW"},
+  "mayonZoneLabel": "Tantiyang zone basado sa rayo hali sa bunganga. Sunodon an ulat kan PHIVOLCS.",
+  "@mayonZoneLabel": {"description": "NEEDS NATIVE BIKOL REVIEW"},
+  "hazardsWhatToDo": "Ano an gigibohon",
+  "@hazardsWhatToDo": {"description": "NEEDS NATIVE BIKOL REVIEW"},
+  "hazardsWhatToDoHint": "Bagyo, baha asin bulkan: halipot na hakbang, checklist asin plano kan pamilya.",
+  "@hazardsWhatToDoHint": {"description": "NEEDS NATIVE BIKOL REVIEW"},
+  "prepTitle": "Magin andam",
+  "@prepTitle": {"description": "NEEDS NATIVE BIKOL REVIEW"},
+  "prepSubtitle": "Go-bag, checklist asin plano kan pamilya, maski offline",
+  "@prepSubtitle": {"description": "NEEDS NATIVE BIKOL REVIEW"},
+  "prepUnavailable": "Dai mabukasan an mga checklist.",
+  "@prepUnavailable": {"description": "NEEDS NATIVE BIKOL REVIEW"},
+  "prepChecklists": "Mga checklist",
+  "@prepChecklists": {"description": "NEEDS NATIVE BIKOL REVIEW"},
+  "prepProgress": "{done} sa {total} an andam",
+  "@prepProgress": {"description": "NEEDS NATIVE BIKOL REVIEW"},
+  "prepSource": "Basado sa giya kan {agency} · para sa pagsiyasat kan team",
+  "@prepSource": {"description": "NEEDS NATIVE BIKOL REVIEW"},
+  "familyPlanTitle": "Plano kan pamilya sa emergency",
+  "@familyPlanTitle": {"description": "NEEDS NATIVE BIKOL REVIEW"},
+  "familyPlanPhoneOnly": "Yaon sana sa teleponong ini. Dai ipinapadara maski sain.",
+  "@familyPlanPhoneOnly": {"description": "NEEDS NATIVE BIKOL REVIEW"},
+  "familyPlanMeetingPoint": "Tagpuan",
+  "@familyPlanMeetingPoint": {"description": "NEEDS NATIVE BIKOL REVIEW"},
+  "familyPlanMeetingPointHint": "Kun sain magtitiripon an pamilya kun magkakasuhay.",
+  "@familyPlanMeetingPointHint": {"description": "NEEDS NATIVE BIKOL REVIEW"},
+  "familyPlanContacts": "Mga numero nin contact",
+  "@familyPlanContacts": {"description": "NEEDS NATIVE BIKOL REVIEW"},
+  "familyPlanName": "Pangaran",
+  "@familyPlanName": {"description": "NEEDS NATIVE BIKOL REVIEW"},
+  "familyPlanNumber": "Numero",
+  "@familyPlanNumber": {"description": "NEEDS NATIVE BIKOL REVIEW"},
+  "familyPlanAddContact": "Magdugang nin contact",
+  "@familyPlanAddContact": {"description": "NEEDS NATIVE BIKOL REVIEW"},
+  "familyPlanSpecialNeeds": "Mga miyembro na may espesyal na kaipuhan",
+  "@familyPlanSpecialNeeds": {"description": "NEEDS NATIVE BIKOL REVIEW"},
+  "familyPlanSpecialNeedsHint": "Aki, gurang, may kapansanan, may kaipuhan na bulong.",
+  "@familyPlanSpecialNeedsHint": {"description": "NEEDS NATIVE BIKOL REVIEW"},
+  "familyPlanNeed": "Ano an kaipuhan",
+  "@familyPlanNeed": {"description": "NEEDS NATIVE BIKOL REVIEW"},
+  "familyPlanAddPerson": "Magdugang nin tawo",
+  "@familyPlanAddPerson": {"description": "NEEDS NATIVE BIKOL REVIEW"},
+  "familyPlanSave": "I-save sa teleponong ini",
+  "@familyPlanSave": {"description": "NEEDS NATIVE BIKOL REVIEW"},
+  "familyPlanSaved": "Na-save sa teleponong ini.",
+  "@familyPlanSaved": {"description": "NEEDS NATIVE BIKOL REVIEW"},
+  "textSize": "Kadakula kan teksto",
+  "@textSize": {"description": "NEEDS NATIVE BIKOL REVIEW"},
+  "textSizeNormal": "Normal",
+  "@textSizeNormal": {"description": "NEEDS NATIVE BIKOL REVIEW"},
+  "textSizeLarge": "Dakula",
+  "@textSizeLarge": {"description": "NEEDS NATIVE BIKOL REVIEW"},
+  "textSizeLarger": "Mas dakula",
+  "@textSizeLarger": {"description": "NEEDS NATIVE BIKOL REVIEW"}
 }

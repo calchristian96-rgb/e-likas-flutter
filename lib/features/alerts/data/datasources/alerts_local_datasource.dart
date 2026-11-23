@@ -60,6 +60,9 @@ class AlertsLocalDatasource {
       status: m.status,
       severity: Value(m.severity),
       isDrill: Value(m.isDrill),
+      targetKind: Value(m.targetKind),
+      targetLabel: Value(m.targetLabel),
+      targetBarangayId: Value(m.targetBarangayId),
       dateSentUtcMs: Value(m.dateSentUtcMs),
       evacuationEventName: Value(m.evacuationEventName),
       senderName: Value(m.senderName),
@@ -80,6 +83,9 @@ class AlertsLocalDatasource {
       recipientSummary: row.recipientSummary,
       severity: row.severity,
       isDrill: row.isDrill,
+      targetKind: row.targetKind,
+      targetLabel: row.targetLabel,
+      targetBarangayId: row.targetBarangayId,
     );
   }
 }

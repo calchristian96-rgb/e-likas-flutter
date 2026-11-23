@@ -254,7 +254,7 @@ class AppLocalizationsFil extends AppLocalizations {
   String get allClearUpdateReceived => 'May natanggap na all-clear update';
 
   @override
-  String get severityMandatory => 'Sapilitan';
+  String get severityMandatory => 'Emergency';
 
   @override
   String get severityAdvisory => 'Advisory';
@@ -4733,4 +4733,157 @@ class AppLocalizationsFil extends AppLocalizations {
 
   @override
   String get cswdProgressNone => 'Wala pang bilang ng barangay.';
+
+  @override
+  String orderForcedTitle(String barangay) {
+    return 'Sapilitang paglikas: $barangay';
+  }
+
+  @override
+  String orderPreemptiveTitle(String barangay) {
+    return 'Paunang paglikas: $barangay';
+  }
+
+  @override
+  String get orderForcedBody =>
+      'Umalis na ngayon. Pumunta sa pinakamalapit na bukas na evacuation center at sundin ang mga opisyal ng barangay.';
+
+  @override
+  String get orderPreemptiveBody =>
+      'Maghanda nang umalis at pumunta sa pinakamalapit na bukas na evacuation center. Dalhin ang go-bag.';
+
+  @override
+  String get orderGoToCenter => 'Pinakamalapit na bukas na center';
+
+  @override
+  String get safeCentersTitle => 'Pinakamalapit na ligtas na center';
+
+  @override
+  String get safeCentersHint =>
+      'Bukas na center lang: hindi puno, sarado o nasa loob ng permanent danger zone ng Mayon.';
+
+  @override
+  String get safeCentersHintVolcanic =>
+      'Pagputok ng bulkan: hindi kasama ang center na nasa loob ng 7 km mula sa tuktok ng Mayon.';
+
+  @override
+  String get hazardsTitle => 'Mga panganib';
+
+  @override
+  String hazardsTitleFor(String barangay) {
+    return 'Mga panganib sa $barangay';
+  }
+
+  @override
+  String get mayonInsidePermanent =>
+      'Mayon: may bahagi ng inyong barangay sa loob ng 6 km permanent danger zone.';
+
+  @override
+  String get mayonInsideExtended =>
+      'Mayon: may bahagi ng inyong barangay sa loob ng 7 km extended danger zone.';
+
+  @override
+  String mayonDistance(String km) {
+    return 'Mayon: $km km ang layo ng inyong barangay sa tuktok, labas sa danger zone.';
+  }
+
+  @override
+  String get mayonZoneLabel =>
+      'Tantiyang zone batay sa layo mula sa tuktok. Sundin ang ulat ng PHIVOLCS.';
+
+  @override
+  String get hazardsWhatToDo => 'Ano ang gagawin';
+
+  @override
+  String get hazardsWhatToDoHint =>
+      'Bagyo, baha at bulkan: maiikling hakbang, checklist at plano ng pamilya.';
+
+  @override
+  String get prepTitle => 'Maging handa';
+
+  @override
+  String get prepSubtitle =>
+      'Go-bag, checklist at plano ng pamilya, kahit offline';
+
+  @override
+  String get prepUnavailable => 'Hindi mabuksan ang mga checklist.';
+
+  @override
+  String get prepChecklists => 'Mga checklist';
+
+  @override
+  String prepProgress(int done, int total) {
+    final intl.NumberFormat doneNumberFormat = intl.NumberFormat.decimalPattern(
+      localeName,
+    );
+    final String doneString = doneNumberFormat.format(done);
+    final intl.NumberFormat totalNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
+    final String totalString = totalNumberFormat.format(total);
+
+    return '$doneString sa $totalString ang handa';
+  }
+
+  @override
+  String prepSource(String agency) {
+    return 'Batay sa gabay ng $agency · para sa pagsusuri ng team';
+  }
+
+  @override
+  String get familyPlanTitle => 'Plano ng pamilya sa emergency';
+
+  @override
+  String get familyPlanPhoneOnly =>
+      'Nasa teleponong ito lang. Hindi ipinapadala kahit saan.';
+
+  @override
+  String get familyPlanMeetingPoint => 'Tagpuan';
+
+  @override
+  String get familyPlanMeetingPointHint =>
+      'Kung saan magkikita ang pamilya kapag magkakahiwalay.';
+
+  @override
+  String get familyPlanContacts => 'Mga numero ng contact';
+
+  @override
+  String get familyPlanName => 'Pangalan';
+
+  @override
+  String get familyPlanNumber => 'Numero';
+
+  @override
+  String get familyPlanAddContact => 'Magdagdag ng contact';
+
+  @override
+  String get familyPlanSpecialNeeds =>
+      'Mga miyembrong may espesyal na pangangailangan';
+
+  @override
+  String get familyPlanSpecialNeedsHint =>
+      'Sanggol, nakatatanda, may kapansanan, may kailangang gamot.';
+
+  @override
+  String get familyPlanNeed => 'Ano ang kailangan';
+
+  @override
+  String get familyPlanAddPerson => 'Magdagdag ng tao';
+
+  @override
+  String get familyPlanSave => 'I-save sa teleponong ito';
+
+  @override
+  String get familyPlanSaved => 'Na-save sa teleponong ito.';
+
+  @override
+  String get textSize => 'Laki ng teksto';
+
+  @override
+  String get textSizeNormal => 'Karaniwan';
+
+  @override
+  String get textSizeLarge => 'Malaki';
+
+  @override
+  String get textSizeLarger => 'Mas malaki';
 }

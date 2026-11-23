@@ -565,7 +565,7 @@ abstract class AppLocalizations {
   /// No description provided for @severityMandatory.
   ///
   /// In en, this message translates to:
-  /// **'Mandatory'**
+  /// **'Emergency'**
   String get severityMandatory;
 
   /// No description provided for @severityAdvisory.
@@ -7346,6 +7346,246 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No barangay figures yet.'**
   String get cswdProgressNone;
+
+  /// No description provided for @orderForcedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Forced evacuation: {barangay}'**
+  String orderForcedTitle(String barangay);
+
+  /// No description provided for @orderPreemptiveTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Preemptive evacuation: {barangay}'**
+  String orderPreemptiveTitle(String barangay);
+
+  /// No description provided for @orderForcedBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave now. Go to the nearest open evacuation center and follow your barangay officials.'**
+  String get orderForcedBody;
+
+  /// No description provided for @orderPreemptiveBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Prepare to leave and go to the nearest open evacuation center. Bring your go-bag.'**
+  String get orderPreemptiveBody;
+
+  /// No description provided for @orderGoToCenter.
+  ///
+  /// In en, this message translates to:
+  /// **'Nearest open centers'**
+  String get orderGoToCenter;
+
+  /// No description provided for @safeCentersTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Nearest safe centers'**
+  String get safeCentersTitle;
+
+  /// No description provided for @safeCentersHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Open centers only: never full, closed or inside Mayon\'s permanent danger zone.'**
+  String get safeCentersHint;
+
+  /// No description provided for @safeCentersHintVolcanic.
+  ///
+  /// In en, this message translates to:
+  /// **'Volcanic event: centers within 7 km of Mayon\'s summit are left out.'**
+  String get safeCentersHintVolcanic;
+
+  /// No description provided for @hazardsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Hazards'**
+  String get hazardsTitle;
+
+  /// No description provided for @hazardsTitleFor.
+  ///
+  /// In en, this message translates to:
+  /// **'Hazards in {barangay}'**
+  String hazardsTitleFor(String barangay);
+
+  /// No description provided for @mayonInsidePermanent.
+  ///
+  /// In en, this message translates to:
+  /// **'Mayon: part of your barangay is inside the 6 km permanent danger zone.'**
+  String get mayonInsidePermanent;
+
+  /// No description provided for @mayonInsideExtended.
+  ///
+  /// In en, this message translates to:
+  /// **'Mayon: part of your barangay is inside the 7 km extended danger zone.'**
+  String get mayonInsideExtended;
+
+  /// No description provided for @mayonDistance.
+  ///
+  /// In en, this message translates to:
+  /// **'Mayon: your barangay is {km} km from the summit, outside the danger zones.'**
+  String mayonDistance(String km);
+
+  /// No description provided for @mayonZoneLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Approximate zone based on distance from the summit. Follow PHIVOLCS bulletins.'**
+  String get mayonZoneLabel;
+
+  /// No description provided for @hazardsWhatToDo.
+  ///
+  /// In en, this message translates to:
+  /// **'What to do'**
+  String get hazardsWhatToDo;
+
+  /// No description provided for @hazardsWhatToDoHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Typhoon, flood and volcano: short steps, checklists and your family plan.'**
+  String get hazardsWhatToDoHint;
+
+  /// No description provided for @prepTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Be prepared'**
+  String get prepTitle;
+
+  /// No description provided for @prepSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Go-bag, checklists and your family plan, also offline'**
+  String get prepSubtitle;
+
+  /// No description provided for @prepUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'The checklists could not be opened.'**
+  String get prepUnavailable;
+
+  /// No description provided for @prepChecklists.
+  ///
+  /// In en, this message translates to:
+  /// **'Checklists'**
+  String get prepChecklists;
+
+  /// No description provided for @prepProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'{done} of {total} ready'**
+  String prepProgress(int done, int total);
+
+  /// No description provided for @prepSource.
+  ///
+  /// In en, this message translates to:
+  /// **'Source: {agency} guidance · for team review'**
+  String prepSource(String agency);
+
+  /// No description provided for @familyPlanTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Family emergency plan'**
+  String get familyPlanTitle;
+
+  /// No description provided for @familyPlanPhoneOnly.
+  ///
+  /// In en, this message translates to:
+  /// **'Kept on this phone only. Never sent anywhere.'**
+  String get familyPlanPhoneOnly;
+
+  /// No description provided for @familyPlanMeetingPoint.
+  ///
+  /// In en, this message translates to:
+  /// **'Meeting point'**
+  String get familyPlanMeetingPoint;
+
+  /// No description provided for @familyPlanMeetingPointHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Where the family meets if you are apart.'**
+  String get familyPlanMeetingPointHint;
+
+  /// No description provided for @familyPlanContacts.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact numbers'**
+  String get familyPlanContacts;
+
+  /// No description provided for @familyPlanName.
+  ///
+  /// In en, this message translates to:
+  /// **'Name'**
+  String get familyPlanName;
+
+  /// No description provided for @familyPlanNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Number'**
+  String get familyPlanNumber;
+
+  /// No description provided for @familyPlanAddContact.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a contact'**
+  String get familyPlanAddContact;
+
+  /// No description provided for @familyPlanSpecialNeeds.
+  ///
+  /// In en, this message translates to:
+  /// **'Members with special needs'**
+  String get familyPlanSpecialNeeds;
+
+  /// No description provided for @familyPlanSpecialNeedsHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Babies, older people, persons with disability, someone who needs medicine.'**
+  String get familyPlanSpecialNeedsHint;
+
+  /// No description provided for @familyPlanNeed.
+  ///
+  /// In en, this message translates to:
+  /// **'What they need'**
+  String get familyPlanNeed;
+
+  /// No description provided for @familyPlanAddPerson.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a person'**
+  String get familyPlanAddPerson;
+
+  /// No description provided for @familyPlanSave.
+  ///
+  /// In en, this message translates to:
+  /// **'Save on this phone'**
+  String get familyPlanSave;
+
+  /// No description provided for @familyPlanSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Saved on this phone.'**
+  String get familyPlanSaved;
+
+  /// No description provided for @textSize.
+  ///
+  /// In en, this message translates to:
+  /// **'Text size'**
+  String get textSize;
+
+  /// No description provided for @textSizeNormal.
+  ///
+  /// In en, this message translates to:
+  /// **'Normal'**
+  String get textSizeNormal;
+
+  /// No description provided for @textSizeLarge.
+  ///
+  /// In en, this message translates to:
+  /// **'Large'**
+  String get textSizeLarge;
+
+  /// No description provided for @textSizeLarger.
+  ///
+  /// In en, this message translates to:
+  /// **'Larger'**
+  String get textSizeLarger;
 }
 
 class _AppLocalizationsDelegate

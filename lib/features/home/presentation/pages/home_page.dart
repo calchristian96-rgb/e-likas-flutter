@@ -23,10 +23,10 @@ import '../../../staff_auth/presentation/providers/staff_auth_provider.dart';
 import '../../domain/dashboard_summary.dart';
 import '../providers/home_provider.dart';
 import '../widgets/emergency_status_card.dart';
-import '../widgets/nearest_center_preview.dart';
 import '../widgets/quick_action_card.dart';
 import '../widgets/section_header.dart';
 import '../widgets/welcome_section.dart';
+import '../../../resident_safety/resident_safety.dart';
 
 class HomePage extends ConsumerStatefulWidget {
   const HomePage({super.key});
@@ -181,6 +181,9 @@ class _HomePageState extends ConsumerState<HomePage> {
                           // Answer first (web design rule 2): is this a
                           // drill, how urgent is it, my barangay, where
                           // to go. Nothing decorative.
+                          // An evacuation order for this barangay comes
+                          // before everything.
+                          const EvacuationOrderBanner(),
                           AnimatedSwitcher(
                             duration: const Duration(milliseconds: 250),
                             child: EmergencyStatusCard(
@@ -200,7 +203,11 @@ class _HomePageState extends ConsumerState<HomePage> {
                           // status and what to do (hidden without a
                           // location).
                           const YourAreaCard(),
-                          const NearestCenterPreview(),
+                          // The three nearest safe centers (never Full,
+                          // Closed or inside Mayon's danger zone).
+                          const SafeCentersCard(),
+                          const HazardsCard(),
+                          const _PrepareCard(),
                           const SizedBox(height: 24),
                           SectionHeader(title: l10n.quickActions),
                           const SizedBox(height: 8),
@@ -654,6 +661,31 @@ class _QuickActionsGrid extends StatelessWidget {
           ],
         );
       },
+    );
+  }
+}
+
+/// Be prepared: go-bag, checklists, family plan (all offline).
+class _PrepareCard extends StatelessWidget {
+  const _PrepareCard();
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    final theme = Theme.of(context);
+    return Card(
+      margin: EdgeInsets.zero,
+      child: ListTile(
+        minTileHeight: 64,
+        leading: Icon(
+          Icons.backpack_outlined,
+          color: theme.colorScheme.primary,
+        ),
+        title: Text(l10n.prepTitle),
+        subtitle: Text(l10n.prepSubtitle),
+        trailing: const Icon(Icons.chevron_right),
+        onTap: () => context.push('/prepare'),
+      ),
     );
   }
 }

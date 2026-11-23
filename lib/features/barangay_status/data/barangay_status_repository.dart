@@ -64,6 +64,9 @@ class BarangayStatusRepository {
       eventName: event?['name'] as String?,
       eventStatus: event?['status'] as String?,
       isDrill: event?['is_drill'] as bool? ?? false,
+      eventType: event?['is_volcanic'] == true
+          ? 'volcanic_eruption'
+          : event?['event_type'] as String?,
       barangays: [
         for (final b in data['barangays'] as List? ?? const [])
           BarangayStatus.fromJson(b as Map<String, dynamic>),
@@ -94,6 +97,7 @@ class BarangayStatusRepository {
         'name': board.eventName,
         'status': board.eventStatus,
         'is_drill': board.isDrill,
+        'event_type': board.eventType,
       }),
     );
   }
@@ -117,6 +121,7 @@ class BarangayStatusRepository {
       eventName: event['name'] as String?,
       eventStatus: event['status'] as String?,
       isDrill: event['is_drill'] as bool? ?? false,
+      eventType: event['event_type'] as String?,
       isFromCache: true,
       lastSyncedAt: await _syncTimestamps.getSynced(SyncDomain.barangayStatus),
       barangays: [

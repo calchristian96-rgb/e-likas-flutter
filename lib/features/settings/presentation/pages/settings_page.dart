@@ -17,6 +17,7 @@ import '../../../app_update/presentation/update_prompt.dart';
 import '../../../home/presentation/providers/home_provider.dart';
 import '../../../staff_auth/presentation/providers/staff_auth_provider.dart';
 import '../../../staff_auth/presentation/widgets/staff_identity_card.dart';
+import '../../../../core/localization/app_text_scale.dart';
 
 /// Every row here either does something real or shows a genuinely
 /// measured value — no fake toggles, no placeholder rows for
@@ -137,6 +138,17 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                 title: l10n.appAppearance,
                 subtitle: appThemeModeDisplayName(l10n, themeMode),
                 onTap: () => showThemeModeSelectorSheet(context),
+              ),
+              const _RowDivider(),
+              _SettingsRow(
+                icon: Icons.format_size,
+                iconColor: theme.colorScheme.primary,
+                title: l10n.textSize,
+                subtitle: appTextScaleName(
+                  l10n,
+                  ref.watch(appTextScaleProvider),
+                ),
+                onTap: () => showTextScaleSheet(context),
               ),
             ],
           ),

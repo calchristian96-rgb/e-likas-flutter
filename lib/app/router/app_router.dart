@@ -56,6 +56,7 @@ import '../../features/families_to_evacuate/families_to_evacuate.dart';
 import '../../features/facility_requests/facility_requests_page.dart';
 import '../../features/support/support_requests.dart';
 import '../../features/staff_home/cswd_actions.dart';
+import '../../features/preparedness/preparedness.dart';
 
 /// Bottom-nav shell shared by the four top-level destinations. Uses
 /// [StatefulShellRoute.indexedStack] so each tab keeps its own
@@ -692,6 +693,17 @@ final GoRouter appRouter = GoRouter(
     // whether the target is a branch or a top-level route, so nothing
     // else needed to change for it to stay reachable from Home and
     // Alerts/GIS Map as before.
+    // Be prepared (residents, offline): checklists and the family plan.
+    GoRoute(
+      path: '/prepare',
+      builder: (context, state) => const PreparePage(),
+      routes: [
+        GoRoute(
+          path: 'family-plan',
+          builder: (context, state) => const FamilyPlanPage(),
+        ),
+      ],
+    ),
     GoRoute(
       path: '/nearest-center',
       builder: (context, state) => const NearestCenterPage(),

@@ -9,19 +9,19 @@ class AppLocalizationsBcl extends AppLocalizations {
   AppLocalizationsBcl([String locale = 'bcl']) : super(locale);
 
   @override
-  String get navHome => 'Home';
+  String get navHome => 'Harong';
 
   @override
-  String get navMap => 'Mapa';
+  String get navMap => 'GIS Mapa';
 
   @override
-  String get navNearestCenter => 'Nearest Center';
+  String get navNearestCenter => 'Pinakaharaning Center';
 
   @override
   String get navAlerts => 'Mga Alerto';
 
   @override
-  String get navHotlines => 'Mga Hotline';
+  String get navHotlines => 'Hotlines';
 
   @override
   String get navSettings => 'Settings';
@@ -76,19 +76,19 @@ class AppLocalizationsBcl extends AppLocalizations {
   }
 
   @override
-  String get retry => 'Retry';
+  String get retry => 'Probaran giraray';
 
   @override
-  String get refresh => 'Refresh';
+  String get refresh => 'I-refresh';
 
   @override
-  String get viewAll => 'View all';
+  String get viewAll => 'Hilingon gabos';
 
   @override
-  String get viewDetails => 'View details';
+  String get viewDetails => 'Hilingon an detalye';
 
   @override
-  String get getDirections => 'Get directions';
+  String get getDirections => 'Direksyon';
 
   @override
   String get openSettings => 'Open Settings';
@@ -97,16 +97,16 @@ class AppLocalizationsBcl extends AppLocalizations {
   String get copy => 'Copy';
 
   @override
-  String get call => 'Call';
+  String get call => 'Tawagan';
 
   @override
-  String get dismiss => 'Dismiss';
+  String get dismiss => 'Isara';
 
   @override
-  String get view => 'View';
+  String get view => 'Hilingon';
 
   @override
-  String get tryAgain => 'Try again';
+  String get tryAgain => 'Probaran giraray';
 
   @override
   String get language => 'Tataramon';
@@ -142,16 +142,16 @@ class AppLocalizationsBcl extends AppLocalizations {
   String get dashboardSummary => 'Dashboard summary';
 
   @override
-  String get quickActions => 'Quick actions';
+  String get quickActions => 'Madaling aksyon';
 
   @override
   String get viewAllEvacuationCenters => 'View All Evacuation Centers';
 
   @override
-  String get refreshData => 'Refresh Data';
+  String get refreshData => 'I-refresh an Data';
 
   @override
-  String get emergencyHotlines => 'Emergency Hotlines';
+  String get emergencyHotlines => 'Mga Emergency Hotline';
 
   @override
   String get statEvacuationCenters => 'Evacuation centers';
@@ -169,20 +169,20 @@ class AppLocalizationsBcl extends AppLocalizations {
   String get nearestEvacuationCenterHeading => 'Nearest evacuation center';
 
   @override
-  String get recentAlerts => 'Recent alerts';
+  String get recentAlerts => 'Mga bagong alerto';
 
   @override
-  String get safetyTips => 'Safety tips';
+  String get safetyTips => 'Mga tips sa kaligtasan';
 
   @override
-  String get noActiveAlerts => 'No active alerts';
+  String get noActiveAlerts => 'Mayong aktibong alerto';
 
   @override
-  String get noActiveEmergencyAlerts => 'No active emergency alerts';
+  String get noActiveEmergencyAlerts => 'Mayong aktibong emergency alerto';
 
   @override
   String get normalMonitoring =>
-      'Ligao City is currently under normal monitoring.';
+      'An Ciudad nin Ligao yaon sa normal na pagbantay.';
 
   @override
   String get liveDataUnavailable => 'Live data is temporarily unavailable';
@@ -191,15 +191,15 @@ class AppLocalizationsBcl extends AppLocalizations {
   String get showingSavedInfo => 'Showing the latest saved information.';
 
   @override
-  String get nearestCenterUnavailable => 'Nearest center unavailable';
+  String get nearestCenterUnavailable => 'Dai makua an pinakaharaning center';
 
   @override
   String get enableLocationServices =>
-      'Enable location services or try again later.';
+      'Buksan an location services o probaran giraray sa ibang oras.';
 
   @override
   String get noNearbyEvacuationCenters =>
-      'No nearby evacuation centers to show yet.';
+      'Mayo pang harani na evacuation center na maipapahiling.';
 
   @override
   String get youAreViewingLiveData => 'You\'re viewing live data.';
@@ -208,13 +208,13 @@ class AppLocalizationsBcl extends AppLocalizations {
   String get checkingForAlerts => 'Checking for emergency alerts…';
 
   @override
-  String get alertsTitle => 'Alerts';
+  String get alertsTitle => 'Mga Alerto';
 
   @override
-  String get alertDetailsTitle => 'Alert details';
+  String get alertDetailsTitle => 'Detalye kan alerto';
 
   @override
-  String get noPublicAlerts => 'No public alerts to show yet.';
+  String get noPublicAlerts => 'Mayo pang publikong alerto na maipapahiling.';
 
   @override
   String get dateUnavailable => 'Date unavailable';
@@ -229,52 +229,53 @@ class AppLocalizationsBcl extends AppLocalizations {
   String get evacuationEvent => 'Evacuation event';
 
   @override
-  String get couldNotLoadAlerts => 'Could not load alerts';
+  String get couldNotLoadAlerts => 'Dai ma-load an mga alerto';
 
   @override
-  String get newAlertReceived => 'New alert received';
+  String get newAlertReceived => 'May bagong alerto';
 
   @override
-  String get newAdvisoryReceived => 'New advisory received';
+  String get newAdvisoryReceived => 'May bagong abiso';
 
   @override
-  String get emergencyAlertReceived => 'Emergency alert received';
+  String get emergencyAlertReceived => 'May emergency alerto';
 
   @override
-  String get newInformationAlert => 'New information alert';
+  String get newInformationAlert => 'May bagong impormasyon';
 
   @override
-  String get allClearUpdateReceived => 'All-clear update received';
+  String get allClearUpdateReceived => 'Ligtas na: may bagong update';
 
   @override
-  String get severityMandatory => 'Mandatory';
+  String get severityMandatory => 'Emergency';
 
   @override
-  String get severityAdvisory => 'Advisory';
+  String get severityAdvisory => 'Abiso';
 
   @override
-  String get severityInfo => 'Info';
+  String get severityInfo => 'Impormasyon';
 
   @override
-  String get severityAllClear => 'All clear';
+  String get severityAllClear => 'Ligtas na';
 
   @override
-  String get statusActive => 'Active';
+  String get statusActive => 'Aktibo';
 
   @override
-  String get statusFull => 'Full';
+  String get statusFull => 'Puno';
 
   @override
-  String get statusClosed => 'Closed';
+  String get statusClosed => 'Sarado';
 
   @override
-  String get statusOnStandby => 'On standby';
+  String get statusOnStandby => 'Andam';
 
   @override
-  String get evacuationCentersTitle => 'Evacuation centers';
+  String get evacuationCentersTitle => 'Mga evacuation center';
 
   @override
-  String get noEvacuationCenters => 'No evacuation centers to show yet.';
+  String get noEvacuationCenters =>
+      'Mayo pang evacuation center na maipapahiling.';
 
   @override
   String evacuationCentersCount(int count) {
@@ -299,13 +300,14 @@ class AppLocalizationsBcl extends AppLocalizations {
   }
 
   @override
-  String get nearestCenterTitle => 'Nearest center';
+  String get nearestCenterTitle => 'Pinakaharaning center';
 
   @override
-  String get locationPermissionDenied => 'Location permission was denied.';
+  String get locationPermissionDenied =>
+      'Dai tinogotan an paggamit kan lokasyon.';
 
   @override
-  String get locationServicesOff => 'Location services are turned off.';
+  String get locationServicesOff => 'Nakagadan an location services.';
 
   @override
   String get locationPermanentlyDenied =>
@@ -313,13 +315,13 @@ class AppLocalizationsBcl extends AppLocalizations {
 
   @override
   String get couldNotDetermineLocation =>
-      'Could not determine current location.';
+      'Dai maaraman an saimong lokasyon ngonyan.';
 
   @override
-  String get couldNotLoadNearbyCenters => 'Could not load nearby centers';
+  String get couldNotLoadNearbyCenters => 'Dai ma-load an mga harani na center';
 
   @override
-  String get emergencyHotlinesTitle => 'Emergency Hotlines';
+  String get emergencyHotlinesTitle => 'Mga Emergency Hotline';
 
   @override
   String get hotlinesOfflineNote =>
@@ -337,7 +339,7 @@ class AppLocalizationsBcl extends AppLocalizations {
       'Weather updates are not yet available in this app.';
 
   @override
-  String get cancel => 'Cancel';
+  String get cancel => 'Kanselar';
 
   @override
   String get settingsTitle => 'Settings';
@@ -353,7 +355,7 @@ class AppLocalizationsBcl extends AppLocalizations {
       'Manage saved data for offline access';
 
   @override
-  String get settingsSyncNow => 'Sync Now';
+  String get settingsSyncNow => 'I-sync Ngonyan';
 
   @override
   String get settingsSyncButton => 'Sync';
@@ -362,13 +364,13 @@ class AppLocalizationsBcl extends AppLocalizations {
   String get settingsSyncNeverRun => 'Not yet synced';
 
   @override
-  String get settingsConnectivity => 'Connectivity';
+  String get settingsConnectivity => 'Koneksyon';
 
   @override
-  String get settingsSectionPreferences => 'Preferences';
+  String get settingsSectionPreferences => 'Mga Gusto';
 
   @override
-  String get appAppearance => 'App Appearance';
+  String get appAppearance => 'Itsura kan App';
 
   @override
   String get appearanceSystem => 'System default';
@@ -412,7 +414,7 @@ class AppLocalizationsBcl extends AppLocalizations {
       'Not yet available — no notification service is set up on the backend. This currently saves your preference on this device.';
 
   @override
-  String get settingsSectionAbout => 'About';
+  String get settingsSectionAbout => 'Manungod';
 
   @override
   String get aboutTagline => 'Electronic Ligao Kaligtasan Sistema';
@@ -480,7 +482,7 @@ class AppLocalizationsBcl extends AppLocalizations {
   String get cacheCleared => 'Offline data cleared.';
 
   @override
-  String get hazardMapTitle => 'Hazard map';
+  String get hazardMapTitle => 'Mapa nin peligro';
 
   @override
   String get noMapData => 'No map data available yet.';
@@ -495,7 +497,7 @@ class AppLocalizationsBcl extends AppLocalizations {
   String get legendHazardArea => 'Hazard area';
 
   @override
-  String get showMyLocation => 'Show my location';
+  String get showMyLocation => 'Ipahiling an sakong lokasyon';
 
   @override
   String get unableToOpenMaps =>
@@ -552,7 +554,7 @@ class AppLocalizationsBcl extends AppLocalizations {
   String get sortBySeverity => 'Severity';
 
   @override
-  String get latestAlertLabel => 'Latest';
+  String get latestAlertLabel => 'Pinakabago';
 
   @override
   String get shareAlert => 'Share alert';
@@ -570,13 +572,13 @@ class AppLocalizationsBcl extends AppLocalizations {
   String get receivedLabel => 'Received';
 
   @override
-  String get viewEvacuationCenters => 'View evacuation centers';
+  String get viewEvacuationCenters => 'Hilingon an mga evacuation center';
 
   @override
   String get invalidCenterLink => 'That center link isn\'t valid.';
 
   @override
-  String get viewOnMap => 'View on map';
+  String get viewOnMap => 'Hilingon sa mapa';
 
   @override
   String get refreshLocation => 'Refresh location';
@@ -630,7 +632,7 @@ class AppLocalizationsBcl extends AppLocalizations {
   String get sortByCapacity => 'Capacity';
 
   @override
-  String get centerDetailsTitle => 'Center details';
+  String get centerDetailsTitle => 'Detalye kan center';
 
   @override
   String get centerNotFound => 'This evacuation center could not be found.';
@@ -642,10 +644,10 @@ class AppLocalizationsBcl extends AppLocalizations {
   String get overviewCapacity => 'Capacity';
 
   @override
-  String get overviewCurrentOccupancy => 'Current occupancy';
+  String get overviewCurrentOccupancy => 'Gabos na yaon ngonyan';
 
   @override
-  String get overviewAvailableSlots => 'Available slots';
+  String get overviewAvailableSlots => 'Bakanteng lugar';
 
   @override
   String get overviewOccupancyPercent => 'Occupancy';
@@ -1068,13 +1070,13 @@ class AppLocalizationsBcl extends AppLocalizations {
   String get updateCheckFailed => 'Could not check for updates right now.';
 
   @override
-  String get normalMonitoringTitle => 'Normal Monitoring';
+  String get normalMonitoringTitle => 'Normal na Pagbantay';
 
   @override
-  String get viewAlert => 'View Alert';
+  String get viewAlert => 'Hilingon an Alerto';
 
   @override
-  String get findNearestCenterAction => 'Find Nearest Center';
+  String get findNearestCenterAction => 'Hanapon an Pinakaharaning Center';
 
   @override
   String get showingSavedAlertInfo => 'Showing saved alert information';
@@ -2189,7 +2191,7 @@ class AppLocalizationsBcl extends AppLocalizations {
   }
 
   @override
-  String get residentNoOpenEvent => 'No disaster event is open.';
+  String get residentNoOpenEvent => 'Mayong bukas na disaster event.';
 
   @override
   String residentStatusSavedCopy(Object age) {
@@ -3828,7 +3830,7 @@ class AppLocalizationsBcl extends AppLocalizations {
   }
 
   @override
-  String get capacityUnknownTag => 'Capacity unknown';
+  String get capacityUnknownTag => 'Dai aram an kapasidad';
 
   @override
   String get capacityEstimatedShort => 'est.';
@@ -3909,7 +3911,7 @@ class AppLocalizationsBcl extends AppLocalizations {
 
   @override
   String yourAreaTitle(String name) {
-    return 'Your area: Brgy. $name';
+    return 'Saimong lugar: Brgy. $name';
   }
 
   @override
@@ -3926,10 +3928,10 @@ class AppLocalizationsBcl extends AppLocalizations {
 
   @override
   String get noSavedCopyYet =>
-      'Nothing is saved on this phone yet: connect once to save it for offline use.';
+      'Mayo pang naka-save sa teleponong ini: mag-connect minsan tanganing ma-save para sa offline.';
 
   @override
-  String get situationEvacuationOrdered => 'Evacuation ordered';
+  String get situationEvacuationOrdered => 'May pagboot na magbakwet';
 
   @override
   String situationEvacuatingBarangays(int count) {
@@ -3943,7 +3945,7 @@ class AppLocalizationsBcl extends AppLocalizations {
   }
 
   @override
-  String get situationOnWatch => 'On watch';
+  String get situationOnWatch => 'Binabantayan';
 
   @override
   String situationWatchingBarangays(int count) {
@@ -3960,7 +3962,7 @@ class AppLocalizationsBcl extends AppLocalizations {
   String get situationMonitoring => 'Being monitored';
 
   @override
-  String get situationNoEvacuation => 'No barangay has to evacuate.';
+  String get situationNoEvacuation => 'Mayong barangay na kaipuhan magbakwet.';
 
   @override
   String get statusNearlyFull => 'Haros puno na';
@@ -4654,4 +4656,157 @@ class AppLocalizationsBcl extends AppLocalizations {
 
   @override
   String get cswdProgressNone => 'No barangay figures yet.';
+
+  @override
+  String orderForcedTitle(String barangay) {
+    return 'Pinirit na pagbakwet: $barangay';
+  }
+
+  @override
+  String orderPreemptiveTitle(String barangay) {
+    return 'Inot na pagbakwet: $barangay';
+  }
+
+  @override
+  String get orderForcedBody =>
+      'Humali na ngonyan. Magpasiring sa pinakaharaning bukas na evacuation center asin sunodon an mga opisyal kan barangay.';
+
+  @override
+  String get orderPreemptiveBody =>
+      'Mag-andam na humali asin magpasiring sa pinakaharaning bukas na evacuation center. Darahon an go-bag.';
+
+  @override
+  String get orderGoToCenter => 'Pinakaharaning bukas na center';
+
+  @override
+  String get safeCentersTitle => 'Pinakaharaning ligtas na center';
+
+  @override
+  String get safeCentersHint =>
+      'Bukas na center sana: dai puno, sarado o yaon sa laog kan permanent danger zone kan Mayon.';
+
+  @override
+  String get safeCentersHintVolcanic =>
+      'Pagputok kan bulkan: dai kaibahan an center na yaon sa laog kan 7 km hali sa bunganga kan Mayon.';
+
+  @override
+  String get hazardsTitle => 'Mga peligro';
+
+  @override
+  String hazardsTitleFor(String barangay) {
+    return 'Mga peligro sa $barangay';
+  }
+
+  @override
+  String get mayonInsidePermanent =>
+      'Mayon: may parte kan saindong barangay sa laog kan 6 km permanent danger zone.';
+
+  @override
+  String get mayonInsideExtended =>
+      'Mayon: may parte kan saindong barangay sa laog kan 7 km extended danger zone.';
+
+  @override
+  String mayonDistance(String km) {
+    return 'Mayon: $km km an rayo kan saindong barangay sa bunganga, luwas sa danger zone.';
+  }
+
+  @override
+  String get mayonZoneLabel =>
+      'Tantiyang zone basado sa rayo hali sa bunganga. Sunodon an ulat kan PHIVOLCS.';
+
+  @override
+  String get hazardsWhatToDo => 'Ano an gigibohon';
+
+  @override
+  String get hazardsWhatToDoHint =>
+      'Bagyo, baha asin bulkan: halipot na hakbang, checklist asin plano kan pamilya.';
+
+  @override
+  String get prepTitle => 'Magin andam';
+
+  @override
+  String get prepSubtitle =>
+      'Go-bag, checklist asin plano kan pamilya, maski offline';
+
+  @override
+  String get prepUnavailable => 'Dai mabukasan an mga checklist.';
+
+  @override
+  String get prepChecklists => 'Mga checklist';
+
+  @override
+  String prepProgress(int done, int total) {
+    final intl.NumberFormat doneNumberFormat = intl.NumberFormat.decimalPattern(
+      localeName,
+    );
+    final String doneString = doneNumberFormat.format(done);
+    final intl.NumberFormat totalNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
+    final String totalString = totalNumberFormat.format(total);
+
+    return '$doneString sa $totalString an andam';
+  }
+
+  @override
+  String prepSource(String agency) {
+    return 'Basado sa giya kan $agency · para sa pagsiyasat kan team';
+  }
+
+  @override
+  String get familyPlanTitle => 'Plano kan pamilya sa emergency';
+
+  @override
+  String get familyPlanPhoneOnly =>
+      'Yaon sana sa teleponong ini. Dai ipinapadara maski sain.';
+
+  @override
+  String get familyPlanMeetingPoint => 'Tagpuan';
+
+  @override
+  String get familyPlanMeetingPointHint =>
+      'Kun sain magtitiripon an pamilya kun magkakasuhay.';
+
+  @override
+  String get familyPlanContacts => 'Mga numero nin contact';
+
+  @override
+  String get familyPlanName => 'Pangaran';
+
+  @override
+  String get familyPlanNumber => 'Numero';
+
+  @override
+  String get familyPlanAddContact => 'Magdugang nin contact';
+
+  @override
+  String get familyPlanSpecialNeeds =>
+      'Mga miyembro na may espesyal na kaipuhan';
+
+  @override
+  String get familyPlanSpecialNeedsHint =>
+      'Aki, gurang, may kapansanan, may kaipuhan na bulong.';
+
+  @override
+  String get familyPlanNeed => 'Ano an kaipuhan';
+
+  @override
+  String get familyPlanAddPerson => 'Magdugang nin tawo';
+
+  @override
+  String get familyPlanSave => 'I-save sa teleponong ini';
+
+  @override
+  String get familyPlanSaved => 'Na-save sa teleponong ini.';
+
+  @override
+  String get textSize => 'Kadakula kan teksto';
+
+  @override
+  String get textSizeNormal => 'Normal';
+
+  @override
+  String get textSizeLarge => 'Dakula';
+
+  @override
+  String get textSizeLarger => 'Mas dakula';
 }

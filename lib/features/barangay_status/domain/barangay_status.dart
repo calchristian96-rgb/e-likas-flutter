@@ -68,7 +68,15 @@ class BarangayStatusBoard {
     this.isDrill = false,
     this.isFromCache = false,
     this.lastSyncedAt,
+    this.eventType,
   });
+
+  /// e.g. `typhoon`, `volcanic_eruption` (the public board's event).
+  final String? eventType;
+
+  /// A volcanic event: centers within 7 km of Mayon's summit are inside
+  /// the danger zone too.
+  bool get isVolcanic => eventType == 'volcanic_eruption';
 
   final List<BarangayStatus> barangays;
 

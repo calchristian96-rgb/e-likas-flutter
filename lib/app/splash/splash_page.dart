@@ -9,6 +9,7 @@ import '../../features/barangay_status/presentation/barangay_status_providers.da
 import '../../features/staff_auth/presentation/providers/staff_auth_provider.dart';
 import '../../l10n/app_localizations.dart';
 import '../theme/app_theme.dart';
+import '../../core/localization/app_text_scale.dart';
 
 /// The app's cold-start loading screen — the branded E-LIKAS mark over
 /// the Ligao evacuation artwork.
@@ -72,6 +73,7 @@ class _SplashPageState extends ConsumerState<SplashPage> {
       await Future.wait([
         ref.read(appLocaleProvider.notifier).load(),
         ref.read(appThemeModeProvider.notifier).load(),
+        ref.read(appTextScaleProvider.notifier).load(),
         ref.read(residentBarangayProvider.notifier).load(),
       ]);
     } catch (_) {

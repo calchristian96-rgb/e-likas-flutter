@@ -12,6 +12,7 @@ import '../../domain/entities/alert.dart';
 import '../../domain/repositories/alerts_repository.dart';
 import '../../domain/usecases/get_alert_by_id.dart';
 import '../../domain/usecases/get_alerts.dart';
+import '../../../barangay_status/presentation/resident_area.dart';
 
 part 'alerts_summary_provider.g.dart';
 
@@ -43,9 +44,10 @@ Future<({Alert? latest, int count})> alertsSummary(Ref ref) async {
   // A handful of the most recent alerts, not the whole history — the
   // dashboard only ever shows the single newest one.
   final result = await GetAlerts(repository).call(limit: 5);
+  final barangayId = ref.watch(residentAreaProvider).value?.id;
   return switch (result) {
     Success(:final value) => (
-      latest: value.alerts.isNotEmpty ? value.alerts.first : null,
+      latest: value.alerts.where((a) => a.isFor(barangayId)).firstOrNull,
       count: value.totalCount,
     ),
     Failed(:final failure) => throw failure,
@@ -64,8 +66,13 @@ Future<({Alert? latest, int count})> alertsSummary(Ref ref) async {
 Future<List<Alert>> alertsList(Ref ref) async {
   final repository = ref.watch(alertsRepositoryProvider);
   final result = await GetAlerts(repository).call(limit: 20);
+  // Alerts for the whole city and for the resident's own barangay only.
+  final barangayId = ref.watch(residentAreaProvider).value?.id;
   return switch (result) {
-    Success(:final value) => value.alerts,
+    Success(:final value) => [
+      for (final a in value.alerts)
+        if (a.isFor(barangayId)) a,
+    ],
     Failed(:final failure) => throw failure,
   };
 }

@@ -1,0 +1,106 @@
+{
+  "_comment": "E-LIKAS preparedness content. FOR TEAM REVIEW before release: every list names the agency whose public guidance it follows; check each item against that agency's current materials and edit this file (no code change needed). Keep items plain and general; do not add figures, rules or quotes that the agency did not publish. Bikol (bcl) text needs a native speaker's review.",
+  "review_status": {
+    "en": "For team review: check against the agency's current materials.",
+    "fil": "Para sa pagsusuri ng team: ihambing sa kasalukuyang materyales ng ahensya.",
+    "bcl": "Para sa pagsiyasat kan team: ikumpara sa presenteng materyales kan ahensya."
+  },
+  "checklists": [
+    {
+      "id": "go_bag",
+      "source": "NDRRMC",
+      "title": {"en": "Go-bag", "fil": "Go-bag", "bcl": "Go-bag"},
+      "intro": {
+        "en": "One bag per family, ready to grab when you have to leave.",
+        "fil": "Isang bag bawat pamilya, handang dalhin kapag kailangang umalis.",
+        "bcl": "Sarong bag kada pamilya, andam na bitbiton kun kaipuhan nang humali."
+      },
+      "items": [
+        {"id": "water", "en": "Drinking water in sealed bottles", "fil": "Inuming tubig sa saradong bote", "bcl": "Inumon na tubig sa sarado na bote"},
+        {"id": "food", "en": "Ready-to-eat food that does not spoil", "fil": "Pagkaing handa nang kainin at hindi madaling mapanis", "bcl": "Kakanon na andam nang kakanon asin dai madaling mapanis"},
+        {"id": "flashlight", "en": "Flashlight and extra batteries", "fil": "Flashlight at ekstrang baterya", "bcl": "Flashlight asin ekstrang baterya"},
+        {"id": "radio", "en": "Battery-powered or wind-up radio", "fil": "Radyong de-baterya o de-pihit", "bcl": "Radyo na de-baterya o de-pihit"},
+        {"id": "first_aid", "en": "First aid kit", "fil": "First aid kit", "bcl": "First aid kit"},
+        {"id": "medicines", "en": "Medicines you take every day, and their prescriptions", "fil": "Mga gamot na iniinom araw-araw, at ang reseta", "bcl": "Mga bulong na iniinom aldaw-aldaw, asin an reseta"},
+        {"id": "documents", "en": "Copies of IDs and important papers in a plastic bag", "fil": "Kopya ng ID at mahahalagang papeles sa plastik", "bcl": "Kopya kan ID asin importanteng papeles sa plastik"},
+        {"id": "cash", "en": "Some cash in small bills", "fil": "Kaunting pera sa maliliit na halaga", "bcl": "Kadikit na kuwarta sa saradit na halaga"},
+        {"id": "clothes", "en": "Change of clothes and a blanket", "fil": "Pamalit na damit at kumot", "bcl": "Salidan na gubing asin habol"},
+        {"id": "whistle", "en": "Whistle, to call for help", "fil": "Pito, para humingi ng tulong", "bcl": "Pito, pang-apod nin tabang"},
+        {"id": "phone", "en": "Phone, charger and a charged power bank", "fil": "Telepono, charger at may kargang power bank", "bcl": "Telepono, charger asin may karga na power bank"},
+        {"id": "hygiene", "en": "Soap, toothbrush, sanitary pads, diapers if needed", "fil": "Sabon, sipilyo, napkin, diaper kung kailangan", "bcl": "Sabon, sipilyo, napkin, diaper kun kaipuhan"},
+        {"id": "masks", "en": "Face masks", "fil": "Face mask", "bcl": "Face mask"}
+      ]
+    },
+    {
+      "id": "typhoon",
+      "source": "NDRRMC",
+      "title": {"en": "Before a typhoon", "fil": "Bago ang bagyo", "bcl": "Bago an bagyo"},
+      "items": [
+        {"id": "bulletins", "en": "Follow official weather bulletins on radio, TV or this app", "fil": "Subaybayan ang opisyal na ulat-panahon sa radyo, TV o sa app na ito", "bcl": "Subaybayan an opisyal na ulat-panahon sa radyo, TV o sa app na ini"},
+        {"id": "charge", "en": "Charge phones and power banks", "fil": "I-charge ang telepono at power bank", "bcl": "I-charge an telepono asin power bank"},
+        {"id": "secure", "en": "Tie down or bring in loose things outside the house", "fil": "Itali o ipasok ang mga gamit sa labas ng bahay", "bcl": "Gapuson o ipasok an mga gamit sa luwas kan harong"},
+        {"id": "go_bag_ready", "en": "Keep the go-bag by the door", "fil": "Ilagay ang go-bag malapit sa pinto", "bcl": "Ibutang an go-bag harani sa pinto"},
+        {"id": "know_center", "en": "Know your nearest evacuation center (see Home)", "fil": "Alamin ang pinakamalapit na evacuation center (tingnan sa Home)", "bcl": "Aramon an pinakaharaning evacuation center (hilingon sa Home)"},
+        {"id": "high_place", "en": "Move important things to a higher place", "fil": "Ilipat sa mataas na lugar ang mahahalagang gamit", "bcl": "Ibalyo sa halangkaw na lugar an importanteng gamit"},
+        {"id": "listen_barangay", "en": "Listen to your barangay and leave when told", "fil": "Makinig sa barangay at umalis kapag sinabihan", "bcl": "Magdangog sa barangay asin humali kun sinabihan"}
+      ]
+    },
+    {
+      "id": "leaving_home",
+      "source": "DSWD",
+      "title": {"en": "When you leave for the evacuation center", "fil": "Kapag pupunta sa evacuation center", "bcl": "Kun mapasiring sa evacuation center"},
+      "items": [
+        {"id": "bring_bag", "en": "Bring your go-bag", "fil": "Dalhin ang go-bag", "bcl": "Darahon an go-bag"},
+        {"id": "power_off", "en": "Switch off the main power and close the gas", "fil": "Patayin ang main switch ng kuryente at isara ang gas", "bcl": "Gadanon an main switch kan kuryente asin isarado an gas"},
+        {"id": "lock", "en": "Lock the doors", "fil": "I-lock ang mga pinto", "bcl": "I-lock an mga pinto"},
+        {"id": "ids", "en": "Bring IDs for registration at the center", "fil": "Magdala ng ID para sa pagpaparehistro sa center", "bcl": "Magdara nin ID para sa pagparehistro sa center"},
+        {"id": "tell_family", "en": "Tell your family where you are going", "fil": "Sabihin sa pamilya kung saan kayo pupunta", "bcl": "Sabihan an pamilya kun sain kamo mapasiring"},
+        {"id": "special_needs", "en": "Bring what babies, older people and persons with disability need", "fil": "Dalhin ang kailangan ng sanggol, nakatatanda at may kapansanan", "bcl": "Darahon an kaipuhan kan aki, gurang asin may kapansanan"}
+      ]
+    },
+    {
+      "id": "volcano",
+      "source": "PHIVOLCS",
+      "title": {"en": "Mayon: be ready", "fil": "Mayon: maging handa", "bcl": "Mayon: magin andam"},
+      "items": [
+        {"id": "zone", "en": "Know whether your home is inside the danger zone (see Hazards)", "fil": "Alamin kung nasa loob ng danger zone ang bahay (tingnan sa Hazards)", "bcl": "Aramon kun yaon sa laog kan danger zone an harong (hilingon sa Hazards)"},
+        {"id": "alert_level", "en": "Follow the PHIVOLCS alert level and your barangay's orders", "fil": "Sundin ang alert level ng PHIVOLCS at utos ng barangay", "bcl": "Sunodon an alert level kan PHIVOLCS asin an pagboot kan barangay"},
+        {"id": "ash_masks", "en": "Keep masks or clean wet cloth ready for ashfall", "fil": "Maghanda ng mask o malinis na basang tela para sa ashfall", "bcl": "Mag-andam nin mask o malinig na basang lapot para sa ashfall"},
+        {"id": "permanent_zone", "en": "Never enter the permanent danger zone", "fil": "Huwag pumasok sa permanent danger zone", "bcl": "Dai maglaog sa permanent danger zone"},
+        {"id": "evacuate", "en": "Leave at once when you are told to evacuate", "fil": "Umalis agad kapag sinabihang lumikas", "bcl": "Humali tolos kun sinabihan na magbakwet"}
+      ]
+    }
+  ],
+  "what_to_do": [
+    {
+      "id": "typhoon",
+      "source": "NDRRMC",
+      "title": {"en": "During a typhoon", "fil": "Habang may bagyo", "bcl": "Mientras may bagyo"},
+      "steps": [
+        {"en": "Stay indoors, away from windows.", "fil": "Manatili sa loob, malayo sa bintana.", "bcl": "Mag-ugbos sa laog, harayo sa bintana."},
+        {"en": "Keep listening to official bulletins.", "fil": "Patuloy na makinig sa opisyal na ulat.", "bcl": "Padagos na magdangog sa opisyal na ulat."},
+        {"en": "Go to the evacuation center when your barangay says so.", "fil": "Pumunta sa evacuation center kapag sinabi ng barangay.", "bcl": "Magpasiring sa evacuation center kun sinabi kan barangay."}
+      ]
+    },
+    {
+      "id": "flood",
+      "source": "NDRRMC",
+      "title": {"en": "During a flood", "fil": "Habang may baha", "bcl": "Mientras may baha"},
+      "steps": [
+        {"en": "Move to higher ground.", "fil": "Lumipat sa mas mataas na lugar.", "bcl": "Magbalyo sa mas halangkaw na lugar."},
+        {"en": "Do not walk or drive through flood water.", "fil": "Huwag lumakad o magmaneho sa baha.", "bcl": "Dai maglakaw o magmaneho sa baha."},
+        {"en": "Stay away from power lines and rivers.", "fil": "Lumayo sa kawad ng kuryente at ilog.", "bcl": "Magharayo sa kawad nin kuryente asin salog."}
+      ]
+    },
+    {
+      "id": "volcano",
+      "source": "PHIVOLCS",
+      "title": {"en": "When Mayon is restive", "fil": "Kapag aktibo ang Mayon", "bcl": "Kun aktibo an Mayon"},
+      "steps": [
+        {"en": "Follow PHIVOLCS bulletins and barangay orders.", "fil": "Sundin ang ulat ng PHIVOLCS at utos ng barangay.", "bcl": "Sunodon an ulat kan PHIVOLCS asin pagboot kan barangay."},
+        {"en": "Stay indoors during ashfall and close the windows.", "fil": "Manatili sa loob habang may ashfall at isara ang bintana.", "bcl": "Mag-ugbos sa laog mientras may ashfall asin isarado an bintana."},
+        {"en": "If you live inside the danger zone, leave when told.", "fil": "Kung nakatira sa loob ng danger zone, umalis kapag sinabihan.", "bcl": "Kun nag-eerok sa laog kan danger zone, humali kun sinabihan."}
+      ]
+    }
+  ]
+}
