@@ -7,6 +7,7 @@ import '../../l10n/app_localizations.dart';
 import '../outbox/presentation/outbox_providers.dart';
 import '../staff_auth/domain/entities/staff_session.dart';
 import '../staff_auth/presentation/widgets/staff_auth_guard.dart';
+import '../staff_home/barangay_dashboard.dart';
 
 /// One tab of Staff Mode: its branch index in the staff shell's
 /// `StatefulShellRoute`, and who sees it.
@@ -103,7 +104,9 @@ class StaffShell extends StatelessWidget {
           homeBranch: tabs.first.branch,
           child: Scaffold(
             // Syncs on open, on reconnect and on resume (C15).
-            body: StaffAutoSync(child: navigationShell),
+            body: StaffAutoSync(
+              child: RegistrationOpenWatcher(child: navigationShell),
+            ),
             bottomNavigationBar: NavigationBar(
               selectedIndex: selected,
               labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,

@@ -11,6 +11,8 @@ import '../outbox/presentation/outbox_providers.dart';
 import '../staff_auth/domain/entities/staff_session.dart';
 import '../staff_auth/presentation/providers/staff_auth_provider.dart';
 import '../staff_shell/current_event.dart';
+import '../../core/widgets/lock_note.dart';
+import '../staff_shell/event_lock.dart';
 
 /// The numbers a submission would carry, computed by the server.
 class CountFigures {
@@ -396,7 +398,10 @@ class FinalCountCard extends ConsumerWidget {
                   l10n.savedCopyAge(formatElapsedSince(result.fetchedAt)),
                   style: theme.textTheme.bodySmall,
                 ),
-              if (count.canSubmit && !queued) ...[
+              if (ref.watch(eventMonitoredProvider)) ...[
+                const SizedBox(height: 16),
+                const LockNote(),
+              ] else if (count.canSubmit && !queued) ...[
                 const SizedBox(height: 16),
                 FilledButton(
                   style: FilledButton.styleFrom(

@@ -6332,6 +6332,60 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Waiting {duration}'**
   String waitingDuration(String duration);
+
+  /// No description provided for @arrivingButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Families are arriving'**
+  String get arrivingButton;
+
+  /// No description provided for @arrivingTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Tell CSWD that families are arriving?'**
+  String get arrivingTitle;
+
+  /// No description provided for @arrivingBody.
+  ///
+  /// In en, this message translates to:
+  /// **'CSWD is told right away. Nothing else changes: registration opens when CSWD starts the evacuation.'**
+  String get arrivingBody;
+
+  /// No description provided for @arrivingNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Note for CSWD (optional)'**
+  String get arrivingNote;
+
+  /// No description provided for @arrivingSend.
+  ///
+  /// In en, this message translates to:
+  /// **'Tell CSWD'**
+  String get arrivingSend;
+
+  /// No description provided for @arrivingSent.
+  ///
+  /// In en, this message translates to:
+  /// **'CSWD was told.'**
+  String get arrivingSent;
+
+  /// No description provided for @arrivingNeedsConnection.
+  ///
+  /// In en, this message translates to:
+  /// **'Needs a connection. CSWD has to hear this now, so it is not saved for later.'**
+  String get arrivingNeedsConnection;
+
+  /// No description provided for @registrationOpenTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Registration is open'**
+  String get registrationOpenTitle;
+
+  /// No description provided for @registrationOpenBody.
+  ///
+  /// In en, this message translates to:
+  /// **'{event} is now Active. Register families, check in your listed families and give relief.'**
+  String registrationOpenBody(String event);
 }
 
 class _AppLocalizationsDelegate

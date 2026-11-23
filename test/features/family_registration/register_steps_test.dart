@@ -125,32 +125,27 @@ void main() {
     expect(find.text('Next'), findsNothing);
   });
 
-  testWidgets('a Monitoring event: registering works and saves to it', (
-    tester,
-  ) async {
-    final queue = await _pump(
-      tester,
-      draft: registerDraft,
-      extra: [
-        currentStaffEventProvider.overrideWith(
-          (ref) async => const EvacuationEventLookup(
-            id: 30,
-            name: 'Typhoon Rolly',
-            status: 'monitoring',
+  testWidgets(
+    'a Monitoring event: registering waits for Start evacuation (lock)',
+    (tester) async {
+      final queue = await _pump(
+        tester,
+        draft: registerDraft,
+        extra: [
+          currentStaffEventProvider.overrideWith(
+            (ref) async => const EvacuationEventLookup(
+              id: 30,
+              name: 'Typhoon Rolly',
+              status: 'monitoring',
+            ),
           ),
-        ),
-      ],
-    );
-    for (var i = 0; i < 3; i++) {
-      await tester.tap(find.text('Next'));
-      await tester.pumpAndSettle();
-    }
-    expect(find.text('Saves to: Typhoon Rolly'), findsOneWidget);
-    await tester.tap(find.text('Save'));
-    await tester.pumpAndSettle();
-    // The first check-in makes it Active on the server (backend EventFlow).
-    expect(queue.saved.single.evacuationEventId, 30);
-  });
+        ],
+      );
+      expect(find.text('Available when the event is Active'), findsOneWidget);
+      expect(find.text('Next'), findsNothing);
+      expect(queue.saved, isEmpty);
+    },
+  );
 
   testWidgets('a closed selected event: read-only, nothing to save', (
     tester,

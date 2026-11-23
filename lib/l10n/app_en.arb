@@ -2018,5 +2018,15 @@
   "durationAgo": "{duration} ago",
   "@durationAgo": {"placeholders": {"duration": {"type": "String"}}},
   "waitingDuration": "Waiting {duration}",
-  "@waitingDuration": {"placeholders": {"duration": {"type": "String"}}}
+  "@waitingDuration": {"placeholders": {"duration": {"type": "String"}}},
+  "arrivingButton": "Families are arriving",
+  "arrivingTitle": "Tell CSWD that families are arriving?",
+  "arrivingBody": "CSWD is told right away. Nothing else changes: registration opens when CSWD starts the evacuation.",
+  "arrivingNote": "Note for CSWD (optional)",
+  "arrivingSend": "Tell CSWD",
+  "arrivingSent": "CSWD was told.",
+  "arrivingNeedsConnection": "Needs a connection. CSWD has to hear this now, so it is not saved for later.",
+  "registrationOpenTitle": "Registration is open",
+  "registrationOpenBody": "{event} is now Active. Register families, check in your listed families and give relief.",
+  "@registrationOpenBody": {"placeholders": {"event": {"type": "String"}}}
 }

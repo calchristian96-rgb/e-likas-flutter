@@ -11,6 +11,8 @@ import '../../l10n/app_localizations.dart';
 import '../outbox/domain/pending_action.dart';
 import '../outbox/presentation/outbox_providers.dart';
 import 'box_relief_models.dart';
+import '../../core/widgets/lock_note.dart';
+import '../staff_shell/event_lock.dart';
 
 class RoundFamily {
   const RoundFamily({
@@ -230,6 +232,7 @@ class _RoundFamiliesPageState extends ConsumerState<RoundFamiliesPage> {
                 if (!f.given && queued.contains(_giveKey(f.id))) f,
           ].length;
           final leftToGive = data.figures.leftToGive - queuedGives;
+          final locked = ref.watch(eventMonitoredProvider);
           return RefreshIndicator(
             onRefresh: () async {
               ref.invalidate(roundFamiliesProvider(widget.roundId));
@@ -247,6 +250,7 @@ class _RoundFamiliesPageState extends ConsumerState<RoundFamiliesPage> {
                       style: theme.textTheme.bodySmall,
                     ),
                   ),
+                if (locked) ...[const LockNote(), const SizedBox(height: 16)],
                 StatStrip(
                   items: [
                     StatItem(l10n.reliefReceived, '${data.figures.received}'),
@@ -305,6 +309,7 @@ class _RoundFamiliesPageState extends ConsumerState<RoundFamiliesPage> {
                                 f.handoutId != null &&
                                 queued.contains(_voidKey(f.handoutId!)),
                             boxesLeft: leftToGive > 0,
+                            locked: locked,
                             onGive: () => _give(f, data.roundNumber),
                             onVoid: () => _void(f),
                           ),
@@ -329,7 +334,11 @@ class _FamilyTile extends StatelessWidget {
     required this.boxesLeft,
     required this.onGive,
     required this.onVoid,
+    this.locked = false,
   });
+
+  /// The event is being monitored: no handouts yet.
+  final bool locked;
 
   final RoundFamily family;
   final bool queuedGive;
@@ -352,6 +361,12 @@ class _FamilyTile extends StatelessWidget {
       trailing = Text(
         queuedVoid ? l10n.reliefVoidWaiting : l10n.reliefGivenWaiting,
         style: theme.textTheme.labelMedium,
+      );
+    } else if (locked && !family.given) {
+      trailing = Icon(
+        Icons.lock_outline,
+        color: theme.colorScheme.onSurfaceVariant,
+        semanticLabel: l10n.lockAvailableWhenActive,
       );
     } else if (family.given) {
       trailing = Row(

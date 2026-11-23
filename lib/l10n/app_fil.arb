@@ -1262,5 +1262,14 @@
   "durationHours": "{count, plural, =1{1 oras} other{{count} oras}}",
   "durationDays": "{count, plural, =1{1 araw} other{{count} araw}}",
   "durationAgo": "{duration} ang nakalipas",
-  "waitingDuration": "Naghihintay nang {duration}"
+  "waitingDuration": "Naghihintay nang {duration}",
+  "arrivingButton": "May mga pamilyang dumarating",
+  "arrivingTitle": "Sabihin sa CSWD na may mga pamilyang dumarating?",
+  "arrivingBody": "Sasabihan agad ang CSWD. Walang ibang magbabago: magbubukas ang pagpaparehistro kapag sinimulan ng CSWD ang paglikas.",
+  "arrivingNote": "Paalala para sa CSWD (opsyonal)",
+  "arrivingSend": "Sabihin sa CSWD",
+  "arrivingSent": "Nasabihan na ang CSWD.",
+  "arrivingNeedsConnection": "Kailangan ng koneksyon. Dapat itong malaman agad ng CSWD, kaya hindi ito itinatabi para mamaya.",
+  "registrationOpenTitle": "Bukas na ang pagpaparehistro",
+  "registrationOpenBody": "Active na ang {event}. Iparehistro ang mga pamilya, i-check in ang mga nakalistang pamilya at mamigay ng relief."
 }

@@ -4041,4 +4041,35 @@ class AppLocalizationsBcl extends AppLocalizations {
   String waitingDuration(String duration) {
     return 'Waiting $duration';
   }
+
+  @override
+  String get arrivingButton => 'Families are arriving';
+
+  @override
+  String get arrivingTitle => 'Tell CSWD that families are arriving?';
+
+  @override
+  String get arrivingBody =>
+      'CSWD is told right away. Nothing else changes: registration opens when CSWD starts the evacuation.';
+
+  @override
+  String get arrivingNote => 'Note for CSWD (optional)';
+
+  @override
+  String get arrivingSend => 'Tell CSWD';
+
+  @override
+  String get arrivingSent => 'CSWD was told.';
+
+  @override
+  String get arrivingNeedsConnection =>
+      'Needs a connection. CSWD has to hear this now, so it is not saved for later.';
+
+  @override
+  String get registrationOpenTitle => 'Registration is open';
+
+  @override
+  String registrationOpenBody(String event) {
+    return '$event is now Active. Register families, check in your listed families and give relief.';
+  }
 }

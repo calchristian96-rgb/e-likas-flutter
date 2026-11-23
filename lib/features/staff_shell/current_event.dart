@@ -51,11 +51,11 @@ class SelectedEventState {
   final List<EvacuationEventLookup> closed;
 }
 
-/// The same pick as the server's, from the events list: used only when
-/// `GET /selected-event` has never been read on this phone.
+/// The same pick as the server's default at login, from the events
+/// list: an Active event, else a Monitoring one, then the newest. Used
+/// only when `GET /selected-event` has never been read on this phone.
 SelectedEventState _localPick(List<EvacuationEventLookup> events) {
-  int rank(EvacuationEventLookup e) =>
-      (e.isDemo ? 2 : 0) + (e.status == 'active' ? 0 : 1);
+  int rank(EvacuationEventLookup e) => e.status == 'active' ? 0 : 1;
   final open =
       [
         for (final e in events)

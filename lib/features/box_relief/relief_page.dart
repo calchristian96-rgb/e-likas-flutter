@@ -15,6 +15,8 @@ import '../outbox/domain/pending_action.dart';
 import '../outbox/presentation/outbox_providers.dart';
 import '../staff_shell/current_event.dart';
 import 'box_relief_models.dart';
+import '../../core/widgets/lock_note.dart';
+import '../staff_shell/event_lock.dart';
 
 /// `GET /box-relief/barangay` for the current event, saved for offline.
 final barangayBoxesProvider =
@@ -73,6 +75,10 @@ class ReliefPage extends ConsumerWidget {
               ],
               data: (result) {
                 if (result == null) return [Text(l10n.staffNoOpenEvent)];
+                // Monitored: relief rounds wait for "Start evacuation".
+                if (ref.watch(eventMonitoredProvider)) {
+                  return [const LockNote()];
+                }
                 final boxes = result.boxes;
                 final round = boxes.latestRound;
                 final waiting = [

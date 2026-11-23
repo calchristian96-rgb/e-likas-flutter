@@ -13,6 +13,7 @@ import '../home/presentation/providers/home_provider.dart';
 import '../staff_shell/current_event.dart';
 import '../../core/widgets/lock_note.dart';
 import '../../core/utils/formatters.dart';
+import '../staff_shell/event_lock.dart';
 
 /// One family in a request. The receiving barangay gets only the head's
 /// name and the number of members (no id): privacy, backend df031fe.
@@ -418,7 +419,9 @@ class TransferCard extends ConsumerWidget {
             Text(l10n.transferDeclineReasonLine(r.declineReason!)),
           if (r.isPending && r.mayDecide) ...[
             const SizedBox(height: 12),
-            if (!online)
+            if (ref.watch(eventMonitoredProvider))
+              const LockNote(dense: true)
+            else if (!online)
               Text(
                 l10n.transferNeedsConnection,
                 style: theme.textTheme.bodySmall,

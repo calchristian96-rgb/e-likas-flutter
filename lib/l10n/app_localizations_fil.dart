@@ -4114,4 +4114,36 @@ class AppLocalizationsFil extends AppLocalizations {
   String waitingDuration(String duration) {
     return 'Naghihintay nang $duration';
   }
+
+  @override
+  String get arrivingButton => 'May mga pamilyang dumarating';
+
+  @override
+  String get arrivingTitle =>
+      'Sabihin sa CSWD na may mga pamilyang dumarating?';
+
+  @override
+  String get arrivingBody =>
+      'Sasabihan agad ang CSWD. Walang ibang magbabago: magbubukas ang pagpaparehistro kapag sinimulan ng CSWD ang paglikas.';
+
+  @override
+  String get arrivingNote => 'Paalala para sa CSWD (opsyonal)';
+
+  @override
+  String get arrivingSend => 'Sabihin sa CSWD';
+
+  @override
+  String get arrivingSent => 'Nasabihan na ang CSWD.';
+
+  @override
+  String get arrivingNeedsConnection =>
+      'Kailangan ng koneksyon. Dapat itong malaman agad ng CSWD, kaya hindi ito itinatabi para mamaya.';
+
+  @override
+  String get registrationOpenTitle => 'Bukas na ang pagpaparehistro';
+
+  @override
+  String registrationOpenBody(String event) {
+    return 'Active na ang $event. Iparehistro ang mga pamilya, i-check in ang mga nakalistang pamilya at mamigay ng relief.';
+  }
 }

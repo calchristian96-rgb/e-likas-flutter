@@ -19,6 +19,9 @@ import '../transfers/transfers.dart';
 import '../outbox/presentation/outbox_providers.dart';
 import '../staff_auth/domain/entities/staff_session.dart';
 import '../staff_shell/current_event.dart';
+import '../../core/widgets/lock_note.dart';
+import '../staff_shell/event_lock.dart';
+import 'barangay_dashboard.dart';
 
 /// Families of the latest round still without a box, or null with no
 /// round (or nothing known yet).
@@ -56,6 +59,9 @@ class OfficialHomePage extends ConsumerWidget {
     final withoutBox = ref.watch(familiesWithoutBoxProvider).value;
     final count = ref.watch(computedCountProvider).value?.count;
     final sync = ref.watch(syncSummaryProvider).value;
+    final event = ref.watch(currentStaffEventProvider).value;
+    final monitored = ref.watch(eventMonitoredProvider);
+    final dashboard = ref.watch(barangayDashboardProvider).value;
 
     final todo = <Widget>[
       if (withoutBox != null && withoutBox > 0 && round != null)
@@ -119,6 +125,15 @@ class OfficialHomePage extends ConsumerWidget {
             const SizedBox(height: 8),
             const StaffEventBar(),
             const SizedBox(height: 16),
+            const RegistrationOpenCard(),
+            if (monitored) ...[
+              const LockNote(),
+              if (dashboard?.maySayArriving ?? true) ...[
+                const SizedBox(height: 8),
+                if (event != null) FamiliesArrivingButton(eventId: event.id),
+              ],
+              const SizedBox(height: 16),
+            ],
             _QuickStatusCard(session: session),
             const SizedBox(height: 16),
             StatStrip(
@@ -154,6 +169,7 @@ class OfficialHomePage extends ConsumerWidget {
             _BigButton(
               icon: Icons.person_add_alt_1_outlined,
               label: l10n.registerTitle,
+              locked: monitored,
               onTap: () => context.push('/staff/register'),
             ),
             const SizedBox(height: 8),
@@ -166,6 +182,7 @@ class OfficialHomePage extends ConsumerWidget {
             _BigButton(
               icon: Icons.inventory_2_outlined,
               label: l10n.homeGiveBox,
+              locked: monitored,
               onTap: () => context.go(
                 round == null
                     ? '/staff/relief'
@@ -275,14 +292,30 @@ class _BigButton extends StatelessWidget {
     required this.icon,
     required this.label,
     required this.onTap,
+    this.locked = false,
   });
 
   final IconData icon;
   final String label;
   final VoidCallback onTap;
 
+  /// The event is monitored: shown with the lock, not tappable.
+  final bool locked;
+
   @override
   Widget build(BuildContext context) {
+    if (locked) {
+      return FilledButton.icon(
+        style: FilledButton.styleFrom(
+          minimumSize: const Size.fromHeight(56),
+          alignment: Alignment.centerLeft,
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        ),
+        onPressed: null,
+        icon: const Icon(Icons.lock_outline),
+        label: Text(label, style: const TextStyle(fontSize: 16)),
+      );
+    }
     return FilledButton.icon(
       style: FilledButton.styleFrom(
         minimumSize: const Size.fromHeight(56),

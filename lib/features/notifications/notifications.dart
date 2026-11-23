@@ -17,7 +17,16 @@ class AppNotification {
     required this.read,
     this.createdAt,
     this.href,
+    this.type,
+    this.urgent = false,
   });
+
+  /// The server's notification kind when it sends one (e.g.
+  /// `RegistrationOpen`); null on older servers.
+  final String? type;
+
+  /// CSWD: the first evacuee at a pending center (`urgent: true`).
+  final bool urgent;
 
   /// The web path it points to, e.g. /transfer-requests.
   final String? href;
@@ -52,6 +61,8 @@ final notificationsProvider = FutureProvider.autoDispose<NotificationsState>((
           message: n['message'] as String? ?? '',
           read: n['read'] == true,
           href: n['href'] as String?,
+          type: (n['type'] ?? n['kind']) as String?,
+          urgent: n['urgent'] == true,
           createdAt: DateTime.tryParse(
             n['created_at'] as String? ?? '',
           )?.toLocal(),

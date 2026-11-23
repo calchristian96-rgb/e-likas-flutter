@@ -24,7 +24,7 @@ const _centerId = 5;
 const _open = EvacuationEventLookup(
   id: 13,
   name: 'Mayon Alert Level 2',
-  status: 'monitoring',
+  status: 'active',
 );
 const _closed = EvacuationEventLookup(
   id: 11,

@@ -17,6 +17,7 @@ import '../../../staff_shell/current_event.dart';
 import '../../domain/entities/family_member_draft.dart';
 import '../../domain/entities/family_registration_draft.dart';
 import '../providers/pending_queue_provider.dart';
+import '../../../../core/widgets/lock_note.dart';
 
 /// A Philippine mobile number, as the backend checks it.
 final mobilePattern = RegExp(r'^(09|\+639)\d{9}$');
@@ -188,6 +189,8 @@ class _RegisterFlowState extends ConsumerState<_RegisterFlow> {
     final noEvent = eventAsync.hasValue && event == null;
     // The selected event is closed: read-only, nothing to register into.
     final closed = event != null && !event.isOpen;
+    // Monitored: registering waits for "Start evacuation".
+    final monitored = event?.status == 'monitoring';
 
     return Scaffold(
       appBar: AppBar(
@@ -206,7 +209,7 @@ class _RegisterFlowState extends ConsumerState<_RegisterFlow> {
           ),
         ],
       ),
-      bottomNavigationBar: noEvent || closed || !_loaded
+      bottomNavigationBar: noEvent || closed || monitored || !_loaded
           ? null
           : BottomActionBar(
               children: [
@@ -239,6 +242,15 @@ class _RegisterFlowState extends ConsumerState<_RegisterFlow> {
                   icon: Icons.event_busy_outlined,
                   message: l10n.staffNoOpenEvent,
                 ),
+              ],
+            )
+          : monitored
+          ? ListView(
+              padding: pagePadding(context),
+              children: const [
+                StaffEventBar(),
+                SizedBox(height: 16),
+                LockNote(),
               ],
             )
           : closed

@@ -33,6 +33,7 @@ import '../widgets/families_here_section.dart';
 import 'add_evacuee_form_page.dart'
     show AddEvacueeFormPage, localizedAgeBracket, localizedSectoralGroup;
 import 'pending_ec_entry_detail_page.dart';
+import '../../../../core/widgets/lock_note.dart';
 
 /// EC Information Board for one center — reached from
 /// `StaffEvacuationCenterDetailPage`. Shows two deliberately separate
@@ -260,6 +261,7 @@ class _EcBoardBody extends ConsumerWidget {
         .where((e) => e.id == selectedEventId)
         .firstOrNull;
     final selectedClosed = selectedEvent != null && !selectedEvent.isOpen;
+    final selectedMonitored = selectedEvent?.status == 'monitoring';
 
     return RefreshIndicator(
       onRefresh: () async {
@@ -279,6 +281,8 @@ class _EcBoardBody extends ConsumerWidget {
               entriesWaiting: waitingEventIds.contains(selectedEventId),
               noOpenEvent: !events.any((e) => e.isOpen),
             )
+          else if (selectedMonitored)
+            const LockNote()
           else
             _EcBoardActionButton(
               icon: Icons.person_add_alt_1_outlined,
@@ -288,6 +292,7 @@ class _EcBoardBody extends ConsumerWidget {
             ),
           // Returning families (backend step 10): online only.
           if (!selectedClosed &&
+              !selectedMonitored &&
               (ref
                       .watch(staffAuthProvider)
                       .value
@@ -337,11 +342,12 @@ class _EcBoardBody extends ConsumerWidget {
               evacuationEventId: selectedEventId,
             ),
             // Full here: ask another barangay's center (online only).
-            if (ref
-                    .watch(staffAuthProvider)
-                    .value
-                    ?.can(StaffPermission.transfersRequest) ??
-                false) ...[
+            if (!selectedMonitored &&
+                (ref
+                        .watch(staffAuthProvider)
+                        .value
+                        ?.can(StaffPermission.transfersRequest) ??
+                    false)) ...[
               const SizedBox(height: 8),
               OutlinedButton.icon(
                 style: OutlinedButton.styleFrom(

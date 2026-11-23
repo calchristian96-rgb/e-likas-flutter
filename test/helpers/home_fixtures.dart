@@ -315,15 +315,22 @@ List<Override> homeOverrides(
   StaffSession session, {
   int waiting = 3,
   Map<String, Map<String, dynamic>>? answers,
+  List<EvacuationEventLookup>? events,
 }) => [
   ...signedInAs(session),
   staffReadCacheProvider.overrideWithValue(
     FakeReadCache(answers ?? homeAnswers),
   ),
   evacuationEventsLookupProvider.overrideWith(
-    (ref) async => const [
-      EvacuationEventLookup(id: 24, name: 'Typhoon Pepito', status: 'active'),
-    ],
+    (ref) async =>
+        events ??
+        const [
+          EvacuationEventLookup(
+            id: 24,
+            name: 'Typhoon Pepito',
+            status: 'active',
+          ),
+        ],
   ),
   pendingActionsProvider.overrideWith((ref) async => const []),
   syncSummaryProvider.overrideWith(

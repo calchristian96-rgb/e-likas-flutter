@@ -42,7 +42,7 @@ void main() {
   });
 
   test(
-    'never read yet: the same pick as the server, real before demo',
+    'never read yet: the default at login, Active first (is_demo plays no part)',
     () async {
       final container = ProviderContainer(
         overrides: [
@@ -67,7 +67,7 @@ void main() {
       );
       addTearDown(container.dispose);
       final event = await container.read(currentStaffEventProvider.future);
-      expect(event?.id, 80);
+      expect(event?.id, 79);
     },
   );
 
