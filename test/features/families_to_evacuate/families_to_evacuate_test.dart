@@ -87,6 +87,86 @@ void main() {
     );
   });
 
+  testWidgets('Add a new family works offline: queued with client_ref', (
+    tester,
+  ) async {
+    final db = StaffDatabase.forExecutor(NativeDatabase.memory());
+    addTearDown(db.close);
+    final offline = ConnectivityService.forTesting(
+      hasInterface: () async => false,
+      probe: () async => false,
+      resultCacheTtl: Duration.zero,
+    );
+    final outbox = OutboxRepository(db, FakeStaffApi(), offline, 4);
+    tester.view.devicePixelRatio = 2;
+    tester.view.physicalSize = const Size(720, 3000);
+    addTearDown(tester.view.reset);
+    await tester.pumpWidget(
+      testApp(
+        const FamiliesToEvacuatePage(),
+        overrides: [
+          ...signedInAs(official),
+          staffReadCacheProvider.overrideWithValue(
+            FakeReadCache({...homeAnswers, '/families-to-evacuate': _answer}),
+          ),
+          evacuationEventsLookupProvider.overrideWith((ref) async => const []),
+          outboxRepositoryProvider.overrideWithValue(outbox),
+          pendingActionsProvider.overrideWith((ref) {
+            ref.watch(outboxRevisionProvider);
+            return outbox.getAll();
+          }),
+          staffSyncAllProvider.overrideWith(_NoSync.new),
+          connectivityServiceProvider.overrideWithValue(offline),
+          puroksForBarangayProvider.overrideWith((ref, id) async => const []),
+          ownCentersProvider.overrideWith((ref) async => const []),
+        ],
+      ),
+    );
+    await tester.pumpAndSettle();
+    await tester.tap(find.widgetWithText(FloatingActionButton, 'Add family'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('New family'));
+    await tester.pumpAndSettle();
+    await tester.enterText(
+      find.widgetWithText(TextField, "Head's first name"),
+      'Carla',
+    );
+    await tester.enterText(
+      find.widgetWithText(TextField, "Head's last name"),
+      'Santos',
+    );
+    await tester.pumpAndSettle();
+    await tester.tap(find.widgetWithText(FilledButton, 'Add family'));
+    await tester.pumpAndSettle();
+
+    final queued = (await outbox.getAll()).single;
+    expect(queued.kind, PendingActionKind.listedFamilyAdd);
+    expect(queued.path, '/families-to-evacuate');
+    expect(queued.body['head_first_name'], 'Carla');
+    expect(queued.body['evacuation_event_id'], isNotNull);
+    expect(queued.body['client_ref'], queued.localId);
+    expect(find.text('Added on this phone, waiting to sync'), findsOneWidget);
+    expect(
+      find.text('Add Carla Santos to the families to evacuate'),
+      findsOneWidget,
+    );
+    await tester.pumpWidget(const SizedBox());
+    offline.dispose();
+    await tester.pump(const Duration(seconds: 10));
+  });
+
+  test('a past family already on the list counts as added', () {
+    expect(
+      PendingActionKind.listedFamilyAdd.alreadyHappened!.matches(422, {
+        'message': 'This family is already on your list.',
+        'errors': {
+          'source_family_id': ['This family is already on your list.'],
+        },
+      }),
+      isTrue,
+    );
+  });
+
   testWidgets('Check in with one tap works offline through the queue', (
     tester,
   ) async {

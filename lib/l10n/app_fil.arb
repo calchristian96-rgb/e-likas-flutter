@@ -1493,5 +1493,8 @@
   "reliefStayingIn": "Nasa {place}",
   "reliefBoxFrom": "{barangay} ang magbibigay ng kahon",
   "reliefNotGivenYet": "Wala pang kahon",
-  "reliefPrivateHouse": "Pribadong bahay ({host})"
+  "reliefPrivateHouse": "Pribadong bahay ({host})",
+  "listAddSummary": "Idagdag si {name} sa mga pamilyang ililikas",
+  "listAddQueued": "Naidagdag. Ipapadala sa listahan kapag may koneksyon.",
+  "listAddsWaiting": "Idinagdag sa phone na ito, naghihintay i-sync"
 }

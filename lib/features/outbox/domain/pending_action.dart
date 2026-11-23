@@ -14,7 +14,10 @@ enum PendingActionKind {
   // replays the first answer for the same client_ref.
   familyCheckIn,
   // Mark a facility request received (the center's barangay).
-  facilityReceive;
+  facilityReceive,
+  // Add a family to the families-to-evacuate list (client_ref since
+  // apps-api-2026-11-24.md 5.2).
+  listedFamilyAdd;
 
   static PendingActionKind? fromName(String name) {
     for (final k in values) {
@@ -58,6 +61,12 @@ enum PendingActionKind {
     shortfallRequest || centerLocation || facilityRequest => null,
     familyCheckIn => null,
     facilityReceive => null,
+    // "This family is already on your list." (a past family added twice).
+    listedFamilyAdd => const AlreadyHappened(
+      422,
+      'source_family_id',
+      'already on your list',
+    ),
   };
 }
 

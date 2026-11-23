@@ -2288,5 +2288,9 @@
   "@reliefBoxFrom": {"placeholders": {"barangay": {"type": "String"}}},
   "reliefNotGivenYet": "No box yet",
   "reliefPrivateHouse": "Private house ({host})",
-  "@reliefPrivateHouse": {"placeholders": {"host": {"type": "String"}}}
+  "@reliefPrivateHouse": {"placeholders": {"host": {"type": "String"}}},
+  "listAddSummary": "Add {name} to the families to evacuate",
+  "@listAddSummary": {"placeholders": {"name": {"type": "String"}}},
+  "listAddQueued": "Added. It is sent to the list when there is a connection.",
+  "listAddsWaiting": "Added on this phone, waiting to sync"
 }

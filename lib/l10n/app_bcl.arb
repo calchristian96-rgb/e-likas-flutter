@@ -3472,5 +3472,8 @@
   "reliefStayingIn": "Staying in {place}",
   "reliefBoxFrom": "{barangay} gives the box",
   "reliefNotGivenYet": "No box yet",
-  "reliefPrivateHouse": "Private house ({host})"
+  "reliefPrivateHouse": "Private house ({host})",
+  "listAddSummary": "Add {name} to the families to evacuate",
+  "listAddQueued": "Added. It is sent to the list when there is a connection.",
+  "listAddsWaiting": "Added on this phone, waiting to sync"
 }

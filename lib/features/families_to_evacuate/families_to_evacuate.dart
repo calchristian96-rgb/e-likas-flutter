@@ -235,6 +235,29 @@ Map<String, dynamic> checkInBody(CheckInPlace place) => switch (place) {
     },
 };
 
+/// The queue's subject for a past family being added (one at a time).
+String pastFamilySubject(int sourceFamilyId) =>
+    'families-to-evacuate:add:past:$sourceFamilyId';
+
+/// `POST /families-to-evacuate`, queued (works offline); the queue adds
+/// the row's UUID as `client_ref`.
+Future<void> queueListedFamilyAdd(
+  WidgetRef ref,
+  AppLocalizations l10n, {
+  required int eventId,
+  required Map<String, dynamic> body,
+  required String name,
+  String? subjectKey,
+}) => enqueueStaffAction(
+  ref,
+  kind: PendingActionKind.listedFamilyAdd,
+  method: 'POST',
+  path: '/families-to-evacuate',
+  body: {'evacuation_event_id': eventId, ...body},
+  summary: l10n.listAddSummary(name),
+  subjectKey: subjectKey,
+);
+
 /// Check in with one tap: queued (works offline), sent by the next sync.
 Future<void> queueCheckIn(
   WidgetRef ref,
@@ -267,10 +290,12 @@ class FamiliesToEvacuatePage extends ConsumerWidget {
     final l10n = AppLocalizations.of(context);
     final theme = Theme.of(context);
     final async = ref.watch(familiesToEvacuateProvider);
-    final queued = {
-      for (final a in ref.watch(pendingActionsProvider).value ?? const [])
-        ?a.subjectKey,
-    };
+    final pending = ref.watch(pendingActionsProvider).value ?? const [];
+    final queued = {for (final a in pending) ?a.subjectKey};
+    final queuedAdds = [
+      for (final a in pending)
+        if (a.kind == PendingActionKind.listedFamilyAdd) a,
+    ];
     final data = async.value;
     final event = ref.watch(currentStaffEventProvider).value;
     final barangayId = ref.watch(staffAuthProvider).value?.barangayId;
@@ -347,7 +372,29 @@ class FamiliesToEvacuatePage extends ConsumerWidget {
                     const SizedBox(height: 12),
                     const LockNote(dense: true),
                   ],
-                  if (d.families.isEmpty)
+                  if (queuedAdds.isNotEmpty) ...[
+                    const SizedBox(height: 20),
+                    Text(
+                      l10n.listAddsWaiting,
+                      style: theme.textTheme.titleMedium,
+                    ),
+                    const SizedBox(height: 8),
+                    for (final a in queuedAdds)
+                      Card(
+                        margin: const EdgeInsets.only(bottom: 8),
+                        child: ListTile(
+                          minTileHeight: 56,
+                          leading: const Icon(Icons.cloud_upload_outlined),
+                          title: Text(a.summary),
+                          subtitle: Text(
+                            a.needsAttention
+                                ? (a.lastErrorMessage ?? l10n.syncWaiting)
+                                : l10n.syncWaiting,
+                          ),
+                        ),
+                      ),
+                  ],
+                  if (d.families.isEmpty && queuedAdds.isEmpty)
                     Padding(
                       padding: const EdgeInsets.only(top: 16),
                       child: EmptyNote(
@@ -451,6 +498,11 @@ class _ListedFamilyTile extends ConsumerWidget {
           .delete('/families-to-evacuate/${family.id}');
       ref.invalidate(familiesToEvacuateProvider);
     } on DioException catch (e) {
+      // Removed already (apps-api-2026-11-24.md 5.4): done.
+      if (e.response?.statusCode == 404) {
+        ref.invalidate(familiesToEvacuateProvider);
+        return;
+      }
       messenger.showSnackBar(failureSnackBar(mapStaffDioError(e)));
     }
   }
@@ -778,30 +830,26 @@ class _AddListedFamilySheetState extends ConsumerState<AddListedFamilySheet> {
     }
   }
 
-  Future<void> _add(Map<String, dynamic> body) async {
+  /// Queued with its own client_ref (apps-api-2026-11-24.md 5.2), so it
+  /// works offline and a retry lists the family once. [name] is for the
+  /// Sync screen.
+  Future<void> _add(Map<String, dynamic> body, String name) async {
     final l10n = AppLocalizations.of(context);
     final messenger = ScaffoldMessenger.of(context);
     final navigator = Navigator.of(context);
-    if (!await ref.read(connectivityServiceProvider).hasConnection) {
-      setState(() => _error = l10n.listNeedsConnection);
-      return;
-    }
     setState(() => _busy = true);
-    try {
-      await ref
-          .read(staffApiClientProvider)
-          .post(
-            '/families-to-evacuate',
-            data: {'evacuation_event_id': widget.eventId, ...body},
-          );
-      ref.invalidate(familiesToEvacuateProvider);
-      navigator.pop();
-      messenger.showSnackBar(SnackBar(content: Text(l10n.listAdded)));
-    } on DioException catch (e) {
-      setState(() => _error = mapStaffDioError(e).message);
-    } finally {
-      if (mounted) setState(() => _busy = false);
-    }
+    final source = body['source_family_id'];
+    await queueListedFamilyAdd(
+      ref,
+      l10n,
+      eventId: widget.eventId,
+      body: body,
+      name: name,
+      subjectKey: source == null ? null : pastFamilySubject(source as int),
+    );
+    if (!mounted) return;
+    navigator.pop();
+    messenger.showSnackBar(SnackBar(content: Text(l10n.listAddQueued)));
   }
 
   bool get _newValid =>
@@ -876,7 +924,9 @@ class _AddListedFamilySheetState extends ConsumerState<AddListedFamilySheet> {
                     ].join(' · '),
                   ),
                   trailing: const Icon(Icons.add),
-                  onTap: _busy ? null : () => _add({'source_family_id': f.id}),
+                  onTap: _busy
+                      ? null
+                      : () => _add({'source_family_id': f.id}, f.head),
                 ),
             ] else ...[
               TextField(
@@ -998,7 +1048,7 @@ class _AddListedFamilySheetState extends ConsumerState<AddListedFamilySheet> {
                           'contact_number': _contact.text.trim(),
                         if (_note.text.trim().isNotEmpty)
                           'note': _note.text.trim(),
-                      })
+                      }, '${_first.text.trim()} ${_last.text.trim()}')
                     : null,
                 child: Text(l10n.listAdd),
               ),

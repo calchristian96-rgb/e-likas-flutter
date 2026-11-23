@@ -4966,4 +4966,16 @@ class AppLocalizationsFil extends AppLocalizations {
   String reliefPrivateHouse(String host) {
     return 'Pribadong bahay ($host)';
   }
+
+  @override
+  String listAddSummary(String name) {
+    return 'Idagdag si $name sa mga pamilyang ililikas';
+  }
+
+  @override
+  String get listAddQueued =>
+      'Naidagdag. Ipapadala sa listahan kapag may koneksyon.';
+
+  @override
+  String get listAddsWaiting => 'Idinagdag sa phone na ito, naghihintay i-sync';
 }

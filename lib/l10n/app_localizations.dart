@@ -7718,6 +7718,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Private house ({host})'**
   String reliefPrivateHouse(String host);
+
+  /// No description provided for @listAddSummary.
+  ///
+  /// In en, this message translates to:
+  /// **'Add {name} to the families to evacuate'**
+  String listAddSummary(String name);
+
+  /// No description provided for @listAddQueued.
+  ///
+  /// In en, this message translates to:
+  /// **'Added. It is sent to the list when there is a connection.'**
+  String get listAddQueued;
+
+  /// No description provided for @listAddsWaiting.
+  ///
+  /// In en, this message translates to:
+  /// **'Added on this phone, waiting to sync'**
+  String get listAddsWaiting;
 }
 
 class _AppLocalizationsDelegate

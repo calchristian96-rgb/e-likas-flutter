@@ -4889,4 +4889,16 @@ class AppLocalizationsBcl extends AppLocalizations {
   String reliefPrivateHouse(String host) {
     return 'Private house ($host)';
   }
+
+  @override
+  String listAddSummary(String name) {
+    return 'Add $name to the families to evacuate';
+  }
+
+  @override
+  String get listAddQueued =>
+      'Added. It is sent to the list when there is a connection.';
+
+  @override
+  String get listAddsWaiting => 'Added on this phone, waiting to sync';
 }
