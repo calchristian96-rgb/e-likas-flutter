@@ -3844,18 +3844,6 @@ abstract class AppLocalizations {
   /// **'No evacuation centers in your barangay yet'**
   String get staffOwnCentersEmpty;
 
-  /// No description provided for @demoBadge.
-  ///
-  /// In en, this message translates to:
-  /// **'DEMO'**
-  String get demoBadge;
-
-  /// No description provided for @drillBadge.
-  ///
-  /// In en, this message translates to:
-  /// **'DRILL'**
-  String get drillBadge;
-
   /// No description provided for @residentBarangayTitle.
   ///
   /// In en, this message translates to:
@@ -3927,12 +3915,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{barangay}: {status}'**
   String barangayStatusTapped(Object barangay, Object status);
-
-  /// No description provided for @drillNotice.
-  ///
-  /// In en, this message translates to:
-  /// **'DRILL - This is a simulation for demonstration, not a real emergency.'**
-  String get drillNotice;
 
   /// No description provided for @centersInYourBarangay.
   ///
@@ -4401,12 +4383,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Rejected'**
   String get requestStatusRejected;
-
-  /// No description provided for @requestStatusFulfilled.
-  ///
-  /// In en, this message translates to:
-  /// **'Fulfilled'**
-  String get requestStatusFulfilled;
 
   /// No description provided for @decrease.
   ///
@@ -4947,12 +4923,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No request is waiting.'**
   String get monitoringNoRequests;
-
-  /// No description provided for @monitoringWaited.
-  ///
-  /// In en, this message translates to:
-  /// **'{hours}h {minutes}m'**
-  String monitoringWaited(int hours, int minutes);
 
   /// No description provided for @monitoringNeedsConnection.
   ///
@@ -5979,12 +5949,6 @@ abstract class AppLocalizations {
   /// **'Asked by {who}, {time}'**
   String transferRequestedBy(String who, String time);
 
-  /// No description provided for @transferWaitingMinutes.
-  ///
-  /// In en, this message translates to:
-  /// **'{count, plural, =1{Waiting 1 minute} other{Waiting {count} minutes}}'**
-  String transferWaitingMinutes(int count);
-
   /// No description provided for @transferEscalatedNote.
   ///
   /// In en, this message translates to:
@@ -6296,6 +6260,78 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No barangay has to evacuate.'**
   String get situationNoEvacuation;
+
+  /// No description provided for @statusNearlyFull.
+  ///
+  /// In en, this message translates to:
+  /// **'Nearly full'**
+  String get statusNearlyFull;
+
+  /// No description provided for @requestStatusSent.
+  ///
+  /// In en, this message translates to:
+  /// **'Sent'**
+  String get requestStatusSent;
+
+  /// No description provided for @requestStatusReceived.
+  ///
+  /// In en, this message translates to:
+  /// **'Received'**
+  String get requestStatusReceived;
+
+  /// No description provided for @lockTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Locked'**
+  String get lockTitle;
+
+  /// No description provided for @lockAvailableWhenActive.
+  ///
+  /// In en, this message translates to:
+  /// **'Available when the event is Active'**
+  String get lockAvailableWhenActive;
+
+  /// No description provided for @lockClosedEvent.
+  ///
+  /// In en, this message translates to:
+  /// **'This event is closed. It is read-only.'**
+  String get lockClosedEvent;
+
+  /// No description provided for @durationLessThanMinute.
+  ///
+  /// In en, this message translates to:
+  /// **'less than a minute'**
+  String get durationLessThanMinute;
+
+  /// No description provided for @durationMinutes.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 minute} other{{count} minutes}}'**
+  String durationMinutes(int count);
+
+  /// No description provided for @durationHours.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 hour} other{{count} hours}}'**
+  String durationHours(int count);
+
+  /// No description provided for @durationDays.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 day} other{{count} days}}'**
+  String durationDays(int count);
+
+  /// No description provided for @durationAgo.
+  ///
+  /// In en, this message translates to:
+  /// **'{duration} ago'**
+  String durationAgo(String duration);
+
+  /// No description provided for @waitingDuration.
+  ///
+  /// In en, this message translates to:
+  /// **'Waiting {duration}'**
+  String waitingDuration(String duration);
 }
 
 class _AppLocalizationsDelegate

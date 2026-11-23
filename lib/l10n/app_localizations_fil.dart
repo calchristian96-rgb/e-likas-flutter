@@ -285,10 +285,14 @@ class AppLocalizationsFil extends AppLocalizations {
 
   @override
   String evacuationCentersCount(int count) {
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count evacuation center',
+      other: '$countString evacuation center',
       one: '1 evacuation center',
     );
     return '$_temp0';
@@ -296,10 +300,14 @@ class AppLocalizationsFil extends AppLocalizations {
 
   @override
   String publicAlertsCount(int count) {
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count pampublikong alerto',
+      other: '$countString pampublikong alerto',
       one: '1 pampublikong alerto',
     );
     return '$_temp0';
@@ -458,10 +466,14 @@ class AppLocalizationsFil extends AppLocalizations {
 
   @override
   String cachedItemsCount(int count) {
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count na-cache na item',
+      other: '$countString na-cache na item',
       one: '1 na-cache na item',
     );
     return '$_temp0';
@@ -530,10 +542,14 @@ class AppLocalizationsFil extends AppLocalizations {
 
   @override
   String filteredAlertsCount(int count, String severity) {
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count $severity na alerto',
+      other: '$countString $severity na alerto',
       one: '1 $severity na alerto',
     );
     return '$_temp0';
@@ -624,10 +640,14 @@ class AppLocalizationsFil extends AppLocalizations {
 
   @override
   String filteredCentersCount(int count, String status) {
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count $status na center',
+      other: '$countString $status na center',
       one: '1 $status na center',
     );
     return '$_temp0';
@@ -1273,10 +1293,14 @@ class AppLocalizationsFil extends AppLocalizations {
 
   @override
   String staffFamiliesMemberCount(int count) {
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count na miyembro',
+      other: '$countString na miyembro',
       one: '1 miyembro',
     );
     return '$_temp0';
@@ -1300,10 +1324,14 @@ class AppLocalizationsFil extends AppLocalizations {
 
   @override
   String staffSyncCompletedMessage(int count) {
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count rehistrasyon ang na-sync.',
+      other: '$countString rehistrasyon ang na-sync.',
       one: '1 rehistrasyon ang na-sync.',
       zero: 'Walang na-sync na rehistrasyon.',
     );
@@ -1323,10 +1351,14 @@ class AppLocalizationsFil extends AppLocalizations {
 
   @override
   String staffPendingSubtitle(int count, String barangay, String date) {
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count miyembro',
+      other: '$countString miyembro',
       one: '1 miyembro',
     );
     return '$_temp0 • $barangay • $date';
@@ -1561,10 +1593,14 @@ class AppLocalizationsFil extends AppLocalizations {
 
   @override
   String staffPendingDetailAttemptCount(int count) {
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count pagsubok',
+      other: '$countString pagsubok',
       one: '1 pagsubok',
     );
     return '$_temp0';
@@ -1794,7 +1830,11 @@ class AppLocalizationsFil extends AppLocalizations {
 
   @override
   String ecBoardSectoralFlagsTicked(int count) {
-    return '$count ang may tsek';
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
+    return '$countString ang may tsek';
   }
 
   @override
@@ -2192,12 +2232,6 @@ class AppLocalizationsFil extends AppLocalizations {
       'Wala pang evacuation center sa inyong barangay';
 
   @override
-  String get demoBadge => 'DEMO';
-
-  @override
-  String get drillBadge => 'DRILL';
-
-  @override
   String get residentBarangayTitle => 'Inyong barangay';
 
   @override
@@ -2243,9 +2277,6 @@ class AppLocalizationsFil extends AppLocalizations {
   }
 
   @override
-  String get drillNotice => 'PAGSASANAY - Hindi ito totoong emergency.';
-
-  @override
   String centersInYourBarangay(Object barangay) {
     return 'Mga center sa Brgy. $barangay';
   }
@@ -2280,10 +2311,14 @@ class AppLocalizationsFil extends AppLocalizations {
 
   @override
   String syncWaitingCount(int count) {
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count naghihintay ma-sync',
+      other: '$countString naghihintay ma-sync',
       one: '1 naghihintay ma-sync',
     );
     return '$_temp0';
@@ -2291,10 +2326,14 @@ class AppLocalizationsFil extends AppLocalizations {
 
   @override
   String syncAttentionCount(int count) {
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count kailangang tingnan',
+      other: '$countString kailangang tingnan',
       one: '1 kailangang tingnan',
     );
     return '$_temp0';
@@ -2302,10 +2341,14 @@ class AppLocalizationsFil extends AppLocalizations {
 
   @override
   String syncSentMessage(int count) {
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count naipadala.',
+      other: '$countString naipadala.',
       one: '1 naipadala.',
       zero: 'Walang bagong ipapadala.',
     );
@@ -2362,10 +2405,14 @@ class AppLocalizationsFil extends AppLocalizations {
 
   @override
   String ecBoardFamilyMembers(int count) {
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count miyembro',
+      other: '$countString miyembro',
       one: '1 miyembro',
     );
     return '$_temp0';
@@ -2373,7 +2420,11 @@ class AppLocalizationsFil extends AppLocalizations {
 
   @override
   String showAllCount(int count) {
-    return 'Ipakita lahat ($count)';
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
+    return 'Ipakita lahat ($countString)';
   }
 
   @override
@@ -2408,10 +2459,14 @@ class AppLocalizationsFil extends AppLocalizations {
 
   @override
   String returningFamilyUnnamed(int count) {
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'Hindi nakalista ang $count miyembrong walang pangalan.',
+      other: 'Hindi nakalista ang $countString miyembrong walang pangalan.',
       one: 'Hindi nakalista ang 1 miyembrong walang pangalan.',
     );
     return '$_temp0';
@@ -2422,10 +2477,15 @@ class AppLocalizationsFil extends AppLocalizations {
 
   @override
   String returningMemberAge(int age) {
+    final intl.NumberFormat ageNumberFormat = intl.NumberFormat.decimalPattern(
+      localeName,
+    );
+    final String ageString = ageNumberFormat.format(age);
+
     String _temp0 = intl.Intl.pluralLogic(
       age,
       locale: localeName,
-      other: '$age taon',
+      other: '$ageString taon',
       one: '1 taon',
     );
     return '$_temp0';
@@ -2443,10 +2503,14 @@ class AppLocalizationsFil extends AppLocalizations {
 
   @override
   String returningFamilyEnroll(int count) {
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'Ilagay ang $count tao',
+      other: 'Ilagay ang $countString tao',
       one: 'Ilagay ang 1 tao',
     );
     return '$_temp0';
@@ -2454,10 +2518,14 @@ class AppLocalizationsFil extends AppLocalizations {
 
   @override
   String returningFamilyDone(int count) {
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count tao ang nailagay',
+      other: '$countString tao ang nailagay',
       one: '1 tao ang nailagay',
     );
     return '$_temp0';
@@ -2501,7 +2569,11 @@ class AppLocalizationsFil extends AppLocalizations {
 
   @override
   String centerLocationAccuracy(int meters) {
-    return 'Tumpak hanggang mga $meters m';
+    final intl.NumberFormat metersNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
+    final String metersString = metersNumberFormat.format(meters);
+
+    return 'Tumpak hanggang mga $metersString m';
   }
 
   @override
@@ -2561,7 +2633,11 @@ class AppLocalizationsFil extends AppLocalizations {
 
   @override
   String facilityRequestSummary(String what, int count, String center) {
-    return '$what × $count para sa $center';
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
+    return '$what × $countString para sa $center';
   }
 
   @override
@@ -2572,9 +2648,6 @@ class AppLocalizationsFil extends AppLocalizations {
 
   @override
   String get requestStatusRejected => 'Tinanggihan';
-
-  @override
-  String get requestStatusFulfilled => 'Naibigay';
 
   @override
   String get decrease => 'Bawasan';
@@ -2633,7 +2706,14 @@ class AppLocalizationsFil extends AppLocalizations {
 
   @override
   String reliefGivenOfReceived(int given, int received) {
-    return '$given naibigay sa $received natanggap';
+    final intl.NumberFormat givenNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
+    final String givenString = givenNumberFormat.format(given);
+    final intl.NumberFormat receivedNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
+    final String receivedString = receivedNumberFormat.format(received);
+
+    return '$givenString naibigay sa $receivedString natanggap';
   }
 
   @override
@@ -2649,7 +2729,12 @@ class AppLocalizationsFil extends AppLocalizations {
 
   @override
   String reliefBoxesArrived(int sent) {
-    return 'Mga box na natanggap (sa $sent na ipinadala)';
+    final intl.NumberFormat sentNumberFormat = intl.NumberFormat.decimalPattern(
+      localeName,
+    );
+    final String sentString = sentNumberFormat.format(sent);
+
+    return 'Mga box na natanggap (sa $sentString na ipinadala)';
   }
 
   @override
@@ -2678,7 +2763,14 @@ class AppLocalizationsFil extends AppLocalizations {
 
   @override
   String reliefPurokHeading(String purok, int given, int total) {
-    return '$purok · $given sa $total naibigay';
+    final intl.NumberFormat givenNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
+    final String givenString = givenNumberFormat.format(given);
+    final intl.NumberFormat totalNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
+    final String totalString = totalNumberFormat.format(total);
+
+    return '$purok · $givenString sa $totalString naibigay';
   }
 
   @override
@@ -2761,12 +2853,23 @@ class AppLocalizationsFil extends AppLocalizations {
 
   @override
   String finalCountInsideOutside(int inside, int outside) {
-    return '$inside nasa loob ng center · $outside nasa labas';
+    final intl.NumberFormat insideNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
+    final String insideString = insideNumberFormat.format(inside);
+    final intl.NumberFormat outsideNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
+    final String outsideString = outsideNumberFormat.format(outside);
+
+    return '$insideString nasa loob ng center · $outsideString nasa labas';
   }
 
   @override
   String finalCountNoStay(int count) {
-    return '$count na walang naitalang pananatili';
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
+    return '$countString na walang naitalang pananatili';
   }
 
   @override
@@ -2818,10 +2921,14 @@ class AppLocalizationsFil extends AppLocalizations {
 
   @override
   String reliefShortfallAsk(int count) {
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'Humiling ng hanggang $count pang box',
+      other: 'Humiling ng hanggang $countString pang box',
       one: 'Humiling ng 1 pang box',
     );
     return '$_temp0';
@@ -2829,15 +2936,23 @@ class AppLocalizationsFil extends AppLocalizations {
 
   @override
   String reliefShortfallRow(int count, String status) {
-    return 'Humiling ng $count pa: $status';
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
+    return 'Humiling ng $countString pa: $status';
   }
 
   @override
   String reliefShortfallSummary(int count, int round) {
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'Humiling ng $count pang box, round $round',
+      other: 'Humiling ng $countString pang box, round $round',
       one: 'Humiling ng 1 pang box, round $round',
     );
     return '$_temp0';
@@ -2883,7 +2998,11 @@ class AppLocalizationsFil extends AppLocalizations {
 
   @override
   String monitoringArrivedLastHour(int count) {
-    return '$count ang dumating sa nakaraang oras';
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
+    return '$countString ang dumating sa nakaraang oras';
   }
 
   @override
@@ -2894,7 +3013,14 @@ class AppLocalizationsFil extends AppLocalizations {
 
   @override
   String monitoringCentersSummary(int inUse, String centers, int noCapacity) {
-    return '$inUse sa $centers ang ginagamit · $noCapacity walang kapasidad';
+    final intl.NumberFormat inUseNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
+    final String inUseString = inUseNumberFormat.format(inUse);
+    final intl.NumberFormat noCapacityNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
+    final String noCapacityString = noCapacityNumberFormat.format(noCapacity);
+
+    return '$inUseString sa $centers ang ginagamit · $noCapacityString walang kapasidad';
   }
 
   @override
@@ -2907,7 +3033,11 @@ class AppLocalizationsFil extends AppLocalizations {
 
   @override
   String monitoringInsideNoCapacity(int count) {
-    return '$count sa loob · walang kapasidad';
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
+    return '$countString sa loob · walang kapasidad';
   }
 
   @override
@@ -2921,11 +3051,6 @@ class AppLocalizationsFil extends AppLocalizations {
 
   @override
   String get monitoringNoRequests => 'Walang hiling na naghihintay.';
-
-  @override
-  String monitoringWaited(int hours, int minutes) {
-    return '${hours}h ${minutes}m';
-  }
 
   @override
   String get monitoringNeedsConnection =>
@@ -2949,11 +3074,15 @@ class AppLocalizationsFil extends AppLocalizations {
 
   @override
   String reliefOutOfOrderBody(int count) {
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
       other:
-          'May $count pamilyang mas mataas ang prayoridad na naghihintay pa.',
+          'May $countString pamilyang mas mataas ang prayoridad na naghihintay pa.',
       one: 'May 1 pamilyang mas mataas ang prayoridad na naghihintay pa.',
     );
     return '$_temp0';
@@ -2961,10 +3090,14 @@ class AppLocalizationsFil extends AppLocalizations {
 
   @override
   String countFamilies(int count) {
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count pamilya',
+      other: '$countString pamilya',
       one: '1 pamilya',
     );
     return '$_temp0';
@@ -2972,10 +3105,14 @@ class AppLocalizationsFil extends AppLocalizations {
 
   @override
   String countPersons(int count) {
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count tao',
+      other: '$countString tao',
       one: '1 tao',
     );
     return '$_temp0';
@@ -2983,10 +3120,14 @@ class AppLocalizationsFil extends AppLocalizations {
 
   @override
   String countBoxes(int count) {
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count box',
+      other: '$countString box',
       one: '1 box',
     );
     return '$_temp0';
@@ -2994,10 +3135,14 @@ class AppLocalizationsFil extends AppLocalizations {
 
   @override
   String countCenters(int count) {
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count center',
+      other: '$countString center',
       one: '1 center',
     );
     return '$_temp0';
@@ -3005,10 +3150,14 @@ class AppLocalizationsFil extends AppLocalizations {
 
   @override
   String countEvacuees(int count) {
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count evacuee',
+      other: '$countString evacuee',
       one: '1 evacuee',
     );
     return '$_temp0';
@@ -3666,17 +3815,6 @@ class AppLocalizationsFil extends AppLocalizations {
   }
 
   @override
-  String transferWaitingMinutes(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: 'Naghihintay ng $count minuto',
-      one: 'Naghihintay ng 1 minuto',
-    );
-    return '$_temp0';
-  }
-
-  @override
   String transferEscalatedNote(String time) {
     return 'Walang sagot sa loob ng 30 minuto: sinabihan ang CSWD noong $time at maaari itong magpasya.';
   }
@@ -3899,4 +4037,81 @@ class AppLocalizationsFil extends AppLocalizations {
 
   @override
   String get situationNoEvacuation => 'Walang barangay na kailangang lumikas.';
+
+  @override
+  String get statusNearlyFull => 'Halos puno na';
+
+  @override
+  String get requestStatusSent => 'Naipadala na';
+
+  @override
+  String get requestStatusReceived => 'Natanggap na';
+
+  @override
+  String get lockTitle => 'Naka-lock';
+
+  @override
+  String get lockAvailableWhenActive => 'Magagamit kapag Active na ang event';
+
+  @override
+  String get lockClosedEvent =>
+      'Sarado na ang event na ito. Pagbasa na lang ang puwede.';
+
+  @override
+  String get durationLessThanMinute => 'wala pang isang minuto';
+
+  @override
+  String durationMinutes(int count) {
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$countString minuto',
+      one: '1 minuto',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String durationHours(int count) {
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$countString oras',
+      one: '1 oras',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String durationDays(int count) {
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$countString araw',
+      one: '1 araw',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String durationAgo(String duration) {
+    return '$duration ang nakalipas';
+  }
+
+  @override
+  String waitingDuration(String duration) {
+    return 'Naghihintay nang $duration';
+  }
 }

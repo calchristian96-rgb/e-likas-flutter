@@ -8,13 +8,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../app/theme/app_theme.dart';
 import '../../core/cache/staff_read_cache.dart';
 import '../../core/utils/data_freshness_formatter.dart';
-import '../../core/widgets/demo_badge.dart';
 import '../../core/widgets/error_state.dart';
 import '../../core/widgets/stat_strip.dart';
 import '../../l10n/app_localizations.dart';
 import '../staff_shell/current_event.dart';
 import '../barangay_status/presentation/barangay_status_card.dart'
     show barangayStatusColor;
+import '../../core/utils/formatters.dart';
 
 /// One section of `GET /monitoring/{section}` (backend monitoring-api.md):
 /// the event, and the section's data (null with no event open).
@@ -327,7 +327,7 @@ class _MonitoringPageState extends ConsumerState<MonitoringPage> {
                 ].join(' · '),
               ),
               trailing: Text(
-                l10n.monitoringWaited(waited ~/ 60, waited % 60),
+                formatDuration(l10n, Duration(minutes: waited)),
                 style: theme.textTheme.labelLarge?.copyWith(
                   color: waited >= waitLimit ? theme.colorScheme.error : null,
                 ),
@@ -375,7 +375,6 @@ class _SectionView extends ConsumerWidget {
                     style: theme.textTheme.titleSmall,
                   ),
                 ),
-                if (s.isDemo) ...[const SizedBox(width: 8), const DemoBadge()],
               ],
             ),
             Text(

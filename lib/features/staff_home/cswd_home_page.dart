@@ -26,6 +26,7 @@ import '../staff_auth/presentation/providers/staff_auth_provider.dart';
 import '../staff_shell/current_event.dart';
 import '../transfers/cswd_move_page.dart';
 import '../transfers/transfers.dart';
+import '../../core/widgets/lock_note.dart';
 
 /// Barangays with families in the event and no final count sent yet
 /// (`GET /count-submissions/barangays`, CSWD).
@@ -481,9 +482,7 @@ class CswdBarangayDetailPage extends ConsumerWidget {
         ),
       );
     } on DioException catch (e) {
-      messenger.showSnackBar(
-        SnackBar(content: Text(mapStaffDioError(e).message)),
-      );
+      messenger.showSnackBar(failureSnackBar(mapStaffDioError(e)));
     }
   }
 
@@ -905,9 +904,7 @@ class _CswdFinalCount extends ConsumerWidget {
         SnackBar(content: Text(message ?? l10n.cswdSubmitForDone(name))),
       );
     } on DioException catch (e) {
-      messenger.showSnackBar(
-        SnackBar(content: Text(mapStaffDioError(e).message)),
-      );
+      messenger.showSnackBar(failureSnackBar(mapStaffDioError(e)));
     }
   }
 

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../utils/formatters.dart';
 
 /// One headline figure.
 class StatItem {
@@ -41,7 +42,7 @@ class StatStrip extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      item.value,
+                      formatStatValue(item.value),
                       style: theme.textTheme.headlineSmall?.copyWith(
                         fontWeight: FontWeight.w600,
                         fontFeatures: const [FontFeature.tabularFigures()],
@@ -56,4 +57,11 @@ class StatStrip extends StatelessWidget {
       ),
     );
   }
+}
+
+/// A whole number shown with thousands separators ("1,669"); any other
+/// text ("–", "12 / 40") as it is.
+String formatStatValue(String value) {
+  final n = int.tryParse(value);
+  return n == null ? value : formatCount(n);
 }

@@ -5,7 +5,6 @@ import 'package:intl/intl.dart';
 
 import '../../../../app/theme/app_theme.dart';
 import '../../../../core/utils/data_freshness_formatter.dart';
-import '../../../../core/widgets/demo_badge.dart';
 import '../../../../core/widgets/empty_state.dart';
 import '../../../../core/widgets/error_state.dart';
 import '../../../../core/widgets/sync_now_action.dart';
@@ -1181,7 +1180,8 @@ class _EventSelector extends StatelessWidget {
   final int value;
   final ValueChanged<int> onChanged;
 
-  /// The event's name; a demo event also carries the DEMO mark.
+  /// The event's name. A practice event (`is_demo`) carries no mark:
+  /// the backend asks that it looks like any other event.
   static Widget _eventLabel(
     EvacuationEventLookup event,
     AppLocalizations l10n,
@@ -1191,14 +1191,7 @@ class _EventSelector extends StatelessWidget {
       maxLines: 1,
       overflow: TextOverflow.ellipsis,
     );
-    if (!event.isDemo) return text;
-    return Row(
-      children: [
-        Flexible(child: text),
-        const SizedBox(width: 8),
-        const DemoBadge(),
-      ],
-    );
+    return text;
   }
 
   @override

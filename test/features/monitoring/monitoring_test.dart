@@ -31,7 +31,7 @@ void main() {
         'data': {
           'evacuation_event': {
             'id': 30,
-            'name': 'DEMO - Typhoon Drill',
+            'name': 'Typhoon Drill',
             'status': 'active',
             'is_demo': true,
           },
@@ -78,7 +78,7 @@ void main() {
       monitoringSectionProvider('overview').future,
     );
     expect(s.isDemo, isTrue);
-    expect(s.eventName, 'DEMO - Typhoon Drill');
+    expect(s.eventName, 'Typhoon Drill');
     expect((s.data!['figures'] as Map)['persons'], 120);
   });
 }

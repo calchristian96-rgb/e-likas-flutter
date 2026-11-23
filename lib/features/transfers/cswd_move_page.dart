@@ -13,6 +13,7 @@ import '../ec_board/presentation/providers/ec_board_provider.dart';
 import '../family_registration/domain/entities/lookup_entities.dart';
 import '../family_registration/presentation/providers/lookup_providers.dart';
 import 'transfers.dart';
+import '../../core/widgets/lock_note.dart';
 
 /// The families at a center, for CSWDO to move one directly (Part 7).
 class CswdCenterFamiliesPage extends ConsumerWidget {
@@ -195,9 +196,7 @@ class _CswdMovePageState extends ConsumerState<CswdMovePage> {
       );
       navigator.maybePop();
     } on DioException catch (e) {
-      messenger.showSnackBar(
-        SnackBar(content: Text(mapStaffDioError(e).message)),
-      );
+      messenger.showSnackBar(failureSnackBar(mapStaffDioError(e)));
       if (mounted) setState(() => _sending = false);
     }
   }

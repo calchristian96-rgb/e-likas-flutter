@@ -12,7 +12,7 @@ const _body = {
   'success': true,
   'data': {
     'evacuation_event': {
-      'name': 'DEMO - Typhoon Drill',
+      'name': 'Typhoon Drill',
       'status': 'active',
       'is_drill': true,
     },

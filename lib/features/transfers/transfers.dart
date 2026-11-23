@@ -7,11 +7,12 @@ import '../../core/connectivity/connectivity_service.dart';
 import '../../core/network/staff_api_client.dart';
 import '../../core/network/staff_api_error_mapper.dart';
 import '../../core/utils/data_freshness_formatter.dart';
-import '../../core/utils/philippine_time.dart';
 import '../../core/widgets/ui_kit.dart';
 import '../../l10n/app_localizations.dart';
 import '../home/presentation/providers/home_provider.dart';
 import '../staff_shell/current_event.dart';
+import '../../core/widgets/lock_note.dart';
+import '../../core/utils/formatters.dart';
 
 /// One family in a request. The receiving barangay gets only the head's
 /// name and the number of members (no id): privacy, backend df031fe.
@@ -336,9 +337,7 @@ class TransferCard extends ConsumerWidget {
       final message = (response.data as Map?)?['message'] as String?;
       messenger.showSnackBar(SnackBar(content: Text(message ?? '')));
     } on DioException catch (e) {
-      messenger.showSnackBar(
-        SnackBar(content: Text(mapStaffDioError(e).message)),
-      );
+      messenger.showSnackBar(failureSnackBar(mapStaffDioError(e)));
     }
     // Answered here or already by someone else: read the list again.
     ref.invalidate(transferRequestsProvider);
@@ -393,7 +392,9 @@ class TransferCard extends ConsumerWidget {
           ),
           if (r.isPending && r.waitingMinutes != null)
             Text(
-              l10n.transferWaitingMinutes(r.waitingMinutes!),
+              l10n.waitingDuration(
+                formatDuration(l10n, Duration(minutes: r.waitingMinutes!)),
+              ),
               style: theme.textTheme.bodySmall,
             ),
           if (r.isEscalated)

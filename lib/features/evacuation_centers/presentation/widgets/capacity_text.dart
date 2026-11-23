@@ -1,3 +1,4 @@
+import '../../../../core/utils/formatters.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../domain/entities/evacuation_center.dart';
 
@@ -21,15 +22,19 @@ String capacityFigure(
   }
   final estimated = source == 'estimated';
   if (occupancy == null) {
-    if (!estimated) return '$capacity';
+    if (!estimated) return formatCount(capacity);
     return resident
-        ? l10n.capacityResidentEstimated('$capacity')
-        : l10n.capacityEstimated('$capacity');
+        ? l10n.capacityResidentEstimated(formatCount(capacity))
+        : l10n.capacityEstimated(formatCount(capacity));
   }
-  if (!estimated) return '$occupancy / $capacity';
+  if (!estimated) return '${formatCount(occupancy)} / ${formatCount(capacity)}';
   return resident
-      ? l10n.capacityResidentEstimated('$occupancy / $capacity')
-      : l10n.capacityEstimated('$occupancy / $capacity');
+      ? l10n.capacityResidentEstimated(
+          '${formatCount(occupancy)} / ${formatCount(capacity)}',
+        )
+      : l10n.capacityEstimated(
+          '${formatCount(occupancy)} / ${formatCount(capacity)}',
+        );
 }
 
 /// The same for an [EvacuationCenter].

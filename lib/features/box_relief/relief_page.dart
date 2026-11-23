@@ -445,7 +445,7 @@ class _ShortfallSection extends ConsumerWidget {
               l10n.reliefShortfallRow(r.quantity, switch (r.status) {
                 'approved' => l10n.requestStatusApproved,
                 'rejected' => l10n.requestStatusRejected,
-                'fulfilled' => l10n.requestStatusFulfilled,
+                'fulfilled' || 'received' => l10n.requestStatusReceived,
                 _ => l10n.requestStatusWaiting,
               }),
               style: theme.textTheme.bodyMedium,

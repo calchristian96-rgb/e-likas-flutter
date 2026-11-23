@@ -9,6 +9,8 @@ import '../../../l10n/app_localizations.dart';
 import '../../family_registration/presentation/providers/pending_queue_provider.dart';
 import '../domain/pending_action.dart';
 import 'outbox_providers.dart';
+import '../../../core/network/staff_api_error_mapper.dart';
+import '../../../core/widgets/lock_note.dart';
 
 /// Everything this device still has to send: the answer first (how many
 /// wait, how many need a look), one primary button (Sync now), and the
@@ -198,14 +200,23 @@ class _ActionTile extends StatelessWidget {
       child: ListTile(
         minTileHeight: 56,
         title: Text(action.summary),
-        subtitle: Text(
-          action.lastErrorMessage ?? formatElapsedSince(action.createdAt),
-          style: action.needsAttention
-              ? theme.textTheme.bodySmall?.copyWith(
-                  color: theme.colorScheme.error,
-                )
-              : null,
-        ),
+        // A lock answer (the event is monitored or closed) is shown with
+        // the lock look, not as an error (0.4.0 Part 1).
+        subtitle:
+            action.lastErrorMessage != null &&
+                eventLockKindOf(action.lastErrorMessage!, const {}) != null
+            ? Padding(
+                padding: const EdgeInsets.only(top: 4),
+                child: LockNote(message: action.lastErrorMessage, dense: true),
+              )
+            : Text(
+                action.lastErrorMessage ?? formatElapsedSince(action.createdAt),
+                style: action.needsAttention
+                    ? theme.textTheme.bodySmall?.copyWith(
+                        color: theme.colorScheme.error,
+                      )
+                    : null,
+              ),
         trailing: onRetry == null
             ? const Icon(Icons.schedule)
             : MoreButton(

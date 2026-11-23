@@ -45,7 +45,7 @@ class FacilityRequest {
 
   final int id;
 
-  /// pending | approved | rejected | fulfilled
+  /// pending | approved | sent | received | rejected
   final String status;
   final String? facilityType;
   final String? item;
@@ -174,14 +174,16 @@ class FacilityRequestsSection extends ConsumerWidget {
       switch (status) {
         'approved' => l10n.requestStatusApproved,
         'rejected' => l10n.requestStatusRejected,
-        'fulfilled' => l10n.requestStatusFulfilled,
+        'sent' => l10n.requestStatusSent,
+        // `fulfilled` is gone on the server (old rows became received).
+        'received' || 'fulfilled' => l10n.requestStatusReceived,
         _ => l10n.requestStatusWaiting,
       };
 
   static Color _statusColor(ThemeData theme, String status) {
     final semantic = theme.extension<AppSemanticColors>()!;
     return switch (status) {
-      'approved' || 'fulfilled' => semantic.success,
+      'approved' || 'sent' || 'received' || 'fulfilled' => semantic.success,
       'rejected' => theme.colorScheme.error,
       _ => semantic.warning,
     };

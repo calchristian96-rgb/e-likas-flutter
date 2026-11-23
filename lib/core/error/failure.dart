@@ -83,6 +83,23 @@ class ValidationFailure extends Failure {
   final Map<String, List<String>> fieldErrors;
 }
 
+/// A 422 that refuses a change because of the event's state, not the
+/// data typed in (docs/backend/apps-api-2026-11-22.md section 1, Locks):
+/// the event is closed, no event is open, or the event is still being
+/// monitored and the action waits for "Start evacuation". The server's
+/// [message] is shown as it comes, with the lock look, never as an error.
+class EventLockFailure extends ValidationFailure {
+  const EventLockFailure(
+    super.fieldErrors,
+    super.message, {
+    this.kind = EventLockKind.other,
+  });
+
+  final EventLockKind kind;
+}
+
+enum EventLockKind { monitored, closed, noEvent, other }
+
 class RateLimitFailure extends Failure {
   const RateLimitFailure([
     super.message = 'Too many requests. Please wait and try again.',

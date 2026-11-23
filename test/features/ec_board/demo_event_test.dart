@@ -5,7 +5,7 @@ void main() {
   test('is_demo is read from GET /evacuation-events and defaults to false', () {
     final demo = LookupEvacuationEventModel.fromJson({
       'id': 30,
-      'name': 'DEMO - Typhoon Drill',
+      'name': 'Typhoon Drill',
       'status': 'active',
       'is_demo': true,
     });

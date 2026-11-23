@@ -11,6 +11,7 @@ import '../ec_board/domain/entities/family_here.dart';
 import '../ec_board/presentation/providers/ec_board_provider.dart';
 import '../staff_evacuation_centers/presentation/providers/own_centers_provider.dart';
 import 'transfers.dart';
+import '../../core/widgets/lock_note.dart';
 
 /// A center of another barangay with room (\`GET /transfer-requests/suggestions\`).
 class TransferSuggestion {
@@ -189,9 +190,7 @@ class _TransferRequestPageState extends ConsumerState<TransferRequestPage> {
       );
       navigator.maybePop();
     } on DioException catch (e) {
-      messenger.showSnackBar(
-        SnackBar(content: Text(mapStaffDioError(e).message)),
-      );
+      messenger.showSnackBar(failureSnackBar(mapStaffDioError(e)));
       // Not knowing whether it went through: the list says.
       ref.invalidate(transferRequestsProvider);
       if (mounted) setState(() => _sending = false);

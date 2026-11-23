@@ -21,11 +21,11 @@ Map<String, dynamic> _row(
 
 /// GET /selected-event (backend 008da71): two open events, one closed.
 final _state = {
-  'selected': _row(79, 'DEMO - Typhoon Drill', 'active', demo: true),
+  'selected': _row(79, 'Typhoon Drill', 'active', demo: true),
   'chosen': false,
   'open_count': 2,
   'open_events': [
-    _row(79, 'DEMO - Typhoon Drill', 'active', demo: true),
+    _row(79, 'Typhoon Drill', 'active', demo: true),
     _row(80, 'Typhoon Rolly', 'monitoring'),
   ],
   'closed_events': [_row(60, 'Typhoon Kristine', 'closed')],
@@ -95,7 +95,7 @@ void main() {
       ),
     );
     await tester.pumpAndSettle();
-    expect(find.text('Event: DEMO - Typhoon Drill'), findsOneWidget);
+    expect(find.text('Event: Typhoon Drill'), findsOneWidget);
     // Its status: Monitoring until the first check-in makes it Active.
     expect(find.text('Active'), findsOneWidget);
 

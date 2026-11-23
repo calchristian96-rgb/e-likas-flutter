@@ -4,7 +4,7 @@ import '../../../../l10n/app_localizations.dart';
 import '../../domain/entities/evacuation_center.dart';
 
 /// Localized display label for an evacuation center's `status` field
-/// (`active`/`full`/`closed`/`on_standby`, from the migrations —
+/// (`active`/`nearly_full`/`full`/`closed`/`on_standby` —
 /// verified against the Laravel source, not guessed). Backend enum
 /// values are never changed by this — only how they're displayed.
 ///
@@ -16,6 +16,7 @@ String localizedCenterStatus(BuildContext context, String status) {
   final l10n = AppLocalizations.of(context);
   return switch (status.toLowerCase()) {
     'active' => l10n.statusActive,
+    'nearly_full' => l10n.statusNearlyFull,
     'full' => l10n.statusFull,
     'closed' => l10n.statusClosed,
     'on_standby' => l10n.statusOnStandby,
@@ -59,6 +60,7 @@ const evacuationCenterTypeValues = [
 /// shown with the status word.
 Color centerStatusColorOf(String status) => switch (status.toLowerCase()) {
   'active' => const Color(0xFF15803D),
+  'nearly_full' => const Color(0xFFB45309),
   'full' => const Color(0xFFDC2626),
   'closed' => const Color(0xFF374151),
   _ => const Color(0xFF2563EB),

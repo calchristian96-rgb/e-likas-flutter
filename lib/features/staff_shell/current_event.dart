@@ -6,7 +6,6 @@ import '../../core/cache/staff_read_cache.dart';
 import '../../core/connectivity/connectivity_service.dart';
 import '../../core/network/staff_api_client.dart';
 import '../../core/network/staff_api_error_mapper.dart';
-import '../../core/widgets/demo_badge.dart';
 import '../../core/widgets/ui_kit.dart';
 import '../../l10n/app_localizations.dart';
 import '../family_registration/domain/entities/lookup_entities.dart';
@@ -124,8 +123,8 @@ Future<String?> chooseStaffEvent(
   return null;
 }
 
-/// The event line of a Staff Mode tab: "Event: {name}" (DEMO marked,
-/// closed marked), and Change when there is more than one to choose.
+/// The event line of a Staff Mode tab: "Event: {name}" (closed
+/// marked; a practice event looks like any other), and Change when there is more than one to choose.
 class StaffEventBar extends ConsumerWidget {
   const StaffEventBar({super.key});
 
@@ -145,7 +144,6 @@ class StaffEventBar extends ConsumerWidget {
             style: theme.textTheme.titleSmall,
           ),
         ),
-        if (current.isDemo) ...[const SizedBox(width: 8), const DemoBadge()],
         // Monitoring until the first check-in or an evacuation order
         // makes it Active (backend EventFlow).
         const SizedBox(width: 8),
@@ -199,7 +197,6 @@ Future<void> _showSwitcher(
               : Icons.radio_button_unchecked,
           color: theme.colorScheme.primary,
         ),
-        trailing: e.isDemo ? const DemoBadge() : null,
         onTap: () => Navigator.of(context).pop(e),
       );
       return SafeArea(

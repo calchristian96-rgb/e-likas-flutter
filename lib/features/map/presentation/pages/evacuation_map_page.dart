@@ -47,7 +47,13 @@ const _ligaoCityFallbackCenter = LatLng(
 /// whenever more than one is present — never alphabetical (which would
 /// read oddly, e.g. "Active, Closed, Full, On standby") and never in
 /// whatever order the cache happens to return rows in.
-const _statusDisplayOrder = ['active', 'on_standby', 'full', 'closed'];
+const _statusDisplayOrder = [
+  'active',
+  'on_standby',
+  'nearly_full',
+  'full',
+  'closed',
+];
 const _hazardTypeDisplayOrder = [
   'flood',
   'landslide',
@@ -733,6 +739,7 @@ class _MapViewState extends ConsumerState<_MapView> {
     return switch (status) {
       'active' => semantic.success,
       'on_standby' => semantic.warning,
+      'nearly_full' => semantic.warning,
       'full' => theme.colorScheme.error,
       'closed' => theme.colorScheme.onSurfaceVariant,
       _ => theme.colorScheme.onSurfaceVariant,

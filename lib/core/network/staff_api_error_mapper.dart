@@ -29,7 +29,10 @@ Failure mapStaffDioError(DioException err) {
         message.isNotEmpty ? message : 'The requested resource was not found.',
       );
     case 422:
-      return ValidationFailure(_extractFieldErrors(body), message);
+      final fields = _extractFieldErrors(body);
+      final lock = eventLockKindOf(message, fields);
+      if (lock != null) return EventLockFailure(fields, message, kind: lock);
+      return ValidationFailure(fields, message);
     case 429:
       return RateLimitFailure(message);
   }
@@ -99,4 +102,25 @@ Map<String, List<String>> _extractFieldErrors(Object? body) {
     }
   }
   return result;
+}
+
+/// Whether a 422 is one of the event locks (apps-api-2026-11-22.md
+/// section 1): the server puts the message under
+/// `errors.evacuation_event_id` too. Null for any other refusal.
+EventLockKind? eventLockKindOf(
+  String message,
+  Map<String, List<String>> fieldErrors,
+) {
+  final m = message.toLowerCase();
+  final kind = m.contains('is being monitored')
+      ? EventLockKind.monitored
+      : m.contains('is closed') && m.contains('read-only')
+      ? EventLockKind.closed
+      : m.startsWith('no open event')
+      ? EventLockKind.noEvent
+      : null;
+  if (kind != null) return kind;
+  return fieldErrors.containsKey('evacuation_event_id')
+      ? EventLockKind.other
+      : null;
 }

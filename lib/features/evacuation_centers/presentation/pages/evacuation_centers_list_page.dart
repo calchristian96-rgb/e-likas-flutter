@@ -26,6 +26,7 @@ enum _CenterSort { name, occupancy, capacity }
 const _statusFilters = <String?>[
   null,
   'active',
+  'nearly_full',
   'full',
   'on_standby',
   'closed',

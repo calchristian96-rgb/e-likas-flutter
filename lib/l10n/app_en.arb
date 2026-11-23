@@ -126,7 +126,8 @@
     "description": "Count line above the evacuation centers list",
     "placeholders": {
       "count": {
-        "type": "int"
+        "type": "int",
+        "format": "decimalPattern"
       }
     }
   },
@@ -135,7 +136,8 @@
     "description": "Count line above the alerts list",
     "placeholders": {
       "count": {
-        "type": "int"
+        "type": "int",
+        "format": "decimalPattern"
       }
     }
   },
@@ -200,7 +202,8 @@
     "description": "Record count line on an Offline Data Management category tile",
     "placeholders": {
       "count": {
-        "type": "int"
+        "type": "int",
+        "format": "decimalPattern"
       }
     }
   },
@@ -228,7 +231,8 @@
     "description": "Count line above the alerts list when a severity filter is active",
     "placeholders": {
       "count": {
-        "type": "int"
+        "type": "int",
+        "format": "decimalPattern"
       },
       "severity": {
         "type": "String"
@@ -266,7 +270,8 @@
     "description": "Count line above the evacuation centers list when a status filter is active",
     "placeholders": {
       "count": {
-        "type": "int"
+        "type": "int",
+        "format": "decimalPattern"
       },
       "status": {
         "type": "String"
@@ -300,7 +305,8 @@
     "description": "Status line for an available facility with a recorded quantity, e.g. '3 available'",
     "placeholders": {
       "quantity": {
-        "type": "int"
+        "type": "int",
+        "format": "decimalPattern"
       }
     }
   },
@@ -630,7 +636,8 @@
     "description": "Family card/detail subtitle",
     "placeholders": {
       "count": {
-        "type": "int"
+        "type": "int",
+        "format": "decimalPattern"
       }
     }
   },
@@ -651,7 +658,8 @@
     "description": "SnackBar shown after a manual Sync Now run completes",
     "placeholders": {
       "count": {
-        "type": "int"
+        "type": "int",
+        "format": "decimalPattern"
       }
     }
   },
@@ -663,7 +671,8 @@
     "description": "Pending Registrations list row subtitle",
     "placeholders": {
       "count": {
-        "type": "int"
+        "type": "int",
+        "format": "decimalPattern"
       },
       "barangay": {
         "type": "String"
@@ -757,7 +766,8 @@
     "description": "Number of sync attempts made for this registration",
     "placeholders": {
       "count": {
-        "type": "int"
+        "type": "int",
+        "format": "decimalPattern"
       }
     }
   },
@@ -855,7 +865,8 @@
     "description": "Badge on the collapsed sectoral section showing how many flags are ticked",
     "placeholders": {
       "count": {
-        "type": "int"
+        "type": "int",
+        "format": "decimalPattern"
       }
     }
   },
@@ -939,7 +950,8 @@
         "type": "String"
       },
       "count": {
-        "type": "int"
+        "type": "int",
+        "format": "decimalPattern"
       }
     }
   },
@@ -1106,7 +1118,8 @@
   "@markFamilyDepartedSubmit": {
     "placeholders": {
       "count": {
-        "type": "int"
+        "type": "int",
+        "format": "decimalPattern"
       }
     }
   },
@@ -1114,7 +1127,8 @@
   "@markFamilyDepartedConfirmTitle": {
     "placeholders": {
       "count": {
-        "type": "int"
+        "type": "int",
+        "format": "decimalPattern"
       }
     }
   },
@@ -1132,7 +1146,8 @@
   "@markFamilyDepartedDone": {
     "placeholders": {
       "count": {
-        "type": "int"
+        "type": "int",
+        "format": "decimalPattern"
       }
     }
   },
@@ -1140,10 +1155,12 @@
   "@markFamilyDepartedPartialTitle": {
     "placeholders": {
       "done": {
-        "type": "int"
+        "type": "int",
+        "format": "decimalPattern"
       },
       "total": {
-        "type": "int"
+        "type": "int",
+        "format": "decimalPattern"
       }
     }
   },
@@ -1163,8 +1180,6 @@
   "centerApprovalEditWaiting": "Edit waiting for CSWD",
   "centerRejectedNotUsable": "Rejected by CSWD. Not usable on the EC Board.",
   "staffOwnCentersEmpty": "No evacuation centers in your barangay yet",
-  "demoBadge": "DEMO",
-  "drillBadge": "DRILL",
   "residentBarangayTitle": "Your barangay",
   "residentBarangayNotSet": "Not chosen yet",
   "residentBarangayPickerTitle": "Choose your barangay",
@@ -1177,7 +1192,6 @@
   "showBarangayStatus": "Barangay status",
   "barangayBoundariesAttribution": "Barangay boundaries: PSA-NAMRIA via HDX (CC BY-IGO)",
   "barangayStatusTapped": "{barangay}: {status}",
-  "drillNotice": "DRILL - This is a simulation for demonstration, not a real emergency.",
   "centersInYourBarangay": "Centers in Brgy. {barangay}",
   "centerNoMapLocationYet": "No map location yet. Ask your barangay for directions.",
   "staffTabCenters": "Centers",
@@ -1192,7 +1206,8 @@
   "@syncWaitingCount": {
     "placeholders": {
       "count": {
-        "type": "int"
+        "type": "int",
+        "format": "decimalPattern"
       }
     }
   },
@@ -1200,7 +1215,8 @@
   "@syncAttentionCount": {
     "placeholders": {
       "count": {
-        "type": "int"
+        "type": "int",
+        "format": "decimalPattern"
       }
     }
   },
@@ -1208,7 +1224,8 @@
   "@syncSentMessage": {
     "placeholders": {
       "count": {
-        "type": "int"
+        "type": "int",
+        "format": "decimalPattern"
       }
     }
   },
@@ -1231,7 +1248,8 @@
   "@ecBoardFamilyMembers": {
     "placeholders": {
       "count": {
-        "type": "int"
+        "type": "int",
+        "format": "decimalPattern"
       }
     }
   },
@@ -1239,7 +1257,8 @@
   "@showAllCount": {
     "placeholders": {
       "count": {
-        "type": "int"
+        "type": "int",
+        "format": "decimalPattern"
       }
     }
   },
@@ -1256,7 +1275,8 @@
   "@returningFamilyUnnamed": {
     "placeholders": {
       "count": {
-        "type": "int"
+        "type": "int",
+        "format": "decimalPattern"
       }
     }
   },
@@ -1265,7 +1285,8 @@
   "@returningMemberAge": {
     "placeholders": {
       "age": {
-        "type": "int"
+        "type": "int",
+        "format": "decimalPattern"
       }
     }
   },
@@ -1276,7 +1297,8 @@
   "@returningFamilyEnroll": {
     "placeholders": {
       "count": {
-        "type": "int"
+        "type": "int",
+        "format": "decimalPattern"
       }
     }
   },
@@ -1284,7 +1306,8 @@
   "@returningFamilyDone": {
     "placeholders": {
       "count": {
-        "type": "int"
+        "type": "int",
+        "format": "decimalPattern"
       }
     }
   },
@@ -1315,7 +1338,8 @@
   "@centerLocationAccuracy": {
     "placeholders": {
       "meters": {
-        "type": "int"
+        "type": "int",
+        "format": "decimalPattern"
       }
     }
   },
@@ -1342,7 +1366,8 @@
         "type": "String"
       },
       "count": {
-        "type": "int"
+        "type": "int",
+        "format": "decimalPattern"
       },
       "center": {
         "type": "String"
@@ -1352,7 +1377,6 @@
   "requestStatusWaiting": "Waiting",
   "requestStatusApproved": "Approved",
   "requestStatusRejected": "Rejected",
-  "requestStatusFulfilled": "Fulfilled",
   "decrease": "Decrease",
   "increase": "Increase",
   "reliefTitle": "Relief boxes",
@@ -1380,10 +1404,12 @@
   "@reliefGivenOfReceived": {
     "placeholders": {
       "given": {
-        "type": "int"
+        "type": "int",
+        "format": "decimalPattern"
       },
       "received": {
-        "type": "int"
+        "type": "int",
+        "format": "decimalPattern"
       }
     }
   },
@@ -1404,7 +1430,8 @@
   "@reliefBoxesArrived": {
     "placeholders": {
       "sent": {
-        "type": "int"
+        "type": "int",
+        "format": "decimalPattern"
       }
     }
   },
@@ -1432,10 +1459,12 @@
         "type": "String"
       },
       "given": {
-        "type": "int"
+        "type": "int",
+        "format": "decimalPattern"
       },
       "total": {
-        "type": "int"
+        "type": "int",
+        "format": "decimalPattern"
       }
     }
   },
@@ -1483,10 +1512,12 @@
   "@finalCountInsideOutside": {
     "placeholders": {
       "inside": {
-        "type": "int"
+        "type": "int",
+        "format": "decimalPattern"
       },
       "outside": {
-        "type": "int"
+        "type": "int",
+        "format": "decimalPattern"
       }
     }
   },
@@ -1494,7 +1525,8 @@
   "@finalCountNoStay": {
     "placeholders": {
       "count": {
-        "type": "int"
+        "type": "int",
+        "format": "decimalPattern"
       }
     }
   },
@@ -1539,7 +1571,8 @@
   "@reliefShortfallAsk": {
     "placeholders": {
       "count": {
-        "type": "int"
+        "type": "int",
+        "format": "decimalPattern"
       }
     }
   },
@@ -1547,7 +1580,8 @@
   "@reliefShortfallRow": {
     "placeholders": {
       "count": {
-        "type": "int"
+        "type": "int",
+        "format": "decimalPattern"
       },
       "status": {
         "type": "String"
@@ -1558,7 +1592,8 @@
   "@reliefShortfallSummary": {
     "placeholders": {
       "count": {
-        "type": "int"
+        "type": "int",
+        "format": "decimalPattern"
       },
       "round": {
         "type": "int"
@@ -1581,7 +1616,8 @@
   "@monitoringArrivedLastHour": {
     "placeholders": {
       "count": {
-        "type": "int"
+        "type": "int",
+        "format": "decimalPattern"
       }
     }
   },
@@ -1591,13 +1627,15 @@
   "@monitoringCentersSummary": {
     "placeholders": {
       "inUse": {
-        "type": "int"
+        "type": "int",
+        "format": "decimalPattern"
       },
       "centers": {
         "type": "String"
       },
       "noCapacity": {
-        "type": "int"
+        "type": "int",
+        "format": "decimalPattern"
       }
     }
   },
@@ -1607,7 +1645,8 @@
   "@monitoringInsideNoCapacity": {
     "placeholders": {
       "count": {
-        "type": "int"
+        "type": "int",
+        "format": "decimalPattern"
       }
     }
   },
@@ -1615,17 +1654,6 @@
   "monitoringAllNormal": "Every barangay is normal.",
   "monitoringLatestChanges": "Latest changes",
   "monitoringNoRequests": "No request is waiting.",
-  "monitoringWaited": "{hours}h {minutes}m",
-  "@monitoringWaited": {
-    "placeholders": {
-      "hours": {
-        "type": "int"
-      },
-      "minutes": {
-        "type": "int"
-      }
-    }
-  },
   "monitoringNeedsConnection": "Monitoring needs a connection the first time.",
   "monitoringUpdated": "Updated {age}",
   "reliefNextInLine": "Next in line",
@@ -1635,7 +1663,8 @@
   "@reliefOutOfOrderBody": {
     "placeholders": {
       "count": {
-        "type": "int"
+        "type": "int",
+        "format": "decimalPattern"
       }
     }
   },
@@ -1643,7 +1672,8 @@
   "@countFamilies": {
     "placeholders": {
       "count": {
-        "type": "int"
+        "type": "int",
+        "format": "decimalPattern"
       }
     }
   },
@@ -1651,7 +1681,8 @@
   "@countPersons": {
     "placeholders": {
       "count": {
-        "type": "int"
+        "type": "int",
+        "format": "decimalPattern"
       }
     }
   },
@@ -1659,7 +1690,8 @@
   "@countBoxes": {
     "placeholders": {
       "count": {
-        "type": "int"
+        "type": "int",
+        "format": "decimalPattern"
       }
     }
   },
@@ -1667,7 +1699,8 @@
   "@countCenters": {
     "placeholders": {
       "count": {
-        "type": "int"
+        "type": "int",
+        "format": "decimalPattern"
       }
     }
   },
@@ -1675,7 +1708,8 @@
   "@countEvacuees": {
     "placeholders": {
       "count": {
-        "type": "int"
+        "type": "int",
+        "format": "decimalPattern"
       }
     }
   },
@@ -1892,8 +1926,6 @@
   "@transferReasonLine": {"placeholders":{"reason":{"type":"String"}}},
   "transferRequestedBy": "Asked by {who}, {time}",
   "@transferRequestedBy": {"placeholders":{"who":{"type":"String"},"time":{"type":"String"}}},
-  "transferWaitingMinutes": "{count, plural, =1{Waiting 1 minute} other{Waiting {count} minutes}}",
-  "@transferWaitingMinutes": {"placeholders":{"count":{"type":"int"}}},
   "transferEscalatedNote": "No answer in 30 minutes: CSWD was told at {time} and can decide it.",
   "@transferEscalatedNote": {"placeholders":{"time":{"type":"String"}}},
   "transferDecidedBy": "Answered by {who}, {time}",
@@ -1969,5 +2001,22 @@
   "situationWatchingBarangays": "{count, plural, =1{1 barangay is on watch or has flooding reported.} other{{count} barangays are on watch or have flooding reported.}}",
   "@situationWatchingBarangays": {"placeholders":{"count":{"type":"int"}}},
   "situationMonitoring": "Being monitored",
-  "situationNoEvacuation": "No barangay has to evacuate."
+  "situationNoEvacuation": "No barangay has to evacuate.",
+  "statusNearlyFull": "Nearly full",
+  "requestStatusSent": "Sent",
+  "requestStatusReceived": "Received",
+  "lockTitle": "Locked",
+  "lockAvailableWhenActive": "Available when the event is Active",
+  "lockClosedEvent": "This event is closed. It is read-only.",
+  "durationLessThanMinute": "less than a minute",
+  "durationMinutes": "{count, plural, =1{1 minute} other{{count} minutes}}",
+  "@durationMinutes": {"placeholders": {"count": {"type": "int", "format": "decimalPattern"}}},
+  "durationHours": "{count, plural, =1{1 hour} other{{count} hours}}",
+  "@durationHours": {"placeholders": {"count": {"type": "int", "format": "decimalPattern"}}},
+  "durationDays": "{count, plural, =1{1 day} other{{count} days}}",
+  "@durationDays": {"placeholders": {"count": {"type": "int", "format": "decimalPattern"}}},
+  "durationAgo": "{duration} ago",
+  "@durationAgo": {"placeholders": {"duration": {"type": "String"}}},
+  "waitingDuration": "Waiting {duration}",
+  "@waitingDuration": {"placeholders": {"duration": {"type": "String"}}}
 }
