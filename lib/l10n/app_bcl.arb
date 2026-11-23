@@ -3458,5 +3458,14 @@
   "pushTestOption": "Mag-ako nin test na abiso",
   "@pushTestOption": {"description": "NEEDS NATIVE BIKOL REVIEW"},
   "pushTestOptionHint": "Para sa demonstrasyon: an test push sana kan administrator.",
-  "@pushTestOptionHint": {"description": "NEEDS NATIVE BIKOL REVIEW"}
+  "@pushTestOptionHint": {"description": "NEEDS NATIVE BIKOL REVIEW"},
+  "planSpaceEstimated": "Part of this room is only an estimate",
+  "planReadyBelow": "{count} short of the standard",
+  "planReadyNoChecklist": "{count} without a checklist",
+  "planReadyNoCapacity": "{count} without a capacity",
+  "centerNeedSupplies": "Supplies short",
+  "centerReady": "Ready",
+  "facilityForCenter": "For {center}",
+  "facilityShowAllCenters": "Show all centers",
+  "facilityEditSuggestion": "Change before sending"
 }

@@ -25,29 +25,48 @@ class FacilitySuggestion {
     this.item,
     this.unit,
     this.reason,
+    this.label,
   });
 
+  /// One row of `GET /facility-requests/suggestions`
+  /// (apps-api-2026-11-24.md 7.2): `{center: {id, name}, facility_type,
+  /// label, quantity, unit, reason}`; `quantity` is what is left to ask.
   static FacilitySuggestion? fromJson(Map<String, dynamic> j) {
-    final center =
-        (j['evacuation_center'] ?? j['center']) as Map<String, dynamic>?;
-    final id =
-        (j['evacuation_center_id'] as num?)?.toInt() ??
-        (center?['id'] as num?)?.toInt();
+    final center = j['center'] as Map<String, dynamic>?;
+    final id = (center?['id'] as num?)?.toInt();
     if (id == null) return null;
     return FacilitySuggestion(
       centerId: id,
-      centerName:
-          center?['name'] as String? ?? j['center_name'] as String? ?? '',
+      centerName: center?['name'] as String? ?? '',
       facilityType: j['facility_type'] as String?,
-      item: j['item'] as String?,
-      quantity:
-          ((j['quantity_needed'] ?? j['quantity'] ?? j['short']) as num?)
-              ?.toInt() ??
-          1,
+      label: j['label'] as String?,
+      quantity: (j['quantity'] as num?)?.toInt() ?? 1,
       unit: j['unit'] as String?,
-      reason: (j['reason'] ?? j['context']) as String?,
+      reason: j['reason'] as String?,
     );
   }
+
+  /// The server's words for the supply ("toilets", "bathing cubicles").
+  final String? label;
+
+  /// What the row shows: the server's label, else the facility type's.
+  String what(BuildContext context) => (label != null && label!.isNotEmpty)
+      ? label!
+      : facilityType != null
+      ? facilityRequestLabel(context, facilityType, null)
+      : item ?? '';
+
+  /// The request form filled from this suggestion (the official may change
+  /// it before sending).
+  FacilityRequest get asPrefill => FacilityRequest(
+    id: 0,
+    status: 'pending',
+    quantity: quantity,
+    facilityType: facilityType,
+    item: item ?? label,
+    unit: unit,
+    reason: reason,
+  );
 
   final int centerId;
   final String centerName;
@@ -73,20 +92,7 @@ final facilitySuggestionsProvider =
       final read = await ref
           .watch(staffReadCacheProvider)
           .get('/facility-requests/suggestions');
-      final rows = read.data['suggestions'] ?? read.data['data'];
-      final list = rows is List
-          ? rows
-          : [
-              // Grouped per center: {centers: [{evacuation_center, items}]}.
-              for (final c in read.data['centers'] as List? ?? const [])
-                for (final i
-                    in (c as Map<String, dynamic>)['items'] as List? ??
-                        const [])
-                  {
-                    ...(i as Map<String, dynamic>),
-                    'evacuation_center': c['evacuation_center'] ?? c,
-                  },
-            ];
+      final list = read.data['suggestions'] as List? ?? const [];
       return [
         for (final r in list)
           ?FacilitySuggestion.fromJson(r as Map<String, dynamic>),
@@ -116,8 +122,20 @@ final barangayFacilityRequestsProvider =
 /// Facility requests for all the barangay's centers (Home > To do >
 /// Request supplies): "Suggested for your centers", then the requests
 /// with Mark received and Request again.
-class FacilityRequestsPage extends ConsumerWidget {
-  const FacilityRequestsPage({super.key});
+class FacilityRequestsPage extends ConsumerStatefulWidget {
+  const FacilityRequestsPage({super.key, this.centerId});
+
+  /// From a To do item ("Request supplies" for one center): only that
+  /// center's suggestions, with "Show all centers".
+  final int? centerId;
+
+  @override
+  ConsumerState<FacilityRequestsPage> createState() =>
+      _FacilityRequestsPageState();
+}
+
+class _FacilityRequestsPageState extends ConsumerState<FacilityRequestsPage> {
+  late int? _centerId = widget.centerId;
 
   Future<void> _sendSuggestion(
     BuildContext context,
@@ -125,9 +143,7 @@ class FacilityRequestsPage extends ConsumerWidget {
     FacilitySuggestion s,
   ) async {
     final l10n = AppLocalizations.of(context);
-    final what = s.facilityType != null
-        ? facilityRequestLabel(context, s.facilityType, null)
-        : s.item ?? '';
+    final what = s.what(context);
     await enqueueStaffAction(
       ref,
       kind: PendingActionKind.facilityRequest,
@@ -181,7 +197,7 @@ class FacilityRequestsPage extends ConsumerWidget {
   }
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     final theme = Theme.of(context);
     final canCreate =
@@ -229,52 +245,88 @@ class FacilityRequestsPage extends ConsumerWidget {
                   style: theme.textTheme.bodySmall,
                 ),
               ],
-              data: (list) => list.isEmpty
-                  ? [
-                      Text(
-                        l10n.facilitySuggestedNone,
-                        style: theme.textTheme.bodySmall,
-                      ),
-                    ]
-                  : [
-                      Text(
-                        l10n.facilitySuggestedHint,
-                        style: theme.textTheme.bodySmall,
-                      ),
-                      const SizedBox(height: 8),
-                      for (final s in list)
-                        Card(
-                          margin: const EdgeInsets.only(bottom: 8),
-                          child: ListTile(
-                            minTileHeight: 64,
-                            title: Text(
-                              '${s.facilityType != null ? facilityRequestLabel(context, s.facilityType, null) : s.item ?? ''} × '
-                              '${s.unit == null ? formatCount(s.quantity) : l10n.quantityWithUnit(formatCount(s.quantity), s.unit!)}',
-                            ),
-                            subtitle: Text(
-                              [
-                                s.centerName,
-                                if ((s.reason ?? '').isNotEmpty) s.reason!,
-                              ].join(' · '),
-                            ),
-                            trailing: queued.contains('suggestion:${s.key}')
-                                ? Text(
-                                    l10n.syncWaiting,
-                                    style: theme.textTheme.labelMedium,
-                                  )
-                                : canCreate
-                                ? FilledButton.tonal(
-                                    style: FilledButton.styleFrom(
-                                      minimumSize: const Size(48, 48),
-                                    ),
-                                    onPressed: () =>
-                                        _sendSuggestion(context, ref, s),
-                                    child: Text(l10n.facilityRequestSend),
-                                  )
-                                : null,
+              data: (all) {
+                final list = [
+                  for (final s in all)
+                    if (_centerId == null || s.centerId == _centerId) s,
+                ];
+                final onlyName = _centerId == null
+                    ? null
+                    : centerNames[_centerId] ?? list.firstOrNull?.centerName;
+                return [
+                  if (_centerId != null)
+                    Wrap(
+                      spacing: 8,
+                      crossAxisAlignment: WrapCrossAlignment.center,
+                      children: [
+                        if (onlyName != null && onlyName.isNotEmpty)
+                          Text(
+                            l10n.facilityForCenter(onlyName),
+                            style: theme.textTheme.labelLarge,
                           ),
+                        TextButton(
+                          onPressed: () => setState(() => _centerId = null),
+                          child: Text(l10n.facilityShowAllCenters),
                         ),
-                    ],
+                      ],
+                    ),
+                  ...(list.isEmpty
+                      ? [
+                          Text(
+                            l10n.facilitySuggestedNone,
+                            style: theme.textTheme.bodySmall,
+                          ),
+                        ]
+                      : [
+                          Text(
+                            l10n.facilitySuggestedHint,
+                            style: theme.textTheme.bodySmall,
+                          ),
+                          const SizedBox(height: 8),
+                          for (final s in list)
+                            Card(
+                              margin: const EdgeInsets.only(bottom: 8),
+                              child: ListTile(
+                                minTileHeight: 64,
+                                title: Text(
+                                  '${s.what(context)} × '
+                                  '${s.unit == null ? formatCount(s.quantity) : l10n.quantityWithUnit(formatCount(s.quantity), s.unit!)}',
+                                ),
+                                // Tap: the form filled in, to change first.
+                                onTap: canCreate
+                                    ? () => showFacilityRequestForm(
+                                        context,
+                                        centerId: s.centerId,
+                                        centerName: s.centerName,
+                                        again: s.asPrefill,
+                                      )
+                                    : null,
+                                subtitle: Text(
+                                  [
+                                    s.centerName,
+                                    if ((s.reason ?? '').isNotEmpty) s.reason!,
+                                  ].join(' · '),
+                                ),
+                                trailing: queued.contains('suggestion:${s.key}')
+                                    ? Text(
+                                        l10n.syncWaiting,
+                                        style: theme.textTheme.labelMedium,
+                                      )
+                                    : canCreate
+                                    ? FilledButton.tonal(
+                                        style: FilledButton.styleFrom(
+                                          minimumSize: const Size(48, 48),
+                                        ),
+                                        onPressed: () =>
+                                            _sendSuggestion(context, ref, s),
+                                        child: Text(l10n.facilityRequestSend),
+                                      )
+                                    : null,
+                              ),
+                            ),
+                        ]),
+                ];
+              },
             ),
             SectionTitle(l10n.facilityYourRequests),
             ...requests.when(

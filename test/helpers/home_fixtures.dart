@@ -346,16 +346,27 @@ final barangayDashboardAnswer = <String, dynamic>{
   'evacuation_event': _event,
   'status': {'status': 'watch', 'may_say_arriving': false},
   'plan': {
+    // apps-api-2026-11-24.md 7.1.
     'forecast': {
+      'families': 1250,
+      'persons': 4300,
       'families_low': 40,
       'families_high': 1250,
-      'persons_low': 150,
-      'persons_high': 4300,
-      'plan_families': 1250,
-      'above_seen': false,
     },
-    'space': {'capacity_persons': 3800, 'persons_high': 4300, 'short': 500},
-    'centers_ready': {'ready': 2, 'total': 4},
+    'space': {
+      'capacity_persons': 3800,
+      'estimated': false,
+      'centers_without_capacity': 0,
+      'forecast_persons': 4300,
+      'short': 500,
+    },
+    'centers_ready': {
+      'total': 4,
+      'ready': 2,
+      'below': 1,
+      'no_checklist': 1,
+      'no_capacity': 0,
+    },
   },
   'list': {'families': 12, 'persons': 47, 'checked_in': 5},
   'todo': [
@@ -364,13 +375,17 @@ final barangayDashboardAnswer = <String, dynamic>{
       'text': '3 of your 4 centers have no capacity or only an estimate',
       'detail':
           '1 unknown, 2 estimated. Enter each center\'s capacity on its page.',
-      'href': '/evacuation-centers?filter=attention',
+      'href': '/evacuation-centers?needs=estimated',
+      'action': 'Enter capacity',
+      'counts': {'total': 4, 'official': 1, 'estimated': 2, 'unknown': 1},
     },
     {
       'kind': 'supplies_short',
-      'text': 'Binatagan Hall is short of 3 items',
-      'detail': 'Toilets and water containers.',
-      'action': {'label': 'Request supplies', 'kind': 'request_supplies'},
+      'center_id': 71,
+      'text': 'Binatagan Hall: short of the planning standard',
+      'detail': '2 toilets, 2 bathing cubicles for a full center (60 persons).',
+      'href': '/facility-requests?request=71',
+      'action': 'Request supplies',
     },
   ],
 };

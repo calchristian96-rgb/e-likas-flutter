@@ -46,15 +46,23 @@ void main() {
         CenterNeed.capacityMissing,
         CenterNeed.location,
       });
-      // The checklist comes from the dashboard's readiness.
-      expect(centerNeeds(_center(), {'has_checklist': false}), {
+      // The dashboard row: readiness (apps-api-2026-11-24.md 7.1).
+      expect(centerNeeds(_center(), {'readiness': 'no_checklist'}), {
         CenterNeed.checklist,
       });
+      expect(centerNeeds(_center(), {'readiness': 'below'}), {
+        CenterNeed.supplies,
+      });
+      expect(centerNeeds(_center(), {'readiness': 'ready'}), isEmpty);
+      expect(centerNeeds(_center(), {'readiness': null}), isEmpty);
+      // A pending center has no public copy: the dashboard row tells.
       expect(
         centerNeeds(_center(approval: 'pending'), {
-          'missing': ['facilities_checklist', 'location'],
+          'readiness': 'no_capacity',
+          'has_location': false,
+          'capacity_persons': null,
         }),
-        {CenterNeed.checklist, CenterNeed.location},
+        {CenterNeed.capacityMissing, CenterNeed.location},
       );
     },
   );

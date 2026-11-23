@@ -46,10 +46,12 @@ final _requests = {
 
 final _suggestions = {
   'suggestions': [
+    // apps-api-2026-11-24.md 7.2.
     {
-      'evacuation_center': {'id': 12, 'name': 'Binatagan Hall'},
+      'center': {'id': 12, 'name': 'Binatagan Hall'},
       'facility_type': 'handwashing_facility',
-      'quantity_needed': 3,
+      'label': 'handwashing stations',
+      'quantity': 3,
       'unit': 'stations',
       'reason': 'Standards for a full center: 3 more',
     },
@@ -68,6 +70,9 @@ void main() {
     final s = FacilitySuggestion.fromJson(
       (_suggestions['suggestions'] as List).first as Map<String, dynamic>,
     )!;
+    expect(s.centerId, 12);
+    expect(s.label, 'handwashing stations');
+    expect(s.asPrefill.quantity, 3);
     expect(s.body, {
       'facility_type': 'handwashing_facility',
       'quantity_needed': 3,

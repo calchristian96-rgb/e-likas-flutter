@@ -8,6 +8,7 @@ import '../../core/utils/data_freshness_formatter.dart';
 import '../../core/widgets/ui_kit.dart';
 import '../../l10n/app_localizations.dart';
 import '../transfers/transfers.dart';
+import '../staff_shell/current_event.dart';
 
 class AppNotification {
   const AppNotification({
@@ -19,11 +20,18 @@ class AppNotification {
     this.href,
     this.type,
     this.urgent = false,
+    this.evacuationEventId,
+    this.barangayId,
   });
 
-  /// The server's notification kind when it sends one (e.g.
-  /// `RegistrationOpen`); null on older servers.
+  /// The server's notification type in snake case
+  /// (apps-api-2026-11-24.md 7.4), e.g. `registration_open`,
+  /// `transfer_notification`. Unknown types are shown, never acted on.
   final String? type;
+
+  /// The event and barangay it is about (null: every event / barangay).
+  final int? evacuationEventId;
+  final int? barangayId;
 
   /// CSWD: the first evacuee at a pending center (`urgent: true`).
   final bool urgent;
@@ -61,7 +69,9 @@ final notificationsProvider = FutureProvider.autoDispose<NotificationsState>((
           message: n['message'] as String? ?? '',
           read: n['read'] == true,
           href: n['href'] as String?,
-          type: (n['type'] ?? n['kind']) as String?,
+          type: n['type'] as String?,
+          evacuationEventId: (n['evacuation_event_id'] as num?)?.toInt(),
+          barangayId: (n['barangay_id'] as num?)?.toInt(),
           urgent: n['urgent'] == true,
           createdAt: DateTime.tryParse(
             n['created_at'] as String? ?? '',
@@ -77,6 +87,42 @@ String? appPathForHref(String? href) {
   final path = Uri.tryParse(href ?? '')?.path ?? '';
   if (path.startsWith('/transfer-requests')) return '/staff/home/transfers';
   return null;
+}
+
+/// The app screen for a notification, by its `type`, then its web `href`.
+/// `registration_open` opens the EC Board.
+String? appPathForNotification(AppNotification n) => switch (n.type) {
+  'registration_open' || 'event_activated' => '/staff/centers',
+  'transfer_notification' => '/staff/home/transfers',
+  'final_count_reminder' ||
+  'count_submitted_on_behalf' ||
+  'status_update_requested' => '/staff/home/barangay',
+  'families_arriving' when n.barangayId != null =>
+    '/staff/barangays/${n.barangayId}',
+  'support_request_updated' => '/staff/more/report',
+  _ => appPathForHref(n.href),
+};
+
+/// Opens [n]'s screen. For an event notification about another event
+/// than the selected one, selects that event first (online; offline the
+/// screen opens on the selected event).
+Future<void> openNotification(
+  BuildContext context,
+  WidgetRef ref,
+  AppNotification n,
+) async {
+  final path = appPathForNotification(n);
+  if (path == null) return;
+  final eventId = n.evacuationEventId;
+  if (eventId != null) {
+    final current = ref.read(currentStaffEventProvider).value;
+    final open = ref.read(openStaffEventsProvider).value ?? const [];
+    if (current?.id != eventId && open.any((e) => e.id == eventId)) {
+      await chooseStaffEvent(ref, AppLocalizations.of(context), eventId);
+    }
+  }
+  ref.invalidate(transferRequestsProvider);
+  if (context.mounted) context.go(path);
 }
 
 /// The bell with its unread badge.
@@ -152,12 +198,9 @@ class _NotificationsPageState extends ConsumerState<NotificationsPage> {
                   for (final n in s.items) ...[
                     AppCard(
                       highlight: !n.read,
-                      onTap: appPathForHref(n.href) == null
+                      onTap: appPathForNotification(n) == null
                           ? null
-                          : () {
-                              ref.invalidate(transferRequestsProvider);
-                              context.go(appPathForHref(n.href)!);
-                            },
+                          : () => openNotification(context, ref, n),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [

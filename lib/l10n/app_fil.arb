@@ -1479,5 +1479,14 @@
   "settingsVersion": "Bersyon",
   "pushTestRevealed": "Ipinakita ang opsyon para sa test na abiso.",
   "pushTestOption": "Tumanggap ng test na abiso",
-  "pushTestOptionHint": "Para sa demonstrasyon: ang test push lang ng administrator."
+  "pushTestOptionHint": "Para sa demonstrasyon: ang test push lang ng administrator.",
+  "planSpaceEstimated": "Tantiya lang ang bahagi ng espasyong ito",
+  "planReadyBelow": "{count} kulang sa pamantayan",
+  "planReadyNoChecklist": "{count} walang checklist",
+  "planReadyNoCapacity": "{count} walang kapasidad",
+  "centerNeedSupplies": "Kulang ang gamit",
+  "centerReady": "Handa",
+  "facilityForCenter": "Para sa {center}",
+  "facilityShowAllCenters": "Ipakita lahat ng center",
+  "facilityEditSuggestion": "Baguhin bago ipadala"
 }

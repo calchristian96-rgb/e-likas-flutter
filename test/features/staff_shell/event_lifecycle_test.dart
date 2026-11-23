@@ -94,19 +94,18 @@ void main() {
     expect(find.text('Families are arriving'), findsNothing);
   });
 
-  test('the RegistrationOpen notification is recognised', () {
-    expect(
-      isRegistrationOpenNotification(
-        const AppNotification(
-          id: '1',
-          title: 'Anything',
-          message: '',
-          read: false,
-          type: 'RegistrationOpen',
-        ),
-      ),
-      isTrue,
+  test('registration_open: by type, with its event', () {
+    const open = AppNotification(
+      id: '1',
+      title: 'Evacuation started: registration is now open',
+      message: '',
+      read: false,
+      type: 'registration_open',
+      evacuationEventId: 24,
     );
+    expect(isRegistrationOpenNotification(open), isTrue);
+    expect(appPathForNotification(open), '/staff/centers');
+    // The title alone no longer decides.
     expect(
       isRegistrationOpenNotification(
         const AppNotification(
@@ -116,18 +115,31 @@ void main() {
           read: false,
         ),
       ),
-      isTrue,
+      isFalse,
     );
     expect(
-      isRegistrationOpenNotification(
+      appPathForNotification(
         const AppNotification(
           id: '3',
           title: 'Transfer request: 2 families',
           message: '',
           read: false,
+          type: 'transfer_notification',
         ),
       ),
-      isFalse,
+      '/staff/home/transfers',
+    );
+    expect(
+      appPathForNotification(
+        const AppNotification(
+          id: '4',
+          title: 'x',
+          message: '',
+          read: false,
+          type: 'something_new',
+        ),
+      ),
+      isNull,
     );
   });
 }

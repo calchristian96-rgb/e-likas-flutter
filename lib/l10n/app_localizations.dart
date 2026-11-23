@@ -7634,6 +7634,60 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'For demonstrations: only the administrator\'s test push.'**
   String get pushTestOptionHint;
+
+  /// No description provided for @planSpaceEstimated.
+  ///
+  /// In en, this message translates to:
+  /// **'Part of this room is only an estimate'**
+  String get planSpaceEstimated;
+
+  /// No description provided for @planReadyBelow.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} short of the standard'**
+  String planReadyBelow(String count);
+
+  /// No description provided for @planReadyNoChecklist.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} without a checklist'**
+  String planReadyNoChecklist(String count);
+
+  /// No description provided for @planReadyNoCapacity.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} without a capacity'**
+  String planReadyNoCapacity(String count);
+
+  /// No description provided for @centerNeedSupplies.
+  ///
+  /// In en, this message translates to:
+  /// **'Supplies short'**
+  String get centerNeedSupplies;
+
+  /// No description provided for @centerReady.
+  ///
+  /// In en, this message translates to:
+  /// **'Ready'**
+  String get centerReady;
+
+  /// No description provided for @facilityForCenter.
+  ///
+  /// In en, this message translates to:
+  /// **'For {center}'**
+  String facilityForCenter(String center);
+
+  /// No description provided for @facilityShowAllCenters.
+  ///
+  /// In en, this message translates to:
+  /// **'Show all centers'**
+  String get facilityShowAllCenters;
+
+  /// No description provided for @facilityEditSuggestion.
+  ///
+  /// In en, this message translates to:
+  /// **'Change before sending'**
+  String get facilityEditSuggestion;
 }
 
 class _AppLocalizationsDelegate

@@ -1,7 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 
 import '../../app/theme/app_theme.dart';
 import '../../core/cache/staff_read_cache.dart';
@@ -193,20 +192,26 @@ class _ArrivingDialogState extends State<_ArrivingDialog> {
 /// Whether a notification row is the server's `RegistrationOpen` (sent to
 /// every official when CSWD starts the evacuation, or when a Preemptive
 /// or Forced order is recorded for their barangay).
-bool isRegistrationOpenNotification(AppNotification n) {
-  final type = (n.type ?? '').toLowerCase().replaceAll('_', '');
-  if (type.contains('registrationopen')) return true;
-  final t = n.title.toLowerCase();
-  return t.contains('registration') && t.contains('open');
-}
+/// `type: "registration_open"` (apps-api-2026-11-24.md 7.4).
+bool isRegistrationOpenNotification(AppNotification n) =>
+    n.type == 'registration_open';
 
-/// The newest unread "registration is open" notification, if any.
+/// The newest unread "registration is open" notification for the
+/// selected event (or for no event in particular), if any.
 final registrationOpenNoticeProvider = Provider.autoDispose<AppNotification?>((
   ref,
 ) {
   final items = ref.watch(notificationsProvider).value?.items ?? const [];
+  final eventId = ref.watch(currentStaffEventProvider).value?.id;
   return items
-      .where((n) => !n.read && isRegistrationOpenNotification(n))
+      .where(
+        (n) =>
+            !n.read &&
+            isRegistrationOpenNotification(n) &&
+            (n.evacuationEventId == null ||
+                eventId == null ||
+                n.evacuationEventId == eventId),
+      )
       .firstOrNull;
 });
 
@@ -226,7 +231,8 @@ class RegistrationOpenCard extends ConsumerWidget {
     return Padding(
       padding: const EdgeInsets.only(bottom: 16),
       child: AppCard(
-        onTap: () => context.go('/staff/home/notifications'),
+        // Opens the EC Board to register the families arriving.
+        onTap: () => openNotification(context, ref, notice),
         child: Row(
           children: [
             Icon(Icons.how_to_reg, color: color, size: 32),

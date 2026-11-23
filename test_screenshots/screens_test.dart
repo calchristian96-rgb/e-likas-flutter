@@ -203,11 +203,13 @@ final newAnswers = <String, Map<String, dynamic>>{
   '/facility-requests/suggestions': {
     'suggestions': [
       {
-        'evacuation_center': {'id': 72, 'name': 'Binatagan Covered Court'},
+        'center': {'id': 72, 'name': 'Binatagan Covered Court'},
         'facility_type': 'handwashing_facility',
-        'quantity_needed': 3,
+        'label': 'handwashing stations',
+        'quantity': 3,
         'unit': 'stations',
-        'reason': 'For a full center: 3 more',
+        'reason':
+            'Short of the planning standard for a full center (60 persons): 3 handwashing stations.',
       },
     ],
   },

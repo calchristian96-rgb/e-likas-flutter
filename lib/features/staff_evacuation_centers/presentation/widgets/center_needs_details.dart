@@ -8,21 +8,32 @@ import '../../../staff_home/barangay_dashboard.dart';
 import '../providers/own_centers_provider.dart';
 
 /// What a center still needs before it is ready (0.4.0 Part 5).
-enum CenterNeed { capacityMissing, capacityEstimated, location, checklist }
+/// [supplies]: the checklist is short of the standard for a full center.
+enum CenterNeed {
+  capacityMissing,
+  capacityEstimated,
+  location,
+  checklist,
+  supplies,
+}
 
-/// Each center's `readiness` from `GET /dashboard/barangay`, by id.
-final centerReadinessProvider = Provider.autoDispose<Map<int, Object?>>((ref) {
-  final d = ref.watch(barangayDashboardProvider).value;
-  return {
-    for (final c in d?.centers ?? const <Map<String, dynamic>>[])
-      if (c['id'] is num) (c['id'] as num).toInt(): c['readiness'],
-  };
-});
+/// Each center's row from `GET /dashboard/barangay` `centers[]`, by id
+/// (apps-api-2026-11-24.md 7.1): `readiness`, `has_location`,
+/// `capacity_persons`, `capacity_source`.
+final centerReadinessProvider =
+    Provider.autoDispose<Map<int, Map<String, dynamic>>>((ref) {
+      final d = ref.watch(barangayDashboardProvider).value;
+      return {
+        for (final c in d?.centers ?? const <Map<String, dynamic>>[])
+          if (c['id'] is num) (c['id'] as num).toInt(): c,
+      };
+    });
 
 /// The needs of [center]: from the public copy (capacity source, map
-/// location) and the dashboard's readiness (the facilities checklist,
-/// and anything the public copy cannot tell, e.g. for a pending center).
-Set<CenterNeed> centerNeeds(OwnCenter center, Object? readiness) {
+/// location) and its dashboard row [dashboard] (`readiness`, and the
+/// capacity and location the public copy cannot tell, e.g. for a pending
+/// center).
+Set<CenterNeed> centerNeeds(OwnCenter center, Map<String, dynamic>? dashboard) {
   final needs = <CenterNeed>{};
   final public = center.public;
   if (public != null) {
@@ -30,29 +41,22 @@ Set<CenterNeed> centerNeeds(OwnCenter center, Object? readiness) {
     if (public.isCapacityEstimated) needs.add(CenterNeed.capacityEstimated);
     if (!public.hasCoordinates) needs.add(CenterNeed.location);
   }
-  if (readiness is Map) {
-    bool no(List<String> keys) => keys.any((k) => readiness[k] == false);
-    if (no(['has_capacity', 'capacity'])) needs.add(CenterNeed.capacityMissing);
-    if (readiness['capacity_source'] == 'estimated') {
+  if (dashboard != null) {
+    if (dashboard.containsKey('capacity_persons') &&
+        dashboard['capacity_persons'] == null) {
+      needs.add(CenterNeed.capacityMissing);
+    }
+    if (dashboard['capacity_source'] == 'estimated') {
       needs.add(CenterNeed.capacityEstimated);
     }
-    if (no(['has_location', 'location'])) needs.add(CenterNeed.location);
-    if (no(['has_checklist', 'facilities_checklist', 'checklist'])) {
-      needs.add(CenterNeed.checklist);
-    }
-    final missing = readiness['missing'];
-    if (missing is List) {
-      for (final m in missing.map((e) => '$e'.toLowerCase())) {
-        if (m.contains('checklist') || m.contains('facilit')) {
-          needs.add(CenterNeed.checklist);
-        } else if (m.contains('location')) {
-          needs.add(CenterNeed.location);
-        } else if (m.contains('estimat')) {
-          needs.add(CenterNeed.capacityEstimated);
-        } else if (m.contains('capacity')) {
-          needs.add(CenterNeed.capacityMissing);
-        }
-      }
+    if (dashboard['has_location'] == false) needs.add(CenterNeed.location);
+    switch (dashboard['readiness']) {
+      case 'no_checklist':
+        needs.add(CenterNeed.checklist);
+      case 'no_capacity':
+        needs.add(CenterNeed.capacityMissing);
+      case 'below':
+        needs.add(CenterNeed.supplies);
     }
   }
   if (needs.contains(CenterNeed.capacityMissing)) {
@@ -71,10 +75,26 @@ class CenterNeedsChips extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context);
     final theme = Theme.of(context);
-    final readiness = ref.watch(centerReadinessProvider)[center.id];
-    final needs = centerNeeds(center, readiness);
-    if (needs.isEmpty) return const SizedBox.shrink();
-    final warning = theme.extension<AppSemanticColors>()!.warning;
+    final dashboard = ref.watch(centerReadinessProvider)[center.id];
+    final needs = centerNeeds(center, dashboard);
+    final semantic = theme.extension<AppSemanticColors>()!;
+    if (needs.isEmpty) {
+      // The checklist meets the standard for a full center.
+      if (dashboard?['readiness'] != 'ready') return const SizedBox.shrink();
+      return Padding(
+        padding: const EdgeInsets.only(top: 8),
+        child: Align(
+          alignment: Alignment.centerLeft,
+          child: Chip(
+            visualDensity: VisualDensity.compact,
+            avatar: Icon(Icons.verified, size: 16, color: semantic.success),
+            label: Text(l10n.centerReady),
+            side: BorderSide(color: semantic.success.withValues(alpha: 0.5)),
+          ),
+        ),
+      );
+    }
+    final warning = semantic.warning;
     return Padding(
       padding: const EdgeInsets.only(top: 8),
       child: Wrap(
@@ -93,6 +113,7 @@ class CenterNeedsChips extends ConsumerWidget {
                     CenterNeed.capacityEstimated => Icons.straighten,
                     CenterNeed.location => Icons.location_off_outlined,
                     CenterNeed.checklist => Icons.checklist_rtl_outlined,
+                    CenterNeed.supplies => Icons.inventory_outlined,
                   },
                   size: 16,
                   color: warning,
@@ -102,6 +123,7 @@ class CenterNeedsChips extends ConsumerWidget {
                   CenterNeed.capacityEstimated => l10n.centerNeedCapacityEst,
                   CenterNeed.location => l10n.centerNeedLocation,
                   CenterNeed.checklist => l10n.centerNeedChecklist,
+                  CenterNeed.supplies => l10n.centerNeedSupplies,
                 }),
                 side: BorderSide(color: warning.withValues(alpha: 0.5)),
               ),

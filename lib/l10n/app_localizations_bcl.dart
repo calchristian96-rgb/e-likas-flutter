@@ -4835,4 +4835,39 @@ class AppLocalizationsBcl extends AppLocalizations {
   @override
   String get pushTestOptionHint =>
       'Para sa demonstrasyon: an test push sana kan administrator.';
+
+  @override
+  String get planSpaceEstimated => 'Part of this room is only an estimate';
+
+  @override
+  String planReadyBelow(String count) {
+    return '$count short of the standard';
+  }
+
+  @override
+  String planReadyNoChecklist(String count) {
+    return '$count without a checklist';
+  }
+
+  @override
+  String planReadyNoCapacity(String count) {
+    return '$count without a capacity';
+  }
+
+  @override
+  String get centerNeedSupplies => 'Supplies short';
+
+  @override
+  String get centerReady => 'Ready';
+
+  @override
+  String facilityForCenter(String center) {
+    return 'For $center';
+  }
+
+  @override
+  String get facilityShowAllCenters => 'Show all centers';
+
+  @override
+  String get facilityEditSuggestion => 'Change before sending';
 }

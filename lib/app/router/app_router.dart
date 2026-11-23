@@ -662,7 +662,11 @@ final GoRouter appRouter = GoRouter(
                 ),
                 GoRoute(
                   path: 'facility-requests',
-                  builder: (context, state) => const FacilityRequestsPage(),
+                  builder: (context, state) => FacilityRequestsPage(
+                    centerId: int.tryParse(
+                      state.uri.queryParameters['center'] ?? '',
+                    ),
+                  ),
                 ),
                 GoRoute(
                   path: 'families-to-evacuate',

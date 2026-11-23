@@ -2275,5 +2275,18 @@
   "settingsVersion": "Version",
   "pushTestRevealed": "Test notifications option shown.",
   "pushTestOption": "Receive test notifications",
-  "pushTestOptionHint": "For demonstrations: only the administrator's test push."
+  "pushTestOptionHint": "For demonstrations: only the administrator's test push.",
+  "planSpaceEstimated": "Part of this room is only an estimate",
+  "planReadyBelow": "{count} short of the standard",
+  "@planReadyBelow": {"placeholders": {"count": {"type": "String"}}},
+  "planReadyNoChecklist": "{count} without a checklist",
+  "@planReadyNoChecklist": {"placeholders": {"count": {"type": "String"}}},
+  "planReadyNoCapacity": "{count} without a capacity",
+  "@planReadyNoCapacity": {"placeholders": {"count": {"type": "String"}}},
+  "centerNeedSupplies": "Supplies short",
+  "centerReady": "Ready",
+  "facilityForCenter": "For {center}",
+  "@facilityForCenter": {"placeholders": {"center": {"type": "String"}}},
+  "facilityShowAllCenters": "Show all centers",
+  "facilityEditSuggestion": "Change before sending"
 }

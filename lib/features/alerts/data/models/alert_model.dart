@@ -86,12 +86,12 @@ class AlertModel {
       isDrill: json['is_drill'] as bool? ?? false,
       targetKind: (json['target'] as Map<String, dynamic>?)?['kind'] as String?,
       targetLabel:
-          (json['target'] as Map<String, dynamic>?)?['label'] as String?,
+          (json['target'] as Map<String, dynamic>?)?['label'] as String? ??
+          (json['target_barangay'] as Map<String, dynamic>?)?['name']
+              as String?,
+      // `target_barangay`: {id, name} for one barangay, null for the city.
       targetBarangayId:
-          (json['barangay_id'] as num?)?.toInt() ??
-          ((json['barangay'] as Map<String, dynamic>?)?['id'] as num?)
-              ?.toInt() ??
-          ((json['target'] as Map<String, dynamic>?)?['barangay_id'] as num?)
+          ((json['target_barangay'] as Map<String, dynamic>?)?['id'] as num?)
               ?.toInt(),
       dateSentUtcMs: _parseDateToUtcMs(json['date_sent'] ?? json['created_at']),
       evacuationEventName: _nestedOrFlat(

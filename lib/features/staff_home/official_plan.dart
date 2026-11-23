@@ -29,6 +29,10 @@ class BarangayPlan {
     this.centersWithoutCapacity,
     this.centersReady,
     this.centersTotal,
+    this.spaceEstimated = false,
+    this.centersBelow,
+    this.centersNoChecklist,
+    this.centersNoCapacity,
   });
 
   factory BarangayPlan.fromDashboard(BarangayDashboard d) {
@@ -39,12 +43,12 @@ class BarangayPlan {
     final space = s is Map<String, dynamic> ? s : null;
     final r = plan['centers_ready'];
     final event = d.data['evacuation_event'] as Map<String, dynamic>?;
+    // apps-api-2026-11-24.md 7.1: forecast {families, persons,
+    // families_low, families_high}. Plan for the high end.
     final familiesHigh = _int(
-      forecast?['plan_families'] ?? forecast?['families_high'],
+      forecast?['families_high'] ?? forecast?['families'],
     );
-    final personsHigh = _int(
-      forecast?['plan_persons'] ?? forecast?['persons_high'],
-    );
+    final personsHigh = _int(forecast?['persons_high'] ?? forecast?['persons']);
     return BarangayPlan(
       hasForecast: forecast != null && familiesHigh != null,
       familiesLow: _int(forecast?['families_low']),
@@ -56,25 +60,24 @@ class BarangayPlan {
           event?['is_volcanic'] == true ||
           event?['event_type'] == 'volcanic_eruption' ||
           plan['is_volcanic'] == true,
-      spacePersons: _int(
-        space?['capacity_persons'] ?? space?['space'] ?? space?['capacity'],
-      ),
-      spaceNeeded: _int(
-        space?['persons_high'] ??
-            space?['needed'] ??
-            space?['forecast_persons'] ??
-            personsHigh,
-      ),
+      spacePersons: _int(space?['capacity_persons']),
+      spaceEstimated: space?['estimated'] == true,
+      // Null without a forecast: never compared with anything else.
+      spaceNeeded: _int(space?['forecast_persons']),
       spaceShort: _int(space?['short']),
       centersWithoutCapacity: _int(space?['centers_without_capacity']),
-      centersReady: r is Map ? _int(r['ready'] ?? r['count']) : _int(r),
-      centersTotal: r is Map
-          ? _int(r['total'] ?? r['of'] ?? r['approved'])
-          : d.centers.isEmpty
-          ? null
-          : d.centers.length,
+      centersReady: r is Map ? _int(r['ready']) : null,
+      centersTotal: r is Map ? _int(r['total']) : null,
+      centersBelow: r is Map ? _int(r['below']) : null,
+      centersNoChecklist: r is Map ? _int(r['no_checklist']) : null,
+      centersNoCapacity: r is Map ? _int(r['no_capacity']) : null,
     );
   }
+
+  final bool spaceEstimated;
+  final int? centersBelow;
+  final int? centersNoChecklist;
+  final int? centersNoCapacity;
 
   final bool hasForecast;
   final bool volcanic;
@@ -151,15 +154,25 @@ class OfficialPlanCard extends ConsumerWidget {
         spaceDetail = l10n.planSpaceEnough;
         spaceColor = semantic.success;
       }
-      if ((plan.centersWithoutCapacity ?? 0) > 0) {
+      if ((plan.centersWithoutCapacity ?? 0) > 0 || plan.spaceEstimated) {
         spaceDetail = [
           ?spaceDetail,
-          l10n.planCentersWithoutCapacity(
-            l10n.countCenters(plan.centersWithoutCapacity!),
-          ),
+          if (plan.spaceEstimated) l10n.planSpaceEstimated,
+          if ((plan.centersWithoutCapacity ?? 0) > 0)
+            l10n.planCentersWithoutCapacity(
+              l10n.countCenters(plan.centersWithoutCapacity!),
+            ),
         ].join(' · ');
       }
     }
+    final readyDetail = [
+      if ((plan.centersBelow ?? 0) > 0)
+        l10n.planReadyBelow(formatCount(plan.centersBelow)),
+      if ((plan.centersNoChecklist ?? 0) > 0)
+        l10n.planReadyNoChecklist(formatCount(plan.centersNoChecklist)),
+      if ((plan.centersNoCapacity ?? 0) > 0)
+        l10n.planReadyNoCapacity(formatCount(plan.centersNoCapacity)),
+    ].join(' · ');
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -203,6 +216,7 @@ class OfficialPlanCard extends ConsumerWidget {
                   formatCount(plan.centersReady),
                   formatCount(plan.centersTotal),
                 ),
+          detail: readyDetail,
           onTap: () => context.go('/staff/more/evacuation-centers'),
         ),
       ],
@@ -264,36 +278,53 @@ class _PlanTile extends StatelessWidget {
 }
 
 /// What a dashboard `todo` item opens in the app: the server's `href` is a
-/// web path, so the app picks its own screen by `kind` (unknown kinds are
-/// shown without a button).
+/// web path, so the app picks its own screen by `kind`
+/// (apps-api-2026-11-24.md 7.1). Unknown kinds are shown without a button.
 enum TodoTarget { centers, supplies, none }
 
-TodoTarget todoTargetOf(Map<String, dynamic> item) {
-  final kind = '${item['kind'] ?? ''}'.toLowerCase();
-  final action = item['action'];
-  final actionKind = action is Map
-      ? '${action['kind'] ?? action['key'] ?? ''}'.toLowerCase()
-      : '${action ?? ''}'.toLowerCase();
-  if (kind.contains('suppl') ||
-      actionKind.contains('suppl') ||
-      actionKind.contains('request')) {
-    return TodoTarget.supplies;
+TodoTarget todoTargetOf(Map<String, dynamic> item) =>
+    switch ('${item['kind'] ?? ''}') {
+      'center_capacity' ||
+      'center_location' ||
+      'center_checklist' => TodoTarget.centers,
+      'supplies_short' => TodoTarget.supplies,
+      _ => TodoTarget.none,
+    };
+
+/// The one center a To do item is about, when it names one: `center_id`
+/// (supplies), or the id in the web link (`/gis-map?locate=1`,
+/// `/evacuation-centers/1#facilities`). Null for a list of centers.
+int? todoCenterId(Map<String, dynamic> item) {
+  final direct = _int(item['center_id']);
+  if (direct != null) return direct;
+  final uri = Uri.tryParse('${item['href'] ?? ''}');
+  if (uri == null) return null;
+  final locate = int.tryParse(uri.queryParameters['locate'] ?? '');
+  if (locate != null) return locate;
+  final segments = uri.pathSegments;
+  if (segments.length == 2 && segments.first == 'evacuation-centers') {
+    return int.tryParse(segments[1]);
   }
-  if (kind.contains('capacity') ||
-      kind.contains('location') ||
-      kind.contains('checklist') ||
-      kind.contains('facilit')) {
-    return TodoTarget.centers;
-  }
-  return TodoTarget.none;
+  return null;
 }
 
-/// The path for a To do item.
-String? todoPath(TodoTarget t) => switch (t) {
-  TodoTarget.centers => '/staff/more/evacuation-centers',
-  TodoTarget.supplies => '/staff/home/facility-requests',
-  TodoTarget.none => null,
-};
+/// The app screen for a To do item: the facility request page for that
+/// center's suggestions, the center's own page when one center is named,
+/// else My centers.
+String? todoPathOf(Map<String, dynamic> item) {
+  final center = todoCenterId(item);
+  return switch (todoTargetOf(item)) {
+    TodoTarget.supplies =>
+      center == null
+          ? '/staff/home/facility-requests'
+          : '/staff/home/facility-requests?center=$center',
+    TodoTarget.centers =>
+      center == null
+          ? '/staff/more/evacuation-centers'
+          : '/staff/more/evacuation-centers/$center',
+    TodoTarget.none => null,
+  };
+}
 
 /// One dashboard To do item: the server's `text` and `detail` as they
 /// are, with its action ("Request supplies", "Open centers").
@@ -307,20 +338,22 @@ class DashboardTodoCard extends StatelessWidget {
     final l10n = AppLocalizations.of(context);
     final theme = Theme.of(context);
     final target = todoTargetOf(item);
-    final path = todoPath(target);
-    final action = item['action'];
-    final serverLabel = action is Map ? action['label'] as String? : null;
-    final label = switch (target) {
-      TodoTarget.supplies => l10n.todoRequestSupplies,
-      TodoTarget.centers => serverLabel ?? l10n.todoOpenCenters,
-      TodoTarget.none => serverLabel,
-    };
-    final icon = switch (target) {
-      TodoTarget.supplies => Icons.inventory_outlined,
-      _ when '${item['kind']}'.contains('location') =>
-        Icons.location_off_outlined,
-      _ when '${item['kind']}'.contains('checklist') =>
-        Icons.checklist_rtl_outlined,
+    final path = todoPathOf(item);
+    // The server's button label ("Set location", "Request supplies").
+    final serverLabel = item['action'] is String
+        ? item['action'] as String
+        : null;
+    final label =
+        serverLabel ??
+        switch (target) {
+          TodoTarget.supplies => l10n.todoRequestSupplies,
+          TodoTarget.centers => l10n.todoOpenCenters,
+          TodoTarget.none => null,
+        };
+    final icon = switch ('${item['kind']}') {
+      'supplies_short' => Icons.inventory_outlined,
+      'center_location' => Icons.location_off_outlined,
+      'center_checklist' => Icons.checklist_rtl_outlined,
       _ => Icons.straighten_outlined,
     };
     return Padding(

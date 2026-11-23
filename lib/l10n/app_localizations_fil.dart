@@ -4912,4 +4912,39 @@ class AppLocalizationsFil extends AppLocalizations {
   @override
   String get pushTestOptionHint =>
       'Para sa demonstrasyon: ang test push lang ng administrator.';
+
+  @override
+  String get planSpaceEstimated => 'Tantiya lang ang bahagi ng espasyong ito';
+
+  @override
+  String planReadyBelow(String count) {
+    return '$count kulang sa pamantayan';
+  }
+
+  @override
+  String planReadyNoChecklist(String count) {
+    return '$count walang checklist';
+  }
+
+  @override
+  String planReadyNoCapacity(String count) {
+    return '$count walang kapasidad';
+  }
+
+  @override
+  String get centerNeedSupplies => 'Kulang ang gamit';
+
+  @override
+  String get centerReady => 'Handa';
+
+  @override
+  String facilityForCenter(String center) {
+    return 'Para sa $center';
+  }
+
+  @override
+  String get facilityShowAllCenters => 'Ipakita lahat ng center';
+
+  @override
+  String get facilityEditSuggestion => 'Baguhin bago ipadala';
 }

@@ -16,9 +16,7 @@ bool alertIsForOfficial(Map<String, dynamic> a, int? barangayId) {
   final target = a['target'] as Map<String, dynamic>?;
   final kind = target?['kind'] as String?;
   final alertBarangay =
-      (a['barangay_id'] as num?)?.toInt() ??
-      ((a['barangay'] as Map<String, dynamic>?)?['id'] as num?)?.toInt() ??
-      (target?['barangay_id'] as num?)?.toInt();
+      ((a['target_barangay'] as Map<String, dynamic>?)?['id'] as num?)?.toInt();
   if (kind == 'person' || kind == 'evacuee') return false;
   if (alertBarangay != null && barangayId != null) {
     return alertBarangay == barangayId;
@@ -59,8 +57,16 @@ class StaffAlertsSection extends ConsumerWidget {
                   context: context,
                   builder: (context) => AlertDialog(
                     title: Text(a['title'] as String? ?? ''),
+                    // The dashboard's rows carry no message: the date.
                     content: SingleChildScrollView(
-                      child: Text(a['message'] as String? ?? ''),
+                      child: Text(
+                        (a['message'] as String?)?.isNotEmpty == true
+                            ? a['message'] as String
+                            : switch (parseServerTime(a['date_sent'])) {
+                                final DateTime t => formatShortDateTime(t),
+                                null => '',
+                              },
+                      ),
                     ),
                     actions: [
                       TextButton(

@@ -82,8 +82,22 @@ void main() {
       }, 13),
       isTrue,
     );
-    expect(alertIsForOfficial({'id': 2, 'barangay_id': 13}, 13), isTrue);
-    expect(alertIsForOfficial({'id': 3, 'barangay_id': 49}, 13), isFalse);
+    // target_barangay (apps-api-2026-11-24.md 7.5).
+    expect(alertIsForOfficial({'id': 1, 'target_barangay': null}, 13), isTrue);
+    expect(
+      alertIsForOfficial({
+        'id': 2,
+        'target_barangay': {'id': 13, 'name': 'Binatagan'},
+      }, 13),
+      isTrue,
+    );
+    expect(
+      alertIsForOfficial({
+        'id': 3,
+        'target_barangay': {'id': 49, 'name': 'Tomolin'},
+      }, 13),
+      isFalse,
+    );
     expect(
       alertIsForOfficial({'id': 4, 'archived_at': '2026-11-20T00:00:00Z'}, 13),
       isFalse,

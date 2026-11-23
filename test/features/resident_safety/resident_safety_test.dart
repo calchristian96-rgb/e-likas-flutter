@@ -12,6 +12,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../helpers/fake_staff_auth.dart';
+import 'package:elikas_mobile/features/alerts/data/models/alert_model.dart';
 
 EvacuationCenter _center(
   int id, {
@@ -89,6 +90,26 @@ void main() {
     expect(a(barangay: 49).isFor(13), isFalse);
     // Unknown barangay (no location): every alert.
     expect(a(barangay: 49).isFor(null), isTrue);
+  });
+
+  test('public alerts: target_barangay is parsed (city when null)', () {
+    Map<String, dynamic> row(Object? target) => {
+      'id': 1,
+      'title': 'Typhoon signal no. 2',
+      'message': 'Prepare.',
+      'alert_type': 'typhoon',
+      'severity': 'advisory',
+      'status': 'sent',
+      'date_sent': '2026-11-23T16:30:22.000000Z',
+      'target_barangay': target,
+    };
+    final one = AlertModel.fromJson(row({'id': 52, 'name': 'Tuburan'}));
+    expect(one.targetBarangayId, 52);
+    expect(one.toEntity().isFor(52), isTrue);
+    expect(one.toEntity().isFor(13), isFalse);
+    final city = AlertModel.fromJson(row(null));
+    expect(city.targetBarangayId, isNull);
+    expect(city.toEntity().isFor(13), isTrue);
   });
 
   test(
