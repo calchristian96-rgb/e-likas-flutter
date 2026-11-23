@@ -2605,10 +2605,6 @@ class AppLocalizationsBcl extends AppLocalizations {
   }
 
   @override
-  String get reliefCountNotValidated =>
-      'Your barangay\'s final count is not validated yet. Until CSWD validates it, the need is 0 and no boxes can be sent.';
-
-  @override
   String get reliefNoRoundYet => 'No relief round yet.';
 
   @override
@@ -4369,4 +4365,43 @@ class AppLocalizationsBcl extends AppLocalizations {
 
   @override
   String get askAnotherCenterForSpace => 'Ask another center for space';
+
+  @override
+  String reliefPriority(String label) {
+    return 'Priority: $label';
+  }
+
+  @override
+  String reliefFromBarangay(String barangay) {
+    return 'From $barangay';
+  }
+
+  @override
+  String reliefGivenByHost(String barangay) {
+    return 'Staying in $barangay: they give the box';
+  }
+
+  @override
+  String get reliefNotOurs => 'Given by the barangay where they stay';
+
+  @override
+  String get reliefNeedRegistered => 'Need (registered)';
+
+  @override
+  String get reliefNeedRegisteredBasis =>
+      'Need based on the registered count, not yet validated. Boxes can already be given.';
+
+  @override
+  String get reliefRoundOnePlan => 'Round 1 plan';
+
+  @override
+  String get reliefRoundOneFromList => 'One box per family on your list.';
+
+  @override
+  String get reliefRoundOneFromForecast =>
+      'One box per family at the high end of the forecast.';
+
+  @override
+  String get reliefRoundOneOneBox =>
+      'One box per family: your list or the forecast, whichever is more.';
 }

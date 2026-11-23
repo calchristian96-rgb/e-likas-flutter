@@ -1384,7 +1384,6 @@
   "reliefNeedsConnectionFirst": "Relief boxes need a connection the first time.",
   "staffNoOpenEvent": "No open event yet. CSWDO opens an event when a threat is announced.",
   "savedCopyAge": "As of {age}",
-  "reliefCountNotValidated": "Your barangay's final count is not validated yet. Until CSWD validates it, the need is 0 and no boxes can be sent.",
   "reliefNoRoundYet": "No relief round yet.",
   "reliefRound": "Round {number}",
   "@reliefRound": {
@@ -2125,5 +2124,18 @@
   "@familyMoved": {"placeholders": {"center": {"type": "String"}}},
   "centerAlmostFull": "This center is {percent}% full.",
   "@centerAlmostFull": {"placeholders": {"percent": {"type": "int", "format": "decimalPattern"}}},
-  "askAnotherCenterForSpace": "Ask another center for space"
+  "askAnotherCenterForSpace": "Ask another center for space",
+  "reliefPriority": "Priority: {label}",
+  "@reliefPriority": {"placeholders": {"label": {"type": "String"}}},
+  "reliefFromBarangay": "From {barangay}",
+  "@reliefFromBarangay": {"placeholders": {"barangay": {"type": "String"}}},
+  "reliefGivenByHost": "Staying in {barangay}: they give the box",
+  "@reliefGivenByHost": {"placeholders": {"barangay": {"type": "String"}}},
+  "reliefNotOurs": "Given by the barangay where they stay",
+  "reliefNeedRegistered": "Need (registered)",
+  "reliefNeedRegisteredBasis": "Need based on the registered count, not yet validated. Boxes can already be given.",
+  "reliefRoundOnePlan": "Round 1 plan",
+  "reliefRoundOneFromList": "One box per family on your list.",
+  "reliefRoundOneFromForecast": "One box per family at the high end of the forecast.",
+  "reliefRoundOneOneBox": "One box per family: your list or the forecast, whichever is more."
 }

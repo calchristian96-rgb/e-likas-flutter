@@ -2675,10 +2675,6 @@ class AppLocalizationsFil extends AppLocalizations {
   }
 
   @override
-  String get reliefCountNotValidated =>
-      'Hindi pa beripikado ang final count ng inyong barangay. Hanggang hindi ito beripikado ng CSWD, 0 ang pangangailangan at walang box na maipapadala.';
-
-  @override
   String get reliefNoRoundYet => 'Wala pang relief round.';
 
   @override
@@ -4443,4 +4439,45 @@ class AppLocalizationsFil extends AppLocalizations {
 
   @override
   String get askAnotherCenterForSpace => 'Humingi ng espasyo sa ibang center';
+
+  @override
+  String reliefPriority(String label) {
+    return 'Prayoridad: $label';
+  }
+
+  @override
+  String reliefFromBarangay(String barangay) {
+    return 'Mula sa $barangay';
+  }
+
+  @override
+  String reliefGivenByHost(String barangay) {
+    return 'Nasa $barangay: sila ang magbibigay ng kahon';
+  }
+
+  @override
+  String get reliefNotOurs =>
+      'Ibibigay ng barangay kung saan sila nakatira ngayon';
+
+  @override
+  String get reliefNeedRegistered => 'Kailangan (rehistrado)';
+
+  @override
+  String get reliefNeedRegisteredBasis =>
+      'Batay sa rehistradong bilang ang kailangan, hindi pa validated. Puwede nang mamigay ng kahon.';
+
+  @override
+  String get reliefRoundOnePlan => 'Plano para sa Round 1';
+
+  @override
+  String get reliefRoundOneFromList =>
+      'Isang kahon bawat pamilya sa inyong listahan.';
+
+  @override
+  String get reliefRoundOneFromForecast =>
+      'Isang kahon bawat pamilya ayon sa pinakamataas na tantiya.';
+
+  @override
+  String get reliefRoundOneOneBox =>
+      'Isang kahon bawat pamilya: ang listahan o ang tantiya, alinman ang mas marami.';
 }

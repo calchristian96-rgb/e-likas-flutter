@@ -134,9 +134,26 @@ class BarangayBoxes {
     required this.canRequestShortfall,
     required this.rounds,
     this.barangayName,
+    this.needBasis = 'validated',
+    this.registeredNow,
+    this.validated,
+    this.plan,
   });
 
   final int need;
+
+  /// `validated` or `registered`: until a count is validated the need is
+  /// the registered count, and boxes can already go out
+  /// (apps-api-2026-11-22.md section 6).
+  final String needBasis;
+  final int? registeredNow;
+  final int? validated;
+
+  /// While the event is monitored: `{forecast, list, round_1_boxes,
+  /// round_1_basis}`. Round 1 is one box per family.
+  final Map<String, dynamic>? plan;
+
+  bool get needFromRegistered => needBasis == 'registered';
   final bool countValidated;
   final bool canAct;
   final bool canRequestShortfall;
@@ -150,6 +167,12 @@ class BarangayBoxes {
   factory BarangayBoxes.fromJson(Map<String, dynamic> j) => BarangayBoxes(
     need: (j['need'] as num?)?.toInt() ?? 0,
     countValidated: j['count_validated'] == true,
+    needBasis:
+        j['need_basis'] as String? ??
+        (j['count_validated'] == true ? 'validated' : 'registered'),
+    registeredNow: _count(j['registered_now']),
+    validated: _count(j['validated']),
+    plan: j['plan'] as Map<String, dynamic>?,
     canAct: j['can_act'] == true,
     canRequestShortfall: j['can_request_shortfall'] == true,
     barangayName: (j['barangay'] as Map<String, dynamic>?)?['name'] as String?,
@@ -159,3 +182,11 @@ class BarangayBoxes {
     ]..sort((a, b) => a.roundNumber.compareTo(b.roundNumber)),
   );
 }
+
+/// A count that may come as a number or as `{families, persons}`: the
+/// families.
+int? _count(Object? v) => v is num
+    ? v.toInt()
+    : v is Map
+    ? (v['families'] as num?)?.toInt()
+    : null;

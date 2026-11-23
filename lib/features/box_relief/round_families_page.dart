@@ -25,7 +25,19 @@ class RoundFamily {
     this.handoutId,
     this.nextInLine = false,
     this.higherPriorityWaiting = 0,
+    this.fromBarangay,
+    this.stayingIn,
+    this.mayGive = true,
   });
+
+  /// A family from another barangay staying here: the host gives its
+  /// box ("From {barangay}", `from_barangay`).
+  final String? fromBarangay;
+
+  /// A family of ours staying in another barangay: that barangay gives
+  /// the box, never us (the server answers 403).
+  final String? stayingIn;
+  final bool mayGive;
 
   /// The next family in the suggested order across the barangay
   /// (backend 02a41f4): marked "Next in line".
@@ -60,6 +72,15 @@ class RoundFamily {
     priorityOrder: (j['priority_order'] as num?)?.toInt() ?? 0,
     nextInLine: j['next_in_line'] == true,
     higherPriorityWaiting: (j['higher_priority_waiting'] as num?)?.toInt() ?? 0,
+    fromBarangay:
+        (j['from_barangay'] as Map<String, dynamic>?)?['name'] as String?,
+    stayingIn:
+        ((j['staying_in'] ?? j['host_barangay'])
+                as Map<String, dynamic>?)?['name']
+            as String?,
+    mayGive:
+        j['may_give'] != false &&
+        (j['staying_in'] ?? j['host_barangay']) == null,
   );
 }
 
@@ -362,6 +383,17 @@ class _FamilyTile extends StatelessWidget {
         queuedVoid ? l10n.reliefVoidWaiting : l10n.reliefGivenWaiting,
         style: theme.textTheme.labelMedium,
       );
+    } else if (!family.mayGive && !family.given) {
+      trailing = ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: 136),
+        child: Text(
+          family.stayingIn == null
+              ? l10n.reliefNotOurs
+              : l10n.reliefGivenByHost(family.stayingIn!),
+          textAlign: TextAlign.end,
+          style: theme.textTheme.labelMedium,
+        ),
+      );
     } else if (locked && !family.given) {
       trailing = Icon(
         Icons.lock_outline,
@@ -397,19 +429,32 @@ class _FamilyTile extends StatelessWidget {
       // waits (disabled) until more are confirmed (backend 02a41f4).
       // At most 136 wide so the family's name keeps its room on a
       // 360 dp phone; a long label wraps.
+      // Only the next family in line gets the primary Give button; the
+      // others can still be given (out of order asks first).
+      final label = Text(
+        boxesLeft ? l10n.reliefGiveBox : l10n.reliefWaitingForBoxes,
+        textAlign: TextAlign.center,
+      );
+      const padding = EdgeInsets.symmetric(horizontal: 12, vertical: 8);
       trailing = ConstrainedBox(
         constraints: const BoxConstraints(maxWidth: 136),
-        child: FilledButton(
-          style: FilledButton.styleFrom(
-            minimumSize: const Size(96, 48),
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-          ),
-          onPressed: boxesLeft ? onGive : null,
-          child: Text(
-            boxesLeft ? l10n.reliefGiveBox : l10n.reliefWaitingForBoxes,
-            textAlign: TextAlign.center,
-          ),
-        ),
+        child: family.nextInLine
+            ? FilledButton(
+                style: FilledButton.styleFrom(
+                  minimumSize: const Size(96, 48),
+                  padding: padding,
+                ),
+                onPressed: boxesLeft ? onGive : null,
+                child: label,
+              )
+            : OutlinedButton(
+                style: OutlinedButton.styleFrom(
+                  minimumSize: const Size(96, 48),
+                  padding: padding,
+                ),
+                onPressed: boxesLeft ? onGive : null,
+                child: label,
+              ),
       );
     }
     return ListTile(
@@ -419,7 +464,10 @@ class _FamilyTile extends StatelessWidget {
         [
           if (family.nextInLine && !given) l10n.reliefNextInLine,
           l10n.ecBoardFamilyMembers(family.memberCount),
-          ?family.priorityLabel,
+          if (family.priorityLabel != null)
+            l10n.reliefPriority(family.priorityLabel!),
+          if (family.fromBarangay != null)
+            l10n.reliefFromBarangay(family.fromBarangay!),
         ].join(' · '),
       ),
       leading: Icon(

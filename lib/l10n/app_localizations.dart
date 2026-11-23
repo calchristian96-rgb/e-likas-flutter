@@ -4426,12 +4426,6 @@ abstract class AppLocalizations {
   /// **'As of {age}'**
   String savedCopyAge(Object age);
 
-  /// No description provided for @reliefCountNotValidated.
-  ///
-  /// In en, this message translates to:
-  /// **'Your barangay\'s final count is not validated yet. Until CSWD validates it, the need is 0 and no boxes can be sent.'**
-  String get reliefCountNotValidated;
-
   /// No description provided for @reliefNoRoundYet.
   ///
   /// In en, this message translates to:
@@ -6872,6 +6866,66 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Ask another center for space'**
   String get askAnotherCenterForSpace;
+
+  /// No description provided for @reliefPriority.
+  ///
+  /// In en, this message translates to:
+  /// **'Priority: {label}'**
+  String reliefPriority(String label);
+
+  /// No description provided for @reliefFromBarangay.
+  ///
+  /// In en, this message translates to:
+  /// **'From {barangay}'**
+  String reliefFromBarangay(String barangay);
+
+  /// No description provided for @reliefGivenByHost.
+  ///
+  /// In en, this message translates to:
+  /// **'Staying in {barangay}: they give the box'**
+  String reliefGivenByHost(String barangay);
+
+  /// No description provided for @reliefNotOurs.
+  ///
+  /// In en, this message translates to:
+  /// **'Given by the barangay where they stay'**
+  String get reliefNotOurs;
+
+  /// No description provided for @reliefNeedRegistered.
+  ///
+  /// In en, this message translates to:
+  /// **'Need (registered)'**
+  String get reliefNeedRegistered;
+
+  /// No description provided for @reliefNeedRegisteredBasis.
+  ///
+  /// In en, this message translates to:
+  /// **'Need based on the registered count, not yet validated. Boxes can already be given.'**
+  String get reliefNeedRegisteredBasis;
+
+  /// No description provided for @reliefRoundOnePlan.
+  ///
+  /// In en, this message translates to:
+  /// **'Round 1 plan'**
+  String get reliefRoundOnePlan;
+
+  /// No description provided for @reliefRoundOneFromList.
+  ///
+  /// In en, this message translates to:
+  /// **'One box per family on your list.'**
+  String get reliefRoundOneFromList;
+
+  /// No description provided for @reliefRoundOneFromForecast.
+  ///
+  /// In en, this message translates to:
+  /// **'One box per family at the high end of the forecast.'**
+  String get reliefRoundOneFromForecast;
+
+  /// No description provided for @reliefRoundOneOneBox.
+  ///
+  /// In en, this message translates to:
+  /// **'One box per family: your list or the forecast, whichever is more.'**
+  String get reliefRoundOneOneBox;
 }
 
 class _AppLocalizationsDelegate

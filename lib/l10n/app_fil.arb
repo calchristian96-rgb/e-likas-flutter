@@ -932,7 +932,6 @@
   "reliefNeedsConnectionFirst": "Kailangan ng internet sa unang pagbukas ng relief box.",
   "staffNoOpenEvent": "Wala pang bukas na event. Nagbubukas ang CSWDO ng event kapag may ibinabalang banta.",
   "savedCopyAge": "Noong {age}",
-  "reliefCountNotValidated": "Hindi pa beripikado ang final count ng inyong barangay. Hanggang hindi ito beripikado ng CSWD, 0 ang pangangailangan at walang box na maipapadala.",
   "reliefNoRoundYet": "Wala pang relief round.",
   "reliefRound": "Round {number}",
   "reliefNeed": "Kailangan",
@@ -1352,5 +1351,15 @@
   "familyMove": "Ilipat",
   "familyMoved": "Nailipat sa {center}.",
   "centerAlmostFull": "{percent}% nang puno ang center na ito.",
-  "askAnotherCenterForSpace": "Humingi ng espasyo sa ibang center"
+  "askAnotherCenterForSpace": "Humingi ng espasyo sa ibang center",
+  "reliefPriority": "Prayoridad: {label}",
+  "reliefFromBarangay": "Mula sa {barangay}",
+  "reliefGivenByHost": "Nasa {barangay}: sila ang magbibigay ng kahon",
+  "reliefNotOurs": "Ibibigay ng barangay kung saan sila nakatira ngayon",
+  "reliefNeedRegistered": "Kailangan (rehistrado)",
+  "reliefNeedRegisteredBasis": "Batay sa rehistradong bilang ang kailangan, hindi pa validated. Puwede nang mamigay ng kahon.",
+  "reliefRoundOnePlan": "Plano para sa Round 1",
+  "reliefRoundOneFromList": "Isang kahon bawat pamilya sa inyong listahan.",
+  "reliefRoundOneFromForecast": "Isang kahon bawat pamilya ayon sa pinakamataas na tantiya.",
+  "reliefRoundOneOneBox": "Isang kahon bawat pamilya: ang listahan o ang tantiya, alinman ang mas marami."
 }

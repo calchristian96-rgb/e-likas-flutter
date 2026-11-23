@@ -39,15 +39,22 @@ void main() {
       findsOneWidget,
     );
     expect(find.textContaining('Next in line'), findsOneWidget);
-    expect(find.widgetWithText(FilledButton, 'Give box'), findsNWidgets(3));
+    // Only the next family in line gets the primary Give button.
+    expect(find.widgetWithText(FilledButton, 'Give box'), findsOneWidget);
+    expect(find.widgetWithText(OutlinedButton, 'Give box'), findsNWidgets(2));
     expect(find.text('Waiting for more boxes'), findsNothing);
   });
 
   testWidgets('no box left: Waiting for more boxes, disabled', (tester) async {
     await _pump(tester, roundFamilies(received: 1, given: 1));
-    final waiting = find.widgetWithText(FilledButton, 'Waiting for more boxes');
+    final waiting = find.ancestor(
+      of: find.text('Waiting for more boxes'),
+      matching: find.bySubtype<ButtonStyleButton>(),
+    );
     expect(waiting, findsNWidgets(3));
-    expect(tester.widget<FilledButton>(waiting.first).onPressed, isNull);
+    for (final b in tester.widgetList<ButtonStyleButton>(waiting)) {
+      expect(b.onPressed, isNull);
+    }
   });
 
   testWidgets('out of priority order: a warning first, Cancel gives nothing', (
@@ -59,7 +66,7 @@ void main() {
       matching: find.byType(ListTile),
     );
     await tester.tap(
-      find.descendant(of: cruz, matching: find.byType(FilledButton)),
+      find.descendant(of: cruz, matching: find.byType(OutlinedButton)),
     );
     await tester.pumpAndSettle();
     expect(find.text('Give a box to Cruz now?'), findsOneWidget);
@@ -71,4 +78,34 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.text('Give a box to Cruz now?'), findsNothing);
   });
+
+  testWidgets(
+    'priority label; a family from another barangay is given its box here; '
+    'ours staying elsewhere is given by the host',
+    (tester) async {
+      final families = roundFamilies();
+      final purok = (families['puroks'] as List).first as Map<String, dynamic>;
+      purok['families'] = [
+        roundFamily(1, 'Reyes', priority: 'PWD / senior', nextInLine: true),
+        {
+          ...roundFamily(2, 'Dela Cruz', order: 2),
+          'from_barangay': {'id': 49, 'name': 'Tomolin'},
+        },
+        {
+          ...roundFamily(3, 'Bautista', order: 3),
+          'staying_in': {'id': 49, 'name': 'Tomolin'},
+          'may_give': false,
+        },
+      ];
+      await _pump(tester, families);
+      expect(find.textContaining('Priority: PWD / senior'), findsOneWidget);
+      expect(find.textContaining('From Tomolin'), findsOneWidget);
+      expect(
+        find.text('Staying in Tomolin: they give the box'),
+        findsOneWidget,
+      );
+      // Reyes (next in line) and Dela Cruz can be given; Bautista cannot.
+      expect(find.text('Give box'), findsNWidgets(2));
+    },
+  );
 }

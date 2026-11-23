@@ -77,7 +77,13 @@ class ReliefPage extends ConsumerWidget {
                 if (result == null) return [Text(l10n.staffNoOpenEvent)];
                 // Monitored: relief rounds wait for "Start evacuation".
                 if (ref.watch(eventMonitoredProvider)) {
-                  return [const LockNote()];
+                  return [
+                    const LockNote(),
+                    if (result.boxes.plan != null) ...[
+                      const SizedBox(height: 16),
+                      _RoundOnePlan(plan: result.boxes.plan!),
+                    ],
+                  ];
                 }
                 final boxes = result.boxes;
                 final round = boxes.latestRound;
@@ -95,8 +101,8 @@ class ReliefPage extends ConsumerWidget {
                         style: theme.textTheme.bodySmall,
                       ),
                     ),
-                  if (!boxes.countValidated)
-                    _Callout(text: l10n.reliefCountNotValidated),
+                  if (boxes.needFromRegistered)
+                    _Callout(text: l10n.reliefNeedRegisteredBasis),
                   if (round == null)
                     Text(l10n.reliefNoRoundYet)
                   else ...[
@@ -107,7 +113,12 @@ class ReliefPage extends ConsumerWidget {
                     const SizedBox(height: 8),
                     StatStrip(
                       items: [
-                        StatItem(l10n.reliefNeed, '${round.figures.need}'),
+                        StatItem(
+                          boxes.needFromRegistered
+                              ? l10n.reliefNeedRegistered
+                              : l10n.reliefNeed,
+                          '${round.figures.need}',
+                        ),
                         StatItem(
                           l10n.reliefReceived,
                           '${round.figures.received}',
@@ -467,6 +478,40 @@ class _ShortfallSection extends ConsumerWidget {
               child: Text(l10n.reliefShortfallAsk(round.figures.canRequest)),
             ),
           ],
+        ],
+      ),
+    );
+  }
+}
+
+/// While the event is monitored: round 1 is one box per family, the
+/// list or the high end of the forecast, whichever is more.
+class _RoundOnePlan extends StatelessWidget {
+  const _RoundOnePlan({required this.plan});
+
+  final Map<String, dynamic> plan;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    final theme = Theme.of(context);
+    final boxes = (plan['round_1_boxes'] as num?)?.toInt();
+    final basis = plan['round_1_basis'] as String?;
+    return AppCard(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(l10n.reliefRoundOnePlan, style: theme.textTheme.titleMedium),
+          const SizedBox(height: 4),
+          Text(
+            boxes == null ? '–' : l10n.countBoxes(boxes),
+            style: theme.textTheme.headlineSmall,
+          ),
+          Text(switch (basis) {
+            'list' => l10n.reliefRoundOneFromList,
+            'forecast' => l10n.reliefRoundOneFromForecast,
+            _ => l10n.reliefRoundOneOneBox,
+          }, style: theme.textTheme.bodySmall),
         ],
       ),
     );
