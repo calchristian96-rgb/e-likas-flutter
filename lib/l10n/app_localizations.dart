@@ -6806,6 +6806,72 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Pending CSWD approval. You can register families here while the event is Active; CSWD is told at once.'**
   String get pendingCenterWarning;
+
+  /// No description provided for @familyTransfer.
+  ///
+  /// In en, this message translates to:
+  /// **'Transfer'**
+  String get familyTransfer;
+
+  /// No description provided for @familyTransferTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Transfer {family}'**
+  String familyTransferTitle(String family);
+
+  /// No description provided for @familyMoveOurCenters.
+  ///
+  /// In en, this message translates to:
+  /// **'To another of our centers'**
+  String get familyMoveOurCenters;
+
+  /// No description provided for @familyMoveNoOtherCenter.
+  ///
+  /// In en, this message translates to:
+  /// **'Your barangay has no other center open.'**
+  String get familyMoveNoOtherCenter;
+
+  /// No description provided for @familyMoveOtherBarangay.
+  ///
+  /// In en, this message translates to:
+  /// **'Another barangay\'s center accepts or declines.'**
+  String get familyMoveOtherBarangay;
+
+  /// No description provided for @familyMoveConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Move {family} ({members}) to {center}?'**
+  String familyMoveConfirm(String family, String members, String center);
+
+  /// No description provided for @familyMoveReason.
+  ///
+  /// In en, this message translates to:
+  /// **'Reason (optional)'**
+  String get familyMoveReason;
+
+  /// No description provided for @familyMove.
+  ///
+  /// In en, this message translates to:
+  /// **'Move'**
+  String get familyMove;
+
+  /// No description provided for @familyMoved.
+  ///
+  /// In en, this message translates to:
+  /// **'Moved to {center}.'**
+  String familyMoved(String center);
+
+  /// No description provided for @centerAlmostFull.
+  ///
+  /// In en, this message translates to:
+  /// **'This center is {percent}% full.'**
+  String centerAlmostFull(int percent);
+
+  /// No description provided for @askAnotherCenterForSpace.
+  ///
+  /// In en, this message translates to:
+  /// **'Ask another center for space'**
+  String get askAnotherCenterForSpace;
 }
 
 class _AppLocalizationsDelegate

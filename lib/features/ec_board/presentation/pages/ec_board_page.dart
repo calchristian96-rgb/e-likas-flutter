@@ -34,6 +34,8 @@ import 'add_evacuee_form_page.dart'
     show AddEvacueeFormPage, localizedAgeBracket, localizedSectoralGroup;
 import 'pending_ec_entry_detail_page.dart';
 import '../../../../core/widgets/lock_note.dart';
+import '../../../evacuation_centers/presentation/widgets/center_status_display.dart';
+import '../../../evacuation_centers/domain/entities/evacuation_center.dart';
 
 /// EC Information Board for one center — reached from
 /// `StaffEvacuationCenterDetailPage`. Shows two deliberately separate
@@ -341,20 +343,30 @@ class _EcBoardBody extends ConsumerWidget {
               centerId: centerId,
               evacuationEventId: selectedEventId,
             ),
-            // Full here: ask another barangay's center (online only).
+            // 90% or more: ask another center for space (online only).
             if (!selectedMonitored &&
+                center != null &&
+                askForSpaceAt(center) &&
                 (ref
                         .watch(staffAuthProvider)
                         .value
                         ?.can(StaffPermission.transfersRequest) ??
                     false)) ...[
               const SizedBox(height: 8),
-              OutlinedButton.icon(
-                style: OutlinedButton.styleFrom(
+              Text(
+                l10n.centerAlmostFull((center.occupancyPercent ?? 0).round()),
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  color: centerStatusColorOf('full'),
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              const SizedBox(height: 8),
+              FilledButton.icon(
+                style: FilledButton.styleFrom(
                   minimumSize: const Size.fromHeight(48),
                 ),
                 icon: const Icon(Icons.swap_horiz),
-                label: Text(l10n.transferAskTitle),
+                label: Text(l10n.askAnotherCenterForSpace),
                 onPressed: () => Navigator.of(context).push(
                   MaterialPageRoute<void>(
                     builder: (_) => TransferRequestPage(
@@ -1369,4 +1381,16 @@ class _EcBoardActionButton extends StatelessWidget {
       ],
     );
   }
+}
+
+/// "Ask another center for space" shows at 90% of a known capacity or
+/// more (the server's own "full" mark); never for an unknown capacity.
+bool askForSpaceAt(EvacuationCenter center) {
+  if (center.isCapacityUnknown) return false;
+  final percent = center.occupancyPercent;
+  if (percent != null) return percent >= 90;
+  final occupancy = center.currentOccupancy;
+  return occupancy != null &&
+      center.capacityPersons > 0 &&
+      occupancy >= center.capacityPersons * 0.9;
 }

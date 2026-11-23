@@ -4396,4 +4396,51 @@ class AppLocalizationsFil extends AppLocalizations {
   @override
   String get pendingCenterWarning =>
       'Hinihintay ang pag-apruba ng CSWD. Puwedeng magparehistro rito habang Active ang event; agad na sasabihan ang CSWD.';
+
+  @override
+  String get familyTransfer => 'Ilipat';
+
+  @override
+  String familyTransferTitle(String family) {
+    return 'Ilipat ang $family';
+  }
+
+  @override
+  String get familyMoveOurCenters => 'Sa isa pa naming center';
+
+  @override
+  String get familyMoveNoOtherCenter =>
+      'Walang ibang bukas na center ang inyong barangay.';
+
+  @override
+  String get familyMoveOtherBarangay =>
+      'Ang center ng ibang barangay ang tatanggap o tatanggi.';
+
+  @override
+  String familyMoveConfirm(String family, String members, String center) {
+    return 'Ilipat ang $family ($members) sa $center?';
+  }
+
+  @override
+  String get familyMoveReason => 'Dahilan (opsyonal)';
+
+  @override
+  String get familyMove => 'Ilipat';
+
+  @override
+  String familyMoved(String center) {
+    return 'Nailipat sa $center.';
+  }
+
+  @override
+  String centerAlmostFull(int percent) {
+    final intl.NumberFormat percentNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
+    final String percentString = percentNumberFormat.format(percent);
+
+    return '$percentString% nang puno ang center na ito.';
+  }
+
+  @override
+  String get askAnotherCenterForSpace => 'Humingi ng espasyo sa ibang center';
 }

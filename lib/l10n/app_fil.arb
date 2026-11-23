@@ -1341,5 +1341,16 @@
   "centerMapPickerUse": "Gamitin ang puntong ito",
   "centerMapPickerPin": "Ang napiling punto",
   "centerMapPickerSatellite": "Palitan ang mapa o satellite",
-  "pendingCenterWarning": "Hinihintay ang pag-apruba ng CSWD. Puwedeng magparehistro rito habang Active ang event; agad na sasabihan ang CSWD."
+  "pendingCenterWarning": "Hinihintay ang pag-apruba ng CSWD. Puwedeng magparehistro rito habang Active ang event; agad na sasabihan ang CSWD.",
+  "familyTransfer": "Ilipat",
+  "familyTransferTitle": "Ilipat ang {family}",
+  "familyMoveOurCenters": "Sa isa pa naming center",
+  "familyMoveNoOtherCenter": "Walang ibang bukas na center ang inyong barangay.",
+  "familyMoveOtherBarangay": "Ang center ng ibang barangay ang tatanggap o tatanggi.",
+  "familyMoveConfirm": "Ilipat ang {family} ({members}) sa {center}?",
+  "familyMoveReason": "Dahilan (opsyonal)",
+  "familyMove": "Ilipat",
+  "familyMoved": "Nailipat sa {center}.",
+  "centerAlmostFull": "{percent}% nang puno ang center na ito.",
+  "askAnotherCenterForSpace": "Humingi ng espasyo sa ibang center"
 }

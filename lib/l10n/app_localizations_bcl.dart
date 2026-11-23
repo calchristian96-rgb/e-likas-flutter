@@ -4322,4 +4322,51 @@ class AppLocalizationsBcl extends AppLocalizations {
   @override
   String get pendingCenterWarning =>
       'Pending CSWD approval. You can register families here while the event is Active; CSWD is told at once.';
+
+  @override
+  String get familyTransfer => 'Transfer';
+
+  @override
+  String familyTransferTitle(String family) {
+    return 'Transfer $family';
+  }
+
+  @override
+  String get familyMoveOurCenters => 'To another of our centers';
+
+  @override
+  String get familyMoveNoOtherCenter =>
+      'Your barangay has no other center open.';
+
+  @override
+  String get familyMoveOtherBarangay =>
+      'Another barangay\'s center accepts or declines.';
+
+  @override
+  String familyMoveConfirm(String family, String members, String center) {
+    return 'Move $family ($members) to $center?';
+  }
+
+  @override
+  String get familyMoveReason => 'Reason (optional)';
+
+  @override
+  String get familyMove => 'Move';
+
+  @override
+  String familyMoved(String center) {
+    return 'Moved to $center.';
+  }
+
+  @override
+  String centerAlmostFull(int percent) {
+    final intl.NumberFormat percentNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
+    final String percentString = percentNumberFormat.format(percent);
+
+    return 'This center is $percentString% full.';
+  }
+
+  @override
+  String get askAnotherCenterForSpace => 'Ask another center for space';
 }

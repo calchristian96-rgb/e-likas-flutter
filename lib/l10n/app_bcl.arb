@@ -3260,5 +3260,16 @@
   "centerMapPickerUse": "Use this point",
   "centerMapPickerPin": "The chosen point",
   "centerMapPickerSatellite": "Switch map or satellite",
-  "pendingCenterWarning": "Pending CSWD approval. You can register families here while the event is Active; CSWD is told at once."
+  "pendingCenterWarning": "Pending CSWD approval. You can register families here while the event is Active; CSWD is told at once.",
+  "familyTransfer": "Transfer",
+  "familyTransferTitle": "Transfer {family}",
+  "familyMoveOurCenters": "To another of our centers",
+  "familyMoveNoOtherCenter": "Your barangay has no other center open.",
+  "familyMoveOtherBarangay": "Another barangay's center accepts or declines.",
+  "familyMoveConfirm": "Move {family} ({members}) to {center}?",
+  "familyMoveReason": "Reason (optional)",
+  "familyMove": "Move",
+  "familyMoved": "Moved to {center}.",
+  "centerAlmostFull": "This center is {percent}% full.",
+  "askAnotherCenterForSpace": "Ask another center for space"
 }
