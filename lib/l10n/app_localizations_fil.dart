@@ -4351,4 +4351,49 @@ class AppLocalizationsFil extends AppLocalizations {
 
   @override
   String get pendingCswdApproval => 'Hinihintay ang pag-apruba ng CSWD';
+
+  @override
+  String get centerNeedsDetails => 'Kulang na detalye:';
+
+  @override
+  String get centerNeedCapacity => 'Kapasidad';
+
+  @override
+  String get centerNeedCapacityEst => 'Tantiya lang ang kapasidad';
+
+  @override
+  String get centerNeedLocation => 'Lokasyon sa mapa';
+
+  @override
+  String get centerNeedChecklist => 'Checklist ng pasilidad';
+
+  @override
+  String get centerLocationUseMine => 'Gamitin ang kasalukuyang lokasyon ko';
+
+  @override
+  String get centerLocationPickOnMap => 'Pumili sa mapa';
+
+  @override
+  String get centerLocationCswdSaves => 'Bilang CSWD, agad itong mase-save.';
+
+  @override
+  String get centerMapPickerTitle => 'Lokasyon ng center';
+
+  @override
+  String centerMapPickerHint(String center) {
+    return 'Igalaw ang mapa hanggang nasa pasukan ng $center ang pin.';
+  }
+
+  @override
+  String get centerMapPickerUse => 'Gamitin ang puntong ito';
+
+  @override
+  String get centerMapPickerPin => 'Ang napiling punto';
+
+  @override
+  String get centerMapPickerSatellite => 'Palitan ang mapa o satellite';
+
+  @override
+  String get pendingCenterWarning =>
+      'Hinihintay ang pag-apruba ng CSWD. Puwedeng magparehistro rito habang Active ang event; agad na sasabihan ang CSWD.';
 }

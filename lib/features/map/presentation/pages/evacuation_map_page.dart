@@ -1064,6 +1064,8 @@ class _CenterSheetContent extends ConsumerWidget {
               current: center.currentOccupancy!,
               capacity: center.capacityPersons,
               percent: center.occupancyPercent!,
+              estimated: center.isCapacityEstimated,
+              resident: true,
               color: accentColor,
             ),
           ],

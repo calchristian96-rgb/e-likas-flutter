@@ -114,6 +114,9 @@ abstract final class StaffPermission {
   static const transfersRequest = 'transfers.request';
   static const transfersReceive = 'transfers.receive';
   static const transfersManage = 'transfers.manage';
+  static const centersSetLocation = 'centers.set_location';
+  static const familiesToEvacuateManage = 'families_to_evacuate.manage';
+  static const supportReport = 'support.report';
 
   /// For a session cached before the backend sent `permissions` (an app
   /// upgraded while offline): the same map as the backend, by role,

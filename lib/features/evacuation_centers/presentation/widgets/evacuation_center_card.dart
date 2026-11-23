@@ -64,6 +64,8 @@ class EvacuationCenterCard extends StatelessWidget {
                 current: center.currentOccupancy!,
                 capacity: center.capacityPersons,
                 percent: center.occupancyPercent!,
+                estimated: center.isCapacityEstimated,
+                resident: true,
                 color: accentColor,
               ),
             if (distance != null) ...[

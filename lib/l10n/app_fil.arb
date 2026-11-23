@@ -1327,5 +1327,19 @@
   "listRemove": "Alisin sa listahan",
   "listRemoveTitle": "Alisin si {head} sa listahan?",
   "listNeedsConnection": "Kailangan ng koneksyon.",
-  "pendingCswdApproval": "Hinihintay ang pag-apruba ng CSWD"
+  "pendingCswdApproval": "Hinihintay ang pag-apruba ng CSWD",
+  "centerNeedsDetails": "Kulang na detalye:",
+  "centerNeedCapacity": "Kapasidad",
+  "centerNeedCapacityEst": "Tantiya lang ang kapasidad",
+  "centerNeedLocation": "Lokasyon sa mapa",
+  "centerNeedChecklist": "Checklist ng pasilidad",
+  "centerLocationUseMine": "Gamitin ang kasalukuyang lokasyon ko",
+  "centerLocationPickOnMap": "Pumili sa mapa",
+  "centerLocationCswdSaves": "Bilang CSWD, agad itong mase-save.",
+  "centerMapPickerTitle": "Lokasyon ng center",
+  "centerMapPickerHint": "Igalaw ang mapa hanggang nasa pasukan ng {center} ang pin.",
+  "centerMapPickerUse": "Gamitin ang puntong ito",
+  "centerMapPickerPin": "Ang napiling punto",
+  "centerMapPickerSatellite": "Palitan ang mapa o satellite",
+  "pendingCenterWarning": "Hinihintay ang pag-apruba ng CSWD. Puwedeng magparehistro rito habang Active ang event; agad na sasabihan ang CSWD."
 }

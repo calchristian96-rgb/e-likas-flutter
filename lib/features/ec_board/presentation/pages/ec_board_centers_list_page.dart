@@ -14,6 +14,7 @@ import '../../../family_registration/presentation/providers/lookup_providers.dar
 import '../../../staff_auth/presentation/widgets/staff_auth_guard.dart';
 import '../../../staff_evacuation_centers/presentation/providers/own_centers_provider.dart';
 import '../../../staff_evacuation_centers/presentation/widgets/approval_badge.dart';
+import '../../../staff_evacuation_centers/presentation/widgets/center_needs_details.dart';
 
 /// The EC Information Board's center list (Part 3.4): a short summary
 /// first (centers, evacuees, boxes left), then one card per own center
@@ -170,10 +171,17 @@ class _CenterCard extends StatelessWidget {
               ),
             ],
           ),
+          if (occupancy != null && public != null && !public.isCapacityUnknown)
+            CenterFillBar(
+              occupancy: occupancy,
+              capacity: capacity,
+              status: status,
+            ),
           if (!center.center.isApproved || center.center.hasPendingChange) ...[
             const SizedBox(height: 8),
             ApprovalBadge(center: center.center),
           ],
+          CenterNeedsChips(center: center),
         ],
       ),
     );

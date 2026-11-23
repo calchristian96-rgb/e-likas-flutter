@@ -10,6 +10,8 @@ import '../../../evacuation_centers/domain/entities/evacuation_center.dart';
 import '../../../outbox/domain/pending_action.dart';
 import '../../../outbox/presentation/outbox_providers.dart';
 import '../../../staff_auth/domain/entities/staff_session.dart';
+import 'package:latlong2/latlong.dart';
+import '../pages/center_map_picker_page.dart';
 
 /// Where one center stands on the map (backend map-api.md, GIS center
 /// rows): a location, one waiting for CSWD, or none yet.
@@ -66,9 +68,38 @@ final centerLocationsProvider =
       }
     });
 
-/// "Set location from this phone" (C19): stand at the center, read the
-/// GPS, confirm, and the point goes to CSWD for approval through the
-/// offline queue (an Unverified center takes it at once).
+/// `GET /gis/centers/{id}`: `can.set_location` and the location's origin
+/// ("Set by CSWD", "Set by barangay official", "Original data"). Null
+/// when it cannot be read (the permission decides then).
+final centerGisProvider = FutureProvider.autoDispose
+    .family<({bool? canSetLocation, String? originLabel}), int>((
+      ref,
+      id,
+    ) async {
+      try {
+        final response = await ref
+            .watch(staffApiClientProvider)
+            .get('/gis/centers/$id');
+        final data =
+            (response.data as Map<String, dynamic>)['data']
+                as Map<String, dynamic>;
+        final center = data['center'] is Map<String, dynamic>
+            ? data['center'] as Map<String, dynamic>
+            : data;
+        final can = (data['can'] ?? center['can']) as Map<String, dynamic>?;
+        return (
+          canSetLocation: can == null ? null : can['set_location'] == true,
+          originLabel: center['location_origin_label'] as String?,
+        );
+      } catch (_) {
+        return (canSetLocation: null, originLabel: null);
+      }
+    });
+
+/// A center's map location (0.4.0 Part 5): "Use my current location"
+/// (the phone's GPS, with permission) or "Pick on the map". An official's
+/// point for an approved center goes to CSWD for approval; CSWD's is
+/// saved at once. Sent through the offline queue.
 class CenterLocationSection extends ConsumerStatefulWidget {
   const CenterLocationSection({
     super.key,
@@ -87,10 +118,36 @@ class CenterLocationSection extends ConsumerStatefulWidget {
 class _CenterLocationSectionState extends ConsumerState<CenterLocationSection> {
   bool _locating = false;
 
-  bool get _canSet =>
-      widget.session.can(StaffPermission.centersEdit) &&
-      widget.session.barangayId != null &&
-      widget.center.barangayId == widget.session.barangayId;
+  /// `can.set_location` from the server when known; otherwise
+  /// `centers.set_location`: CSWD any center, an official their own.
+  bool get _canSet {
+    final can = ref
+        .watch(centerGisProvider(widget.center.id))
+        .value
+        ?.canSetLocation;
+    if (can != null) return can;
+    final s = widget.session;
+    final permitted =
+        s.can(StaffPermission.centersSetLocation) ||
+        s.can(StaffPermission.centersEdit);
+    if (!permitted) return false;
+    if (s.isCityMonitor) return true;
+    return s.barangayId != null && widget.center.barangayId == s.barangayId;
+  }
+
+  Future<void> _pickOnMap() async {
+    final c = widget.center;
+    final point = await Navigator.of(context).push<LatLng>(
+      MaterialPageRoute(
+        builder: (_) => CenterMapPickerPage(
+          centerName: c.name,
+          initial: c.hasCoordinates ? LatLng(c.latitude!, c.longitude!) : null,
+        ),
+      ),
+    );
+    if (point == null || !mounted) return;
+    await _confirmAndSend(point.latitude, point.longitude, null);
+  }
 
   Future<void> _setFromPhone() async {
     final l10n = AppLocalizations.of(context);
@@ -108,6 +165,20 @@ class _CenterLocationSectionState extends ConsumerState<CenterLocationSection> {
       ).showSnackBar(SnackBar(content: Text(l10n.couldNotDetermineLocation)));
       return;
     }
+    await _confirmAndSend(
+      position.latitude,
+      position.longitude,
+      position.accuracy,
+    );
+  }
+
+  Future<void> _confirmAndSend(
+    double latitude,
+    double longitude,
+    double? accuracy,
+  ) async {
+    final l10n = AppLocalizations.of(context);
+    final cswd = widget.session.isCityMonitor;
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
@@ -117,13 +188,14 @@ class _CenterLocationSectionState extends ConsumerState<CenterLocationSection> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              '${position.latitude.toStringAsFixed(6)}, '
-              '${position.longitude.toStringAsFixed(6)}',
+              '${latitude.toStringAsFixed(6)}, '
+              '${longitude.toStringAsFixed(6)}',
               style: Theme.of(context).textTheme.titleMedium,
             ),
             const SizedBox(height: 8),
-            Text(l10n.centerLocationAccuracy(position.accuracy.round())),
-            if (position.accuracy > 50) ...[
+            if (accuracy != null)
+              Text(l10n.centerLocationAccuracy(accuracy.round())),
+            if (accuracy != null && accuracy > 50) ...[
               const SizedBox(height: 8),
               Text(
                 l10n.centerLocationLowAccuracy,
@@ -135,7 +207,11 @@ class _CenterLocationSectionState extends ConsumerState<CenterLocationSection> {
               ),
             ],
             const SizedBox(height: 8),
-            Text(l10n.centerLocationGoesToCswd),
+            Text(
+              cswd
+                  ? l10n.centerLocationCswdSaves
+                  : l10n.centerLocationGoesToCswd,
+            ),
           ],
         ),
         actions: [
@@ -156,7 +232,7 @@ class _CenterLocationSectionState extends ConsumerState<CenterLocationSection> {
       kind: PendingActionKind.centerLocation,
       method: 'POST',
       path: '/gis/centers/${widget.center.id}/location',
-      body: {'latitude': position.latitude, 'longitude': position.longitude},
+      body: {'latitude': latitude, 'longitude': longitude},
       summary: l10n.centerLocationSummary(widget.center.name),
       subjectKey: 'center:${widget.center.id}:location',
     );
@@ -180,7 +256,10 @@ class _CenterLocationSectionState extends ConsumerState<CenterLocationSection> {
     } else if (state?.isPending ?? false) {
       line = l10n.centerLocationWaitingForCswd;
     } else if (widget.center.hasCoordinates || (state?.hasLocation ?? false)) {
-      line = state?.locationSource ?? l10n.centerLocationOnMap;
+      line =
+          ref.watch(centerGisProvider(widget.center.id)).value?.originLabel ??
+          state?.locationSource ??
+          l10n.centerLocationOnMap;
     } else {
       line = l10n.centerNoLocationSet;
     }
@@ -204,7 +283,16 @@ class _CenterLocationSectionState extends ConsumerState<CenterLocationSection> {
                     child: CircularProgressIndicator(strokeWidth: 2),
                   )
                 : const Icon(Icons.my_location),
-            label: Text(l10n.centerLocationSetFromPhone),
+            label: Text(l10n.centerLocationUseMine),
+          ),
+          const SizedBox(height: 8),
+          OutlinedButton.icon(
+            style: OutlinedButton.styleFrom(
+              minimumSize: const Size.fromHeight(48),
+            ),
+            onPressed: _locating ? null : _pickOnMap,
+            icon: const Icon(Icons.map_outlined),
+            label: Text(l10n.centerLocationPickOnMap),
           ),
         ],
       ],

@@ -171,6 +171,8 @@ class _CenterDetailsBody extends StatelessWidget {
             current: center.currentOccupancy!,
             capacity: center.capacityPersons,
             percent: center.occupancyPercent!,
+            estimated: center.isCapacityEstimated,
+            resident: true,
             color: statusColor,
           ),
         ],

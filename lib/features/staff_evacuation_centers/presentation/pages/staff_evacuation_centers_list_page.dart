@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../../app/theme/app_theme.dart';
 import '../../../../core/widgets/error_state.dart';
 import '../../../../core/widgets/occupancy_progress.dart';
 import '../../../../core/widgets/offline_banner.dart';
@@ -14,6 +13,8 @@ import '../../../family_registration/presentation/providers/lookup_providers.dar
 import '../../../staff_auth/presentation/widgets/staff_auth_guard.dart';
 import '../providers/own_centers_provider.dart';
 import '../widgets/approval_badge.dart';
+import '../widgets/center_needs_details.dart';
+import '../../../../core/widgets/ui_kit.dart';
 
 /// "My Evacuation Centers": the official's own barangay's centers,
 /// from the staff `GET /evacuation-centers` (so Unverified and rejected
@@ -137,13 +138,11 @@ class _StaffCenterTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context);
     final theme = Theme.of(context);
     final public = center.public;
     final statusColor = public != null
         ? centerStatusColor(context, public)
         : theme.colorScheme.onSurfaceVariant;
-    final warning = theme.extension<AppSemanticColors>()!.warning;
 
     return Card(
       margin: EdgeInsets.zero,
@@ -165,9 +164,9 @@ class _StaffCenterTile extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(width: 8),
-                  Text(
-                    localizedCenterStatus(context, center.center.status),
-                    style: theme.textTheme.bodySmall,
+                  StatusChip(
+                    label: localizedCenterStatus(context, center.center.status),
+                    color: centerStatusColorOf(center.center.status),
                   ),
                 ],
               ),
@@ -186,25 +185,11 @@ class _StaffCenterTile extends StatelessWidget {
                   current: public.currentOccupancy!,
                   capacity: public.capacityPersons,
                   percent: public.occupancyPercent!,
+                  estimated: public.isCapacityEstimated,
                   color: statusColor,
                 ),
               ],
-              if (public != null && !public.hasCoordinates) ...[
-                const SizedBox(height: 8),
-                Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(Icons.location_off_outlined, size: 16, color: warning),
-                    const SizedBox(width: 4),
-                    Text(
-                      l10n.centerNoLocationSet,
-                      style: theme.textTheme.bodySmall?.copyWith(
-                        color: warning,
-                      ),
-                    ),
-                  ],
-                ),
-              ],
+              CenterNeedsChips(center: center),
             ],
           ),
         ),

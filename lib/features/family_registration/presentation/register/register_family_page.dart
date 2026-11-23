@@ -18,6 +18,7 @@ import '../../domain/entities/family_member_draft.dart';
 import '../../domain/entities/family_registration_draft.dart';
 import '../providers/pending_queue_provider.dart';
 import '../../../../core/widgets/lock_note.dart';
+import '../../../../app/theme/app_theme.dart';
 
 /// A Philippine mobile number, as the backend checks it.
 final mobilePattern = RegExp(r'^(09|\+639)\d{9}$');
@@ -757,10 +758,40 @@ class _PlaceStep extends ConsumerWidget {
                     contentPadding: EdgeInsets.zero,
                     value: c.id,
                     title: Text(c.name),
+                    // Allowed while Active: the first evacuee here sends
+                    // CSWD an urgent notification.
+                    subtitle: c.center.isPending
+                        ? Text(
+                            l10n.pendingCswdApproval,
+                            style: TextStyle(
+                              color: theme
+                                  .extension<AppSemanticColors>()!
+                                  .warning,
+                            ),
+                          )
+                        : null,
                   ),
               ],
             ),
           ),
+        if (!draft.isPrivateHouse &&
+            centers.any(
+              (c) => c.id == draft.evacuationCenterId && c.center.isPending,
+            )) ...[
+          const SizedBox(height: 8),
+          AppCard(
+            child: Row(
+              children: [
+                Icon(
+                  Icons.warning_amber_outlined,
+                  color: theme.extension<AppSemanticColors>()!.warning,
+                ),
+                const SizedBox(width: 12),
+                Expanded(child: Text(l10n.pendingCenterWarning)),
+              ],
+            ),
+          ),
+        ],
         const SizedBox(height: 8),
         TextFormField(
           initialValue: draft.homeAddress,

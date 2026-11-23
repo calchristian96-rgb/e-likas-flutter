@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import '../../l10n/app_localizations.dart';
+import '../utils/formatters.dart';
 
 /// "120 / 500 (24%)" plus a thin colour-coded progress bar — the
 /// occupancy readout every screen showing a center with real occupancy
@@ -14,13 +16,29 @@ class OccupancyProgress extends StatelessWidget {
     required this.percent,
     required this.color,
     this.showBar = true,
+    this.estimated = false,
+    this.resident = false,
   });
+
+  /// The capacity is an estimate: "48 / 112 est." ("(estimated)" for
+  /// residents).
+  final bool estimated;
+  final bool resident;
 
   final int current;
   final int capacity;
   final double percent;
   final Color color;
   final bool showBar;
+
+  String _figure(BuildContext context) {
+    final figure = '${formatCount(current)} / ${formatCount(capacity)}';
+    if (!estimated) return figure;
+    final l10n = AppLocalizations.of(context);
+    return resident
+        ? l10n.capacityResidentEstimated(figure)
+        : l10n.capacityEstimated(figure);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,9 +56,11 @@ class OccupancyProgress extends StatelessWidget {
               color: theme.colorScheme.onSurfaceVariant,
             ),
             const SizedBox(width: 4),
-            Text(
-              '$current / $capacity (${percent.toStringAsFixed(0)}%)',
-              style: theme.textTheme.bodySmall,
+            Flexible(
+              child: Text(
+                '${_figure(context)} (${percent.toStringAsFixed(0)}%)',
+                style: theme.textTheme.bodySmall,
+              ),
             ),
           ],
         ),

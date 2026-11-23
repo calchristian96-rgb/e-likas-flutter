@@ -3246,5 +3246,19 @@
   "listRemove": "Remove from the list",
   "listRemoveTitle": "Remove {head} from the list?",
   "listNeedsConnection": "Needs a connection.",
-  "pendingCswdApproval": "Pending CSWD approval"
+  "pendingCswdApproval": "Pending CSWD approval",
+  "centerNeedsDetails": "Needs details:",
+  "centerNeedCapacity": "Capacity",
+  "centerNeedCapacityEst": "Capacity is an estimate",
+  "centerNeedLocation": "Map location",
+  "centerNeedChecklist": "Facilities checklist",
+  "centerLocationUseMine": "Use my current location",
+  "centerLocationPickOnMap": "Pick on the map",
+  "centerLocationCswdSaves": "As CSWD, the location is saved at once.",
+  "centerMapPickerTitle": "Center location",
+  "centerMapPickerHint": "Move the map until the pin is on {center}'s entrance.",
+  "centerMapPickerUse": "Use this point",
+  "centerMapPickerPin": "The chosen point",
+  "centerMapPickerSatellite": "Switch map or satellite",
+  "pendingCenterWarning": "Pending CSWD approval. You can register families here while the event is Active; CSWD is told at once."
 }

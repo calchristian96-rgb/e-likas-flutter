@@ -6722,6 +6722,90 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Pending CSWD approval'**
   String get pendingCswdApproval;
+
+  /// No description provided for @centerNeedsDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Needs details:'**
+  String get centerNeedsDetails;
+
+  /// No description provided for @centerNeedCapacity.
+  ///
+  /// In en, this message translates to:
+  /// **'Capacity'**
+  String get centerNeedCapacity;
+
+  /// No description provided for @centerNeedCapacityEst.
+  ///
+  /// In en, this message translates to:
+  /// **'Capacity is an estimate'**
+  String get centerNeedCapacityEst;
+
+  /// No description provided for @centerNeedLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Map location'**
+  String get centerNeedLocation;
+
+  /// No description provided for @centerNeedChecklist.
+  ///
+  /// In en, this message translates to:
+  /// **'Facilities checklist'**
+  String get centerNeedChecklist;
+
+  /// No description provided for @centerLocationUseMine.
+  ///
+  /// In en, this message translates to:
+  /// **'Use my current location'**
+  String get centerLocationUseMine;
+
+  /// No description provided for @centerLocationPickOnMap.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick on the map'**
+  String get centerLocationPickOnMap;
+
+  /// No description provided for @centerLocationCswdSaves.
+  ///
+  /// In en, this message translates to:
+  /// **'As CSWD, the location is saved at once.'**
+  String get centerLocationCswdSaves;
+
+  /// No description provided for @centerMapPickerTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Center location'**
+  String get centerMapPickerTitle;
+
+  /// No description provided for @centerMapPickerHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Move the map until the pin is on {center}\'s entrance.'**
+  String centerMapPickerHint(String center);
+
+  /// No description provided for @centerMapPickerUse.
+  ///
+  /// In en, this message translates to:
+  /// **'Use this point'**
+  String get centerMapPickerUse;
+
+  /// No description provided for @centerMapPickerPin.
+  ///
+  /// In en, this message translates to:
+  /// **'The chosen point'**
+  String get centerMapPickerPin;
+
+  /// No description provided for @centerMapPickerSatellite.
+  ///
+  /// In en, this message translates to:
+  /// **'Switch map or satellite'**
+  String get centerMapPickerSatellite;
+
+  /// No description provided for @pendingCenterWarning.
+  ///
+  /// In en, this message translates to:
+  /// **'Pending CSWD approval. You can register families here while the event is Active; CSWD is told at once.'**
+  String get pendingCenterWarning;
 }
 
 class _AppLocalizationsDelegate

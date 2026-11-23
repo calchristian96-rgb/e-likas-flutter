@@ -4336,4 +4336,50 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get pendingCswdApproval => 'Pending CSWD approval';
+
+  @override
+  String get centerNeedsDetails => 'Needs details:';
+
+  @override
+  String get centerNeedCapacity => 'Capacity';
+
+  @override
+  String get centerNeedCapacityEst => 'Capacity is an estimate';
+
+  @override
+  String get centerNeedLocation => 'Map location';
+
+  @override
+  String get centerNeedChecklist => 'Facilities checklist';
+
+  @override
+  String get centerLocationUseMine => 'Use my current location';
+
+  @override
+  String get centerLocationPickOnMap => 'Pick on the map';
+
+  @override
+  String get centerLocationCswdSaves =>
+      'As CSWD, the location is saved at once.';
+
+  @override
+  String get centerMapPickerTitle => 'Center location';
+
+  @override
+  String centerMapPickerHint(String center) {
+    return 'Move the map until the pin is on $center\'s entrance.';
+  }
+
+  @override
+  String get centerMapPickerUse => 'Use this point';
+
+  @override
+  String get centerMapPickerPin => 'The chosen point';
+
+  @override
+  String get centerMapPickerSatellite => 'Switch map or satellite';
+
+  @override
+  String get pendingCenterWarning =>
+      'Pending CSWD approval. You can register families here while the event is Active; CSWD is told at once.';
 }
