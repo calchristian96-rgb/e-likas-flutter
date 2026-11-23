@@ -6,6 +6,12 @@ import 'package:flutter_test/flutter_test.dart';
 
 import '../../helpers/fake_staff_auth.dart';
 import '../../helpers/home_fixtures.dart';
+import 'package:drift/native.dart';
+import 'package:elikas_mobile/core/connectivity/connectivity_service.dart';
+import 'package:elikas_mobile/core/database/staff_database.dart';
+import 'package:elikas_mobile/features/outbox/data/outbox_repository.dart';
+import 'package:elikas_mobile/features/outbox/domain/pending_action.dart';
+import '../../helpers/fake_staff_api.dart';
 
 /// Relief rules (Part 1.5): give while boxes are left even if the round
 /// is short; none left means "Waiting for more boxes"; the first family
@@ -27,6 +33,13 @@ Future<void> _pump(WidgetTester tester, Map<String, dynamic> families) async {
     ),
   );
   await tester.pumpAndSettle();
+}
+
+class _NoSync extends StaffSyncAll {
+  _NoSync(super.ref);
+
+  @override
+  Future<OutboxRunResult> call() async => const OutboxRunResult();
 }
 
 void main() {
@@ -69,43 +82,153 @@ void main() {
       find.descendant(of: cruz, matching: find.byType(OutlinedButton)),
     );
     await tester.pumpAndSettle();
-    expect(find.text('Give a box to Cruz now?'), findsOneWidget);
+    // apps-api-2026-11-24.md 1.3, word for word.
+    expect(find.text('Give a box to this family?'), findsOneWidget);
     expect(
-      find.text('2 families with a higher priority are still waiting.'),
+      find.text(
+        '2 higher-priority families have not received a box yet. Continue?',
+      ),
       findsOneWidget,
     );
     await tester.tap(find.text('Cancel'));
     await tester.pumpAndSettle();
-    expect(find.text('Give a box to Cruz now?'), findsNothing);
+    expect(find.text('Give a box to this family?'), findsNothing);
   });
 
   testWidgets(
     'priority label; a family from another barangay is given its box here; '
-    'ours staying elsewhere is given by the host',
+    'ours staying elsewhere are listed apart, without Give',
     (tester) async {
       final families = roundFamilies();
       final purok = (families['puroks'] as List).first as Map<String, dynamic>;
       purok['families'] = [
-        roundFamily(1, 'Reyes', priority: 'PWD / senior', nextInLine: true),
+        {
+          ...roundFamily(
+            1,
+            'Reyes',
+            priority: 'PWD / senior',
+            nextInLine: true,
+          ),
+          'staying_in': {
+            'barangay': {'id': 13, 'name': 'Binatagan'},
+            'center': {'id': 71, 'name': 'Binatagan Hall'},
+            'private_house': false,
+            'other_barangay': false,
+          },
+          'may_give': true,
+        },
         {
           ...roundFamily(2, 'Dela Cruz', order: 2),
           'from_barangay': {'id': 49, 'name': 'Tomolin'},
+          'staying_in': {
+            'barangay': {'id': 13, 'name': 'Binatagan'},
+            'center': {'id': 71, 'name': 'Binatagan Hall'},
+            'private_house': false,
+            'other_barangay': true,
+          },
+          'may_give': true,
         },
         {
-          ...roundFamily(3, 'Bautista', order: 3),
-          'staying_in': {'id': 49, 'name': 'Tomolin'},
+          ...roundFamily(3, 'Santos', order: 3),
+          'location': 'outside_center',
+          'host_name': 'Juan Reyes',
+          'staying_in': {
+            'barangay': {'id': 13, 'name': 'Binatagan'},
+            'center': null,
+            'private_house': true,
+            'other_barangay': false,
+          },
+          'may_give': true,
+        },
+      ];
+      // apps-api-2026-11-24.md 1.1: ours staying in another barangay.
+      families['staying_elsewhere'] = [
+        {
+          'id': 4,
+          'name': 'Garcia',
+          'head_name': 'Ana Garcia',
+          'member_count': 1,
+          'purok': {'id': 1, 'name': 'Purok 1'},
+          'staying_in': {
+            'barangay': {'id': 2, 'name': 'Bay'},
+            'center': {'id': 2, 'name': 'Bay Elementary School'},
+            'private_house': false,
+            'other_barangay': true,
+          },
+          'gives_box': {'id': 2, 'name': 'Bay'},
           'may_give': false,
+          'given': false,
+          'given_at': null,
         },
       ];
       await _pump(tester, families);
       expect(find.textContaining('Priority: PWD / senior'), findsOneWidget);
       expect(find.textContaining('From Tomolin'), findsOneWidget);
+      expect(find.textContaining('Binatagan Hall'), findsNWidgets(2));
+      expect(find.textContaining('Private house (Juan Reyes)'), findsOneWidget);
+      // Every family in puroks can be given (staying_in no longer hides it).
+      expect(find.text('Give box'), findsNWidgets(3));
+      expect(find.text('Staying in another barangay'), findsOneWidget);
       expect(
-        find.text('Staying in Tomolin: they give the box'),
+        find.textContaining('Staying in Bay, Bay Elementary School'),
         findsOneWidget,
       );
-      // Reyes (next in line) and Dela Cruz can be given; Bautista cannot.
-      expect(find.text('Give box'), findsNWidgets(2));
+      expect(find.textContaining('Bay gives the box'), findsOneWidget);
+      expect(find.text('No box yet'), findsOneWidget);
+      final garcia = find.ancestor(
+        of: find.text('Garcia'),
+        matching: find.byType(ListTile),
+      );
+      expect(
+        find.descendant(of: garcia, matching: find.byType(ButtonStyleButton)),
+        findsNothing,
+      );
     },
   );
+
+  testWidgets('offline: a give is queued once, with its client_ref', (
+    tester,
+  ) async {
+    final db = StaffDatabase.forExecutor(NativeDatabase.memory());
+    addTearDown(db.close);
+    final offline = ConnectivityService.forTesting(
+      hasInterface: () async => false,
+      probe: () async => false,
+      resultCacheTtl: Duration.zero,
+    );
+    final outbox = OutboxRepository(db, FakeStaffApi(), offline, 4);
+    tester.view.devicePixelRatio = 2;
+    tester.view.physicalSize = const Size(720, 3000);
+    addTearDown(tester.view.reset);
+    await tester.pumpWidget(
+      testApp(
+        const RoundFamiliesPage(roundId: 1),
+        overrides: [
+          ...signedInAs(official),
+          staffReadCacheProvider.overrideWithValue(
+            FakeReadCache({'/box-relief/rounds/1/families': roundFamilies()}),
+          ),
+          outboxRepositoryProvider.overrideWithValue(outbox),
+          pendingActionsProvider.overrideWith((ref) {
+            ref.watch(outboxRevisionProvider);
+            return outbox.getAll();
+          }),
+          staffSyncAllProvider.overrideWith(_NoSync.new),
+          connectivityServiceProvider.overrideWithValue(offline),
+        ],
+      ),
+    );
+    await tester.pumpAndSettle();
+    // The next family in line: no question asked.
+    await tester.tap(find.widgetWithText(FilledButton, 'Give box'));
+    await tester.pumpAndSettle();
+    expect(find.text('Give a box to this family?'), findsNothing);
+    final queued = (await outbox.getAll()).single;
+    expect(queued.kind, PendingActionKind.boxHandout);
+    expect(queued.path, '/box-relief/rounds/1/handouts');
+    expect(queued.body['client_ref'], queued.localId);
+    await tester.pumpWidget(const SizedBox());
+    offline.dispose();
+    await tester.pump(const Duration(seconds: 10));
+  });
 }

@@ -3064,27 +3064,6 @@ class AppLocalizationsFil extends AppLocalizations {
   String get reliefWaitingForBoxes => 'Naghihintay ng dagdag na box';
 
   @override
-  String reliefOutOfOrderTitle(Object family) {
-    return 'Bigyan ng box ang $family ngayon?';
-  }
-
-  @override
-  String reliefOutOfOrderBody(int count) {
-    final intl.NumberFormat countNumberFormat =
-        intl.NumberFormat.decimalPattern(localeName);
-    final String countString = countNumberFormat.format(count);
-
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other:
-          'May $countString pamilyang mas mataas ang prayoridad na naghihintay pa.',
-      one: 'May 1 pamilyang mas mataas ang prayoridad na naghihintay pa.',
-    );
-    return '$_temp0';
-  }
-
-  @override
   String countFamilies(int count) {
     final intl.NumberFormat countNumberFormat =
         intl.NumberFormat.decimalPattern(localeName);
@@ -4451,11 +4430,6 @@ class AppLocalizationsFil extends AppLocalizations {
   }
 
   @override
-  String reliefGivenByHost(String barangay) {
-    return 'Nasa $barangay: sila ang magbibigay ng kahon';
-  }
-
-  @override
   String get reliefNotOurs =>
       'Ibibigay ng barangay kung saan sila nakatira ngayon';
 
@@ -4947,4 +4921,49 @@ class AppLocalizationsFil extends AppLocalizations {
 
   @override
   String get facilityEditSuggestion => 'Baguhin bago ipadala';
+
+  @override
+  String get reliefOutOfOrderTitle => 'Bigyan ng kahon ang pamilyang ito?';
+
+  @override
+  String reliefOutOfOrderBody(int count) {
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other:
+          'May $countString pamilyang mas mataas ang prayoridad na wala pang kahon. Ituloy?',
+      one:
+          'May 1 pamilyang mas mataas ang prayoridad na wala pang kahon. Ituloy?',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get reliefStayingElsewhereTitle => 'Nasa ibang barangay';
+
+  @override
+  String get reliefStayingElsewhereNote =>
+      'Mga pamilya ninyong nasa center ng ibang barangay. Ang barangay na iyon ang magbibigay ng kanilang kahon.';
+
+  @override
+  String reliefStayingIn(String place) {
+    return 'Nasa $place';
+  }
+
+  @override
+  String reliefBoxFrom(String barangay) {
+    return '$barangay ang magbibigay ng kahon';
+  }
+
+  @override
+  String get reliefNotGivenYet => 'Wala pang kahon';
+
+  @override
+  String reliefPrivateHouse(String host) {
+    return 'Pribadong bahay ($host)';
+  }
 }

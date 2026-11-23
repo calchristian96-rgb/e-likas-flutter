@@ -4942,18 +4942,6 @@ abstract class AppLocalizations {
   /// **'Waiting for more boxes'**
   String get reliefWaitingForBoxes;
 
-  /// No description provided for @reliefOutOfOrderTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Give a box to {family} now?'**
-  String reliefOutOfOrderTitle(Object family);
-
-  /// No description provided for @reliefOutOfOrderBody.
-  ///
-  /// In en, this message translates to:
-  /// **'{count, plural, =1{1 family with a higher priority is still waiting.} other{{count} families with a higher priority are still waiting.}}'**
-  String reliefOutOfOrderBody(int count);
-
   /// No description provided for @countFamilies.
   ///
   /// In en, this message translates to:
@@ -6879,12 +6867,6 @@ abstract class AppLocalizations {
   /// **'From {barangay}'**
   String reliefFromBarangay(String barangay);
 
-  /// No description provided for @reliefGivenByHost.
-  ///
-  /// In en, this message translates to:
-  /// **'Staying in {barangay}: they give the box'**
-  String reliefGivenByHost(String barangay);
-
   /// No description provided for @reliefNotOurs.
   ///
   /// In en, this message translates to:
@@ -7688,6 +7670,54 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Change before sending'**
   String get facilityEditSuggestion;
+
+  /// No description provided for @reliefOutOfOrderTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Give a box to this family?'**
+  String get reliefOutOfOrderTitle;
+
+  /// No description provided for @reliefOutOfOrderBody.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 higher-priority family has not received a box yet. Continue?} other{{count} higher-priority families have not received a box yet. Continue?}}'**
+  String reliefOutOfOrderBody(int count);
+
+  /// No description provided for @reliefStayingElsewhereTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Staying in another barangay'**
+  String get reliefStayingElsewhereTitle;
+
+  /// No description provided for @reliefStayingElsewhereNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Your families staying in another barangay\'s center. That barangay gives their box.'**
+  String get reliefStayingElsewhereNote;
+
+  /// No description provided for @reliefStayingIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Staying in {place}'**
+  String reliefStayingIn(String place);
+
+  /// No description provided for @reliefBoxFrom.
+  ///
+  /// In en, this message translates to:
+  /// **'{barangay} gives the box'**
+  String reliefBoxFrom(String barangay);
+
+  /// No description provided for @reliefNotGivenYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No box yet'**
+  String get reliefNotGivenYet;
+
+  /// No description provided for @reliefPrivateHouse.
+  ///
+  /// In en, this message translates to:
+  /// **'Private house ({host})'**
+  String reliefPrivateHouse(String host);
 }
 
 class _AppLocalizationsDelegate

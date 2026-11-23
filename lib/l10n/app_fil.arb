@@ -1018,8 +1018,6 @@
   "monitoringUpdated": "Na-update {age}",
   "reliefNextInLine": "Susunod",
   "reliefWaitingForBoxes": "Naghihintay ng dagdag na box",
-  "reliefOutOfOrderTitle": "Bigyan ng box ang {family} ngayon?",
-  "reliefOutOfOrderBody": "{count, plural, =1{May 1 pamilyang mas mataas ang prayoridad na naghihintay pa.} other{May {count} pamilyang mas mataas ang prayoridad na naghihintay pa.}}",
   "countFamilies": "{count, plural, =1{1 pamilya} other{{count} pamilya}}",
   "countPersons": "{count, plural, =1{1 tao} other{{count} tao}}",
   "countBoxes": "{count, plural, =1{1 box} other{{count} box}}",
@@ -1354,7 +1352,6 @@
   "askAnotherCenterForSpace": "Humingi ng espasyo sa ibang center",
   "reliefPriority": "Prayoridad: {label}",
   "reliefFromBarangay": "Mula sa {barangay}",
-  "reliefGivenByHost": "Nasa {barangay}: sila ang magbibigay ng kahon",
   "reliefNotOurs": "Ibibigay ng barangay kung saan sila nakatira ngayon",
   "reliefNeedRegistered": "Kailangan (rehistrado)",
   "reliefNeedRegisteredBasis": "Batay sa rehistradong bilang ang kailangan, hindi pa validated. Puwede nang mamigay ng kahon.",
@@ -1488,5 +1485,13 @@
   "centerReady": "Handa",
   "facilityForCenter": "Para sa {center}",
   "facilityShowAllCenters": "Ipakita lahat ng center",
-  "facilityEditSuggestion": "Baguhin bago ipadala"
+  "facilityEditSuggestion": "Baguhin bago ipadala",
+  "reliefOutOfOrderTitle": "Bigyan ng kahon ang pamilyang ito?",
+  "reliefOutOfOrderBody": "{count, plural, =1{May 1 pamilyang mas mataas ang prayoridad na wala pang kahon. Ituloy?} other{May {count} pamilyang mas mataas ang prayoridad na wala pang kahon. Ituloy?}}",
+  "reliefStayingElsewhereTitle": "Nasa ibang barangay",
+  "reliefStayingElsewhereNote": "Mga pamilya ninyong nasa center ng ibang barangay. Ang barangay na iyon ang magbibigay ng kanilang kahon.",
+  "reliefStayingIn": "Nasa {place}",
+  "reliefBoxFrom": "{barangay} ang magbibigay ng kahon",
+  "reliefNotGivenYet": "Wala pang kahon",
+  "reliefPrivateHouse": "Pribadong bahay ({host})"
 }

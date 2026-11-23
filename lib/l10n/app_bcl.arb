@@ -2931,8 +2931,6 @@
   "monitoringUpdated": "Updated {age}",
   "reliefNextInLine": "Next in line",
   "reliefWaitingForBoxes": "Waiting for more boxes",
-  "reliefOutOfOrderTitle": "Give a box to {family} now?",
-  "reliefOutOfOrderBody": "{count, plural, =1{1 family with a higher priority is still waiting.} other{{count} families with a higher priority are still waiting.}}",
   "countFamilies": "{count, plural, =1{1 family} other{{count} families}}",
   "countPersons": "{count, plural, =1{1 person} other{{count} persons}}",
   "countBoxes": "{count, plural, =1{1 box} other{{count} boxes}}",
@@ -3280,7 +3278,6 @@
   "askAnotherCenterForSpace": "Ask another center for space",
   "reliefPriority": "Priority: {label}",
   "reliefFromBarangay": "From {barangay}",
-  "reliefGivenByHost": "Staying in {barangay}: they give the box",
   "reliefNotOurs": "Given by the barangay where they stay",
   "reliefNeedRegistered": "Need (registered)",
   "reliefNeedRegisteredBasis": "Need based on the registered count, not yet validated. Boxes can already be given.",
@@ -3467,5 +3464,13 @@
   "centerReady": "Ready",
   "facilityForCenter": "For {center}",
   "facilityShowAllCenters": "Show all centers",
-  "facilityEditSuggestion": "Change before sending"
+  "facilityEditSuggestion": "Change before sending",
+  "reliefOutOfOrderTitle": "Give a box to this family?",
+  "reliefOutOfOrderBody": "{count, plural, =1{1 higher-priority family has not received a box yet. Continue?} other{{count} higher-priority families have not received a box yet. Continue?}}",
+  "reliefStayingElsewhereTitle": "Staying in another barangay",
+  "reliefStayingElsewhereNote": "Your families staying in another barangay's center. That barangay gives their box.",
+  "reliefStayingIn": "Staying in {place}",
+  "reliefBoxFrom": "{barangay} gives the box",
+  "reliefNotGivenYet": "No box yet",
+  "reliefPrivateHouse": "Private house ({host})"
 }

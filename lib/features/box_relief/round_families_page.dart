@@ -28,16 +28,22 @@ class RoundFamily {
     this.fromBarangay,
     this.stayingIn,
     this.mayGive = true,
+    this.canGive = true,
   });
 
   /// A family from another barangay staying here: the host gives its
   /// box ("From {barangay}", `from_barangay`).
   final String? fromBarangay;
 
-  /// A family of ours staying in another barangay: that barangay gives
-  /// the box, never us (the server answers 403).
-  final String? stayingIn;
+  /// Where the family stays now (`staying_in`), null when not recorded.
+  final StayingIn? stayingIn;
+
+  /// This barangay gives the family its box (`may_give`; always true in
+  /// `puroks`). Stock is a separate matter: [canGive].
   final bool mayGive;
+
+  /// No box yet in this round and boxes left (`can_give`).
+  final bool canGive;
 
   /// The next family in the suggested order across the barangay
   /// (backend 02a41f4): marked "Next in line".
@@ -74,14 +80,79 @@ class RoundFamily {
     higherPriorityWaiting: (j['higher_priority_waiting'] as num?)?.toInt() ?? 0,
     fromBarangay:
         (j['from_barangay'] as Map<String, dynamic>?)?['name'] as String?,
-    stayingIn:
-        ((j['staying_in'] ?? j['host_barangay'])
-                as Map<String, dynamic>?)?['name']
-            as String?,
-    mayGive:
-        j['may_give'] != false &&
-        (j['staying_in'] ?? j['host_barangay']) == null,
+    stayingIn: StayingIn.fromJson(j['staying_in'], hostName: j['host_name']),
+    mayGive: j['may_give'] != false,
+    canGive: j['can_give'] != false,
   );
+}
+
+/// `staying_in` (apps-api-2026-11-24.md 1.1): `{barangay: {id, name},
+/// center: {id, name} or null, private_house, other_barangay}`.
+class StayingIn {
+  const StayingIn({
+    this.barangay,
+    this.center,
+    this.privateHouse = false,
+    this.otherBarangay = false,
+    this.hostName,
+  });
+
+  static StayingIn? fromJson(Object? raw, {Object? hostName}) {
+    if (raw is! Map<String, dynamic>) return null;
+    return StayingIn(
+      barangay: (raw['barangay'] as Map<String, dynamic>?)?['name'] as String?,
+      center: (raw['center'] as Map<String, dynamic>?)?['name'] as String?,
+      privateHouse: raw['private_house'] == true,
+      otherBarangay: raw['other_barangay'] == true,
+      hostName: hostName is String && hostName.isNotEmpty ? hostName : null,
+    );
+  }
+
+  final String? barangay;
+  final String? center;
+  final bool privateHouse;
+  final bool otherBarangay;
+  final String? hostName;
+
+  /// "Bay Elementary School", "Private house (Juan Reyes)".
+  String place(AppLocalizations l10n) => privateHouse
+      ? l10n.reliefPrivateHouse(hostName ?? '–')
+      : center ?? barangay ?? '';
+}
+
+/// One of the barangay's own families staying in another barangay's
+/// center (`staying_elsewhere[]`): that barangay gives its box. Shown
+/// for information only, never with a Give button.
+class StayingElsewhere {
+  const StayingElsewhere({
+    required this.id,
+    required this.name,
+    required this.memberCount,
+    this.purok,
+    this.stayingIn,
+    this.givesBox,
+    this.given = false,
+  });
+
+  factory StayingElsewhere.fromJson(Map<String, dynamic> j) => StayingElsewhere(
+    id: (j['id'] as num).toInt(),
+    name: j['name'] as String? ?? '',
+    memberCount: (j['member_count'] as num?)?.toInt() ?? 0,
+    purok: (j['purok'] as Map<String, dynamic>?)?['name'] as String?,
+    stayingIn: StayingIn.fromJson(j['staying_in']),
+    givesBox: (j['gives_box'] as Map<String, dynamic>?)?['name'] as String?,
+    given: j['given'] == true,
+  );
+
+  final int id;
+  final String name;
+  final int memberCount;
+  final String? purok;
+  final StayingIn? stayingIn;
+
+  /// The barangay that gives its box.
+  final String? givesBox;
+  final bool given;
 }
 
 class PurokGroup {
@@ -97,11 +168,13 @@ class RoundFamilies {
     required this.roundNumber,
     required this.figures,
     required this.puroks,
+    this.stayingElsewhere = const [],
   });
 
   final int roundNumber;
   final BoxFigures figures;
   final List<PurokGroup> puroks;
+  final List<StayingElsewhere> stayingElsewhere;
 
   factory RoundFamilies.fromJson(Map<String, dynamic> j) => RoundFamilies(
     roundNumber:
@@ -123,6 +196,10 @@ class RoundFamilies {
               RoundFamily.fromJson(f as Map<String, dynamic>),
           ],
         ),
+    ],
+    stayingElsewhere: [
+      for (final f in j['staying_elsewhere'] as List? ?? const [])
+        StayingElsewhere.fromJson(f as Map<String, dynamic>),
     ],
   );
 }
@@ -168,12 +245,13 @@ class _RoundFamiliesPageState extends ConsumerState<RoundFamiliesPage> {
 
   Future<void> _give(RoundFamily f, int roundNumber) async {
     final l10n = AppLocalizations.of(context);
-    // Out of the priority order: a warning, the same as the web.
+    // Out of the priority order: ask, the same as the web
+    // (apps-api-2026-11-24.md 1.3). The server never blocks it.
     if (f.higherPriorityWaiting > 0) {
       final ok = await showDialog<bool>(
         context: context,
         builder: (context) => AlertDialog(
-          title: Text(l10n.reliefOutOfOrderTitle(f.name)),
+          title: Text(l10n.reliefOutOfOrderTitle),
           content: Text(l10n.reliefOutOfOrderBody(f.higherPriorityWaiting)),
           actions: [
             TextButton(
@@ -338,6 +416,27 @@ class _RoundFamiliesPageState extends ConsumerState<RoundFamiliesPage> {
                     ),
                   ),
                 ],
+                if (data.stayingElsewhere.isNotEmpty) ...[
+                  const SizedBox(height: 24),
+                  Text(
+                    l10n.reliefStayingElsewhereTitle,
+                    style: theme.textTheme.titleMedium,
+                  ),
+                  Text(
+                    l10n.reliefStayingElsewhereNote,
+                    style: theme.textTheme.bodySmall,
+                  ),
+                  const SizedBox(height: 8),
+                  Card(
+                    margin: EdgeInsets.zero,
+                    child: Column(
+                      children: [
+                        for (final f in data.stayingElsewhere)
+                          _ElsewhereTile(family: f),
+                      ],
+                    ),
+                  ),
+                ],
               ],
             ),
           );
@@ -379,17 +478,19 @@ class _FamilyTile extends StatelessWidget {
     final given = (family.given && !queuedVoid) || queuedGive;
     final Widget trailing;
     if (queuedGive || queuedVoid) {
-      trailing = Text(
-        queuedVoid ? l10n.reliefVoidWaiting : l10n.reliefGivenWaiting,
-        style: theme.textTheme.labelMedium,
+      trailing = ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: 136),
+        child: Text(
+          queuedVoid ? l10n.reliefVoidWaiting : l10n.reliefGivenWaiting,
+          textAlign: TextAlign.end,
+          style: theme.textTheme.labelMedium,
+        ),
       );
     } else if (!family.mayGive && !family.given) {
       trailing = ConstrainedBox(
         constraints: const BoxConstraints(maxWidth: 136),
         child: Text(
-          family.stayingIn == null
-              ? l10n.reliefNotOurs
-              : l10n.reliefGivenByHost(family.stayingIn!),
+          l10n.reliefNotOurs,
           textAlign: TextAlign.end,
           style: theme.textTheme.labelMedium,
         ),
@@ -468,6 +569,9 @@ class _FamilyTile extends StatelessWidget {
             l10n.reliefPriority(family.priorityLabel!),
           if (family.fromBarangay != null)
             l10n.reliefFromBarangay(family.fromBarangay!),
+          if (family.stayingIn != null &&
+              family.stayingIn!.place(l10n).isNotEmpty)
+            family.stayingIn!.place(l10n),
         ].join(' · '),
       ),
       leading: Icon(
@@ -475,6 +579,49 @@ class _FamilyTile extends StatelessWidget {
         color: given ? semantic.success : theme.colorScheme.onSurfaceVariant,
       ),
       trailing: trailing,
+    );
+  }
+}
+
+/// A family of ours staying in another barangay: read only.
+class _ElsewhereTile extends StatelessWidget {
+  const _ElsewhereTile({required this.family});
+
+  final StayingElsewhere family;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    final theme = Theme.of(context);
+    final semantic = theme.extension<AppSemanticColors>()!;
+    final stay = family.stayingIn;
+    final where = [
+      ?stay?.barangay,
+      if (stay?.center != null) stay!.center!,
+    ].join(', ');
+    return ListTile(
+      minTileHeight: 64,
+      leading: Icon(
+        family.given ? Icons.check_circle : Icons.swap_horiz,
+        color: family.given
+            ? semantic.success
+            : theme.colorScheme.onSurfaceVariant,
+      ),
+      title: Text(family.name),
+      subtitle: Text(
+        [
+          l10n.ecBoardFamilyMembers(family.memberCount),
+          ?family.purok,
+          if (where.isNotEmpty) l10n.reliefStayingIn(where),
+          if (family.givesBox != null) l10n.reliefBoxFrom(family.givesBox!),
+        ].join(' · '),
+      ),
+      trailing: Text(
+        family.given ? l10n.reliefGiven : l10n.reliefNotGivenYet,
+        style: theme.textTheme.labelMedium?.copyWith(
+          color: family.given ? semantic.success : null,
+        ),
+      ),
     );
   }
 }

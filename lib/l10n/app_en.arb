@@ -1657,16 +1657,6 @@
   "monitoringUpdated": "Updated {age}",
   "reliefNextInLine": "Next in line",
   "reliefWaitingForBoxes": "Waiting for more boxes",
-  "reliefOutOfOrderTitle": "Give a box to {family} now?",
-  "reliefOutOfOrderBody": "{count, plural, =1{1 family with a higher priority is still waiting.} other{{count} families with a higher priority are still waiting.}}",
-  "@reliefOutOfOrderBody": {
-    "placeholders": {
-      "count": {
-        "type": "int",
-        "format": "decimalPattern"
-      }
-    }
-  },
   "countFamilies": "{count, plural, =1{1 family} other{{count} families}}",
   "@countFamilies": {
     "placeholders": {
@@ -2129,8 +2119,6 @@
   "@reliefPriority": {"placeholders": {"label": {"type": "String"}}},
   "reliefFromBarangay": "From {barangay}",
   "@reliefFromBarangay": {"placeholders": {"barangay": {"type": "String"}}},
-  "reliefGivenByHost": "Staying in {barangay}: they give the box",
-  "@reliefGivenByHost": {"placeholders": {"barangay": {"type": "String"}}},
   "reliefNotOurs": "Given by the barangay where they stay",
   "reliefNeedRegistered": "Need (registered)",
   "reliefNeedRegisteredBasis": "Need based on the registered count, not yet validated. Boxes can already be given.",
@@ -2288,5 +2276,17 @@
   "facilityForCenter": "For {center}",
   "@facilityForCenter": {"placeholders": {"center": {"type": "String"}}},
   "facilityShowAllCenters": "Show all centers",
-  "facilityEditSuggestion": "Change before sending"
+  "facilityEditSuggestion": "Change before sending",
+  "reliefOutOfOrderTitle": "Give a box to this family?",
+  "reliefOutOfOrderBody": "{count, plural, =1{1 higher-priority family has not received a box yet. Continue?} other{{count} higher-priority families have not received a box yet. Continue?}}",
+  "@reliefOutOfOrderBody": {"placeholders": {"count": {"type": "int", "format": "decimalPattern"}}},
+  "reliefStayingElsewhereTitle": "Staying in another barangay",
+  "reliefStayingElsewhereNote": "Your families staying in another barangay's center. That barangay gives their box.",
+  "reliefStayingIn": "Staying in {place}",
+  "@reliefStayingIn": {"placeholders": {"place": {"type": "String"}}},
+  "reliefBoxFrom": "{barangay} gives the box",
+  "@reliefBoxFrom": {"placeholders": {"barangay": {"type": "String"}}},
+  "reliefNotGivenYet": "No box yet",
+  "reliefPrivateHouse": "Private house ({host})",
+  "@reliefPrivateHouse": {"placeholders": {"host": {"type": "String"}}}
 }
