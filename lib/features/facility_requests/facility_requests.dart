@@ -7,6 +7,7 @@ import '../../l10n/app_localizations.dart';
 import '../evacuation_centers/presentation/widgets/facility_type_display.dart';
 import '../outbox/domain/pending_action.dart';
 import '../outbox/presentation/outbox_providers.dart';
+import '../../core/utils/formatters.dart';
 
 /// The 19 facilities checklist types (backend `EvacuationCenterFacility::TYPES`).
 const facilityTypes = [
@@ -41,7 +42,23 @@ class FacilityRequest {
     this.item,
     this.reason,
     this.reviewNote,
+    this.unit,
+    this.quantityApproved,
+    this.mayReceive = false,
+    this.centerId,
+    this.centerName,
   });
+
+  /// e.g. "pieces", "boxes" (sent with the request).
+  final String? unit;
+
+  /// Approving fewer than asked needs a note: "Approved 6 of 10".
+  final int? quantityApproved;
+
+  /// The center's barangay may mark a sent request as received.
+  final bool mayReceive;
+  final int? centerId;
+  final String? centerName;
 
   final int id;
 
@@ -61,7 +78,33 @@ class FacilityRequest {
     quantity: (j['quantity_needed'] as num?)?.toInt() ?? 1,
     reason: j['reason'] as String?,
     reviewNote: j['review_note'] as String?,
+    unit: j['unit'] as String?,
+    quantityApproved: (j['quantity_approved'] as num?)?.toInt(),
+    mayReceive: j['may_receive'] == true,
+    centerId:
+        (j['evacuation_center_id'] as num?)?.toInt() ??
+        ((j['evacuation_center'] as Map<String, dynamic>?)?['id'] as num?)
+            ?.toInt(),
+    centerName:
+        (j['evacuation_center'] as Map<String, dynamic>?)?['name'] as String?,
   );
+
+  /// "Toilet × 10 pieces".
+  String quantityText(BuildContext context, AppLocalizations l10n) =>
+      '${facilityRequestLabel(context, facilityType, item)} × '
+      '${unit == null || unit!.isEmpty ? formatCount(quantity) : l10n.quantityWithUnit(formatCount(quantity), unit!)}';
+
+  /// "Approved 6 of 10" when fewer were approved than asked.
+  String? approvedOf(AppLocalizations l10n) =>
+      quantityApproved != null && quantityApproved! < quantity
+      ? l10n.facilityApprovedOf(
+          formatCount(quantityApproved),
+          formatCount(quantity),
+        )
+      : null;
+
+  bool get finished =>
+      status == 'received' || status == 'fulfilled' || status == 'rejected';
 }
 
 /// `GET /facility-requests?evacuation_center_id=` (own barangay for an
@@ -136,12 +179,10 @@ class FacilityRequestsSection extends ConsumerWidget {
               : Column(
                   children: [
                     for (final r in list)
-                      _RequestTile(
-                        title:
-                            '${facilityRequestLabel(context, r.facilityType, r.item)} × ${r.quantity}',
-                        status: _statusLabel(l10n, r.status),
-                        color: _statusColor(theme, r.status),
-                        note: r.reviewNote,
+                      FacilityRequestTile(
+                        request: r,
+                        centerName: centerName,
+                        canCreate: canCreate,
                       ),
                   ],
                 ),
@@ -152,15 +193,10 @@ class FacilityRequestsSection extends ConsumerWidget {
             style: OutlinedButton.styleFrom(
               minimumSize: const Size.fromHeight(48),
             ),
-            onPressed: () => showModalBottomSheet<void>(
-              context: context,
-              isScrollControlled: true,
-              showDragHandle: true,
-              builder: (_) => _RequestForm(
-                centerId: centerId,
-                centerName: centerName,
-                subjectKey: _subject,
-              ),
+            onPressed: () => showFacilityRequestForm(
+              context,
+              centerId: centerId,
+              centerName: centerName,
             ),
             icon: const Icon(Icons.add),
             label: Text(l10n.facilityRequestsAsk),
@@ -170,7 +206,7 @@ class FacilityRequestsSection extends ConsumerWidget {
     );
   }
 
-  static String _statusLabel(AppLocalizations l10n, String status) =>
+  static String statusLabel(AppLocalizations l10n, String status) =>
       switch (status) {
         'approved' => l10n.requestStatusApproved,
         'rejected' => l10n.requestStatusRejected,
@@ -180,7 +216,7 @@ class FacilityRequestsSection extends ConsumerWidget {
         _ => l10n.requestStatusWaiting,
       };
 
-  static Color _statusColor(ThemeData theme, String status) {
+  static Color statusColor(ThemeData theme, String status) {
     final semantic = theme.extension<AppSemanticColors>()!;
     return switch (status) {
       'approved' || 'sent' || 'received' || 'fulfilled' => semantic.success,
@@ -195,13 +231,11 @@ class _RequestTile extends StatelessWidget {
     required this.title,
     required this.status,
     required this.color,
-    this.note,
   });
 
   final String title;
   final String status;
   final Color color;
-  final String? note;
 
   @override
   Widget build(BuildContext context) {
@@ -210,7 +244,6 @@ class _RequestTile extends StatelessWidget {
       contentPadding: EdgeInsets.zero,
       minTileHeight: 48,
       title: Text(title),
-      subtitle: note == null ? null : Text(note!),
       trailing: Text(
         status,
         style: theme.textTheme.labelMedium?.copyWith(
@@ -222,16 +255,168 @@ class _RequestTile extends StatelessWidget {
   }
 }
 
+/// One facility request: what, how many and the unit, its status
+/// (Waiting, Approved, Sent, Received, Rejected), "Approved 6 of 10",
+/// and its actions: Mark received (the center's barangay, once sent),
+/// Request again (a received or rejected request).
+class FacilityRequestTile extends ConsumerWidget {
+  const FacilityRequestTile({
+    super.key,
+    required this.request,
+    required this.centerName,
+    this.canCreate = false,
+  });
+
+  final FacilityRequest request;
+  final String centerName;
+  final bool canCreate;
+
+  String get _receiveKey => 'facility-request:${request.id}:receive';
+
+  Future<void> _receive(BuildContext context, WidgetRef ref) async {
+    final l10n = AppLocalizations.of(context);
+    final ok = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(l10n.facilityReceiveTitle),
+        content: Text(request.quantityText(context, l10n)),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: Text(l10n.cancel),
+          ),
+          FilledButton(
+            onPressed: () => Navigator.of(context).pop(true),
+            child: Text(l10n.facilityMarkReceived),
+          ),
+        ],
+      ),
+    );
+    if (ok != true || !context.mounted) return;
+    await enqueueStaffAction(
+      ref,
+      kind: PendingActionKind.facilityReceive,
+      method: 'POST',
+      path: '/facility-requests/${request.id}/receive',
+      body: const {},
+      summary: l10n.facilityReceiveSummary(
+        request.quantityText(context, l10n),
+        centerName,
+      ),
+      subjectKey: _receiveKey,
+    );
+  }
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context);
+    final theme = Theme.of(context);
+    final queuedReceive = (ref.watch(pendingActionsProvider).value ?? const [])
+        .any((a) => a.subjectKey == _receiveKey);
+    final approvedOf = request.approvedOf(l10n);
+    final canReceive =
+        request.mayReceive &&
+        (request.status == 'sent' || request.status == 'approved');
+    final centerId = request.centerId;
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Expanded(
+                child: Text(
+                  request.quantityText(context, l10n),
+                  style: theme.textTheme.bodyLarge,
+                ),
+              ),
+              Text(
+                queuedReceive
+                    ? l10n.syncWaiting
+                    : FacilityRequestsSection.statusLabel(l10n, request.status),
+                style: theme.textTheme.labelMedium?.copyWith(
+                  color: queuedReceive
+                      ? null
+                      : FacilityRequestsSection.statusColor(
+                          theme,
+                          request.status,
+                        ),
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ],
+          ),
+          if (approvedOf != null)
+            Text(approvedOf, style: theme.textTheme.bodySmall),
+          if ((request.reviewNote ?? '').isNotEmpty)
+            Text(request.reviewNote!, style: theme.textTheme.bodySmall),
+          if ((canReceive && !queuedReceive) ||
+              (canCreate && request.finished && centerId != null))
+            Wrap(
+              spacing: 8,
+              children: [
+                if (canReceive && !queuedReceive)
+                  FilledButton.tonal(
+                    style: FilledButton.styleFrom(
+                      minimumSize: const Size(48, 48),
+                    ),
+                    onPressed: () => _receive(context, ref),
+                    child: Text(l10n.facilityMarkReceived),
+                  ),
+                if (canCreate && request.finished && centerId != null)
+                  TextButton(
+                    style: TextButton.styleFrom(
+                      minimumSize: const Size(48, 48),
+                    ),
+                    onPressed: () => showFacilityRequestForm(
+                      context,
+                      centerId: centerId,
+                      centerName: request.centerName ?? centerName,
+                      again: request,
+                    ),
+                    child: Text(l10n.facilityRequestAgain),
+                  ),
+              ],
+            ),
+        ],
+      ),
+    );
+  }
+}
+
+/// Ask CSWD for what a center is missing: item (a facility type or
+/// another item), quantity and unit, and why. [again] fills it from an
+/// earlier request ("Request again"). Queued, so it works offline.
+Future<void> showFacilityRequestForm(
+  BuildContext context, {
+  required int centerId,
+  required String centerName,
+  FacilityRequest? again,
+}) => showModalBottomSheet<void>(
+  context: context,
+  isScrollControlled: true,
+  showDragHandle: true,
+  builder: (_) => _RequestForm(
+    centerId: centerId,
+    centerName: centerName,
+    subjectKey: 'center:$centerId:facility',
+    again: again,
+  ),
+);
+
 class _RequestForm extends ConsumerStatefulWidget {
   const _RequestForm({
     required this.centerId,
     required this.centerName,
     required this.subjectKey,
+    this.again,
   });
 
   final int centerId;
   final String centerName;
   final String subjectKey;
+  final FacilityRequest? again;
 
   @override
   ConsumerState<_RequestForm> createState() => _RequestFormState();
@@ -242,12 +427,32 @@ class _RequestFormState extends ConsumerState<_RequestForm> {
   String? _type;
   final _item = TextEditingController();
   final _reason = TextEditingController();
+  final _unit = TextEditingController();
   int _quantity = 1;
+
+  @override
+  void initState() {
+    super.initState();
+    final again = widget.again;
+    if (again != null) {
+      if (again.facilityType != null &&
+          facilityTypes.contains(again.facilityType)) {
+        _type = again.facilityType;
+      } else {
+        _type = _other;
+        _item.text = again.item ?? '';
+      }
+      _quantity = again.quantity < 1 ? 1 : again.quantity;
+      _unit.text = again.unit ?? '';
+      _reason.text = again.reason ?? '';
+    }
+  }
 
   @override
   void dispose() {
     _item.dispose();
     _reason.dispose();
+    _unit.dispose();
     super.dispose();
   }
 
@@ -268,6 +473,7 @@ class _RequestFormState extends ConsumerState<_RequestForm> {
       body: {
         if (isOther) 'item': _item.text.trim() else 'facility_type': _type,
         'quantity_needed': _quantity,
+        if (_unit.text.trim().isNotEmpty) 'unit': _unit.text.trim(),
         if (_reason.text.trim().isNotEmpty) 'reason': _reason.text.trim(),
       },
       summary: l10n.facilityRequestSummary(what, _quantity, widget.centerName),
@@ -361,6 +567,16 @@ class _RequestFormState extends ConsumerState<_RequestForm> {
               ],
             ),
             const SizedBox(height: 16),
+            TextField(
+              controller: _unit,
+              maxLength: 30,
+              decoration: InputDecoration(
+                labelText: l10n.facilityRequestUnit,
+                hintText: l10n.facilityRequestUnitHint,
+                border: const OutlineInputBorder(),
+              ),
+            ),
+            const SizedBox(height: 8),
             TextField(
               controller: _reason,
               decoration: InputDecoration(

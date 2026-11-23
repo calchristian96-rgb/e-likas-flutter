@@ -4404,4 +4404,51 @@ class AppLocalizationsBcl extends AppLocalizations {
   @override
   String get reliefRoundOneOneBox =>
       'One box per family: your list or the forecast, whichever is more.';
+
+  @override
+  String quantityWithUnit(String quantity, String unit) {
+    return '$quantity $unit';
+  }
+
+  @override
+  String facilityApprovedOf(String approved, String asked) {
+    return 'Approved $approved of $asked';
+  }
+
+  @override
+  String get facilityMarkReceived => 'Mark received';
+
+  @override
+  String get facilityReceiveTitle => 'Mark this request received?';
+
+  @override
+  String facilityReceiveSummary(String what, String center) {
+    return 'Received: $what at $center';
+  }
+
+  @override
+  String get facilityRequestAgain => 'Request again';
+
+  @override
+  String get facilityRequestUnit => 'Unit (optional)';
+
+  @override
+  String get facilityRequestUnitHint => 'e.g. pieces, boxes, liters';
+
+  @override
+  String get facilitySuggested => 'Suggested for your centers';
+
+  @override
+  String get facilitySuggestedHint =>
+      'What each center is short of for a full center, minus what you already asked.';
+
+  @override
+  String get facilitySuggestedNone =>
+      'Nothing to suggest: your centers have what the standards ask, or it is already requested.';
+
+  @override
+  String get facilityYourRequests => 'Your requests';
+
+  @override
+  String get facilityRequestWhichCenter => 'For which center?';
 }

@@ -12,7 +12,9 @@ enum PendingActionKind {
   countSubmission,
   // A listed family checked in (families to evacuate): the server
   // replays the first answer for the same client_ref.
-  familyCheckIn;
+  familyCheckIn,
+  // Mark a facility request received (the center's barangay).
+  facilityReceive;
 
   static PendingActionKind? fromName(String name) {
     for (final k in values) {
@@ -55,6 +57,7 @@ enum PendingActionKind {
     checkOut => const AlreadyHappened(404, null, 'no active evacuation record'),
     shortfallRequest || centerLocation || facilityRequest => null,
     familyCheckIn => null,
+    facilityReceive => null,
   };
 }
 

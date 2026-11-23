@@ -1361,5 +1361,18 @@
   "reliefRoundOnePlan": "Plano para sa Round 1",
   "reliefRoundOneFromList": "Isang kahon bawat pamilya sa inyong listahan.",
   "reliefRoundOneFromForecast": "Isang kahon bawat pamilya ayon sa pinakamataas na tantiya.",
-  "reliefRoundOneOneBox": "Isang kahon bawat pamilya: ang listahan o ang tantiya, alinman ang mas marami."
+  "reliefRoundOneOneBox": "Isang kahon bawat pamilya: ang listahan o ang tantiya, alinman ang mas marami.",
+  "quantityWithUnit": "{quantity} {unit}",
+  "facilityApprovedOf": "Inaprubahan ang {approved} sa {asked}",
+  "facilityMarkReceived": "Markahang natanggap",
+  "facilityReceiveTitle": "Markahang natanggap ang hiling na ito?",
+  "facilityReceiveSummary": "Natanggap: {what} sa {center}",
+  "facilityRequestAgain": "Humiling ulit",
+  "facilityRequestUnit": "Yunit (opsyonal)",
+  "facilityRequestUnitHint": "hal. piraso, kahon, litro",
+  "facilitySuggested": "Mungkahi para sa inyong mga center",
+  "facilitySuggestedHint": "Ang kulang sa bawat center kapag puno ito, bawas ang nahiling na.",
+  "facilitySuggestedNone": "Walang mungkahi: kumpleto na ayon sa pamantayan, o nahiling na.",
+  "facilityYourRequests": "Inyong mga hiling",
+  "facilityRequestWhichCenter": "Para sa aling center?"
 }

@@ -291,7 +291,7 @@ TodoTarget todoTargetOf(Map<String, dynamic> item) {
 /// The path for a To do item.
 String? todoPath(TodoTarget t) => switch (t) {
   TodoTarget.centers => '/staff/more/evacuation-centers',
-  TodoTarget.supplies => '/staff/more/evacuation-centers',
+  TodoTarget.supplies => '/staff/home/facility-requests',
   TodoTarget.none => null,
 };
 

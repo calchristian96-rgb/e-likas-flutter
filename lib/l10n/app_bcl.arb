@@ -3280,5 +3280,18 @@
   "reliefRoundOnePlan": "Round 1 plan",
   "reliefRoundOneFromList": "One box per family on your list.",
   "reliefRoundOneFromForecast": "One box per family at the high end of the forecast.",
-  "reliefRoundOneOneBox": "One box per family: your list or the forecast, whichever is more."
+  "reliefRoundOneOneBox": "One box per family: your list or the forecast, whichever is more.",
+  "quantityWithUnit": "{quantity} {unit}",
+  "facilityApprovedOf": "Approved {approved} of {asked}",
+  "facilityMarkReceived": "Mark received",
+  "facilityReceiveTitle": "Mark this request received?",
+  "facilityReceiveSummary": "Received: {what} at {center}",
+  "facilityRequestAgain": "Request again",
+  "facilityRequestUnit": "Unit (optional)",
+  "facilityRequestUnitHint": "e.g. pieces, boxes, liters",
+  "facilitySuggested": "Suggested for your centers",
+  "facilitySuggestedHint": "What each center is short of for a full center, minus what you already asked.",
+  "facilitySuggestedNone": "Nothing to suggest: your centers have what the standards ask, or it is already requested.",
+  "facilityYourRequests": "Your requests",
+  "facilityRequestWhichCenter": "For which center?"
 }

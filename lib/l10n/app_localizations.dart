@@ -6926,6 +6926,84 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'One box per family: your list or the forecast, whichever is more.'**
   String get reliefRoundOneOneBox;
+
+  /// No description provided for @quantityWithUnit.
+  ///
+  /// In en, this message translates to:
+  /// **'{quantity} {unit}'**
+  String quantityWithUnit(String quantity, String unit);
+
+  /// No description provided for @facilityApprovedOf.
+  ///
+  /// In en, this message translates to:
+  /// **'Approved {approved} of {asked}'**
+  String facilityApprovedOf(String approved, String asked);
+
+  /// No description provided for @facilityMarkReceived.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark received'**
+  String get facilityMarkReceived;
+
+  /// No description provided for @facilityReceiveTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark this request received?'**
+  String get facilityReceiveTitle;
+
+  /// No description provided for @facilityReceiveSummary.
+  ///
+  /// In en, this message translates to:
+  /// **'Received: {what} at {center}'**
+  String facilityReceiveSummary(String what, String center);
+
+  /// No description provided for @facilityRequestAgain.
+  ///
+  /// In en, this message translates to:
+  /// **'Request again'**
+  String get facilityRequestAgain;
+
+  /// No description provided for @facilityRequestUnit.
+  ///
+  /// In en, this message translates to:
+  /// **'Unit (optional)'**
+  String get facilityRequestUnit;
+
+  /// No description provided for @facilityRequestUnitHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. pieces, boxes, liters'**
+  String get facilityRequestUnitHint;
+
+  /// No description provided for @facilitySuggested.
+  ///
+  /// In en, this message translates to:
+  /// **'Suggested for your centers'**
+  String get facilitySuggested;
+
+  /// No description provided for @facilitySuggestedHint.
+  ///
+  /// In en, this message translates to:
+  /// **'What each center is short of for a full center, minus what you already asked.'**
+  String get facilitySuggestedHint;
+
+  /// No description provided for @facilitySuggestedNone.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing to suggest: your centers have what the standards ask, or it is already requested.'**
+  String get facilitySuggestedNone;
+
+  /// No description provided for @facilityYourRequests.
+  ///
+  /// In en, this message translates to:
+  /// **'Your requests'**
+  String get facilityYourRequests;
+
+  /// No description provided for @facilityRequestWhichCenter.
+  ///
+  /// In en, this message translates to:
+  /// **'For which center?'**
+  String get facilityRequestWhichCenter;
 }
 
 class _AppLocalizationsDelegate

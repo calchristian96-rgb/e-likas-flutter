@@ -4480,4 +4480,51 @@ class AppLocalizationsFil extends AppLocalizations {
   @override
   String get reliefRoundOneOneBox =>
       'Isang kahon bawat pamilya: ang listahan o ang tantiya, alinman ang mas marami.';
+
+  @override
+  String quantityWithUnit(String quantity, String unit) {
+    return '$quantity $unit';
+  }
+
+  @override
+  String facilityApprovedOf(String approved, String asked) {
+    return 'Inaprubahan ang $approved sa $asked';
+  }
+
+  @override
+  String get facilityMarkReceived => 'Markahang natanggap';
+
+  @override
+  String get facilityReceiveTitle => 'Markahang natanggap ang hiling na ito?';
+
+  @override
+  String facilityReceiveSummary(String what, String center) {
+    return 'Natanggap: $what sa $center';
+  }
+
+  @override
+  String get facilityRequestAgain => 'Humiling ulit';
+
+  @override
+  String get facilityRequestUnit => 'Yunit (opsyonal)';
+
+  @override
+  String get facilityRequestUnitHint => 'hal. piraso, kahon, litro';
+
+  @override
+  String get facilitySuggested => 'Mungkahi para sa inyong mga center';
+
+  @override
+  String get facilitySuggestedHint =>
+      'Ang kulang sa bawat center kapag puno ito, bawas ang nahiling na.';
+
+  @override
+  String get facilitySuggestedNone =>
+      'Walang mungkahi: kumpleto na ayon sa pamantayan, o nahiling na.';
+
+  @override
+  String get facilityYourRequests => 'Inyong mga hiling';
+
+  @override
+  String get facilityRequestWhichCenter => 'Para sa aling center?';
 }

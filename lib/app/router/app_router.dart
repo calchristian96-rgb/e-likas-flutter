@@ -53,6 +53,7 @@ import '../../features/staff_workspace/presentation/pages/staff_workspace_page.d
 import '../../l10n/app_localizations.dart';
 import '../splash/splash_page.dart';
 import '../../features/families_to_evacuate/families_to_evacuate.dart';
+import '../../features/facility_requests/facility_requests_page.dart';
 
 /// Bottom-nav shell shared by the four top-level destinations. Uses
 /// [StatefulShellRoute.indexedStack] so each tab keeps its own
@@ -597,6 +598,10 @@ final GoRouter appRouter = GoRouter(
                 GoRoute(
                   path: 'transfers',
                   builder: (context, state) => const TransfersPage(),
+                ),
+                GoRoute(
+                  path: 'facility-requests',
+                  builder: (context, state) => const FacilityRequestsPage(),
                 ),
                 GoRoute(
                   path: 'families-to-evacuate',
