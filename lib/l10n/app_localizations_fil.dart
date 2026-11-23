@@ -4886,4 +4886,30 @@ class AppLocalizationsFil extends AppLocalizations {
 
   @override
   String get textSizeLarger => 'Mas malaki';
+
+  @override
+  String get pushPermissionTitle => 'Mga emergency na abiso';
+
+  @override
+  String get pushPermissionBody =>
+      'Sinasabihan ka ng E-LIKAS tungkol sa mga emergency alert at utos na lumikas para sa inyong barangay.';
+
+  @override
+  String get pushPermissionAllow => 'Payagan';
+
+  @override
+  String get pushPermissionLater => 'Hindi muna';
+
+  @override
+  String get settingsVersion => 'Bersyon';
+
+  @override
+  String get pushTestRevealed => 'Ipinakita ang opsyon para sa test na abiso.';
+
+  @override
+  String get pushTestOption => 'Tumanggap ng test na abiso';
+
+  @override
+  String get pushTestOptionHint =>
+      'Para sa demonstrasyon: ang test push lang ng administrator.';
 }

@@ -4866,4 +4866,30 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get textSizeLarger => 'Larger';
+
+  @override
+  String get pushPermissionTitle => 'Emergency notifications';
+
+  @override
+  String get pushPermissionBody =>
+      'E-LIKAS tells you about emergency alerts and evacuation orders for your barangay.';
+
+  @override
+  String get pushPermissionAllow => 'Allow';
+
+  @override
+  String get pushPermissionLater => 'Not now';
+
+  @override
+  String get settingsVersion => 'Version';
+
+  @override
+  String get pushTestRevealed => 'Test notifications option shown.';
+
+  @override
+  String get pushTestOption => 'Receive test notifications';
+
+  @override
+  String get pushTestOptionHint =>
+      'For demonstrations: only the administrator\'s test push.';
 }

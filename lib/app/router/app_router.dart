@@ -57,6 +57,11 @@ import '../../features/facility_requests/facility_requests_page.dart';
 import '../../features/support/support_requests.dart';
 import '../../features/staff_home/cswd_actions.dart';
 import '../../features/preparedness/preparedness.dart';
+import '../../core/notifications/local_notifications.dart';
+import '../../core/push/push_providers.dart';
+import '../../core/push/push_service.dart';
+import '../../core/push/notification_permission.dart';
+import '../../features/barangay_status/presentation/resident_area.dart';
 
 /// Bottom-nav shell shared by the four top-level destinations. Uses
 /// [StatefulShellRoute.indexedStack] so each tab keeps its own
@@ -103,6 +108,7 @@ class _AppShellState extends ConsumerState<AppShell>
     // startup. Silent unless there is an update to offer.
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (mounted) runAutomaticUpdateCheck(context, ref, coldStart: true);
+      if (mounted) _startPush();
     });
   }
 
@@ -111,6 +117,40 @@ class _AppShellState extends ConsumerState<AppShell>
     WidgetsBinding.instance.removeObserver(this);
     _pollTimer?.cancel();
     super.dispose();
+  }
+
+  /// Push notifications (Part 13): open the matching screen when one is
+  /// tapped, refresh when one arrives in the foreground, subscribe, and
+  /// ask for the permission once with a reason first.
+  Future<void> _startPush() async {
+    final push = ref.read(pushServiceProvider);
+    push.onOpen = (target) {
+      switch (target) {
+        case AlertTarget(:final alertId):
+          _refreshAlertsNow();
+          appRouter.go(alertId == null ? '/alerts' : '/alerts/$alertId');
+        case EvacuationOrderTarget():
+          ref.invalidate(barangayStatusBoardProvider);
+          appRouter.push('/nearest-center');
+        case HomeTarget():
+          appRouter.go('/home');
+      }
+    };
+    push.onForegroundRefresh = () {
+      _refreshAlertsNow();
+      ref.invalidate(barangayStatusBoardProvider);
+    };
+    LocalNotifications.onTap = (payload) {
+      if (payload == 'staff:home') {
+        appRouter.go('/staff/home');
+      } else {
+        push.openPayload(payload);
+      }
+    };
+    final launch = await LocalNotifications.launchPayload();
+    await push.start();
+    if (launch != null) LocalNotifications.onTap?.call(launch);
+    if (mounted) await askNotificationPermissionOnce(context, push);
   }
 
   @override
@@ -268,6 +308,16 @@ class _AppShellState extends ConsumerState<AppShell>
     // when alerts or connectivity change, it only needs to react once
     // per actual change — exactly what listen is for.
     ref.listen(alertsSummaryProvider, _handleAlertsSummaryChange);
+    // The resident's barangay topic as the API names it; the city topic
+    // too. A change unsubscribes from the old barangay first.
+    ref.listen(residentAreaProvider, (_, next) {
+      final topic = next.value?.status?.pushTopic;
+      if (topic != null) ref.read(pushServiceProvider).setBarangayTopic(topic);
+    });
+    ref.listen(barangayStatusBoardProvider, (_, next) {
+      final city = next.value?.cityPushTopic;
+      if (city != null) ref.read(pushServiceProvider).setCityTopic(city);
+    });
     ref.listen(connectivityStatusProvider, _handleConnectivityChange);
 
     final theme = Theme.of(context);

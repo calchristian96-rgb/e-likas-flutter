@@ -4809,4 +4809,30 @@ class AppLocalizationsBcl extends AppLocalizations {
 
   @override
   String get textSizeLarger => 'Mas dakula';
+
+  @override
+  String get pushPermissionTitle => 'Mga emergency na abiso';
+
+  @override
+  String get pushPermissionBody =>
+      'Sinasabihan ka kan E-LIKAS manungod sa mga emergency alerto asin pagboot na magbakwet para sa saindong barangay.';
+
+  @override
+  String get pushPermissionAllow => 'Togotan';
+
+  @override
+  String get pushPermissionLater => 'Dai muna';
+
+  @override
+  String get settingsVersion => 'Bersyon';
+
+  @override
+  String get pushTestRevealed => 'Ipinahiling an opsyon para sa test na abiso.';
+
+  @override
+  String get pushTestOption => 'Mag-ako nin test na abiso';
+
+  @override
+  String get pushTestOptionHint =>
+      'Para sa demonstrasyon: an test push sana kan administrator.';
 }

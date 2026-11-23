@@ -30,8 +30,17 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
+        <!-- Pushes without a channel of their own land on the
+             high-importance "Emergency alerts and evacuation orders"
+             channel (docs/backend/push-notifications.md section 3). -->
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="elikas_alerts" />
     </application>
     <uses-permission android:name="android.permission.INTERNET"/>
+    <!-- Android 13+: asked once, with a reason first, for Emergency
+         alerts and evacuation orders. -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
     <!-- In-app updater (lib/features/app_update/): lets Android show its
          own "install unknown apps" prompt for E-LIKAS when the verified
          update APK is handed to the package installer. open_filex

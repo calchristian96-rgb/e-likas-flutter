@@ -2267,5 +2267,13 @@
   "textSize": "Text size",
   "textSizeNormal": "Normal",
   "textSizeLarge": "Large",
-  "textSizeLarger": "Larger"
+  "textSizeLarger": "Larger",
+  "pushPermissionTitle": "Emergency notifications",
+  "pushPermissionBody": "E-LIKAS tells you about emergency alerts and evacuation orders for your barangay.",
+  "pushPermissionAllow": "Allow",
+  "pushPermissionLater": "Not now",
+  "settingsVersion": "Version",
+  "pushTestRevealed": "Test notifications option shown.",
+  "pushTestOption": "Receive test notifications",
+  "pushTestOptionHint": "For demonstrations: only the administrator's test push."
 }

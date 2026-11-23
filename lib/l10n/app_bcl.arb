@@ -3442,5 +3442,21 @@
   "textSizeLarge": "Dakula",
   "@textSizeLarge": {"description": "NEEDS NATIVE BIKOL REVIEW"},
   "textSizeLarger": "Mas dakula",
-  "@textSizeLarger": {"description": "NEEDS NATIVE BIKOL REVIEW"}
+  "@textSizeLarger": {"description": "NEEDS NATIVE BIKOL REVIEW"},
+  "pushPermissionTitle": "Mga emergency na abiso",
+  "@pushPermissionTitle": {"description": "NEEDS NATIVE BIKOL REVIEW"},
+  "pushPermissionBody": "Sinasabihan ka kan E-LIKAS manungod sa mga emergency alerto asin pagboot na magbakwet para sa saindong barangay.",
+  "@pushPermissionBody": {"description": "NEEDS NATIVE BIKOL REVIEW"},
+  "pushPermissionAllow": "Togotan",
+  "@pushPermissionAllow": {"description": "NEEDS NATIVE BIKOL REVIEW"},
+  "pushPermissionLater": "Dai muna",
+  "@pushPermissionLater": {"description": "NEEDS NATIVE BIKOL REVIEW"},
+  "settingsVersion": "Bersyon",
+  "@settingsVersion": {"description": "NEEDS NATIVE BIKOL REVIEW"},
+  "pushTestRevealed": "Ipinahiling an opsyon para sa test na abiso.",
+  "@pushTestRevealed": {"description": "NEEDS NATIVE BIKOL REVIEW"},
+  "pushTestOption": "Mag-ako nin test na abiso",
+  "@pushTestOption": {"description": "NEEDS NATIVE BIKOL REVIEW"},
+  "pushTestOptionHint": "Para sa demonstrasyon: an test push sana kan administrator.",
+  "@pushTestOptionHint": {"description": "NEEDS NATIVE BIKOL REVIEW"}
 }

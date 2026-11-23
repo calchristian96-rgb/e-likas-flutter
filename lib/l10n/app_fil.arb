@@ -1471,5 +1471,13 @@
   "textSize": "Laki ng teksto",
   "textSizeNormal": "Karaniwan",
   "textSizeLarge": "Malaki",
-  "textSizeLarger": "Mas malaki"
+  "textSizeLarger": "Mas malaki",
+  "pushPermissionTitle": "Mga emergency na abiso",
+  "pushPermissionBody": "Sinasabihan ka ng E-LIKAS tungkol sa mga emergency alert at utos na lumikas para sa inyong barangay.",
+  "pushPermissionAllow": "Payagan",
+  "pushPermissionLater": "Hindi muna",
+  "settingsVersion": "Bersyon",
+  "pushTestRevealed": "Ipinakita ang opsyon para sa test na abiso.",
+  "pushTestOption": "Tumanggap ng test na abiso",
+  "pushTestOptionHint": "Para sa demonstrasyon: ang test push lang ng administrator."
 }

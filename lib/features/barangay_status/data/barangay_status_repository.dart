@@ -67,6 +67,7 @@ class BarangayStatusRepository {
       eventType: event?['is_volcanic'] == true
           ? 'volcanic_eruption'
           : event?['event_type'] as String?,
+      cityPushTopic: data['city_push_topic'] as String?,
       barangays: [
         for (final b in data['barangays'] as List? ?? const [])
           BarangayStatus.fromJson(b as Map<String, dynamic>),

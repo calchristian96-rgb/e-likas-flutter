@@ -8,7 +8,14 @@ class BarangayStatus {
     required this.status,
     required this.label,
     this.psgcCode,
+    this.slug,
+    this.pushTopic,
   });
+
+  /// e.g. `tula-tula-pequeno`, and its push topic as the API names it
+  /// (`elikas-brgy-tula-tula-pequeno`): the app never builds topics.
+  final String? slug;
+  final String? pushTopic;
 
   final int id;
   final String name;
@@ -34,6 +41,8 @@ class BarangayStatus {
     psgcCode: json['psgc_code'] as String?,
     status: json['status'] as String? ?? BarangayStatusKey.normal,
     label: json['label'] as String? ?? 'Normal',
+    slug: json['slug'] as String?,
+    pushTopic: json['push_topic'] as String?,
   );
 }
 
@@ -69,7 +78,11 @@ class BarangayStatusBoard {
     this.isFromCache = false,
     this.lastSyncedAt,
     this.eventType,
+    this.cityPushTopic,
   });
+
+  /// `city_push_topic` (`elikas-city`); null on a saved copy.
+  final String? cityPushTopic;
 
   /// e.g. `typhoon`, `volcanic_eruption` (the public board's event).
   final String? eventType;

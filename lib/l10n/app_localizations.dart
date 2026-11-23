@@ -7586,6 +7586,54 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Larger'**
   String get textSizeLarger;
+
+  /// No description provided for @pushPermissionTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Emergency notifications'**
+  String get pushPermissionTitle;
+
+  /// No description provided for @pushPermissionBody.
+  ///
+  /// In en, this message translates to:
+  /// **'E-LIKAS tells you about emergency alerts and evacuation orders for your barangay.'**
+  String get pushPermissionBody;
+
+  /// No description provided for @pushPermissionAllow.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow'**
+  String get pushPermissionAllow;
+
+  /// No description provided for @pushPermissionLater.
+  ///
+  /// In en, this message translates to:
+  /// **'Not now'**
+  String get pushPermissionLater;
+
+  /// No description provided for @settingsVersion.
+  ///
+  /// In en, this message translates to:
+  /// **'Version'**
+  String get settingsVersion;
+
+  /// No description provided for @pushTestRevealed.
+  ///
+  /// In en, this message translates to:
+  /// **'Test notifications option shown.'**
+  String get pushTestRevealed;
+
+  /// No description provided for @pushTestOption.
+  ///
+  /// In en, this message translates to:
+  /// **'Receive test notifications'**
+  String get pushTestOption;
+
+  /// No description provided for @pushTestOptionHint.
+  ///
+  /// In en, this message translates to:
+  /// **'For demonstrations: only the administrator\'s test push.'**
+  String get pushTestOptionHint;
 }
 
 class _AppLocalizationsDelegate

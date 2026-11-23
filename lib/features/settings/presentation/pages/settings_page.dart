@@ -18,6 +18,10 @@ import '../../../home/presentation/providers/home_provider.dart';
 import '../../../staff_auth/presentation/providers/staff_auth_provider.dart';
 import '../../../staff_auth/presentation/widgets/staff_identity_card.dart';
 import '../../../../core/localization/app_text_scale.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import '../../../../core/network/device_headers.dart';
+import '../../../../core/push/push_providers.dart';
+import '../../../../core/push/push_service.dart';
 
 /// Every row here either does something real or shows a genuinely
 /// measured value — no fake toggles, no placeholder rows for
@@ -55,6 +59,57 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
   int _aboutTapCount = 0;
   Timer? _aboutTapResetTimer;
 
+  // Hidden "Receive test notifications" (Part 13): tap the version seven
+  // times. It stays shown once revealed; the switch itself is off by
+  // default and only subscribes to elikas-test.
+  static const _testRevealedKey = 'push_test_revealed_v1';
+  int _versionTapCount = 0;
+  Timer? _versionTapResetTimer;
+  bool _testRevealed = false;
+  bool _testOn = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadTestOption();
+  }
+
+  Future<void> _loadTestOption() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final revealed = prefs.getBool(_testRevealedKey) ?? false;
+      final on = await PushService.testTopicOn();
+      if (mounted) {
+        setState(() {
+          _testRevealed = revealed;
+          _testOn = on;
+        });
+      }
+    } catch (_) {
+      // Hidden.
+    }
+  }
+
+  void _handleVersionTap() {
+    _versionTapResetTimer?.cancel();
+    _versionTapCount++;
+    if (_versionTapCount >= 7 && !_testRevealed) {
+      _versionTapCount = 0;
+      setState(() => _testRevealed = true);
+      SharedPreferences.getInstance().then(
+        (p) => p.setBool(_testRevealedKey, true),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(AppLocalizations.of(context).pushTestRevealed)),
+      );
+      return;
+    }
+    _versionTapResetTimer = Timer(
+      const Duration(seconds: 2),
+      () => _versionTapCount = 0,
+    );
+  }
+
   void _handleAboutTap() {
     _aboutTapResetTimer?.cancel();
     _aboutTapCount++;
@@ -72,6 +127,7 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
   @override
   void dispose() {
     _aboutTapResetTimer?.cancel();
+    _versionTapResetTimer?.cancel();
     super.dispose();
   }
 
@@ -188,6 +244,27 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                 // even begin to count there.
                 onTap: kReleaseMode ? null : _handleAboutTap,
               ),
+              const _RowDivider(),
+              _SettingsRow(
+                icon: Icons.info_outline,
+                iconColor: theme.colorScheme.primary,
+                title: l10n.settingsVersion,
+                subtitle: DeviceHeaders.appVersion ?? '–',
+                onTap: _handleVersionTap,
+              ),
+              if (_testRevealed) ...[
+                const _RowDivider(),
+                SwitchListTile(
+                  secondary: const Icon(Icons.science_outlined),
+                  title: Text(l10n.pushTestOption),
+                  subtitle: Text(l10n.pushTestOptionHint),
+                  value: _testOn,
+                  onChanged: (on) async {
+                    setState(() => _testOn = on);
+                    await ref.read(pushServiceProvider).setTestTopic(on);
+                  },
+                ),
+              ],
               if (updatesSupported) ...[
                 const _RowDivider(),
                 _SettingsRow(
