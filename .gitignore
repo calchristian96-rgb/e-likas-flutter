@@ -24,3 +24,4 @@ dist/
 
 # Firebase config for this install's project: never committed
 android/app/google-services.json
+test_screenshots/failures/
