@@ -288,9 +288,16 @@ class _FacilityRequestsPageState extends ConsumerState<FacilityRequestsPage> {
                               margin: const EdgeInsets.only(bottom: 8),
                               child: ListTile(
                                 minTileHeight: 64,
+                                // "2 toilets" with the server's label;
+                                // else "Toilet × 2 pieces".
                                 title: Text(
-                                  '${s.what(context)} × '
-                                  '${s.unit == null ? formatCount(s.quantity) : l10n.quantityWithUnit(formatCount(s.quantity), s.unit!)}',
+                                  (s.label ?? '').isNotEmpty
+                                      ? l10n.quantityWithUnit(
+                                          formatCount(s.quantity),
+                                          s.label!,
+                                        )
+                                      : '${s.what(context)} × '
+                                            '${s.unit == null ? formatCount(s.quantity) : l10n.quantityWithUnit(formatCount(s.quantity), s.unit!)}',
                                 ),
                                 // Tap: the form filled in, to change first.
                                 onTap: canCreate

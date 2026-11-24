@@ -21,7 +21,10 @@ next release after 0.4.0+9 needs build 10 or higher.
 ## Backend
 
 The API contract the app follows is in `docs/backend/`; the newest files
-win: `apps-api-2026-11-23.md` (accounts, device headers, Report a
+win: `apps-api-2026-11-24.md` (exact response shapes, relief
+`staying_in` / `staying_elsewhere`, `client_ref` on handouts and on
+adding to the families-to-evacuate list, public flood and Mayon zone,
+`/file-downloads`), `apps-api-2026-11-23.md` (accounts, device headers, Report a
 problem, system notices, push), `apps-api-2026-11-22.md` (locks, families
 to evacuate, facility requests, relief, alerts, volcanic events) and
 `push-notifications.md`.

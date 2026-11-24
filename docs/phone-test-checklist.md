@@ -2,7 +2,8 @@
 
 For testing on a real phone against the backend with the November 22-24
 changes (docs/backend/apps-api-2026-11-22.md, apps-api-2026-11-23.md,
-push-notifications.md). Each line is one thing to try and what you
+apps-api-2026-11-24.md, push-notifications.md). Items marked **(Nov 24)**
+follow apps-api-2026-11-24.md. Each line is one thing to try and what you
 should see. Run the event items in order; the others can go in any order.
 
 You need: one barangay official account (one with a temporary password
@@ -44,23 +45,34 @@ never send pushes.
       to refresh: the event turns Active, the green "Registration is
       open" card shows, and the phone shows its own "Registration is
       open" notification (Staff Mode channel).
+- [ ] **(Nov 24)** Tap the green card (or the notification on the
+      Notifications page): the EC Board opens. With another event selected
+      first, the app switches to the notification's event (online).
+- [ ] **(Nov 24)** A "registration is open" notification for another
+      event does not show as the green card on this event's Home.
+- [ ] **(Nov 24)** Notifications page: a transfer notification opens
+      Transfers; "final count reminder" and "status update requested"
+      open the barangay page; a reply to a problem report opens Report a
+      problem.
 - [ ] Sign out and in again with two open events: the Active one is
       selected first.
 
 ## 3. Official home
 
-- [ ] Plan: **Plan for** (families, persons, the forecast range; "Above
-      anything seen before" when the server says so), **Your list** (opens
-      Families to evacuate), **Center space vs forecast** (short in red or
-      enough in green), **Centers ready** ("2 of 4").
+- [ ] Plan: **Plan for** (families, persons, the forecast range), **Your
+      list** (opens Families to evacuate), **Center space vs forecast**
+      (short in red or enough in green; "Part of this room is only an
+      estimate" when the server says so), **Centers ready** ("2 of 4",
+      with "1 short of the standard · 1 without a checklist").
 - [ ] For a volcanic event, Plan for says "No forecast for volcanic events
       yet. Plan using the barangays inside the danger zone."
 - [ ] Barangay status card: "Updated 3 hours ago" and **Change status**
       (opens the barangay page).
-- [ ] To do lists the server's items as they come: capacity missing or
-      estimated, map location, facilities checklist (each opens My
-      centers), supplies short with **Request supplies** (opens Facility
-      requests).
+- [ ] **(Nov 24)** To do lists the server's items with the server's
+      button label: **Enter capacity** (My centers), **Set location** and
+      **Fill in checklist** (that center's page when one center is named,
+      else My centers), **Request supplies** (Facility requests, showing
+      only that center's suggestions, with "Show all centers").
 - [ ] Alerts: only city-wide alerts and your own barangay's, each with
       Emergency / Advisory / Info and **New** until you open it.
 
@@ -68,9 +80,16 @@ never send pushes.
 
 - [ ] The list is grouped by purok, high-risk puroks first with a red
       "High risk" chip, and says a listed family is not an evacuee.
-- [ ] Add family > From past events: search a name, tap a family; it is
-      added with its household. Add family > New family: head's names,
-      sex, members (1-30), purok, contact, note.
+- [ ] Add family > From past events: search a name (needs a connection),
+      tap a family; it is added with its household. Add family > New
+      family: head's names, sex, members (1-30), purok, contact, note.
+- [ ] **(Nov 24)** Airplane mode, Add family > New family > Add family:
+      "Added. It is sent to the list when there is a connection." The
+      family shows under "Added on this phone, waiting to sync". Back
+      online it syncs once (on the web the family is listed once, even if
+      the phone retried).
+- [ ] **(Nov 24)** Add the same past family twice from two phones: the
+      second one's queued add clears by itself ("already on your list").
 - [ ] Remove (the "..." menu) works only for families not checked in.
 - [ ] High-risk puroks (warning icon in the bar): switch flood /
       landslide; the list re-sorts.
@@ -86,6 +105,10 @@ never send pushes.
       estimate, a fill bar in the status colour, no bar for an unknown
       capacity, and "Needs details:" chips (Capacity, Capacity is an
       estimate, Map location, Facilities checklist).
+- [ ] **(Nov 24)** The dashboard's readiness per center: a center short of
+      the standard shows "Supplies short"; one with no checklist shows
+      "Facilities checklist"; a center that meets the standard shows a
+      green "Ready" chip; a closed center shows neither.
 - [ ] A center's page: **Use my current location** asks for the location
       permission the first time, shows the point and its accuracy, then
       queues it. As an official of an approved center it says CSWD
@@ -112,21 +135,35 @@ never send pushes.
 
 ## 7. Relief boxes
 
-- [ ] Families show "Priority: PWD / senior" (or the server's label).
+- [ ] Families show "Priority: PWD / senior" (or the server's label) and
+      where they stay (the center's name, or "Private house (host)").
 - [ ] Only the family marked "Next in line" has the filled Give button;
-      the others have an outlined Give that still warns when out of order.
+      the others have an outlined Give.
+- [ ] **(Nov 24)** Give to a family below higher-priority families: "Give a
+      box to this family?" / "2 higher-priority families have not
+      received a box yet. Continue?" with **Give box** and **Cancel**.
+      The next in line gives with no question.
+- [ ] **(Nov 24)** Airplane mode: give a box; the row says "Given, waiting
+      to sync" without overlapping the name. Back online it syncs once;
+      on the web the activity log has one entry.
 - [ ] Before the count is validated: "Need (registered)" and "Need based
       on the registered count, not yet validated. Boxes can already be
       given."
 - [ ] A family from another barangay staying here shows "From
-      <barangay>" and can be given its box. On its home barangay's list it
-      has no Give button ("Staying in <barangay>: they give the box").
+      <barangay>" and can be given its box.
+- [ ] **(Nov 24)** On its home barangay's list, that family is only under
+      "Staying in another barangay": "Staying in Bay, Bay Elementary
+      School · Bay gives the box", "No box yet" or "Given", and no Give
+      button.
 
 ## 8. Facility requests
 
 - [ ] Request supplies (or "+" on Facility requests): item, quantity,
       unit, reason. Works offline (queued).
-- [ ] "Suggested for your centers": each row with **Send**.
+- [ ] "Suggested for your centers": each row with the server's words
+      ("2 toilets", the reason) and **Send**.
+- [ ] **(Nov 24)** Tap a suggestion (not Send): the request form opens
+      filled in from it, to change before sending.
 - [ ] A sent request shows **Mark received** (confirm, queued); a request
       approved for fewer shows "Approved 6 of 10".
 - [ ] A received or rejected request shows **Request again**, with the
@@ -182,14 +219,23 @@ never send pushes.
 - [ ] Record a Preemptive (then Forced) order for the phone's barangay:
       Home shows the large orange (then red) banner with "Nearest open
       centers".
-- [ ] Alerts tab: city-wide alerts and your barangay's only (send one to
-      another barangay: it does not show), with Emergency / Advisory /
-      Info and **New** until opened.
+- [ ] **(Nov 24)** Alerts tab: city-wide alerts and your barangay's only,
+      by `target_barangay` (send one to another barangay: it does not
+      show; an alert to one person never shows), with Emergency /
+      Advisory / Info and **New** until opened.
 - [ ] Home: the three nearest safe centers, never Full or Closed, with
       "(estimated)" capacities and Directions to Google Maps. For a
       volcanic event, none within 7 km of Mayon.
-- [ ] Hazards card: "inside the 6 km / 7 km zone" or "N km from the
-      summit", with the PHIVOLCS note.
+- [ ] **(Nov 24)** Hazards card, from the server: "Flood: 12% of your
+      barangay has high or very high flood susceptibility" (or "no high or
+      very high flood susceptibility is mapped") with the MGB note; Mayon
+      "inside the 6 km / 7 km zone", "near the danger zone, within 3 km of
+      the 7 km zone" (e.g. Nabonton) or "N km from the summit", with the
+      PHIVOLCS note.
+- [ ] **(Nov 24)** Open Home once online, then airplane mode and restart:
+      the same flood and Mayon lines (saved copy). On a fresh install in
+      airplane mode only the Mayon line shows, with "Worked out on this
+      phone from the barangay outline".
 - [ ] Be prepared: the go-bag and three more checklists, each naming its
       agency and "for team review"; ticks stay after closing the app; it
       all works in airplane mode.
@@ -216,3 +262,10 @@ never send pushes.
       that alert; an evacuation order opens the nearest open centers.
 - [ ] Move to another barangay (or fake the location): the phone stops
       getting the old barangay's pushes and gets the new one's.
+
+## Not in this version
+
+- **(Nov 24)** `POST /file-downloads`: the app does not save, share or
+  print any file yet (sharing an alert shares its text only), so nothing
+  is reported. The first file feature (for example the EC Information
+  Board) must call it.
