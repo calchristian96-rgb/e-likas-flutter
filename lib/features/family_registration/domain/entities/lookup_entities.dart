@@ -39,12 +39,34 @@ class EvacuationCenterLookup {
     this.approvalStatus = 'approved',
     this.hasPendingChange = false,
     this.rejectionReason,
+    this.capacityPersons,
+    this.currentOccupancy,
+    this.occupancyPercent,
+    this.totalOccupancy,
+    this.occupancyNote,
   });
 
   final int id;
   final String name;
   final int barangayId;
+
+  /// The status shown for the selected event (`effective_status`).
   final String status;
+
+  /// Center figures for the selected event (backend d17f6de): null when
+  /// not known for it (an old cache, or one saved under another event).
+  final int? capacityPersons;
+
+  /// People inside for the selected event only.
+  final int? currentOccupancy;
+  final double? occupancyPercent;
+
+  /// Everyone inside, for every open event of the same kind.
+  final int? totalOccupancy;
+
+  /// "87 people here for Typhoon Drill": null when only this event's
+  /// people are inside.
+  final String? occupancyNote;
 
   /// approved | pending (shown as "Unverified") | rejected.
   final String approvalStatus;

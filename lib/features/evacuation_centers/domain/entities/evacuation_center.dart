@@ -24,7 +24,17 @@ class EvacuationCenter {
     this.campManagerName,
     this.campManagerContact,
     this.capacitySource,
+    this.totalOccupancy,
+    this.occupancyNote,
   });
+
+  /// Staff detail only (backend d17f6de): everyone inside for every open
+  /// event of the same kind; [currentOccupancy] is the selected event's.
+  final int? totalOccupancy;
+
+  /// "87 people here for Typhoon Drill": shown under the center; null
+  /// when only the selected event has people there.
+  final String? occupancyNote;
 
   /// Where [capacityPersons] comes from (backend 6b6bab3): official,
   /// estimated (2025 peak or the median of its type) or unknown.
@@ -181,6 +191,8 @@ class EvacuationCenter {
       campManagerName: campManagerName,
       campManagerContact: campManagerContact,
       capacitySource: capacitySource,
+      totalOccupancy: totalOccupancy,
+      occupancyNote: occupancyNote,
     );
   }
 }

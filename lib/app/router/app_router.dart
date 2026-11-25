@@ -39,6 +39,7 @@ import '../../features/count_submissions/final_count_card.dart';
 import '../../features/box_relief/round_families_page.dart';
 import '../../features/family_registration/presentation/register/register_family_page.dart';
 import '../../features/monitoring/monitoring_page.dart';
+import '../../features/outbox/presentation/sent_family_page.dart';
 import '../../features/outbox/presentation/sync_page.dart';
 import '../../features/notifications/notifications.dart';
 import '../../features/private_houses/private_houses.dart';
@@ -566,7 +567,24 @@ final GoRouter appRouter = GoRouter(
               routes: [
                 GoRoute(
                   path: 'sync',
-                  builder: (context, state) => const SyncPage(),
+                  builder: (context, state) => SyncPage(
+                    initialTab: state.uri.queryParameters['tab'] == 'sent'
+                        ? 1
+                        : 0,
+                  ),
+                  routes: [
+                    // Correct a sent registration on the server.
+                    GoRoute(
+                      path: 'sent-family/:id',
+                      builder: (context, state) => SentFamilyPage(
+                        familyId:
+                            int.tryParse(state.pathParameters['id'] ?? '') ?? 0,
+                        personId: int.tryParse(
+                          state.uri.queryParameters['person'] ?? '',
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
                 GoRoute(
                   path: 'report',

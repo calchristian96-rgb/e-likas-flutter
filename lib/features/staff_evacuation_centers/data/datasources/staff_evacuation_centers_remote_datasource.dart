@@ -8,8 +8,13 @@ class StaffEvacuationCentersRemoteDataSource {
 
   final StaffApiClient _client;
 
-  Future<EvacuationCenterModel> getCenter(int id) async {
-    final response = await _client.get('/evacuation-centers/$id');
+  /// [eventId]: the figures and the status are that event's (backend
+  /// d17f6de); null = the user's selected event on the server.
+  Future<EvacuationCenterModel> getCenter(int id, {int? eventId}) async {
+    final response = await _client.get(
+      '/evacuation-centers/$id',
+      queryParameters: {'evacuation_event_id': ?eventId},
+    );
     return EvacuationCenterModel.fromStaffJson(
       (response.data as Map<String, dynamic>)['data'] as Map<String, dynamic>,
     );

@@ -5000,4 +5000,108 @@ class AppLocalizationsFil extends AppLocalizations {
   @override
   String get hazardsOnPhone =>
       'Kinalkula sa phone na ito mula sa hangganan ng barangay (wala pang koneksyon).';
+
+  @override
+  String get syncTabToSend => 'Ipapadala';
+
+  @override
+  String get syncTabSent => 'Naipadala';
+
+  @override
+  String get sentIntro =>
+      'Ang naipadala ng teleponong ito para sa event na ito sa nakaraang 14 na araw, pinakabago muna. Maitatama sa server ang pamilya o tao.';
+
+  @override
+  String get sentEmpty =>
+      'Wala pang naipadala mula sa teleponong ito para sa event na ito.';
+
+  @override
+  String sentFamilySummary(String name, int count) {
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$countString tao',
+      one: '1 tao',
+    );
+    return 'Pamilya ni $name, $_temp0';
+  }
+
+  @override
+  String sentPersonAdded(String household) {
+    return '1 tao ang idinagdag sa $household';
+  }
+
+  @override
+  String sentAgo(String ago) {
+    return 'Naipadala $ago';
+  }
+
+  @override
+  String get sentEdit => 'I-edit';
+
+  @override
+  String get sentEditNeedsConnection =>
+      'Kailangan ng internet para i-edit ang naipadalang record.';
+
+  @override
+  String autoSentMessage(int count) {
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$countString record ang naipadala',
+      one: '1 record ang naipadala',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get autoSentView => 'Tingnan';
+
+  @override
+  String get sentFamilyTitle => 'Itama ang naipadalang record';
+
+  @override
+  String get sentFamilyIntro =>
+      'Ito ang record na nasa server ngayon. Agad na nase-save doon ang bawat pagbabago.';
+
+  @override
+  String get sentCouldNotLoad =>
+      'Hindi ma-load ang record na ito mula sa server.';
+
+  @override
+  String get sentHouseholdSection => 'Sambahayan';
+
+  @override
+  String get sentHeadLabel => 'Puno ng pamilya';
+
+  @override
+  String sentHeadIs(String name) {
+    return 'Puno: $name';
+  }
+
+  @override
+  String get sentHeadNotListed => 'Taong wala sa listahan';
+
+  @override
+  String get sentMembersSection => 'Mga tao';
+
+  @override
+  String get sentPersonNoName => 'Taong wala pang pangalan';
+
+  @override
+  String get sentAddedFromPhone => 'Idinagdag mula sa teleponong ito';
+
+  @override
+  String get sentEditPerson => 'I-edit ang tao';
+
+  @override
+  String get sentSaved => 'Na-save sa server.';
 }

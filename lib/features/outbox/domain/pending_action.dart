@@ -124,10 +124,15 @@ class PendingAction {
     this.subjectKey,
     this.attemptCount = 0,
     this.lastErrorMessage,
+    this.eventId,
   });
 
   final String localId;
   final PendingActionKind kind;
+
+  /// The event selected when it was queued (or the body's own
+  /// `evacuation_event_id`); null for an action of no event.
+  final int? eventId;
 
   /// POST | PATCH | PUT
   final String method;

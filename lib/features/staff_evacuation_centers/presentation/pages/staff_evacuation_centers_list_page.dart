@@ -14,14 +14,16 @@ import '../../../staff_auth/presentation/widgets/staff_auth_guard.dart';
 import '../providers/own_centers_provider.dart';
 import '../widgets/approval_badge.dart';
 import '../widgets/center_needs_details.dart';
+import '../widgets/occupancy_note.dart';
 import '../../../../core/widgets/ui_kit.dart';
 
 /// "My Evacuation Centers": the official's own barangay's centers,
 /// from the staff `GET /evacuation-centers` (so Unverified and rejected
 /// centers are listed too, each with its badge), matched by barangay
-/// id. Live occupancy and the map location come from the public copy
-/// of the same center when residents can see it. CSWD (no barangay of
-/// its own) sees every center.
+/// id. The figures, the bar and the status are the staff list's, for the
+/// selected event (backend d17f6de); the public copy is not used here
+/// (it counts every open event). CSWD (no barangay of its own) sees
+/// every center.
 class StaffEvacuationCentersListPage extends StatelessWidget {
   const StaffEvacuationCentersListPage({super.key});
 
@@ -139,10 +141,9 @@ class _StaffCenterTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final public = center.public;
-    final statusColor = public != null
-        ? centerStatusColor(context, public)
-        : theme.colorScheme.onSurfaceVariant;
+    final statusColor = centerStatusColorOf(center.status);
+    final occupancy = center.occupancy;
+    final percent = center.occupancyPercent;
 
     return Card(
       margin: EdgeInsets.zero,
@@ -165,8 +166,8 @@ class _StaffCenterTile extends StatelessWidget {
                   ),
                   const SizedBox(width: 8),
                   StatusChip(
-                    label: localizedCenterStatus(context, center.center.status),
-                    color: centerStatusColorOf(center.center.status),
+                    label: localizedCenterStatus(context, center.status),
+                    color: statusColor,
                   ),
                 ],
               ),
@@ -179,16 +180,19 @@ class _StaffCenterTile extends StatelessWidget {
                   style: theme.textTheme.bodySmall,
                 ),
               ],
-              if (public != null && public.hasOccupancyData) ...[
+              if (occupancy != null &&
+                  percent != null &&
+                  !center.isCapacityUnknown) ...[
                 const SizedBox(height: 8),
                 OccupancyProgress(
-                  current: public.currentOccupancy!,
-                  capacity: public.capacityPersons,
-                  percent: public.occupancyPercent!,
-                  estimated: public.isCapacityEstimated,
+                  current: occupancy,
+                  capacity: center.capacity!,
+                  percent: percent,
+                  estimated: center.isCapacityEstimated,
                   color: statusColor,
                 ),
               ],
+              OccupancyNote(note: center.occupancyNote),
               CenterNeedsChips(center: center),
             ],
           ),

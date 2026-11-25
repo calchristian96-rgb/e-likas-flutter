@@ -29,17 +29,24 @@ class LookupRemoteDataSource {
         .toList();
   }
 
-  Future<List<LookupEvacuationCenterModel>> getEvacuationCenters() async {
+  /// [eventId]: the selected event, so the figures and the status are
+  /// that event's (backend d17f6de); null = the user's selected event
+  /// on the server.
+  Future<List<LookupEvacuationCenterModel>> getEvacuationCenters({
+    int? eventId,
+  }) async {
     // Rejected ones too, so an official sees why a center is unusable.
     final response = await _client.get(
       '/evacuation-centers',
-      queryParameters: {'include_rejected': 1},
+      queryParameters: {'include_rejected': 1, 'evacuation_event_id': ?eventId},
     );
     final data = (response.data as Map<String, dynamic>)['data'] as List;
     return data
         .map(
-          (e) =>
-              LookupEvacuationCenterModel.fromJson(e as Map<String, dynamic>),
+          (e) => LookupEvacuationCenterModel.fromJson(
+            e as Map<String, dynamic>,
+            eventId: eventId,
+          ),
         )
         .toList();
   }

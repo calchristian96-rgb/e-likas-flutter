@@ -4,6 +4,7 @@ import '../../../../core/connectivity/connectivity_service.dart';
 import '../../../../core/database/staff_database.dart';
 import '../../../../core/debug/pending_count_debug_log.dart';
 import '../../../ec_board/presentation/providers/ec_board_provider.dart';
+import '../../../outbox/presentation/sent_providers.dart';
 import '../../../registered_families/presentation/providers/registered_families_provider.dart';
 import '../../../staff_auth/presentation/providers/staff_auth_provider.dart';
 import '../../data/datasources/pending_queue_local_datasource.dart';
@@ -43,6 +44,7 @@ StaffSyncService staffSyncService(Ref ref) {
     registrationRepository: ref.watch(registrationSubmitProvider),
     connectivity: ref.watch(connectivityServiceProvider),
     ecBoardRepository: ref.watch(ecBoardRepositoryProvider),
+    sentHistory: ref.watch(sentHistoryRepositoryProvider),
   );
 }
 

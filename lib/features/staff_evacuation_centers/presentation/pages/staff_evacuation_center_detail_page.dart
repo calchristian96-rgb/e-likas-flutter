@@ -14,6 +14,7 @@ import '../../../staff_auth/presentation/widgets/staff_auth_guard.dart';
 import '../providers/staff_evacuation_centers_provider.dart';
 import '../../../facility_requests/facility_requests.dart';
 import '../widgets/center_location_section.dart';
+import '../widgets/occupancy_note.dart';
 
 /// Full authenticated detail for one of the official's centers. Its
 /// details are edited on the web; here the official sets the center's
@@ -146,6 +147,7 @@ class _CenterDetailContent extends StatelessWidget {
               ),
           ],
         ),
+        OccupancyNote(note: center.occupancyNote),
         if (center.campManagerName != null ||
             center.campManagerContact != null) ...[
           const Divider(height: 32),

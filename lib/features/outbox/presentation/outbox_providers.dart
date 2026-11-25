@@ -1,4 +1,5 @@
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/connectivity/connectivity_service.dart';
@@ -12,6 +13,8 @@ import '../../staff_shell/current_event.dart';
 import '../data/outbox_repository.dart';
 import '../domain/pending_action.dart';
 import '../../../core/network/device_headers.dart';
+import '../../../l10n/app_localizations.dart';
+import 'sent_providers.dart';
 
 /// Scoped to the signed-in account (`ownerStaffId`), like every other
 /// staff queue.
@@ -21,6 +24,7 @@ final outboxRepositoryProvider = Provider<OutboxRepository>((ref) {
     ref.watch(staffApiClientProvider),
     ref.watch(connectivityServiceProvider),
     ref.watch(staffAuthProvider).value?.id,
+    sentHistory: ref.watch(sentHistoryRepositoryProvider),
   );
 });
 
@@ -75,9 +79,21 @@ class StaffSyncAll {
   final Ref _ref;
   Future<OutboxRunResult>? _inFlight;
 
-  Future<OutboxRunResult> call() => _inFlight ??= _run().whenComplete(() {
-    _inFlight = null;
-  });
+  /// [automatic]: started by the app (open, reconnect, resume, a newly
+  /// queued action), not by Sync now; what it sent is announced with a
+  /// "View" snackbar ([autoSentProvider]).
+  Future<OutboxRunResult> call({bool automatic = true}) {
+    final run = _inFlight ??= _run().whenComplete(() {
+      _inFlight = null;
+    });
+    if (!automatic) return run;
+    return run.then((result) {
+      if (result.sent > 0) {
+        _ref.read(autoSentProvider.notifier).announce(result.sent);
+      }
+      return result;
+    });
+  }
 
   Future<OutboxRunResult> _run() async {
     if (_ref.read(staffAuthProvider).value == null) {
@@ -129,6 +145,7 @@ Future<PendingAction> enqueueStaffAction(
         body: body,
         summary: summary,
         subjectKey: subjectKey,
+        eventId: ref.read(currentStaffEventProvider).value?.id,
       );
   ref.read(outboxRevisionProvider.notifier).bump();
   // Fire and forget: the queue keeps the action if this fails.
@@ -175,6 +192,12 @@ class _StaffAutoSyncState extends ConsumerState<StaffAutoSync>
 
   @override
   Widget build(BuildContext context) {
+    // What an automatic send delivered: "3 records sent", View.
+    ref.listen(autoSentProvider, (_, next) {
+      if (next != null && next.count > 0) {
+        showAutoSentSnackBar(context, next.count);
+      }
+    });
     // The counts the server sees in X-Sync-Pending and X-Sync-Failed.
     ref.listen(syncSummaryProvider, (_, next) {
       final s = next.value;
@@ -187,4 +210,26 @@ class _StaffAutoSyncState extends ConsumerState<StaffAutoSync>
     });
     return widget.child;
   }
+}
+
+/// After an automatic send: "3 records sent", with View opening
+/// Sync > Sent.
+void showAutoSentSnackBar(BuildContext context, int count) {
+  final messenger = ScaffoldMessenger.maybeOf(context);
+  if (messenger == null) return;
+  final l10n = AppLocalizations.of(context);
+  final router = GoRouter.maybeOf(context);
+  messenger
+    ..hideCurrentSnackBar()
+    ..showSnackBar(
+      SnackBar(
+        content: Text(l10n.autoSentMessage(count)),
+        action: router == null
+            ? null
+            : SnackBarAction(
+                label: l10n.autoSentView,
+                onPressed: () => router.push(sentListLocation),
+              ),
+      ),
+    );
 }

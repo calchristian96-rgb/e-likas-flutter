@@ -9,6 +9,7 @@ import '../../../evacuation_centers/domain/entities/evacuation_center.dart';
 import '../../data/datasources/staff_evacuation_centers_remote_datasource.dart';
 import '../../data/repositories/staff_evacuation_centers_repository_impl.dart';
 import '../../domain/repositories/staff_evacuation_centers_repository.dart';
+import '../../../staff_shell/current_event.dart';
 
 part 'staff_evacuation_centers_provider.g.dart';
 
@@ -25,9 +26,15 @@ StaffEvacuationCentersRepository staffEvacuationCentersRepository(Ref ref) {
 /// page opens (online only).
 @riverpod
 Future<EvacuationCenter> staffCenterDetail(Ref ref, int id) async {
+  int? eventId;
+  try {
+    eventId = (await ref.watch(currentStaffEventProvider.future))?.id;
+  } catch (_) {
+    // No event known yet: the server uses the user's selected event.
+  }
   final result = await ref
       .watch(staffEvacuationCentersRepositoryProvider)
-      .getCenterDetail(id);
+      .getCenterDetail(id, eventId: eventId);
   return switch (result) {
     Success(:final value) => value,
     Failed(:final failure) => throw failure,

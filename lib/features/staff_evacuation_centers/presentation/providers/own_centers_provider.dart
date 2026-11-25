@@ -8,8 +8,10 @@ import '../../../outbox/presentation/outbox_providers.dart';
 import '../../../staff_auth/presentation/providers/staff_auth_provider.dart';
 
 /// One of the signed-in official's centers: the staff row (which knows
-/// about Unverified and rejected centers) plus, when residents can see
-/// it, the public row with live occupancy and the map location.
+/// about Unverified and rejected centers, and carries the figures for
+/// the selected event) plus, when residents can see it, the public row,
+/// used for the map location and photo only: it has no event, so its
+/// count is everyone inside for every open event (backend d17f6de).
 class OwnCenter {
   const OwnCenter({required this.center, this.public});
 
@@ -20,6 +22,27 @@ class OwnCenter {
 
   int get id => center.id;
   String get name => center.name;
+
+  /// The status shown for the selected event.
+  String get status => center.status;
+
+  /// People inside for the selected event only; null when not known.
+  int? get occupancy => center.currentOccupancy;
+  double? get occupancyPercent => center.occupancyPercent;
+  int? get capacity => center.capacityPersons ?? public?.capacityPersons;
+
+  /// official | estimated | unknown: a property of the center (the
+  /// public copy has it; the staff list does not).
+  String get capacitySource =>
+      public?.capacitySource ?? ((capacity ?? 0) > 0 ? 'official' : 'unknown');
+
+  bool get isCapacityUnknown =>
+      capacitySource == 'unknown' || (capacity ?? 0) <= 0;
+  bool get isCapacityEstimated =>
+      capacitySource == 'estimated' && !isCapacityUnknown;
+
+  /// "87 people here for Typhoon Drill".
+  String? get occupancyNote => center.occupancyNote;
 }
 
 /// The signed-in official's own barangay's centers, matched by

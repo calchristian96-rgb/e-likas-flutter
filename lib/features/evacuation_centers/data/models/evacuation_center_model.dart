@@ -43,7 +43,15 @@ class EvacuationCenterModel {
     this.campManagerName,
     this.campManagerContact,
     this.capacitySource,
+    this.totalOccupancy,
+    this.occupancyNote,
   });
+
+  /// Staff only (backend d17f6de): everyone inside for every open event,
+  /// and "87 people here for Typhoon Drill" when other events have people
+  /// there. Not cached.
+  final int? totalOccupancy;
+  final String? occupancyNote;
 
   /// official | estimated | unknown; null when the endpoint does not say.
   final String? capacitySource;
@@ -206,10 +214,14 @@ class EvacuationCenterModel {
       capacityFamilies: (json['capacity_families'] as num?)?.toInt(),
       currentOccupancy: (json['current_occupancy'] as num?)?.toInt(),
       occupancyPercent: (json['occupancy_percent'] as num?)?.toDouble(),
-      status: json['status'] as String,
+      // The status shown for the event (backend d17f6de); `status` is
+      // the stored one officials set.
+      status: json['effective_status'] as String? ?? json['status'] as String,
       capacitySource: json['capacity_source'] as String?,
       photoUrl: json['photo_url'] as String?,
       createdBy: (json['created_by'] as num?)?.toInt(),
+      totalOccupancy: (json['total_occupancy'] as num?)?.toInt(),
+      occupancyNote: json['occupancy_note'] as String?,
       campManagerName: json['camp_manager_name'] as String?,
       campManagerContact: json['camp_manager_contact'] as String?,
     );
@@ -306,6 +318,8 @@ class EvacuationCenterModel {
       campManagerName: campManagerName,
       campManagerContact: campManagerContact,
       capacitySource: capacitySource,
+      totalOccupancy: totalOccupancy,
+      occupancyNote: occupancyNote,
     );
   }
 }

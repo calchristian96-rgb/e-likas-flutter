@@ -72,6 +72,16 @@ class LookupEvacuationCenters extends Table {
       boolean().withDefault(const Constant(false))();
   TextColumn get rejectionReason => text().nullable()();
 
+  /// Schema 12 (backend d17f6de): the center figures for the event the
+  /// list was read for ([figuresEventId]); shown only while that is
+  /// still the selected event.
+  IntColumn get capacityPersons => integer().nullable()();
+  IntColumn get currentOccupancy => integer().nullable()();
+  RealColumn get occupancyPercent => real().nullable()();
+  IntColumn get totalOccupancy => integer().nullable()();
+  TextColumn get occupancyNote => text().nullable()();
+  IntColumn get figuresEventId => integer().nullable()();
+
   @override
   Set<Column> get primaryKey => {id};
 }
@@ -309,6 +319,43 @@ class PendingActions extends Table {
   IntColumn get attemptCount => integer().withDefault(const Constant(0))();
   TextColumn get lastErrorMessage => text().nullable()();
   IntColumn get createdAtEpochMs => integer()();
+  IntColumn get ownerStaffId => integer()();
+
+  /// Schema 12: the event selected when the action was queued, so the
+  /// Sent list can show it under that event.
+  IntColumn get eventId => integer().nullable()();
+
+  @override
+  Set<Column> get primaryKey => {localId};
+}
+
+/// Schema 12: what this phone sent and the server accepted (family
+/// registrations, EC Board people and queued actions), kept after the
+/// queue row is gone, so the Sent list shows it and a registration can
+/// be corrected on the server. Only a summary: never the member details
+/// (the edit screen reads those from the server). Kept for 14 days, at
+/// most 200 rows per account.
+@DataClassName('SentRecordRow')
+class SentRecords extends Table {
+  /// The queue row's own id (also its client_ref).
+  TextColumn get localId => text()();
+
+  /// `registration`, `ecBoardEntry`, or `action:<PendingActionKind>`.
+  TextColumn get kind => text()();
+
+  /// The head's name, the household's label, or the action's summary.
+  TextColumn get summary => text()();
+  IntColumn get memberCount => integer().nullable()();
+
+  /// The center's or barangay's name, when known.
+  TextColumn get place => text().nullable()();
+  IntColumn get eventId => integer().nullable()();
+
+  /// The server's ids from the answer.
+  IntColumn get serverFamilyId => integer().nullable()();
+  IntColumn get serverEvacueeId => integer().nullable()();
+  IntColumn get serverId => integer().nullable()();
+  IntColumn get sentAtEpochMs => integer()();
   IntColumn get ownerStaffId => integer()();
 
   @override

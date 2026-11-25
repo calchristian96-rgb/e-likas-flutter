@@ -4980,4 +4980,106 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get hazardsOnPhone =>
       'Worked out on this phone from the barangay outline (no connection yet).';
+
+  @override
+  String get syncTabToSend => 'To send';
+
+  @override
+  String get syncTabSent => 'Sent';
+
+  @override
+  String get sentIntro =>
+      'What this phone sent for this event in the last 14 days, newest first. A family or person can be corrected on the server.';
+
+  @override
+  String get sentEmpty => 'Nothing sent from this phone for this event yet.';
+
+  @override
+  String sentFamilySummary(String name, int count) {
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$countString people',
+      one: '1 person',
+    );
+    return '$name\'s family, $_temp0';
+  }
+
+  @override
+  String sentPersonAdded(String household) {
+    return '1 person added to $household';
+  }
+
+  @override
+  String sentAgo(String ago) {
+    return 'Sent $ago';
+  }
+
+  @override
+  String get sentEdit => 'Edit';
+
+  @override
+  String get sentEditNeedsConnection =>
+      'Editing a sent record needs an internet connection.';
+
+  @override
+  String autoSentMessage(int count) {
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$countString records sent',
+      one: '1 record sent',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get autoSentView => 'View';
+
+  @override
+  String get sentFamilyTitle => 'Correct a sent record';
+
+  @override
+  String get sentFamilyIntro =>
+      'This is the record on the server now. Each change is saved there right away.';
+
+  @override
+  String get sentCouldNotLoad => 'Could not load this record from the server.';
+
+  @override
+  String get sentHouseholdSection => 'Household';
+
+  @override
+  String get sentHeadLabel => 'Family head';
+
+  @override
+  String sentHeadIs(String name) {
+    return 'Head: $name';
+  }
+
+  @override
+  String get sentHeadNotListed => 'Someone not listed';
+
+  @override
+  String get sentMembersSection => 'People';
+
+  @override
+  String get sentPersonNoName => 'Person without a name yet';
+
+  @override
+  String get sentAddedFromPhone => 'Added from this phone';
+
+  @override
+  String get sentEditPerson => 'Edit person';
+
+  @override
+  String get sentSaved => 'Saved on the server.';
 }

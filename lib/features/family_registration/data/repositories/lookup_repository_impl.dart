@@ -5,6 +5,7 @@ import '../../domain/entities/lookup_entities.dart';
 import '../../domain/repositories/lookup_repository.dart';
 import '../datasources/lookup_local_datasource.dart';
 import '../datasources/lookup_remote_datasource.dart';
+import '../models/lookup_evacuation_center_model.dart';
 import '../services/lookup_sync_timestamps.dart';
 
 /// Network-first with cache fallback, same shape as
@@ -73,13 +74,15 @@ class LookupRepositoryImpl implements LookupRepository {
   }
 
   @override
-  Future<Result<List<EvacuationCenterLookup>>> getEvacuationCenters() async {
+  Future<Result<List<EvacuationCenterLookup>>> getEvacuationCenters({
+    int? eventId,
+  }) async {
     if (await _connectivity.hasConnection) {
       try {
-        final models = await _remote.getEvacuationCenters();
+        final models = await _remote.getEvacuationCenters(eventId: eventId);
         await _local.cacheEvacuationCenters(models);
         await _syncTimestamps.markSynced(LookupDomain.evacuationCenters);
-        return Success(models.map(_centerToEntity).toList());
+        return Success([for (final m in models) _centerToEntity(m, eventId)]);
       } catch (_) {
         // fall through to cache
       }
@@ -90,7 +93,7 @@ class LookupRepositoryImpl implements LookupRepository {
         NetworkFailure('No saved evacuation centers available offline yet.'),
       );
     }
-    return Success(cached.map(_centerToEntity).toList());
+    return Success([for (final m in cached) _centerToEntity(m, eventId)]);
   }
 
   @override
@@ -106,13 +109,26 @@ class LookupRepositoryImpl implements LookupRepository {
     isDemo: m.isDemo as bool,
   );
 
-  EvacuationCenterLookup _centerToEntity(dynamic m) => EvacuationCenterLookup(
-    id: m.id as int,
-    name: m.name as String,
-    barangayId: m.barangayId as int,
-    status: m.status as String,
-    approvalStatus: m.approvalStatus as String,
-    hasPendingChange: m.hasPendingChange as bool,
-    rejectionReason: m.rejectionReason as String?,
-  );
+  /// The figures are kept only when they were read for [eventId]: a
+  /// copy saved under another event would show that event's people.
+  EvacuationCenterLookup _centerToEntity(
+    LookupEvacuationCenterModel m,
+    int? eventId,
+  ) {
+    final sameEvent = m.figuresEventId == eventId;
+    return EvacuationCenterLookup(
+      id: m.id,
+      name: m.name,
+      barangayId: m.barangayId,
+      status: m.status,
+      approvalStatus: m.approvalStatus,
+      hasPendingChange: m.hasPendingChange,
+      rejectionReason: m.rejectionReason,
+      capacityPersons: m.capacityPersons,
+      currentOccupancy: sameEvent ? m.currentOccupancy : null,
+      occupancyPercent: sameEvent ? m.occupancyPercent : null,
+      totalOccupancy: sameEvent ? m.totalOccupancy : null,
+      occupancyNote: sameEvent ? m.occupancyNote : null,
+    );
+  }
 }

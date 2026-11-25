@@ -87,6 +87,12 @@ class LookupLocalDataSource {
           approvalStatus: row.approvalStatus,
           hasPendingChange: row.hasPendingChange,
           rejectionReason: row.rejectionReason,
+          capacityPersons: row.capacityPersons,
+          currentOccupancy: row.currentOccupancy,
+          occupancyPercent: row.occupancyPercent,
+          totalOccupancy: row.totalOccupancy,
+          occupancyNote: row.occupancyNote,
+          figuresEventId: row.figuresEventId,
         ),
     ];
   }
@@ -107,6 +113,12 @@ class LookupLocalDataSource {
               approvalStatus: Value(item.approvalStatus),
               hasPendingChange: Value(item.hasPendingChange),
               rejectionReason: Value(item.rejectionReason),
+              capacityPersons: Value(item.capacityPersons),
+              currentOccupancy: Value(item.currentOccupancy),
+              occupancyPercent: Value(item.occupancyPercent),
+              totalOccupancy: Value(item.totalOccupancy),
+              occupancyNote: Value(item.occupancyNote),
+              figuresEventId: Value(item.figuresEventId),
             ),
         ]);
       });

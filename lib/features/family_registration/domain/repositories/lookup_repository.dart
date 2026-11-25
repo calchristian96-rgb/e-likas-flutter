@@ -10,7 +10,11 @@ import '../entities/lookup_entities.dart';
 abstract class LookupRepository {
   Future<Result<List<Barangay>>> getBarangays();
   Future<Result<List<EvacuationEventLookup>>> getEvacuationEvents();
-  Future<Result<List<EvacuationCenterLookup>>> getEvacuationCenters();
+
+  /// [eventId]: the selected event; the center figures are its own.
+  Future<Result<List<EvacuationCenterLookup>>> getEvacuationCenters({
+    int? eventId,
+  });
 
   /// Epoch-ms of the last successful refresh of each lookup, or null
   /// if never synced — lets the form show "Using saved evacuation

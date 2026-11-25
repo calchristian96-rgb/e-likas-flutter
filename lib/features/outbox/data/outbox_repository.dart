@@ -11,11 +11,13 @@ import '../../../core/error/failure.dart';
 import '../../../core/network/staff_api_client.dart';
 import '../../../core/network/staff_api_error_mapper.dart';
 import '../domain/pending_action.dart';
+import 'sent_history_repository.dart';
 
 /// The offline queue for single-request field actions (C15).
 ///
 /// Sent one at a time, oldest first, scoped to the signed-in account:
-/// - 2xx: done, the row is removed;
+/// - 2xx: done, the row is removed and kept in the Sent list
+///   ([SentHistoryRepository]) with the server's id;
 /// - 401: stop the run (sign in again), nothing else is touched;
 /// - a refusal (403, 404, 409, 422) or an answer lost in transit (the
 ///   request may have been applied): needs attention, never retried on
@@ -24,12 +26,19 @@ import '../domain/pending_action.dart';
 /// - no connection, a timeout before sending, 5xx: stays pending for
 ///   the next run.
 class OutboxRepository {
-  OutboxRepository(this._db, this._api, this._connectivity, this._ownerStaffId);
+  OutboxRepository(
+    this._db,
+    this._api,
+    this._connectivity,
+    this._ownerStaffId, {
+    SentHistoryRepository? sentHistory,
+  }) : _sentHistory = sentHistory;
 
   final StaffDatabase _db;
   final StaffApiClient _api;
   final ConnectivityService _connectivity;
   final int? _ownerStaffId;
+  final SentHistoryRepository? _sentHistory;
 
   static const _uuid = Uuid();
   bool _running = false;
@@ -41,10 +50,13 @@ class OutboxRepository {
     required Map<String, dynamic> body,
     required String summary,
     String? subjectKey,
+    int? eventId,
   }) async {
     final owner = _ownerStaffId;
     if (owner == null) throw StateError('Not signed in.');
     final localId = _uuid.v4();
+    final bodyEvent = body['evacuation_event_id'];
+    final event = bodyEvent is int ? bodyEvent : eventId;
     final action = PendingAction(
       localId: localId,
       kind: kind,
@@ -59,6 +71,7 @@ class OutboxRepository {
       subjectKey: subjectKey,
       status: PendingActionStatus.pending,
       createdAt: DateTime.now(),
+      eventId: event,
     );
     await _db
         .into(_db.pendingActions)
@@ -74,6 +87,7 @@ class OutboxRepository {
             status: action.status.wire,
             createdAtEpochMs: action.createdAt.millisecondsSinceEpoch,
             ownerStaffId: owner,
+            eventId: Value(event),
           ),
         );
     return action;
@@ -102,6 +116,7 @@ class OutboxRepository {
             attemptCount: r.attemptCount,
             lastErrorMessage: r.lastErrorMessage,
             createdAt: DateTime.fromMillisecondsSinceEpoch(r.createdAtEpochMs),
+            eventId: r.eventId,
           ),
     ];
   }
@@ -147,9 +162,10 @@ class OutboxRepository {
     var sent = 0;
     var attention = 0;
     for (final action in queue) {
-      final outcome = await _send(action);
+      final (outcome, answer) = await _send(action);
       switch (outcome) {
         case _Outcome.done:
+          await _keepSent(action, answer);
           await delete(action.localId);
           sent++;
         case _Outcome.stopForAuth:
@@ -168,25 +184,37 @@ class OutboxRepository {
     return OutboxRunResult(sent: sent, needAttention: attention);
   }
 
-  Future<_Outcome> _send(PendingAction action) async {
+  /// The Sent list row: never lets a history write fail the send.
+  Future<void> _keepSent(PendingAction action, Object? answer) async {
+    final history = _sentHistory;
+    if (history == null) return;
     try {
-      await switch (action.method) {
+      await history.recordAction(action, answer: answer);
+    } catch (_) {
+      // The action reached the server; only its history row is missing.
+    }
+  }
+
+  /// The outcome, and the server's answer body when it was accepted.
+  Future<(_Outcome, Object?)> _send(PendingAction action) async {
+    try {
+      final response = await switch (action.method) {
         'PATCH' => _api.patch(action.path, data: action.body),
         'PUT' => _api.put(action.path, data: action.body),
         _ => _api.post(action.path, data: action.body),
       };
-      return _Outcome.done;
+      return (_Outcome.done, response.data);
     } on DioException catch (e) {
       final failure = mapStaffDioError(e);
       final status = e.response?.statusCode;
-      if (failure is AuthFailure) return _Outcome.stopForAuth;
+      if (failure is AuthFailure) return (_Outcome.stopForAuth, null);
       if (failure is NetworkFailure && status == null) {
         await _markAttempt(action);
-        return _Outcome.retryLater;
+        return (_Outcome.retryLater, null);
       }
       if (failure is ServerFailure && status != null && status >= 500) {
         await _markAttempt(action, error: failure.message);
-        return _Outcome.retryLater;
+        return (_Outcome.retryLater, null);
       }
       // Only on a retry (the first attempt may have got through), and
       // only for the refusal that says exactly that; any other refusal
@@ -194,14 +222,14 @@ class OutboxRepository {
       if (action.attemptCount > 0 &&
           (action.kind.alreadyHappened?.matches(status, e.response?.data) ??
               false)) {
-        return _Outcome.done;
+        return (_Outcome.done, null);
       }
       await _markAttention(action, _message(failure, e));
-      return _Outcome.needsAttention;
+      return (_Outcome.needsAttention, null);
     } on TimeoutException {
       // The request may have reached the server: never resend blindly.
       await _markAttention(action, const AmbiguousWriteFailure().message);
-      return _Outcome.needsAttention;
+      return (_Outcome.needsAttention, null);
     }
   }
 

@@ -7766,6 +7766,144 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Worked out on this phone from the barangay outline (no connection yet).'**
   String get hazardsOnPhone;
+
+  /// No description provided for @syncTabToSend.
+  ///
+  /// In en, this message translates to:
+  /// **'To send'**
+  String get syncTabToSend;
+
+  /// No description provided for @syncTabSent.
+  ///
+  /// In en, this message translates to:
+  /// **'Sent'**
+  String get syncTabSent;
+
+  /// No description provided for @sentIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'What this phone sent for this event in the last 14 days, newest first. A family or person can be corrected on the server.'**
+  String get sentIntro;
+
+  /// No description provided for @sentEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing sent from this phone for this event yet.'**
+  String get sentEmpty;
+
+  /// No description provided for @sentFamilySummary.
+  ///
+  /// In en, this message translates to:
+  /// **'{name}\'s family, {count, plural, =1{1 person} other{{count} people}}'**
+  String sentFamilySummary(String name, int count);
+
+  /// No description provided for @sentPersonAdded.
+  ///
+  /// In en, this message translates to:
+  /// **'1 person added to {household}'**
+  String sentPersonAdded(String household);
+
+  /// No description provided for @sentAgo.
+  ///
+  /// In en, this message translates to:
+  /// **'Sent {ago}'**
+  String sentAgo(String ago);
+
+  /// No description provided for @sentEdit.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit'**
+  String get sentEdit;
+
+  /// No description provided for @sentEditNeedsConnection.
+  ///
+  /// In en, this message translates to:
+  /// **'Editing a sent record needs an internet connection.'**
+  String get sentEditNeedsConnection;
+
+  /// No description provided for @autoSentMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 record sent} other{{count} records sent}}'**
+  String autoSentMessage(int count);
+
+  /// No description provided for @autoSentView.
+  ///
+  /// In en, this message translates to:
+  /// **'View'**
+  String get autoSentView;
+
+  /// No description provided for @sentFamilyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Correct a sent record'**
+  String get sentFamilyTitle;
+
+  /// No description provided for @sentFamilyIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'This is the record on the server now. Each change is saved there right away.'**
+  String get sentFamilyIntro;
+
+  /// No description provided for @sentCouldNotLoad.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not load this record from the server.'**
+  String get sentCouldNotLoad;
+
+  /// No description provided for @sentHouseholdSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Household'**
+  String get sentHouseholdSection;
+
+  /// No description provided for @sentHeadLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Family head'**
+  String get sentHeadLabel;
+
+  /// No description provided for @sentHeadIs.
+  ///
+  /// In en, this message translates to:
+  /// **'Head: {name}'**
+  String sentHeadIs(String name);
+
+  /// No description provided for @sentHeadNotListed.
+  ///
+  /// In en, this message translates to:
+  /// **'Someone not listed'**
+  String get sentHeadNotListed;
+
+  /// No description provided for @sentMembersSection.
+  ///
+  /// In en, this message translates to:
+  /// **'People'**
+  String get sentMembersSection;
+
+  /// No description provided for @sentPersonNoName.
+  ///
+  /// In en, this message translates to:
+  /// **'Person without a name yet'**
+  String get sentPersonNoName;
+
+  /// No description provided for @sentAddedFromPhone.
+  ///
+  /// In en, this message translates to:
+  /// **'Added from this phone'**
+  String get sentAddedFromPhone;
+
+  /// No description provided for @sentEditPerson.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit person'**
+  String get sentEditPerson;
+
+  /// No description provided for @sentSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Saved on the server.'**
+  String get sentSaved;
 }
 
 class _AppLocalizationsDelegate

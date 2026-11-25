@@ -6,17 +6,24 @@ import 'package:go_router/go_router.dart';
 import '../../../core/utils/data_freshness_formatter.dart';
 import '../../../core/widgets/error_state.dart';
 import '../../../l10n/app_localizations.dart';
+import '../../family_registration/domain/repositories/pending_queue_repository.dart';
 import '../../family_registration/presentation/providers/pending_queue_provider.dart';
 import '../domain/pending_action.dart';
 import 'outbox_providers.dart';
+import 'sent_list.dart';
 import '../../../core/network/staff_api_error_mapper.dart';
 import '../../../core/widgets/lock_note.dart';
 
 /// Everything this device still has to send: the answer first (how many
 /// wait, how many need a look), one primary button (Sync now), and the
 /// rows that need attention, each with Try again / Discard in "...".
+/// The Sent tab lists what this phone already sent for the event, so a
+/// record that left the queue can still be found and corrected.
 class SyncPage extends ConsumerStatefulWidget {
-  const SyncPage({super.key});
+  const SyncPage({super.key, this.initialTab = 0});
+
+  /// 0: To send; 1: Sent.
+  final int initialTab;
 
   @override
   ConsumerState<SyncPage> createState() => _SyncPageState();
@@ -29,7 +36,8 @@ class _SyncPageState extends ConsumerState<SyncPage> {
     if (_syncing) return;
     setState(() => _syncing = true);
     final l10n = AppLocalizations.of(context);
-    final result = await ref.read(staffSyncAllProvider)();
+    // Its own message below, not the automatic-send snackbar.
+    final result = await ref.read(staffSyncAllProvider)(automatic: false);
     if (!mounted) return;
     setState(() => _syncing = false);
     final text = result.stoppedForAuth
@@ -81,105 +89,131 @@ class _SyncPageState extends ConsumerState<SyncPage> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
-    final theme = Theme.of(context);
     final actionsAsync = ref.watch(pendingActionsProvider);
     final registrations = ref.watch(pendingQueueCountsProvider).value;
 
-    return Scaffold(
-      appBar: AppBar(title: Text(l10n.syncTitle)),
-      body: actionsAsync.when(
-        loading: () => const Center(child: CircularProgressIndicator()),
-        error: (e, _) => Center(
-          child: ErrorState(
-            message: l10n.syncCouldNotRead,
-            onRetry: () => ref.invalidate(pendingActionsProvider),
+    return DefaultTabController(
+      length: 2,
+      initialIndex: widget.initialTab.clamp(0, 1),
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(l10n.syncTitle),
+          bottom: TabBar(
+            tabs: [
+              Tab(text: l10n.syncTabToSend),
+              Tab(text: l10n.syncTabSent),
+            ],
           ),
         ),
-        data: (actions) {
-          final attention = [
-            for (final a in actions)
-              if (a.needsAttention) a,
-          ];
-          final waiting = [
-            for (final a in actions)
-              if (!a.needsAttention) a,
-          ];
-          final regWaiting = registrations?.pending ?? 0;
-          final regAttention = registrations?.needsAttention ?? 0;
-          final totalWaiting = waiting.length + regWaiting;
-          final totalAttention = attention.length + regAttention;
-          return RefreshIndicator(
-            onRefresh: _syncNow,
-            child: ListView(
-              physics: const AlwaysScrollableScrollPhysics(),
-              padding: pagePadding(context),
-              children: [
-                Text(
-                  totalWaiting == 0 && totalAttention == 0
-                      ? l10n.syncAllDone
-                      : l10n.syncWaitingCount(totalWaiting),
-                  style: theme.textTheme.titleLarge,
-                ),
-                if (totalAttention > 0)
-                  Text(
-                    l10n.syncAttentionCount(totalAttention),
-                    style: theme.textTheme.bodyMedium?.copyWith(
-                      color: theme.colorScheme.error,
-                    ),
-                  ),
-                const SizedBox(height: 16),
-                FilledButton.icon(
-                  onPressed: _syncing ? null : _syncNow,
-                  icon: _syncing
-                      ? const SizedBox(
-                          width: 18,
-                          height: 18,
-                          child: CircularProgressIndicator(strokeWidth: 2),
-                        )
-                      : const Icon(Icons.sync),
-                  label: Text(l10n.syncNow),
-                ),
-                if (attention.isNotEmpty) ...[
-                  const SizedBox(height: 24),
-                  Text(
-                    l10n.syncNeedsAttention,
-                    style: theme.textTheme.titleMedium,
-                  ),
-                  const SizedBox(height: 8),
-                  for (final a in attention)
-                    _ActionTile(
-                      action: a,
-                      onRetry: () => _retry(a),
-                      onDiscard: () => _discard(a),
-                    ),
-                ],
-                if (waiting.isNotEmpty) ...[
-                  const SizedBox(height: 24),
-                  Text(l10n.syncWaiting, style: theme.textTheme.titleMedium),
-                  const SizedBox(height: 8),
-                  for (final a in waiting) _ActionTile(action: a),
-                ],
-                if (regWaiting + regAttention > 0) ...[
-                  const SizedBox(height: 24),
-                  Card(
-                    margin: EdgeInsets.zero,
-                    child: ListTile(
-                      minTileHeight: 56,
-                      title: Text(l10n.syncFamilyRegistrations),
-                      subtitle: Text(
-                        l10n.syncWaitingCount(regWaiting + regAttention),
-                      ),
-                      trailing: const Icon(Icons.chevron_right),
-                      onTap: () =>
-                          context.push('/staff/more/pending-registrations'),
-                    ),
-                  ),
-                ],
-              ],
-            ),
-          );
-        },
+        body: TabBarView(
+          children: [
+            _toSend(context, actionsAsync, registrations),
+            const SentList(),
+          ],
+        ),
       ),
+    );
+  }
+
+  Widget _toSend(
+    BuildContext context,
+    AsyncValue<List<PendingAction>> actionsAsync,
+    PendingQueueCounts? registrations,
+  ) {
+    final l10n = AppLocalizations.of(context);
+    final theme = Theme.of(context);
+    return actionsAsync.when(
+      loading: () => const Center(child: CircularProgressIndicator()),
+      error: (e, _) => Center(
+        child: ErrorState(
+          message: l10n.syncCouldNotRead,
+          onRetry: () => ref.invalidate(pendingActionsProvider),
+        ),
+      ),
+      data: (actions) {
+        final attention = [
+          for (final a in actions)
+            if (a.needsAttention) a,
+        ];
+        final waiting = [
+          for (final a in actions)
+            if (!a.needsAttention) a,
+        ];
+        final regWaiting = registrations?.pending ?? 0;
+        final regAttention = registrations?.needsAttention ?? 0;
+        final totalWaiting = waiting.length + regWaiting;
+        final totalAttention = attention.length + regAttention;
+        return RefreshIndicator(
+          onRefresh: _syncNow,
+          child: ListView(
+            physics: const AlwaysScrollableScrollPhysics(),
+            padding: pagePadding(context),
+            children: [
+              Text(
+                totalWaiting == 0 && totalAttention == 0
+                    ? l10n.syncAllDone
+                    : l10n.syncWaitingCount(totalWaiting),
+                style: theme.textTheme.titleLarge,
+              ),
+              if (totalAttention > 0)
+                Text(
+                  l10n.syncAttentionCount(totalAttention),
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    color: theme.colorScheme.error,
+                  ),
+                ),
+              const SizedBox(height: 16),
+              FilledButton.icon(
+                onPressed: _syncing ? null : _syncNow,
+                icon: _syncing
+                    ? const SizedBox(
+                        width: 18,
+                        height: 18,
+                        child: CircularProgressIndicator(strokeWidth: 2),
+                      )
+                    : const Icon(Icons.sync),
+                label: Text(l10n.syncNow),
+              ),
+              if (attention.isNotEmpty) ...[
+                const SizedBox(height: 24),
+                Text(
+                  l10n.syncNeedsAttention,
+                  style: theme.textTheme.titleMedium,
+                ),
+                const SizedBox(height: 8),
+                for (final a in attention)
+                  _ActionTile(
+                    action: a,
+                    onRetry: () => _retry(a),
+                    onDiscard: () => _discard(a),
+                  ),
+              ],
+              if (waiting.isNotEmpty) ...[
+                const SizedBox(height: 24),
+                Text(l10n.syncWaiting, style: theme.textTheme.titleMedium),
+                const SizedBox(height: 8),
+                for (final a in waiting) _ActionTile(action: a),
+              ],
+              if (regWaiting + regAttention > 0) ...[
+                const SizedBox(height: 24),
+                Card(
+                  margin: EdgeInsets.zero,
+                  child: ListTile(
+                    minTileHeight: 56,
+                    title: Text(l10n.syncFamilyRegistrations),
+                    subtitle: Text(
+                      l10n.syncWaitingCount(regWaiting + regAttention),
+                    ),
+                    trailing: const Icon(Icons.chevron_right),
+                    onTap: () =>
+                        context.push('/staff/more/pending-registrations'),
+                  ),
+                ),
+              ],
+            ],
+          ),
+        );
+      },
     );
   }
 }

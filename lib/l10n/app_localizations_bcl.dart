@@ -4923,4 +4923,107 @@ class AppLocalizationsBcl extends AppLocalizations {
   @override
   String get hazardsOnPhone =>
       'Kinuwenta sa telepono na ini hale sa linderos kan barangay (mayo pang koneksyon).';
+
+  @override
+  String get syncTabToSend => 'Ipapadara';
+
+  @override
+  String get syncTabSent => 'Napadara';
+
+  @override
+  String get sentIntro =>
+      'An napadara kan teleponong ini para sa event na ini sa nakaaging 14 na aldaw, an pinakabago enot. Puwedeng itadong sa server an pamilya o tawo.';
+
+  @override
+  String get sentEmpty =>
+      'Mayo pang napadara hale sa teleponong ini para sa event na ini.';
+
+  @override
+  String sentFamilySummary(String name, int count) {
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$countString tawo',
+      one: '1 tawo',
+    );
+    return 'Pamilya ni $name, $_temp0';
+  }
+
+  @override
+  String sentPersonAdded(String household) {
+    return '1 tawo an idinugang sa $household';
+  }
+
+  @override
+  String sentAgo(String ago) {
+    return 'Napadara $ago';
+  }
+
+  @override
+  String get sentEdit => 'Baguhon';
+
+  @override
+  String get sentEditNeedsConnection =>
+      'Kaipuhan an internet para baguhon an napadarang rekord.';
+
+  @override
+  String autoSentMessage(int count) {
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$countString rekord an napadara',
+      one: '1 rekord an napadara',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get autoSentView => 'Hilingon';
+
+  @override
+  String get sentFamilyTitle => 'Tadongon an napadarang rekord';
+
+  @override
+  String get sentFamilyIntro =>
+      'Ini an rekord na yaon sa server ngunyan. Tolos na nase-save duman an lambang pagbago.';
+
+  @override
+  String get sentCouldNotLoad => 'Dai ma-load an rekord na ini hale sa server.';
+
+  @override
+  String get sentHouseholdSection => 'Harong';
+
+  @override
+  String get sentHeadLabel => 'Payo kan pamilya';
+
+  @override
+  String sentHeadIs(String name) {
+    return 'Payo: $name';
+  }
+
+  @override
+  String get sentHeadNotListed => 'Tawong mayo sa listahan';
+
+  @override
+  String get sentMembersSection => 'Mga tawo';
+
+  @override
+  String get sentPersonNoName => 'Tawong mayo pang pangaran';
+
+  @override
+  String get sentAddedFromPhone => 'Idinugang hale sa teleponong ini';
+
+  @override
+  String get sentEditPerson => 'Baguhon an tawo';
+
+  @override
+  String get sentSaved => 'Na-save sa server.';
 }

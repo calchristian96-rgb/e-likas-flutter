@@ -43,8 +43,9 @@ EvacuationCenter _center(int id, String name, String barangay, int occupancy) =>
       latitude: 13.2,
       longitude: 123.5,
       capacityPersons: 100,
-      currentOccupancy: occupancy,
-      occupancyPercent: occupancy.toDouble(),
+      // Public figures count every open event: never shown in Staff Mode.
+      currentOccupancy: occupancy + 50,
+      occupancyPercent: occupancy + 50.0,
       status: 'active',
     );
 
@@ -70,12 +71,18 @@ Widget _app(
           name: 'Binatagan Covered Court',
           barangayId: 13,
           status: 'active',
+          capacityPersons: 100,
+          currentOccupancy: 14,
+          occupancyPercent: 14,
         ),
         EvacuationCenterLookup(
           id: 2,
           name: 'Binatagan Chapel',
           barangayId: 13,
           status: 'active',
+          capacityPersons: 100,
+          currentOccupancy: 3,
+          occupancyPercent: 3,
         ),
         EvacuationCenterLookup(
           id: 3,
@@ -120,8 +127,11 @@ void main() {
       expect(find.text('Binatagan Covered Court'), findsOneWidget);
       expect(find.text('Binatagan Chapel'), findsOneWidget);
       expect(find.text('Baligang Hall'), findsNothing);
+      // The selected event's figures from the staff list, not the
+      // public copy (which counts every open event).
       expect(find.text('14 / 100 (14%)'), findsOneWidget);
       expect(find.text('3 / 100 (3%)'), findsOneWidget);
+      expect(find.text('64 / 100 (64%)'), findsNothing);
       // Own barangay's Unverified center: listed, with its badge.
       expect(find.text('Binatagan New Gym'), findsOneWidget);
       expect(find.text('Unverified'), findsOneWidget);

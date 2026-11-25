@@ -4,6 +4,7 @@ import '../../../../core/error/result.dart';
 import '../../../ec_board/domain/entities/ec_board_entry_draft.dart'
     show HouseholdMode;
 import '../../../ec_board/domain/repositories/ec_board_repository.dart';
+import '../../../outbox/data/sent_history_repository.dart';
 import '../../domain/entities/pending_registration_status.dart';
 import '../../domain/repositories/family_registration_repository.dart';
 import '../../domain/repositories/pending_queue_repository.dart';
@@ -58,10 +59,16 @@ class StaffSyncService {
     required FamilyRegistrationRepository registrationRepository,
     required ConnectivityService connectivity,
     EcBoardRepository? ecBoardRepository,
+    SentHistoryRepository? sentHistory,
   }) : _pendingQueueRepository = pendingQueueRepository,
        _registrationRepository = registrationRepository,
        _connectivity = connectivity,
-       _ecBoardRepository = ecBoardRepository;
+       _ecBoardRepository = ecBoardRepository,
+       _sentHistory = sentHistory;
+
+  /// The Sent list: a row per accepted registration or EC Board person,
+  /// with the server's ids, so it can be seen and corrected later.
+  final SentHistoryRepository? _sentHistory;
 
   final PendingQueueRepository _pendingQueueRepository;
   final FamilyRegistrationRepository _registrationRepository;
@@ -145,6 +152,17 @@ class StaffSyncService {
       switch (result) {
         case Success(:final value):
           await _pendingQueueRepository.markSynced(localId);
+          await _keepSent(
+            () => _sentHistory?.recordRegistration(
+              localId: localId,
+              headName: item.summary.headOfFamilyName,
+              memberCount: item.summary.memberCount,
+              familyId: value,
+              eventId: item.draft.evacuationEventId,
+              centerId: item.draft.evacuationCenterId,
+              barangayName: item.summary.barangayName,
+            ),
+          );
           await _promoteHouseholdReferences(
             familyLocalId: localId,
             remoteFamilyId: value,
@@ -252,6 +270,16 @@ class StaffSyncService {
       switch (result) {
         case Success(:final value):
           await ecBoard.markSynced(localId);
+          await _keepSent(
+            () => _sentHistory?.recordEcBoardEntry(
+              localId: localId,
+              householdLabel: item.summary.householdLabel,
+              centerId: item.summary.evacuationCenterId,
+              evacueeId: value.evacueeId,
+              familyId: value.familyId,
+              eventId: item.summary.evacuationEventId,
+            ),
+          );
           // A brand-new household just got a real backend id — any
           // other pending entry still referencing *this* entry's own
           // local id (see `EcBoardEntryDraft.existingFamilyLocalId`'s
@@ -277,6 +305,15 @@ class StaffSyncService {
     }
 
     return StaffSyncRunResult(processed: processed, stoppedForAuth: false);
+  }
+
+  /// A history write never fails a send that the server accepted.
+  Future<void> _keepSent(Future<void>? Function() write) async {
+    try {
+      await write();
+    } catch (_) {
+      // Sent; only its Sent-list row is missing.
+    }
   }
 
   Future<void> _applyEcBoardFailure(

@@ -5,5 +5,5 @@ import '../../../evacuation_centers/domain/entities/evacuation_center.dart';
 /// edited on the web (C24); the phone sets a center's location through
 /// `POST /gis/centers/{id}/location` (the offline queue, C19).
 abstract class StaffEvacuationCentersRepository {
-  Future<Result<EvacuationCenter>> getCenterDetail(int id);
+  Future<Result<EvacuationCenter>> getCenterDetail(int id, {int? eventId});
 }

@@ -15,6 +15,7 @@ import '../../../staff_auth/presentation/widgets/staff_auth_guard.dart';
 import '../../../staff_evacuation_centers/presentation/providers/own_centers_provider.dart';
 import '../../../staff_evacuation_centers/presentation/widgets/approval_badge.dart';
 import '../../../staff_evacuation_centers/presentation/widgets/center_needs_details.dart';
+import '../../../staff_evacuation_centers/presentation/widgets/occupancy_note.dart';
 
 /// The EC Information Board's center list (Part 3.4): a short summary
 /// first (centers, evacuees, boxes left), then one card per own center
@@ -70,7 +71,8 @@ class _BodyState extends ConsumerState<_Body> {
           ];
           final evacuees = usable.fold<int>(
             0,
-            (sum, c) => sum + (c.public?.currentOccupancy ?? 0),
+            // The selected event's people only (backend d17f6de).
+            (sum, c) => sum + (c.occupancy ?? 0),
           );
           final query = _searchQuery.trim().toLowerCase();
           final visible = [
@@ -137,10 +139,9 @@ class _CenterCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final l10n = AppLocalizations.of(context);
-    final public = center.public;
-    final status = center.center.status;
-    final occupancy = public?.currentOccupancy;
-    final capacity = public?.capacityPersons;
+    final status = center.status;
+    final occupancy = center.occupancy;
+    final capacity = center.capacity;
     return AppCard(
       onTap: () => context.push('/staff/centers/${center.id}'),
       child: Column(
@@ -152,12 +153,12 @@ class _CenterCard extends StatelessWidget {
             children: [
               Expanded(
                 child: Text(
-                  occupancy == null || public == null
+                  occupancy == null
                       ? l10n.homeNoOccupancyYet
                       : capacityFigure(
                           l10n,
                           capacity: capacity,
-                          source: public.capacitySource,
+                          source: center.capacitySource,
                           occupancy: occupancy,
                         ),
                   style: theme.textTheme.titleLarge?.copyWith(
@@ -171,12 +172,13 @@ class _CenterCard extends StatelessWidget {
               ),
             ],
           ),
-          if (occupancy != null && public != null && !public.isCapacityUnknown)
+          if (occupancy != null && !center.isCapacityUnknown)
             CenterFillBar(
               occupancy: occupancy,
               capacity: capacity,
               status: status,
             ),
+          OccupancyNote(note: center.occupancyNote),
           if (!center.center.isApproved || center.center.hasPendingChange) ...[
             const SizedBox(height: 8),
             ApprovalBadge(center: center.center),

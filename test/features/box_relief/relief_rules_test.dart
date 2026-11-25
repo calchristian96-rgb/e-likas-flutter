@@ -39,7 +39,8 @@ class _NoSync extends StaffSyncAll {
   _NoSync(super.ref);
 
   @override
-  Future<OutboxRunResult> call() async => const OutboxRunResult();
+  Future<OutboxRunResult> call({bool automatic = true}) async =>
+      const OutboxRunResult();
 }
 
 void main() {

@@ -25,14 +25,17 @@ class StaffEvacuationCentersRepositoryImpl
   final EvacuationCentersLocalDatasource _residentCache;
 
   @override
-  Future<Result<EvacuationCenter>> getCenterDetail(int id) async {
+  Future<Result<EvacuationCenter>> getCenterDetail(
+    int id, {
+    int? eventId,
+  }) async {
     if (!await _connectivity.hasConnection) {
       return const Failed(
         NetworkFailure('A center\'s details need an internet connection.'),
       );
     }
     try {
-      final model = await _remote.getCenter(id);
+      final model = await _remote.getCenter(id, eventId: eventId);
       final photoUrl = model.photoUrl;
       if (photoUrl != null) {
         try {
