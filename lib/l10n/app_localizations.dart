@@ -7904,6 +7904,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Saved on the server.'**
   String get sentSaved;
+
+  /// No description provided for @sentAgeSetByBirthdate.
+  ///
+  /// In en, this message translates to:
+  /// **'Set by the birthdate on file'**
+  String get sentAgeSetByBirthdate;
 }
 
 class _AppLocalizationsDelegate

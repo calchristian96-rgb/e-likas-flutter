@@ -5104,4 +5104,8 @@ class AppLocalizationsFil extends AppLocalizations {
 
   @override
   String get sentSaved => 'Na-save sa server.';
+
+  @override
+  String get sentAgeSetByBirthdate =>
+      'Itinakda ng petsa ng kapanganakan na nasa record';
 }

@@ -5026,4 +5026,8 @@ class AppLocalizationsBcl extends AppLocalizations {
 
   @override
   String get sentSaved => 'Na-save sa server.';
+
+  @override
+  String get sentAgeSetByBirthdate =>
+      'Itinao kan petsa nin pagkamundag na yaon sa rekord';
 }

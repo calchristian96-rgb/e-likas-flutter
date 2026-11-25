@@ -3531,5 +3531,7 @@
   "sentEditPerson": "Baguhon an tawo",
   "@sentEditPerson": {"description": "NEEDS NATIVE BIKOL REVIEW"},
   "sentSaved": "Na-save sa server.",
-  "@sentSaved": {"description": "NEEDS NATIVE BIKOL REVIEW"}
+  "@sentSaved": {"description": "NEEDS NATIVE BIKOL REVIEW"},
+  "sentAgeSetByBirthdate": "Itinao kan petsa nin pagkamundag na yaon sa rekord",
+  "@sentAgeSetByBirthdate": {"description": "NEEDS NATIVE BIKOL REVIEW"}
 }

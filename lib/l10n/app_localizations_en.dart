@@ -5082,4 +5082,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get sentSaved => 'Saved on the server.';
+
+  @override
+  String get sentAgeSetByBirthdate => 'Set by the birthdate on file';
 }

@@ -2327,5 +2327,6 @@
   "sentPersonNoName": "Person without a name yet",
   "sentAddedFromPhone": "Added from this phone",
   "sentEditPerson": "Edit person",
-  "sentSaved": "Saved on the server."
+  "sentSaved": "Saved on the server.",
+  "sentAgeSetByBirthdate": "Set by the birthdate on file"
 }

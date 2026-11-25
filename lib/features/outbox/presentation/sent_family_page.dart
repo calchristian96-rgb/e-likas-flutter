@@ -6,6 +6,9 @@ import '../../../core/error/result.dart';
 import '../../../core/widgets/error_state.dart';
 import '../../../core/widgets/ui_kit.dart';
 import '../../../l10n/app_localizations.dart';
+import '../../ec_board/domain/entities/age_bracket.dart';
+import '../../ec_board/presentation/pages/add_evacuee_form_page.dart'
+    show localizedAgeBracket;
 import '../data/sent_family_api.dart';
 import '../domain/sent_family.dart';
 import 'sent_providers.dart';
@@ -122,7 +125,11 @@ class SentFamilyPage extends ConsumerWidget {
                             l10n.staffRegHeadOfFamilyBadge,
                           if (m.id == personId) l10n.sentAddedFromPhone,
                           if (m.sex != null) _sex(l10n, m.sex!),
-                          if (m.dateOfBirth != null) m.dateOfBirth!,
+                          if (m.dateOfBirth != null)
+                            m.dateOfBirth!
+                          else if (AgeBracket.fromWire(m.ageBracket)
+                              case final bracket?)
+                            localizedAgeBracket(context, bracket),
                         ].join(' · '),
                       ),
                       trailing: TextButton(
@@ -226,6 +233,13 @@ class _MemberEditPageState extends ConsumerState<MemberEditPage> {
   late bool _soloParent = widget.member.isSoloParent;
   late bool _indigenous = widget.member.isIndigenousPerson;
   late bool _fourPs = widget.member.is4psBeneficiary;
+  late final AgeBracket? _ageBefore = AgeBracket.fromWire(
+    widget.member.ageBracket,
+  );
+  late AgeBracket? _ageBracket = _ageBefore;
+
+  /// A birthdate on the server decides the age group (backend 41b5e5d).
+  bool get _ageSetByBirthdate => widget.member.dateOfBirth != null;
 
   bool _saving = false;
   String? _error;
@@ -241,6 +255,7 @@ class _MemberEditPageState extends ConsumerState<MemberEditPage> {
     'civil_status',
     'contact_number',
     'pwd_type',
+    'age_bracket_override',
   };
 
   @override
@@ -280,6 +295,11 @@ class _MemberEditPageState extends ConsumerState<MemberEditPage> {
       'is_solo_parent': _soloParent,
       'is_indigenous_person': _indigenous,
       'is_4ps_beneficiary': _fourPs,
+      // Only when changed, and only while no birthdate decides it.
+      if (!_ageSetByBirthdate &&
+          _ageBracket != null &&
+          _ageBracket != _ageBefore)
+        'age_bracket_override': _ageBracket!.wireValue,
     };
   }
 
@@ -393,6 +413,36 @@ class _MemberEditPageState extends ConsumerState<MemberEditPage> {
               child: Text(_dob ?? l10n.staffRegSelectDate),
             ),
           ),
+          const SizedBox(height: 16),
+          if (_ageSetByBirthdate)
+            InputDecorator(
+              decoration: InputDecoration(
+                labelText: l10n.ecBoardFieldAgeBracket,
+                helperText: l10n.sentAgeSetByBirthdate,
+                enabled: false,
+              ),
+              child: Text(
+                _ageBefore == null
+                    ? l10n.staffRegNotSpecified
+                    : localizedAgeBracket(context, _ageBefore),
+              ),
+            )
+          else
+            DropdownButtonFormField<AgeBracket>(
+              initialValue: _ageBracket,
+              decoration: deco(
+                l10n.ecBoardFieldAgeBracket,
+                'age_bracket_override',
+              ),
+              items: [
+                for (final b in AgeBracket.values)
+                  DropdownMenuItem(
+                    value: b,
+                    child: Text(localizedAgeBracket(context, b)),
+                  ),
+              ],
+              onChanged: (v) => setState(() => _ageBracket = v),
+            ),
           const SizedBox(height: 16),
           DropdownButtonFormField<String?>(
             initialValue: _civil,
@@ -521,9 +571,30 @@ class _HouseholdEditPageState extends ConsumerState<HouseholdEditPage> {
   late bool? _headIsMinor = widget.family.headId == null
       ? widget.family.isChildHeaded
       : null;
+  late final _name = TextEditingController(text: widget.family.name);
   bool _saving = false;
   String? _error;
   List<String> _errors = const [];
+  String? _nameError;
+
+  @override
+  void dispose() {
+    _name.dispose();
+    super.dispose();
+  }
+
+  /// The household's name, only when changed (backend 41b5e5d: trimmed,
+  /// never blank, max 150; the server says so when it is).
+  Map<String, dynamic> _body() {
+    final name = _name.text.trim();
+    return {
+      'head_of_family_evacuee_id': _headId,
+      'is_single_headed': _singleHeaded,
+      if (_headId == null) 'head_sex': _headSex,
+      if (_headId == null) 'head_is_minor': _headIsMinor,
+      if (name != (widget.family.name ?? '').trim()) 'name': name,
+    };
+  }
 
   Future<void> _save() async {
     if (_saving) return;
@@ -531,16 +602,12 @@ class _HouseholdEditPageState extends ConsumerState<HouseholdEditPage> {
       _saving = true;
       _error = null;
       _errors = const [];
+      _nameError = null;
     });
     final l10n = AppLocalizations.of(context);
     final result = await ref
         .read(sentFamilyApiProvider)
-        .updateHousehold(widget.family.id, {
-          'head_of_family_evacuee_id': _headId,
-          'is_single_headed': _singleHeaded,
-          if (_headId == null) 'head_sex': _headSex,
-          if (_headId == null) 'head_is_minor': _headIsMinor,
-        });
+        .updateHousehold(widget.family.id, _body());
     if (!mounted) return;
     switch (result) {
       case Success():
@@ -550,7 +617,12 @@ class _HouseholdEditPageState extends ConsumerState<HouseholdEditPage> {
           _saving = false;
           _error = sentFailureText(l10n, failure);
           if (failure is ValidationFailure) {
-            _errors = [for (final m in failure.fieldErrors.values) ...m];
+            final errors = failure.fieldErrors;
+            _nameError = errors['name']?.join(' ');
+            _errors = [
+              for (final e in errors.entries)
+                if (e.key != 'name') ...e.value,
+            ];
           }
         });
     }
@@ -593,6 +665,16 @@ class _HouseholdEditPageState extends ConsumerState<HouseholdEditPage> {
         children: [
           if (_error != null)
             _ServerError(message: _error!, otherErrors: _errors),
+          TextField(
+            controller: _name,
+            textCapitalization: TextCapitalization.words,
+            maxLength: 150,
+            decoration: InputDecoration(
+              labelText: l10n.ecBoardNewHouseholdHeadName,
+              errorText: _nameError,
+            ),
+          ),
+          const SizedBox(height: 8),
           DropdownButtonFormField<int?>(
             initialValue: _headId,
             decoration: InputDecoration(labelText: l10n.sentHeadLabel),

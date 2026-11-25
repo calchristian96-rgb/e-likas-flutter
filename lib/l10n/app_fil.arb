@@ -1524,5 +1524,6 @@
   "sentPersonNoName": "Taong wala pang pangalan",
   "sentAddedFromPhone": "Idinagdag mula sa teleponong ito",
   "sentEditPerson": "I-edit ang tao",
-  "sentSaved": "Na-save sa server."
+  "sentSaved": "Na-save sa server.",
+  "sentAgeSetByBirthdate": "Itinakda ng petsa ng kapanganakan na nasa record"
 }

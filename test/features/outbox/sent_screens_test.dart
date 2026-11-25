@@ -9,6 +9,7 @@ import 'package:elikas_mobile/app/theme/app_theme.dart';
 import 'package:elikas_mobile/core/connectivity/connectivity_service.dart';
 import 'package:elikas_mobile/core/error/failure.dart';
 import 'package:elikas_mobile/core/error/result.dart';
+import 'package:elikas_mobile/features/ec_board/domain/entities/age_bracket.dart';
 import 'package:elikas_mobile/features/outbox/data/sent_family_api.dart';
 import 'package:elikas_mobile/features/outbox/domain/pending_action.dart';
 import 'package:elikas_mobile/features/outbox/domain/sent_family.dart';
@@ -57,10 +58,21 @@ final _records = [
 
 /// Answers the edit page's PATCH with [answer].
 class _EditApi extends SentFamilyApi {
-  _EditApi(this.answer) : super(FakeStaffApi(), _connectivity(true));
+  _EditApi(this.answer, {this.householdAnswer = const Success(null)})
+    : super(FakeStaffApi(), _connectivity(true));
 
   final Result<SentMember> answer;
+  final Result<void> householdAnswer;
   Map<String, dynamic>? body;
+
+  @override
+  Future<Result<void>> updateHousehold(
+    int familyId,
+    Map<String, dynamic> body,
+  ) async {
+    this.body = body;
+    return householdAnswer;
+  }
 
   @override
   Future<Result<SentMember>> updateMember(
@@ -210,6 +222,201 @@ void main() {
     expect(opened, ['/staff/more/sync?tab=sent']);
   });
 
+  group('age group and family name (backend 41b5e5d)', () {
+    const noBirthdate = SentMember(
+      id: 40,
+      sex: 'male',
+      ageBracket: 'school_age',
+    );
+    const ok = Success(SentMember(id: 40));
+
+    Future<ScrollableFinderPair> openMember(
+      WidgetTester tester,
+      _EditApi api,
+      SentMember member,
+    ) async {
+      await tester.pumpWidget(
+        testApp(
+          _Pushed(
+            key: UniqueKey(),
+            MemberEditPage(familyId: 548, member: member),
+          ),
+          overrides: [sentFamilyApiProvider.overrideWithValue(api)],
+        ),
+      );
+      await tester.pumpAndSettle();
+      final list = find
+          .descendant(
+            of: find.byType(ListView),
+            matching: find.byType(Scrollable),
+          )
+          .first;
+      return (list: list);
+    }
+
+    Future<void> save(WidgetTester tester, Finder list) async {
+      await tester.scrollUntilVisible(find.text('Save'), 200, scrollable: list);
+      await tester.ensureVisible(find.text('Save'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Save'));
+      await tester.pumpAndSettle();
+    }
+
+    testWidgets('no birthdate: the age group is chosen, sent only when '
+        'changed', (tester) async {
+      final api = _EditApi(ok);
+      final (:list) = await openMember(tester, api, noBirthdate);
+      await save(tester, list);
+      expect(api.body!.containsKey('age_bracket_override'), isFalse);
+
+      final api2 = _EditApi(ok);
+      final (list: list2) = await openMember(tester, api2, noBirthdate);
+      await tester.scrollUntilVisible(
+        find.text('School Age'),
+        200,
+        scrollable: list2,
+      );
+      await tester.tap(find.text('School Age'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Teenage').last);
+      await tester.pumpAndSettle();
+      await save(tester, list2);
+      expect(api2.body!['age_bracket_override'], 'teenage');
+    });
+
+    testWidgets("the server's 422 on the age group shows under it", (
+      tester,
+    ) async {
+      final api = _EditApi(
+        const Failed(
+          ValidationFailure({
+            'age_bracket_override': ['The selected age group is invalid.'],
+          }, 'The selected age group is invalid.'),
+        ),
+      );
+      final (:list) = await openMember(tester, api, noBirthdate);
+      await tester.scrollUntilVisible(
+        find.text('School Age'),
+        200,
+        scrollable: list,
+      );
+      await tester.tap(find.text('School Age'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Adult').last);
+      await tester.pumpAndSettle();
+      await save(tester, list);
+      await tester.scrollUntilVisible(
+        find.text('Adult'),
+        -200,
+        scrollable: list,
+      );
+      final field = find.ancestor(
+        of: find.text('Adult'),
+        matching: find.byType(InputDecorator),
+      );
+      expect(
+        find.descendant(
+          of: field,
+          matching: find.text('The selected age group is invalid.'),
+        ),
+        findsOneWidget,
+      );
+    });
+
+    testWidgets('a birthdate on file decides the age group: read-only', (
+      tester,
+    ) async {
+      final api = _EditApi(ok);
+      final (:list) = await openMember(
+        tester,
+        api,
+        const SentMember(
+          id: 41,
+          firstName: 'Ana',
+          dateOfBirth: '2015-03-02',
+          ageBracket: 'school_age',
+        ),
+      );
+      await tester.scrollUntilVisible(
+        find.text('Set by the birthdate on file'),
+        200,
+        scrollable: list,
+      );
+      expect(find.text('School Age'), findsOneWidget);
+      expect(find.byType(DropdownButtonFormField<AgeBracket>), findsNothing);
+      await save(tester, list);
+      expect(api.body!.containsKey('age_bracket_override'), isFalse);
+    });
+
+    const family = SentFamily(
+      id: 548,
+      name: 'Reyes family',
+      headId: 31,
+      headName: 'Juan Reyes',
+      members: [SentMember(id: 31, fullName: 'Juan Reyes')],
+    );
+
+    Future<void> openHousehold(WidgetTester tester, _EditApi api) async {
+      await tester.pumpWidget(
+        testApp(
+          _Pushed(key: UniqueKey(), const HouseholdEditPage(family: family)),
+          overrides: [sentFamilyApiProvider.overrideWithValue(api)],
+        ),
+      );
+      await tester.pumpAndSettle();
+    }
+
+    testWidgets('the family name is sent only when changed', (tester) async {
+      final api = _EditApi(ok);
+      await openHousehold(tester, api);
+      await tester.tap(find.text('Save'));
+      await tester.pumpAndSettle();
+      expect(api.body!.containsKey('name'), isFalse);
+
+      final api2 = _EditApi(ok);
+      await openHousehold(tester, api2);
+      await tester.enterText(
+        find.widgetWithText(TextField, 'Reyes family'),
+        '  Reyes-Santos family ',
+      );
+      await tester.tap(find.text('Save'));
+      await tester.pumpAndSettle();
+      expect(api2.body!['name'], 'Reyes-Santos family');
+    });
+
+    testWidgets("a blank family name: the server's 422 under the field", (
+      tester,
+    ) async {
+      final api = _EditApi(
+        ok,
+        householdAnswer: const Failed(
+          ValidationFailure({
+            'name': ['The name field must have a value.'],
+          }, 'The name field must have a value.'),
+        ),
+      );
+      await openHousehold(tester, api);
+      await tester.enterText(
+        find.widgetWithText(TextField, 'Reyes family'),
+        '',
+      );
+      await tester.tap(find.text('Save'));
+      await tester.pumpAndSettle();
+      expect(api.body!['name'], '');
+      final field = find.ancestor(
+        of: find.byType(EditableText).first,
+        matching: find.byType(TextField),
+      );
+      expect(
+        find.descendant(
+          of: field,
+          matching: find.text('The name field must have a value.'),
+        ),
+        findsOneWidget,
+      );
+    });
+  });
+
   group('the automatic-send announcement', () {
     Future<(ProviderContainer, OutboxRepository)> setUpSync() async {
       SharedPreferences.setMockInitialValues({});
@@ -307,4 +514,32 @@ class _AutoSentProbe extends ConsumerWidget {
     });
     return const SizedBox();
   }
+}
+
+typedef ScrollableFinderPair = ({Finder list});
+
+/// Opens [page] on top of a host route, as the app does, so Save can
+/// close it.
+class _Pushed extends StatefulWidget {
+  const _Pushed(this.page, {super.key});
+
+  final Widget page;
+
+  @override
+  State<_Pushed> createState() => _PushedState();
+}
+
+class _PushedState extends State<_Pushed> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Navigator.of(
+        context,
+      ).push(MaterialPageRoute<bool>(builder: (_) => widget.page));
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) => const Scaffold(body: Text('host'));
 }
