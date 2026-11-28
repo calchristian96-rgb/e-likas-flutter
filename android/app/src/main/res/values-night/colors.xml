@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- The night sheet's ink ground for the launch screen and splash. -->
+    <color name="elikas_launch">#FF17241D</color>
+</resources>

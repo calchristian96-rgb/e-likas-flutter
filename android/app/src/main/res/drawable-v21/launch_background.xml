@@ -5,7 +5,7 @@
      the system-theme-dependent white/black the stock template used
      here). -->
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:drawable="@color/elikas_navy" />
+    <item android:drawable="@color/elikas_launch" />
     <item>
         <bitmap
             android:gravity="center"

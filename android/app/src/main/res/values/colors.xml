@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Same brand navy as lib/app/theme/app_theme.dart's
-         AppSemanticColors.navy (the logo's own navy) — used for the
-         native pre-Flutter launch screen and the Android 12+ system
-         splash, so nothing native invents its own color. -->
-    <color name="elikas_navy">#FF094776</color>
+    <!-- The launch screen and the Android 12+ system splash: map paper,
+         the same ground as the app's first Flutter frame (the "Ligao
+         Map Sheet"); values-night/colors.xml gives the night sheet's
+         ink. Navy is kept for live status only. -->
+    <color name="elikas_launch">#FFF3F5EF</color>
+    <color name="elikas_paper">#FFF3F5EF</color>
 </resources>

@@ -4,12 +4,12 @@
      frame — without this override it shows a generic system splash
      (plain background + the launcher icon, un-branded look) rather
      than picking up drawable/launch_background.xml. This makes that
-     system splash use the same navy + E-LIKAS logo instead. -->
+     system splash use the same map paper (ink at night) + E-LIKAS logo instead. -->
 <resources>
     <style name="LaunchTheme" parent="@android:style/Theme.Light.NoTitleBar">
-        <item name="android:windowSplashScreenBackground">@color/elikas_navy</item>
+        <item name="android:windowSplashScreenBackground">@color/elikas_launch</item>
         <item name="android:windowSplashScreenAnimatedIcon">@drawable/ic_launcher_foreground</item>
-        <item name="android:windowSplashScreenIconBackgroundColor">@color/elikas_navy</item>
+        <item name="android:windowSplashScreenIconBackgroundColor">@color/elikas_paper</item>
         <item name="android:windowBackground">@drawable/launch_background</item>
     </style>
 </resources>
