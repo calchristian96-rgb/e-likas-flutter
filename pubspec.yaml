@@ -141,10 +141,25 @@ flutter:
     # file the backend serves at /data/ligao-barangay-boundaries.geojson.
     - assets/data/
 
-  # Public Sans -- the same typeface as the E-LIKAS web dashboard and
-  # desktop app, bundled (not fetched at runtime) so it works offline.
-  # SIL Open Font License, see assets/fonts/OFL.txt.
+  # The "Ligao Map Sheet" typefaces, the same as the E-LIKAS web and
+  # desktop app, bundled (not fetched at runtime) so they work offline.
+  # All SIL Open Font License: Public Sans (assets/fonts/OFL.txt),
+  # Barlow Condensed (OFL-BarlowCondensed.txt), Source Serif 4
+  # (OFL-SourceSerif4.txt; the variable italic, drawn at wght 500).
   fonts:
+    - family: BarlowCondensed
+      fonts:
+        - asset: assets/fonts/BarlowCondensed-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/BarlowCondensed-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/BarlowCondensed-ExtraBold.ttf
+          weight: 800
+    - family: SourceSerif4
+      fonts:
+        - asset: assets/fonts/SourceSerif4-Italic-Variable.ttf
+          style: italic
+          weight: 500
     - family: PublicSans
       fonts:
         - asset: assets/fonts/PublicSans-Regular.ttf
