@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 
+import '../../app/theme/sheet_tokens.dart';
 import '../../l10n/app_localizations.dart';
+import 'map_sheet.dart';
 
-/// The shared look of every screen (Part 2): the web design system's card,
-/// spacing (8-point grid), 48 dp targets and status words.
+/// The shared look of every screen: the Ligao Map Sheet's plates, margin
+/// heads, spacing (8-point grid), 48 dp targets and status words.
 
 /// Page gutter on a phone.
 const double kGutter = 16;
@@ -40,9 +42,9 @@ class ElikasLogo extends StatelessWidget {
   }
 }
 
-/// The one card style: surface, gray-200 hairline, 12 px radius, no
-/// shadow. [highlight] marks staff-only items with a thin brand-blue
-/// border and a light blue tint, never a heavy dark card.
+/// The one plate style: map paper framed by an ink hairline, square, no
+/// shadow. [highlight] marks staff-only items with a 2 px ink frame on
+/// the recessed paper fold (never a tinted accent or a side stripe).
 class AppCard extends StatelessWidget {
   const AppCard({
     super.key,
@@ -59,22 +61,15 @@ class AppCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final scheme = Theme.of(context).colorScheme;
-    final shape = RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(12),
-      side: BorderSide(
-        color: highlight ? scheme.primary : scheme.outline,
-        width: highlight ? 1.5 : 1,
-      ),
-    );
+    final p = SheetPalette.of(context);
     return Material(
-      color: highlight
-          ? Color.alphaBlend(
-              scheme.primary.withValues(alpha: 0.06),
-              scheme.surface,
-            )
-          : scheme.surface,
-      shape: shape,
+      color: highlight ? p.fold : p.plate,
+      shape: RoundedRectangleBorder(
+        side: BorderSide(
+          color: p.rule,
+          width: highlight ? Sheet.frame : Sheet.hairline,
+        ),
+      ),
       clipBehavior: Clip.antiAlias,
       child: InkWell(
         onTap: onTap,
@@ -84,7 +79,10 @@ class AppCard extends StatelessWidget {
   }
 }
 
-/// A status word in its colour (status is never colour alone).
+/// A status word in map-label caps beside a square swatch of its colour
+/// (status is never colour alone, and the words stay in ink so they read
+/// on any ground). For a center or a barangay state use [CenterStateTag]
+/// or [BarangayStateTag], which draw the state's own symbol.
 class StatusChip extends StatelessWidget {
   const StatusChip({super.key, required this.label, required this.color});
 
@@ -93,31 +91,49 @@ class StatusChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final p = SheetPalette.of(context);
     // Its own width, also in a ListView (which would stretch it).
     return Align(
       alignment: AlignmentDirectional.centerStart,
       widthFactor: 1,
       heightFactor: 1,
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
         decoration: BoxDecoration(
-          color: color.withValues(alpha: 0.12),
-          borderRadius: BorderRadius.circular(999),
-          border: Border.all(color: color.withValues(alpha: 0.5)),
+          border: Border.all(color: p.rule, width: Sheet.hairline),
         ),
-        child: Text(
-          label,
-          style: Theme.of(context).textTheme.labelMedium?.copyWith(
-            color: Color.lerp(color, Colors.black, 0.25),
-            fontWeight: FontWeight.w600,
-          ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              width: 10,
+              height: 10,
+              decoration: BoxDecoration(
+                color: color,
+                border: Border.all(color: p.symbolStroke, width: 1),
+              ),
+            ),
+            const SizedBox(width: 6),
+            Flexible(
+              child: Text(
+                label.toUpperCase(),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: SheetText.label(
+                  p.ink,
+                  size: 15,
+                ).copyWith(fontWeight: FontWeight.w700, letterSpacing: 1.1),
+              ),
+            ),
+          ],
         ),
       ),
     );
   }
 }
 
-/// A section heading with the 24 px space above it.
+/// A section heading: the margin head (a map-label over a 1.5 px ink
+/// rule) with the 24 px space above it.
 class SectionTitle extends StatelessWidget {
   const SectionTitle(this.text, {super.key, this.trailing});
 
@@ -125,19 +141,8 @@ class SectionTitle extends StatelessWidget {
   final Widget? trailing;
 
   @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 24, bottom: 8),
-      child: Row(
-        children: [
-          Expanded(
-            child: Text(text, style: Theme.of(context).textTheme.titleLarge),
-          ),
-          ?trailing,
-        ],
-      ),
-    );
-  }
+  Widget build(BuildContext context) =>
+      MarginHead(text, trailing: trailing);
 }
 
 /// The page's one primary action, fixed at the bottom, above the system
@@ -158,15 +163,15 @@ class BottomActionBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final scheme = Theme.of(context).colorScheme;
+    final p = SheetPalette.of(context);
     return Padding(
       padding: EdgeInsets.only(
         bottom: liftAboveKeyboard ? MediaQuery.viewInsetsOf(context).bottom : 0,
       ),
       child: DecoratedBox(
         decoration: BoxDecoration(
-          color: scheme.surface,
-          border: Border(top: BorderSide(color: scheme.outline)),
+          color: p.ground,
+          border: Border(top: BorderSide(color: p.rule, width: Sheet.rule)),
         ),
         child: SafeArea(
           top: false,

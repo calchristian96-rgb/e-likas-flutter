@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../app/theme/sheet_tokens.dart';
 import '../utils/formatters.dart';
 
 /// One headline figure.
@@ -36,15 +37,16 @@ class StatStrip extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      item.label,
-                      style: theme.textTheme.bodySmall?.copyWith(
-                        color: theme.colorScheme.onSurfaceVariant,
+                      item.label.toUpperCase(),
+                      style: SheetText.label(
+                        theme.colorScheme.onSurfaceVariant,
+                        size: 14,
                       ),
                     ),
+                    const SizedBox(height: 4),
                     Text(
                       formatStatValue(item.value),
-                      style: theme.textTheme.headlineSmall?.copyWith(
-                        fontWeight: FontWeight.w600,
+                      style: theme.textTheme.headlineMedium?.copyWith(
                         fontFeatures: const [FontFeature.tabularFigures()],
                         color: item.alert ? theme.colorScheme.error : null,
                       ),

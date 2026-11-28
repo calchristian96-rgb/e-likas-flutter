@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../app/theme/sheet_tokens.dart';
 import '../../../l10n/app_localizations.dart';
 import '../domain/barangay_status.dart';
 
@@ -16,10 +17,10 @@ String whatToDo(AppLocalizations l10n, String status) => switch (status) {
 
 Color barangayStatusColor(BuildContext context, String status) {
   return switch (status) {
-    BarangayStatusKey.watch => const Color(0xFFFACC15),
-    BarangayStatusKey.floodingReported => const Color(0xFFF97316),
-    BarangayStatusKey.preemptiveEvacuation => const Color(0xFFDC2626),
-    BarangayStatusKey.forcedEvacuation => const Color(0xFF7F1D1D),
-    _ => const Color(0xFF15803D),
+    BarangayStatusKey.watch => Sheet.barangayWatch,
+    BarangayStatusKey.floodingReported => Sheet.barangayFlooding,
+    BarangayStatusKey.preemptiveEvacuation => Sheet.barangayPreemptive,
+    BarangayStatusKey.forcedEvacuation => Sheet.barangayForced,
+    _ => Sheet.centerActive,
   };
 }

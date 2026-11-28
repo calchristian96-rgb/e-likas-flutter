@@ -113,14 +113,15 @@ class EvacuationOrderBanner extends ConsumerWidget {
     final l10n = AppLocalizations.of(context);
     final theme = Theme.of(context);
     final forced = status == BarangayStatusKey.forcedEvacuation;
-    final color = forced ? const Color(0xFFB91C1C) : const Color(0xFFC2410C);
+    // The barangay state's own fixed colour, with white text (4.8:1 and
+    // 10:1).
+    final color = forced ? Sheet.barangayForced : Sheet.barangayPreemptive;
     return Padding(
       padding: const EdgeInsets.only(bottom: 16),
       child: Semantics(
         liveRegion: true,
         child: Material(
           color: color,
-          borderRadius: BorderRadius.circular(16),
           child: Padding(
             padding: const EdgeInsets.all(16),
             child: Column(
@@ -132,9 +133,10 @@ class EvacuationOrderBanner extends ConsumerWidget {
                     const SizedBox(width: 12),
                     Expanded(
                       child: Text(
-                        forced
-                            ? l10n.orderForcedTitle(area!.name)
-                            : l10n.orderPreemptiveTitle(area!.name),
+                        (forced
+                                ? l10n.orderForcedTitle(area!.name)
+                                : l10n.orderPreemptiveTitle(area!.name))
+                            .toUpperCase(),
                         style: theme.textTheme.headlineSmall?.copyWith(
                           color: Colors.white,
                           fontWeight: FontWeight.w800,
@@ -146,20 +148,22 @@ class EvacuationOrderBanner extends ConsumerWidget {
                 const SizedBox(height: 8),
                 Text(
                   forced ? l10n.orderForcedBody : l10n.orderPreemptiveBody,
-                  style: theme.textTheme.titleMedium?.copyWith(
+                  style: theme.textTheme.bodyLarge?.copyWith(
                     color: Colors.white,
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
                 const SizedBox(height: 12),
                 FilledButton.icon(
                   style: FilledButton.styleFrom(
                     backgroundColor: Colors.white,
-                    foregroundColor: color,
+                    foregroundColor: Sheet.ink,
+                    iconColor: Sheet.ink,
                     minimumSize: const Size.fromHeight(52),
                   ),
                   onPressed: () => context.push('/nearest-center'),
                   icon: const Icon(Icons.directions_walk),
-                  label: Text(l10n.orderGoToCenter),
+                  label: Text(l10n.orderGoToCenter.toUpperCase()),
                 ),
               ],
             ),

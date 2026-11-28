@@ -30,7 +30,6 @@ class HotlineCard extends ConsumerWidget {
 
     return AccentCard(
       accentColor: categoryColor,
-      borderRadius: 16,
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(

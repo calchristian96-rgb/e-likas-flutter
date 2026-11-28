@@ -4,8 +4,8 @@ import '../../app/theme/app_theme.dart';
 import '../../l10n/app_localizations.dart';
 import '../utils/data_freshness_formatter.dart';
 
-/// A slim, calm banner shown when the device has no connectivity — an
-/// amber "offline mode" notice rather than an alarming red error, since
+/// A slim, calm banner shown when the device has no connectivity — a
+/// recessed paper-fold "offline mode" notice ruled below it rather than an alarming red error, since
 /// this is expected, handled behavior in an offline-first app, not a
 /// failure. Returns an empty [SizedBox] when [isOffline] is false, so
 /// it can be placed unconditionally at the top of a screen's body.
@@ -31,9 +31,9 @@ class OfflineBanner extends StatelessWidget {
 
     final theme = Theme.of(context);
     final l10n = AppLocalizations.of(context);
-    final semantic = theme.extension<AppSemanticColors>()!;
+    final p = SheetPalette.of(context);
     final stale = isDataStale(lastUpdated);
-    final accent = stale ? theme.colorScheme.error : semantic.warning;
+    final accent = stale ? p.errorText : p.ink;
 
     final message = switch (lastUpdated) {
       null => '${l10n.offlineModeLabel} — ${l10n.showingSavedInfo}',
@@ -49,7 +49,10 @@ class OfflineBanner extends StatelessWidget {
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 9),
-      color: accent.withValues(alpha: 0.14),
+      decoration: BoxDecoration(
+        color: p.fold,
+        border: Border(bottom: BorderSide(color: p.rule, width: Sheet.hairline)),
+      ),
       child: Row(
         children: [
           Icon(
@@ -62,7 +65,7 @@ class OfflineBanner extends StatelessWidget {
             child: Text(
               message,
               style: theme.textTheme.bodySmall?.copyWith(
-                color: theme.colorScheme.onSurface,
+                color: stale ? p.errorText : p.ink,
                 fontWeight: FontWeight.w600,
               ),
             ),

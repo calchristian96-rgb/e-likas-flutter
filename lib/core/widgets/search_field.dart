@@ -58,16 +58,10 @@ class SearchField extends StatelessWidget {
             );
           },
         ),
+        // The sheet's field (white, 1.5 px ink-2 border, square) from
+        // the theme.
         isDense: true,
-        filled: true,
-        fillColor: theme.colorScheme.surfaceContainerHighest.withValues(
-          alpha: 0.5,
-        ),
-        contentPadding: const EdgeInsets.symmetric(vertical: 12),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide.none,
-        ),
+        contentPadding: const EdgeInsets.symmetric(vertical: 13),
       ),
     );
   }

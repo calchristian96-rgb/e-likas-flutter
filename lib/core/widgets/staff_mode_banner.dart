@@ -3,12 +3,15 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../app/theme/sheet_tokens.dart';
 import '../../features/staff_auth/presentation/providers/staff_auth_provider.dart';
 import '../../l10n/app_localizations.dart';
 
-/// Amber, readable on any screen (dark text on amber passes contrast).
-const staffModeAmber = Color(0xFFFBBF24);
-const staffModeInk = Color(0xFF1F2937);
+/// Staff Mode is overprinted in solid ink with paper text (14.6:1): no
+/// state colour is borrowed for it (amber would read as a barangay on
+/// Watch). The names are kept so existing callers keep compiling.
+const staffModeAmber = Sheet.ink;
+const staffModeInk = Sheet.paper;
 
 /// On top of the resident app while a staff account is signed in: says
 /// so plainly and goes back to Staff Mode in one tap. Shown above every
@@ -22,7 +25,7 @@ class StaffModeBanner extends ConsumerWidget {
     if (session == null) return const SizedBox.shrink();
     final l10n = AppLocalizations.of(context);
     return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: SystemUiOverlayStyle.dark,
+      value: SystemUiOverlayStyle.light,
       child: Material(
         color: staffModeAmber,
         child: SafeArea(
@@ -42,6 +45,8 @@ class StaffModeBanner extends ConsumerWidget {
                         l10n.staffBannerSignedIn(session.name),
                         style: const TextStyle(
                           color: staffModeInk,
+                          fontFamily: Sheet.bodyFont,
+                          fontSize: 14,
                           fontWeight: FontWeight.w600,
                         ),
                         maxLines: 2,
@@ -50,13 +55,13 @@ class StaffModeBanner extends ConsumerWidget {
                     ),
                     const SizedBox(width: 8),
                     Text(
-                      l10n.staffBannerBack,
-                      style: const TextStyle(
-                        color: staffModeInk,
-                        fontWeight: FontWeight.w800,
-                      ),
+                      l10n.staffBannerBack.toUpperCase(),
+                      style: SheetText.label(
+                        Sheet.nightSiennaText,
+                        size: 16,
+                      ).copyWith(fontWeight: FontWeight.w700, letterSpacing: 1.4),
                     ),
-                    const Icon(Icons.chevron_right, color: staffModeInk),
+                    const Icon(Icons.chevron_right, color: Sheet.nightSiennaText),
                   ],
                 ),
               ),

@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 
+import '../../app/theme/sheet_tokens.dart';
 import '../../l10n/app_localizations.dart';
 
-/// Compact online/offline pill for the Home header — a translucent
-/// chip readable against the navy header background, not a raw
-/// technical connectivity message.
+/// Compact online/offline tag for the Home title box: square, ink
+/// hairline, a solid ink dot when online and a hollow ring when offline,
+/// with the words (no state colour is borrowed for this).
 class ConnectivityBadge extends StatelessWidget {
   const ConnectivityBadge({super.key, required this.isConnected});
 
@@ -14,9 +15,7 @@ class ConnectivityBadge extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     final label = isConnected ? l10n.online : l10n.offlineModeLabel;
-    final color = isConnected
-        ? const Color(0xFF5FD996)
-        : const Color(0xFFFFB74D);
+    final p = SheetPalette.of(context);
 
     return Semantics(
       label: isConnected
@@ -24,28 +23,29 @@ class ConnectivityBadge extends StatelessWidget {
           : 'No internet connection, offline mode',
       child: ExcludeSemantics(
         child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
           decoration: BoxDecoration(
-            color: Colors.white.withValues(alpha: 0.12),
-            borderRadius: BorderRadius.circular(20),
-            border: Border.all(color: Colors.white.withValues(alpha: 0.24)),
+            border: Border.all(color: p.rule, width: Sheet.hairline),
           ),
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
               Container(
-                width: 7,
-                height: 7,
-                decoration: BoxDecoration(color: color, shape: BoxShape.circle),
+                width: 9,
+                height: 9,
+                decoration: BoxDecoration(
+                  color: isConnected ? p.ink : null,
+                  shape: BoxShape.circle,
+                  border: Border.all(color: p.ink, width: 1.5),
+                ),
               ),
               const SizedBox(width: 6),
               Text(
-                label,
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600,
-                ),
+                label.toUpperCase(),
+                style: SheetText.label(
+                  p.ink,
+                  size: 14,
+                ).copyWith(fontWeight: FontWeight.w700, letterSpacing: 1.1),
               ),
             ],
           ),

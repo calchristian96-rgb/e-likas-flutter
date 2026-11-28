@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../app/theme/sheet_tokens.dart';
+
 /// Horizontally-scrollable single-select filter chips — shared by
 /// Alerts (severity) and Evacuation Centers (status). A chip's own
 /// label is always short (a severity/status word), so a fixed row
@@ -25,7 +27,7 @@ class FilterChipRow<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final p = SheetPalette.of(context);
     return SizedBox(
       height: 48,
       child: ListView.separated(
@@ -35,21 +37,31 @@ class FilterChipRow<T> extends StatelessWidget {
         itemBuilder: (context, index) {
           final option = options[index];
           final isSelected = option == selected;
-          final color = colorBuilder?.call(option) ?? theme.colorScheme.primary;
+          final color = colorBuilder?.call(option);
+          // Selected inverts to ink, like the web's line button; a status
+          // filter keeps a swatch of its colour next to its words.
           return ChoiceChip(
-            label: Text(labelBuilder(option)),
+            avatar: color == null
+                ? null
+                : Container(
+                    width: 10,
+                    height: 10,
+                    decoration: BoxDecoration(
+                      color: color,
+                      border: Border.all(color: p.symbolStroke),
+                    ),
+                  ),
+            label: Text(labelBuilder(option).toUpperCase()),
             selected: isSelected,
             onSelected: (_) => onSelected(option),
             showCheckmark: false,
-            backgroundColor: theme.cardColor,
-            selectedColor: color.withValues(alpha: 0.14),
-            side: BorderSide(
-              color: isSelected ? color : theme.colorScheme.outline,
-            ),
-            labelStyle: theme.textTheme.labelMedium?.copyWith(
-              color: isSelected ? color : theme.colorScheme.onSurfaceVariant,
-              fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
-            ),
+            backgroundColor: p.ground,
+            selectedColor: p.ink,
+            side: BorderSide(color: p.ink, width: Sheet.rule),
+            labelStyle: SheetText.label(
+              isSelected ? p.ground : p.ink,
+              size: 15,
+            ).copyWith(fontWeight: FontWeight.w700, letterSpacing: 1.1),
           );
         },
       ),

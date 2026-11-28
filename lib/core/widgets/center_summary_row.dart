@@ -5,7 +5,7 @@ import 'package:elikas_mobile/l10n/app_localizations.dart';
 import '../../features/evacuation_centers/domain/entities/evacuation_center.dart';
 import '../../features/evacuation_centers/presentation/widgets/center_status_display.dart';
 import '../utils/distance_formatter.dart';
-import 'status_badge.dart';
+import 'map_sheet.dart';
 
 /// A compact single-line-per-field row for a center in a list of
 /// several — "Other Nearby Centers" on Nearest Center today, and
@@ -23,12 +23,10 @@ class CenterSummaryRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final statusColor = centerStatusColor(context, center);
     final distance = center.distanceMeters;
 
     return InkWell(
       onTap: onTap,
-      borderRadius: BorderRadius.circular(12),
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 6),
         child: Row(
@@ -42,9 +40,7 @@ class CenterSummaryRow extends StatelessWidget {
                     center.name,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: theme.textTheme.bodyLarge?.copyWith(
-                      fontWeight: FontWeight.w600,
-                    ),
+                    style: theme.textTheme.titleMedium,
                   ),
                   const SizedBox(height: 3),
                   Wrap(
@@ -59,9 +55,9 @@ class CenterSummaryRow extends StatelessWidget {
                             color: theme.colorScheme.onSurfaceVariant,
                           ),
                         ),
-                      StatusBadge(
+                      CenterStateTag(
+                        status: center.status,
                         label: localizedCenterStatus(context, center.status),
-                        color: statusColor,
                       ),
                       if (center.currentOccupancy != null)
                         Text(

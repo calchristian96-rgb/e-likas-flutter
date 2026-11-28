@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../l10n/app_localizations.dart';
+import '../../../../core/widgets/map_sheet.dart';
 import '../../domain/entities/evacuation_center.dart';
 
 /// Localized display label for an evacuation center's `status` field
@@ -55,16 +56,10 @@ const evacuationCenterTypeValues = [
   'other',
 ];
 
-/// A center status colour, the web's marker colours (backend bd5b433):
-/// active green, on standby blue, full red, closed dark gray. Always
-/// shown with the status word.
-Color centerStatusColorOf(String status) => switch (status.toLowerCase()) {
-  'active' => const Color(0xFF15803D),
-  'nearly_full' => const Color(0xFFB45309),
-  'full' => const Color(0xFFDC2626),
-  'closed' => const Color(0xFF374151),
-  _ => const Color(0xFF2563EB),
-};
+/// A center state's fixed colour, shared by web, desktop and mobile:
+/// active green, nearly full amber, full red, on standby blue, closed
+/// grey. Never colour alone: draw it as [CenterSymbol] with the words.
+Color centerStatusColorOf(String status) => CenterState.color(status);
 
 /// The colour of a center's status as the API returns it: the effective
 /// status (people inside make a center active, or full near capacity),

@@ -66,12 +66,20 @@ class OccupancyProgress extends StatelessWidget {
         ),
         if (showBar) ...[
           const SizedBox(height: 6),
-          ClipRRect(
-            borderRadius: BorderRadius.circular(4),
+          // A square bar on a hairline frame, as on a printed legend.
+          DecoratedBox(
+            position: DecorationPosition.foreground,
+            decoration: BoxDecoration(
+              border: Border.all(
+                color: theme.colorScheme.outline,
+                width: 1,
+              ),
+            ),
             child: LinearProgressIndicator(
               value: (percent / 100).clamp(0.0, 1.0),
-              minHeight: 6,
-              backgroundColor: color.withValues(alpha: 0.15),
+              minHeight: 8,
+              borderRadius: BorderRadius.zero,
+              backgroundColor: theme.colorScheme.surfaceContainerHighest,
               valueColor: AlwaysStoppedAnimation<Color>(color),
             ),
           ),

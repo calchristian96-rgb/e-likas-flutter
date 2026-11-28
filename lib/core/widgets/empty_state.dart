@@ -20,15 +20,7 @@ class EmptyState extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 24),
       child: Column(
         children: [
-          Container(
-            width: 56,
-            height: 56,
-            decoration: BoxDecoration(
-              color: colorScheme.surfaceContainerHighest,
-              shape: BoxShape.circle,
-            ),
-            child: Icon(icon, size: 26, color: colorScheme.onSurfaceVariant),
-          ),
+          Icon(icon, size: 32, color: colorScheme.onSurfaceVariant),
           const SizedBox(height: 10),
           Text(
             message,

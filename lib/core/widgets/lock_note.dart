@@ -27,9 +27,8 @@ class LockNote extends StatelessWidget {
         width: double.infinity,
         padding: EdgeInsets.all(dense ? 8 : 12),
         decoration: BoxDecoration(
-          color: theme.colorScheme.surfaceContainerHighest,
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: theme.colorScheme.outlineVariant),
+          color: theme.colorScheme.surfaceContainer,
+          border: Border.all(color: theme.colorScheme.outline),
         ),
         child: Row(
           children: [
