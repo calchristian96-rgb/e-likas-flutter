@@ -1,3 +1,4 @@
+import '../../app/theme/sheet_tokens.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -130,7 +131,18 @@ class StaffShell extends StatelessWidget {
                 ),
               ),
             ),
-            bottomNavigationBar: NavigationBar(
+            // Map paper under a 1.5 px ink rule; sienna underline on the
+            // current tab (NavigationBarTheme).
+            bottomNavigationBar: DecoratedBox(
+              decoration: BoxDecoration(
+                border: Border(
+                  top: BorderSide(
+                    color: SheetPalette.of(context).rule,
+                    width: Sheet.rule,
+                  ),
+                ),
+              ),
+              child: NavigationBar(
               selectedIndex: selected,
               labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
               onDestinationSelected: (i) => navigationShell.goBranch(
@@ -142,9 +154,10 @@ class StaffShell extends StatelessWidget {
                   NavigationDestination(
                     icon: Icon(t.icon),
                     selectedIcon: Icon(t.selectedIcon),
-                    label: t.label(l10n),
+                    label: t.label(l10n).toUpperCase(),
                   ),
               ],
+            ),
             ),
           ),
         );

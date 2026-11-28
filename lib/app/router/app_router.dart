@@ -13,6 +13,8 @@ import '../../features/alerts/presentation/providers/alerts_summary_provider.dar
 import '../../features/alerts/presentation/widgets/alert_type_display.dart';
 import '../../features/app_update/presentation/update_prompt.dart';
 import '../../features/barangay_status/presentation/barangay_status_providers.dart';
+import '../../features/barangay_status/presentation/bulletin_strip.dart';
+import '../theme/sheet_tokens.dart';
 import '../../features/ec_board/presentation/pages/ec_board_centers_list_page.dart';
 import '../../features/ec_board/presentation/pages/ec_board_page.dart';
 import '../../features/ec_board/presentation/providers/ec_board_provider.dart'
@@ -321,42 +323,42 @@ class _AppShellState extends ConsumerState<AppShell>
     });
     ref.listen(connectivityStatusProvider, _handleConnectivityChange);
 
-    final theme = Theme.of(context);
+    final sheet = SheetPalette.of(context);
     final l10n = AppLocalizations.of(context);
+    final signedIn = ref.watch(staffAuthProvider).value != null;
+    final hasNews = ref.watch(liveStatusNewsProvider) != null;
     // Back on a tab's first screen: to Home, then "press again to exit".
     return ShellBackHandler(
       navigationShell: widget.navigationShell,
       homeBranch: 0,
       child: Scaffold(
-        // Signed-in staff see an amber banner above every resident tab.
+        // Signed-in staff see an ink Staff Mode band above every resident
+        // tab; under it, the bulletin strip, only when there is news.
         body: Column(
           children: [
             const StaffModeBanner(),
+            MediaQuery.removePadding(
+              context: context,
+              removeTop: signedIn,
+              child: const BulletinStrip(),
+            ),
             Expanded(
               child: MediaQuery.removePadding(
                 context: context,
-                // The banner already sits under the status bar.
-                removeTop: ref.watch(staffAuthProvider).value != null,
+                // A band already sits under the status bar.
+                removeTop: signedIn || hasNews,
                 child: widget.navigationShell,
               ),
             ),
           ],
         ),
-        // A subtle top border + shadow on the nav surface itself, layered
-        // on top of NavigationBarTheme's brand colors/indicator pill
-        // (see AppTheme) — purely cosmetic, the destinations/routing
-        // below are untouched.
+        // The sheet's bottom margin: map paper under a 1.5 px ink rule, no
+        // shadow (it does not float); the current tab is underlined in
+        // sienna by NavigationBarTheme (see AppTheme).
         bottomNavigationBar: DecoratedBox(
           decoration: BoxDecoration(
-            color: theme.colorScheme.surface,
-            border: Border(top: BorderSide(color: theme.colorScheme.outline)),
-            boxShadow: [
-              BoxShadow(
-                color: theme.colorScheme.shadow.withValues(alpha: 0.05),
-                blurRadius: 8,
-                offset: const Offset(0, -2),
-              ),
-            ],
+            color: sheet.ground,
+            border: Border(top: BorderSide(color: sheet.rule, width: Sheet.rule)),
           ),
           child: NavigationBar(
             selectedIndex: widget.navigationShell.currentIndex,
@@ -367,27 +369,27 @@ class _AppShellState extends ConsumerState<AppShell>
               NavigationDestination(
                 icon: const Icon(Icons.home_outlined),
                 selectedIcon: const Icon(Icons.home),
-                label: l10n.navHome,
+                label: l10n.navHome.toUpperCase(),
               ),
               NavigationDestination(
                 icon: const Icon(Icons.notifications_outlined),
                 selectedIcon: const Icon(Icons.notifications),
-                label: l10n.navAlerts,
+                label: l10n.navAlerts.toUpperCase(),
               ),
               NavigationDestination(
                 icon: const Icon(Icons.map_outlined),
                 selectedIcon: const Icon(Icons.map),
-                label: l10n.navMap,
+                label: l10n.navMap.toUpperCase(),
               ),
               NavigationDestination(
                 icon: const Icon(Icons.phone_in_talk_outlined),
                 selectedIcon: const Icon(Icons.phone_in_talk),
-                label: l10n.navHotlines,
+                label: l10n.navHotlines.toUpperCase(),
               ),
               NavigationDestination(
                 icon: const Icon(Icons.settings_outlined),
                 selectedIcon: const Icon(Icons.settings),
-                label: l10n.navSettings,
+                label: l10n.navSettings.toUpperCase(),
               ),
             ],
           ),

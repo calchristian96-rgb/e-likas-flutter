@@ -12,7 +12,6 @@ import '../../../../core/utils/philippine_time.dart';
 import '../../../../core/widgets/connectivity_badge.dart';
 import '../../../../core/widgets/last_updated_label.dart';
 import '../../../../core/widgets/offline_banner.dart';
-import '../../../../core/widgets/staff_mode_banner.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../alerts/presentation/providers/alerts_summary_provider.dart';
 import '../../../barangay_status/presentation/barangay_status_providers.dart';
@@ -236,9 +235,10 @@ class _HomePageState extends ConsumerState<HomePage> {
   }
 }
 
-/// Navy header — logo, app name/tagline, location, connectivity pill,
-/// and a notifications shortcut on plain logo navy, the same solid navy
-/// as the web dashboard's sidebar (no background artwork).
+/// The sheet's title box across the top of Home: the E-LIKAS mark and
+/// name in condensed caps, the place, the connectivity tag and the date,
+/// on map paper ruled off below. Navy is kept for live status only (the
+/// bulletin strip above, when there is news), so it is not used here.
 class _BrandedHeader extends StatelessWidget {
   const _BrandedHeader({
     required this.isConnected,
@@ -255,108 +255,71 @@ class _BrandedHeader extends StatelessWidget {
 
   final AppLocalizations l10n;
 
-  static const Radius _cornerRadius = Radius.circular(26);
-
   @override
   Widget build(BuildContext context) {
-    final semantic = Theme.of(context).extension<AppSemanticColors>()!;
+    final p = SheetPalette.of(context);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: SystemUiOverlayStyle.light,
-      child: Material(
-        // A Material ancestor so the rounded-corner ClipRRect below can
-        // still cast a shadow onto the content beneath it — a plain
-        // ClipRRect has no elevation of its own to paint one.
-        color: Colors.transparent,
-        elevation: 2,
-        shadowColor: Colors.black.withValues(alpha: 0.25),
-        borderRadius: const BorderRadius.only(
-          bottomLeft: _cornerRadius,
-          bottomRight: _cornerRadius,
+      value: isDark ? SystemUiOverlayStyle.light : SystemUiOverlayStyle.dark,
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          color: p.ground,
+          border: Border(bottom: BorderSide(color: p.rule, width: Sheet.frame)),
         ),
-        child: ClipRRect(
-          borderRadius: const BorderRadius.only(
-            bottomLeft: _cornerRadius,
-            bottomRight: _cornerRadius,
-          ),
-          child: DecoratedBox(
-            decoration: BoxDecoration(color: semantic.navy),
-            child: Stack(
-              fit: StackFit.passthrough,
+        child: SafeArea(
+          bottom: false,
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(16, 12, 16, 14),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SafeArea(
-                  bottom: false,
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(16, 12, 16, 18),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            _LogoBadge(),
-                            const SizedBox(width: 12),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const Text(
-                                    'E-LIKAS',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 24,
-                                      fontWeight: FontWeight.w800,
-                                      height: 1.1,
-                                    ),
-                                  ),
-                                  const SizedBox(height: 2),
-                                  Text(
-                                    'Electronic Ligao Kaligtasan Sistema',
-                                    maxLines: 2,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(
-                                      color: Colors.white.withValues(
-                                        alpha: 0.78,
-                                      ),
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            const SizedBox(width: 8),
-                            const _StaffSignInButton(),
-                          ],
-                        ),
-                        const SizedBox(height: 14),
-                        Row(
-                          children: [
-                            Icon(
-                              Icons.location_on_outlined,
-                              size: 15,
-                              color: Colors.white.withValues(alpha: 0.85),
-                            ),
-                            const SizedBox(width: 4),
-                            Expanded(
-                              child: Text(
-                                'Ligao City, Albay',
-                                style: TextStyle(
-                                  color: Colors.white.withValues(alpha: 0.85),
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                            ),
-                            ConnectivityBadge(isConnected: isConnected),
-                          ],
-                        ),
-                        const SizedBox(height: 8),
-                        _HeaderDateTimeRow(now: now),
-                      ],
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const _LogoBadge(),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'E-LIKAS',
+                            style: SheetText.title(p.ink, size: 34),
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            'Electronic Ligao Kaligtasan Sistema'.toUpperCase(),
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            style: SheetText.label(p.ink2, size: 13),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
+                    const SizedBox(width: 8),
+                    const _StaffSignInButton(),
+                  ],
                 ),
+                const SizedBox(height: 12),
+                Row(
+                  children: [
+                    Icon(Icons.location_on_outlined, size: 16, color: p.ink2),
+                    const SizedBox(width: 4),
+                    Expanded(
+                      child: Text(
+                        'Ligao City, Albay'.toUpperCase(),
+                        style: SheetText.label(
+                          p.ink,
+                          size: 14,
+                        ).copyWith(fontWeight: FontWeight.w700),
+                      ),
+                    ),
+                    ConnectivityBadge(isConnected: isConnected),
+                  ],
+                ),
+                const SizedBox(height: 6),
+                _HeaderDateTimeRow(now: now),
               ],
             ),
           ),
@@ -368,10 +331,9 @@ class _BrandedHeader extends StatelessWidget {
 
 /// Live local date/time line for the header — device clock only
 /// ([HomePage] passes down the one shared [DateTime] both this and
-/// [WelcomeSection]'s greeting read from). A [Wrap], not a plain
-/// [Row], so a long weekday/month combination on a narrow phone or
-/// under a larger text-scale setting flows the time onto its own line
-/// instead of overflowing.
+/// [WelcomeSection]'s greeting read from), set as the sheet's italic
+/// caption. A [Wrap], so a long weekday/month on a narrow phone or under
+/// a larger text-scale flows the time onto its own line.
 class _HeaderDateTimeRow extends StatelessWidget {
   const _HeaderDateTimeRow({required this.now});
 
@@ -379,65 +341,41 @@ class _HeaderDateTimeRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final style = TextStyle(
-      color: Colors.white.withValues(alpha: 0.85),
-      fontSize: 14,
-      fontWeight: FontWeight.w600,
-    );
-
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
+    final style = SheetText.caption(SheetPalette.of(context).caption);
+    return Wrap(
+      crossAxisAlignment: WrapCrossAlignment.center,
       children: [
-        Padding(
-          padding: const EdgeInsets.only(top: 1),
-          child: Icon(
-            Icons.calendar_today_outlined,
-            size: 12,
-            color: Colors.white.withValues(alpha: 0.85),
-          ),
-        ),
-        const SizedBox(width: 6),
-        Expanded(
-          child: Wrap(
-            crossAxisAlignment: WrapCrossAlignment.center,
-            children: [
-              Text(DateFormat('EEEE, MMMM d, yyyy').format(now), style: style),
-              Text('  •  ${DateFormat('h:mm a').format(now)}', style: style),
-            ],
-          ),
-        ),
+        Text(DateFormat('EEEE, MMMM d, yyyy').format(now), style: style),
+        Text('  ·  ${DateFormat('h:mm a').format(now)}', style: style),
       ],
     );
   }
 }
 
+/// The E-LIKAS mark on a white disc (a seal is one of the few round
+/// forms on the sheet), ringed in ink.
 class _LogoBadge extends StatelessWidget {
   const _LogoBadge();
 
   @override
   Widget build(BuildContext context) {
+    final p = SheetPalette.of(context);
     return Container(
-      width: 46,
-      height: 46,
+      width: 52,
+      height: 52,
       clipBehavior: Clip.antiAlias,
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         color: Colors.white,
         shape: BoxShape.circle,
+        border: Border.all(color: p.rule, width: 1.5),
       ),
-      // A white circular plate behind the logo: the E-LIKAS mark has a
-      // white background of its own (see the reference artwork), so it
-      // needs a matching light surface rather than sitting directly on
-      // navy where its edges would look cut off.
       child: Padding(
         padding: const EdgeInsets.all(5),
         child: Image.asset(
           'assets/images/elikas_logo.png',
           fit: BoxFit.contain,
-          errorBuilder: (context, error, stackTrace) => Icon(
-            Icons.shield_outlined,
-            size: 26,
-            color: Theme.of(context).extension<AppSemanticColors>()!.navy,
-          ),
+          errorBuilder: (context, error, stackTrace) =>
+              const Icon(Icons.shield_outlined, size: 26, color: Sheet.ink),
         ),
       ),
     );
@@ -453,20 +391,26 @@ class _StaffSignInButton extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context);
     final signedIn = ref.watch(staffAuthProvider).value != null;
-    final ink = signedIn ? staffModeInk : Colors.white;
-    return TextButton.icon(
+    // A line button (2 px ink); once signed in it inverts to the solid
+    // ink of the Staff Mode band.
+    final p = SheetPalette.of(context);
+    final fg = signedIn ? p.ground : p.ink;
+    return OutlinedButton.icon(
       onPressed: () => context.go('/staff'),
-      icon: Icon(Icons.badge_outlined, color: ink, size: 20),
+      icon: Icon(Icons.badge_outlined, color: fg, size: 20),
       label: Text(
-        signedIn ? l10n.staffModeButton : l10n.staffSignInButton,
-        style: TextStyle(color: ink, fontWeight: FontWeight.w700),
+        (signedIn ? l10n.staffModeButton : l10n.staffSignInButton)
+            .toUpperCase(),
       ),
-      style: TextButton.styleFrom(
+      style: OutlinedButton.styleFrom(
         minimumSize: const Size(48, 48),
-        backgroundColor: signedIn
-            ? staffModeAmber
-            : Colors.white.withValues(alpha: 0.12),
-        padding: const EdgeInsets.symmetric(horizontal: 12),
+        foregroundColor: fg,
+        backgroundColor: signedIn ? p.ink : null,
+        padding: const EdgeInsets.symmetric(horizontal: 10),
+        textStyle: SheetText.label(
+          fg,
+          size: 15,
+        ).copyWith(fontWeight: FontWeight.w700, letterSpacing: 1.2),
       ),
     );
   }
