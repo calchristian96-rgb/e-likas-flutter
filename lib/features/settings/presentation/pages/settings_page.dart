@@ -161,7 +161,7 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
               // to the real per-domain freshness it's actually about.
               _SettingsRow(
                 icon: Icons.cloud_download_outlined,
-                iconColor: theme.colorScheme.primary,
+                iconColor: theme.colorScheme.onSurfaceVariant,
                 title: l10n.settingsOfflineData,
                 subtitle: l10n.settingsOfflineDataSubtitle,
                 onTap: () => context.push('/settings/offline-data'),
@@ -183,7 +183,7 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
             children: [
               _SettingsRow(
                 icon: Icons.language,
-                iconColor: theme.colorScheme.primary,
+                iconColor: theme.colorScheme.onSurfaceVariant,
                 title: l10n.language,
                 subtitle: appLocaleDisplayName(l10n, locale),
                 onTap: () => showLanguageSelectorSheet(context),
@@ -199,7 +199,7 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
               const _RowDivider(),
               _SettingsRow(
                 icon: Icons.format_size,
-                iconColor: theme.colorScheme.primary,
+                iconColor: theme.colorScheme.onSurfaceVariant,
                 title: l10n.textSize,
                 subtitle: appTextScaleName(
                   l10n,
@@ -248,7 +248,7 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
               const _RowDivider(),
               _SettingsRow(
                 icon: Icons.info_outline,
-                iconColor: theme.colorScheme.primary,
+                iconColor: theme.colorScheme.onSurfaceVariant,
                 title: l10n.settingsVersion,
                 subtitle: DeviceHeaders.appVersion ?? '–',
                 onTap: _handleVersionTap,
@@ -270,7 +270,7 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                 const _RowDivider(),
                 _SettingsRow(
                   icon: Icons.system_update_outlined,
-                  iconColor: theme.colorScheme.primary,
+                  iconColor: theme.colorScheme.onSurfaceVariant,
                   title: l10n.settingsCheckForUpdates,
                   subtitle: _checkingForUpdate
                       ? l10n.updateChecking

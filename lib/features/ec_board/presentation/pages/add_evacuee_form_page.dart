@@ -749,14 +749,14 @@ class _HeadNote extends StatelessWidget {
         Icon(
           Icons.how_to_reg_outlined,
           size: 18,
-          color: theme.colorScheme.primary,
+          color: theme.colorScheme.onSurfaceVariant,
         ),
         const SizedBox(width: 6),
         Expanded(
           child: Text(
             text,
             style: theme.textTheme.bodySmall?.copyWith(
-              color: theme.colorScheme.primary,
+              color: theme.colorScheme.onSurfaceVariant,
             ),
           ),
         ),
@@ -1088,9 +1088,12 @@ class _WillBeRecordedFooter extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     final theme = Theme.of(context);
+    // The form's bottom margin: ruled off in ink, no shadow.
     return Material(
-      elevation: 3,
       color: theme.colorScheme.surface,
+      shape: Border(
+        top: BorderSide(color: theme.colorScheme.outline, width: 1.5),
+      ),
       child: Padding(
         padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
         child: Column(
@@ -1103,10 +1106,8 @@ class _WillBeRecordedFooter extends StatelessWidget {
                 constraints: const BoxConstraints(maxHeight: 140),
                 padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
                 decoration: BoxDecoration(
-                  color: theme.colorScheme.primaryContainer.withValues(
-                    alpha: 0.35,
-                  ),
-                  borderRadius: BorderRadius.zero,
+                  color: theme.colorScheme.surfaceContainer,
+                  border: Border.all(color: theme.colorScheme.outline),
                 ),
                 child: SingleChildScrollView(
                   child: Column(

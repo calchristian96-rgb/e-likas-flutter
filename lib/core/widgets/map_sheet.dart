@@ -463,3 +463,153 @@ class SheetNote extends StatelessWidget {
     );
   }
 }
+
+// ---------------------------------------------------------------------------
+// Process badges (the web's .badge-* on the staff pages)
+// ---------------------------------------------------------------------------
+
+/// The tone of a process status (a request, a transfer, a sync, an
+/// event's phase): the same square tinted badges the web and desktop
+/// staff pages use, so staff read one vocabulary on every app. Never the
+/// solid evacuation state colours: those belong to centers and barangays.
+enum BadgeTone {
+  /// Done, approved, received, accepted.
+  success,
+
+  /// Waiting, pending, details missing.
+  warning,
+
+  /// Rejected, returned, needs attention, high risk.
+  danger,
+
+  /// Information, such as an event that is only monitoring.
+  info,
+
+  /// Neutral or closed.
+  neutral,
+}
+
+/// Background, text and border of a [BadgeTone] (tailwind's -50 tint,
+/// -700/-800 text and a 20-30% ring; hydro tint for info, the sheet's
+/// tinted greys for neutral). The night sheet gets deep tints with light
+/// text. Every pair passes AA (test/app/theme/sheet_contrast_test.dart).
+({Color bg, Color text, Color border}) badgeColours(
+  BadgeTone tone, {
+  required bool night,
+}) {
+  if (night) {
+    return switch (tone) {
+      BadgeTone.success => (
+        bg: const Color(0xFF163A24),
+        text: const Color(0xFFA7E3BC),
+        border: const Color(0x594ADE80),
+      ),
+      BadgeTone.warning => (
+        bg: const Color(0xFF3D2C0C),
+        text: const Color(0xFFFCD38D),
+        border: const Color(0x59F59E0B),
+      ),
+      BadgeTone.danger => (
+        bg: const Color(0xFF431816),
+        text: const Color(0xFFFCA5A5),
+        border: const Color(0x59F87171),
+      ),
+      BadgeTone.info => (
+        bg: const Color(0xFF1D3A52),
+        text: Sheet.hydroTint,
+        border: const Color(0x598CBDE3),
+      ),
+      BadgeTone.neutral => (
+        bg: const Color(0xFF2C3F34),
+        text: Sheet.paper3,
+        border: const Color(0x59A9BAAE),
+      ),
+    };
+  }
+  return switch (tone) {
+    BadgeTone.success => (
+      bg: const Color(0xFFF0FDF4),
+      text: const Color(0xFF166534),
+      border: const Color(0x3316A34A),
+    ),
+    BadgeTone.warning => (
+      bg: const Color(0xFFFFFBEB),
+      text: const Color(0xFF92400E),
+      border: const Color(0x4DD97706),
+    ),
+    BadgeTone.danger => (
+      bg: const Color(0xFFFEF2F2),
+      text: const Color(0xFFB91C1C),
+      border: const Color(0x33DC2626),
+    ),
+    BadgeTone.info => (
+      bg: Sheet.hydroTint,
+      text: const Color(0xFF164A73),
+      border: const Color(0x3322689F),
+    ),
+    BadgeTone.neutral => (
+      bg: Sheet.paper2,
+      text: const Color(0xFF38463E),
+      border: const Color(0x335F6E64),
+    ),
+  };
+}
+
+/// A process status as the web's square tinted badge: light tint, dark
+/// text, thin border, the words always shown.
+class SheetBadge extends StatelessWidget {
+  const SheetBadge({
+    super.key,
+    required this.label,
+    required this.tone,
+    this.icon,
+  });
+
+  final String label;
+  final BadgeTone tone;
+  final IconData? icon;
+
+  @override
+  Widget build(BuildContext context) {
+    final c = badgeColours(
+      tone,
+      night: Theme.of(context).brightness == Brightness.dark,
+    );
+    // Its own width, also in a ListView (which would stretch it).
+    return Align(
+      alignment: AlignmentDirectional.centerStart,
+      widthFactor: 1,
+      heightFactor: 1,
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+        decoration: BoxDecoration(
+          color: c.bg,
+          border: Border.all(color: c.border),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            if (icon != null) ...[
+              Icon(icon, size: 15, color: c.text),
+              const SizedBox(width: 4),
+            ],
+            Flexible(
+              child: Text(
+                label,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                  fontFamily: Sheet.bodyFont,
+                  fontSize: 14,
+                  height: 1.35,
+                  fontWeight: FontWeight.w600,
+                  color: c.text,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}

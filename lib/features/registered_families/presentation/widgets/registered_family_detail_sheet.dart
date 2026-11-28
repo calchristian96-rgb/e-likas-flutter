@@ -326,7 +326,8 @@ class _MemberRow extends ConsumerWidget {
                       Text(
                         l10n.staffRegHeadOfFamilyBadge,
                         style: theme.textTheme.labelSmall?.copyWith(
-                          color: theme.colorScheme.primary,
+                          color: theme.colorScheme.onSurface,
+                          fontWeight: FontWeight.w700,
                         ),
                       ),
                   ],
@@ -720,7 +721,11 @@ class _DetailRow extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Icon(icon, size: 18, color: Theme.of(context).colorScheme.primary),
+          Icon(
+            icon,
+            size: 18,
+            color: Theme.of(context).colorScheme.onSurfaceVariant,
+          ),
           const SizedBox(width: 10),
           Expanded(child: Text(label)),
         ],

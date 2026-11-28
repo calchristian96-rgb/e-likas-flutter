@@ -370,7 +370,7 @@ class _TodoCard extends StatelessWidget {
       onTap: onTap,
       child: Row(
         children: [
-          Icon(icon, color: theme.colorScheme.primary),
+          Icon(icon, color: theme.colorScheme.onSurfaceVariant),
           const SizedBox(width: 12),
           Expanded(child: Text(text, style: theme.textTheme.bodyLarge)),
           const Icon(Icons.chevron_right),

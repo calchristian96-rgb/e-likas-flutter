@@ -110,7 +110,11 @@ class _ChangePasswordPageState extends ConsumerState<ChangePasswordPage> {
         child: ListView(
           padding: pagePadding(context),
           children: [
-            Icon(Icons.password, size: 48, color: theme.colorScheme.primary),
+            Icon(
+              Icons.password,
+              size: 48,
+              color: theme.colorScheme.onSurfaceVariant,
+            ),
             const SizedBox(height: 12),
             Text(l10n.passwordChangeBody, style: theme.textTheme.bodyLarge),
             const SizedBox(height: 16),

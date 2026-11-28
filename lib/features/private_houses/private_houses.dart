@@ -1,3 +1,4 @@
+import '../../core/widgets/map_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -211,9 +212,9 @@ class _FamilyCard extends StatelessWidget {
                 ),
               ),
               if (family.incomplete)
-                StatusChip(
+                SheetBadge(
                   label: l10n.privateHouseDetailsPending,
-                  color: const Color(0xFFB45309),
+                  tone: BadgeTone.warning,
                 ),
             ],
           ),
@@ -244,7 +245,7 @@ class PrivateHousesCard extends ConsumerWidget {
       onTap: onOpen,
       child: Row(
         children: [
-          Icon(Icons.house_outlined, color: theme.colorScheme.primary),
+          Icon(Icons.house_outlined, color: theme.colorScheme.onSurfaceVariant),
           const SizedBox(width: 12),
           Expanded(
             child: Column(

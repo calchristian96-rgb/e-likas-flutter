@@ -1,3 +1,4 @@
+import '../../core/widgets/map_sheet.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -176,10 +177,12 @@ final transfersOnlineProvider = Provider.autoDispose<bool>(
   (ref) => ref.watch(connectivityStatusProvider).value ?? false,
 );
 
-Color transferStatusColor(TransferRequest r) => switch (r.status) {
-  'accepted' => const Color(0xFF15803D),
-  'declined' => const Color(0xFF374151),
-  _ => r.isEscalated ? const Color(0xFFDC2626) : const Color(0xFFB45309),
+/// The web's badge tone: accepted green, declined grey, escalated red,
+/// waiting amber.
+BadgeTone transferStatusTone(TransferRequest r) => switch (r.status) {
+  'accepted' => BadgeTone.success,
+  'declined' => BadgeTone.neutral,
+  _ => r.isEscalated ? BadgeTone.danger : BadgeTone.warning,
 };
 
 String transferStatusLabel(AppLocalizations l10n, TransferRequest r) =>
@@ -367,9 +370,9 @@ class TransferCard extends ConsumerWidget {
               ),
               const SizedBox(width: 8),
               Flexible(
-                child: StatusChip(
+                child: SheetBadge(
                   label: transferStatusLabel(l10n, r),
-                  color: transferStatusColor(r),
+                  tone: transferStatusTone(r),
                 ),
               ),
             ],
@@ -546,7 +549,7 @@ class TransfersCard extends ConsumerWidget {
       onTap: onOpen,
       child: Row(
         children: [
-          Icon(Icons.swap_horiz, color: theme.colorScheme.primary),
+          Icon(Icons.swap_horiz, color: theme.colorScheme.onSurfaceVariant),
           const SizedBox(width: 12),
           Expanded(
             child: Column(

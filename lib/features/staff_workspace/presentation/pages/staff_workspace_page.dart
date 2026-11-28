@@ -67,7 +67,7 @@ class _StaffWorkspaceBody extends ConsumerWidget {
           if (session.isFieldOfficial) ...[
             _WorkspaceAction(
               icon: Icons.sync,
-              iconColor: theme.colorScheme.primary,
+              iconColor: theme.colorScheme.onSurfaceVariant,
               label: l10n.staffSyncRow,
               subtitle: switch (ref.watch(syncSummaryProvider).value) {
                 null => '…',
@@ -88,7 +88,7 @@ class _StaffWorkspaceBody extends ConsumerWidget {
           if (session.isFieldOfficial)
             _WorkspaceAction(
               icon: Icons.home_work_outlined,
-              iconColor: theme.colorScheme.primary,
+              iconColor: theme.colorScheme.onSurfaceVariant,
               label: l10n.staffManageEvacuationCenters,
               subtitle: l10n.staffMyCentersSubtitle,
               onTap: () => context.push('/staff/more/evacuation-centers'),
@@ -97,7 +97,7 @@ class _StaffWorkspaceBody extends ConsumerWidget {
               session.hasOperationsAccess)
             _WorkspaceAction(
               icon: Icons.bug_report_outlined,
-              iconColor: theme.colorScheme.primary,
+              iconColor: theme.colorScheme.onSurfaceVariant,
               label: l10n.reportTitle,
               subtitle: l10n.reportSubtitle,
               onTap: () => context.push('/staff/more/report'),
@@ -105,7 +105,7 @@ class _StaffWorkspaceBody extends ConsumerWidget {
           // The resident app (Part 3.1), still signed in.
           _WorkspaceAction(
             icon: Icons.public,
-            iconColor: theme.colorScheme.primary,
+            iconColor: theme.colorScheme.onSurfaceVariant,
             label: l10n.staffMorePublic,
             subtitle: l10n.staffMorePublicSubtitle,
             onTap: () => context.go('/home'),

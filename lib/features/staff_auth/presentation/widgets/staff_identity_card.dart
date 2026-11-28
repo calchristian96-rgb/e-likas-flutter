@@ -32,8 +32,11 @@ class StaffIdentityCard extends StatelessWidget {
         children: [
           CircleAvatar(
             radius: 22,
-            backgroundColor: theme.colorScheme.primary.withValues(alpha: 0.12),
-            child: Icon(Icons.badge_outlined, color: theme.colorScheme.primary),
+            backgroundColor: theme.colorScheme.surface,
+            child: Icon(
+              Icons.badge_outlined,
+              color: theme.colorScheme.onSurface,
+            ),
           ),
           const SizedBox(width: 12),
           Expanded(

@@ -1,6 +1,6 @@
+import '../../../../core/widgets/map_sheet.dart';
 import 'package:flutter/material.dart';
 
-import '../../../../app/theme/app_theme.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../family_registration/domain/entities/lookup_entities.dart';
 
@@ -15,29 +15,16 @@ class ApprovalBadge extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
-    final theme = Theme.of(context);
-    final semantic = theme.extension<AppSemanticColors>()!;
-    final (String label, Color color)? badge = center.isRejected
-        ? (l10n.centerApprovalRejected, theme.colorScheme.error)
+    // The web's badges: rejected red, unverified amber, an edit waiting
+    // for approval info.
+    final (String label, BadgeTone tone)? badge = center.isRejected
+        ? (l10n.centerApprovalRejected, BadgeTone.danger)
         : center.isPending
-        ? (l10n.centerApprovalUnverified, semantic.warning)
+        ? (l10n.centerApprovalUnverified, BadgeTone.warning)
         : center.hasPendingChange
-        ? (l10n.centerApprovalEditWaiting, theme.colorScheme.primary)
+        ? (l10n.centerApprovalEditWaiting, BadgeTone.info)
         : null;
     if (badge == null) return const SizedBox.shrink();
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-      decoration: BoxDecoration(
-        color: badge.$2.withValues(alpha: 0.12),
-        borderRadius: BorderRadius.zero,
-      ),
-      child: Text(
-        badge.$1,
-        style: theme.textTheme.labelMedium?.copyWith(
-          color: badge.$2,
-          fontWeight: FontWeight.w600,
-        ),
-      ),
-    );
+    return SheetBadge(label: badge.$1, tone: badge.$2);
   }
 }

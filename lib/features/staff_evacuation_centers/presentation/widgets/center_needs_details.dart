@@ -1,7 +1,7 @@
+import '../../../../core/widgets/map_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../app/theme/app_theme.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../evacuation_centers/presentation/widgets/center_status_display.dart';
 import '../../../staff_home/barangay_dashboard.dart';
@@ -77,7 +77,6 @@ class CenterNeedsChips extends ConsumerWidget {
     final theme = Theme.of(context);
     final dashboard = ref.watch(centerReadinessProvider)[center.id];
     final needs = centerNeeds(center, dashboard);
-    final semantic = theme.extension<AppSemanticColors>()!;
     if (needs.isEmpty) {
       // The checklist meets the standard for a full center.
       if (dashboard?['readiness'] != 'ready') return const SizedBox.shrink();
@@ -85,16 +84,14 @@ class CenterNeedsChips extends ConsumerWidget {
         padding: const EdgeInsets.only(top: 8),
         child: Align(
           alignment: Alignment.centerLeft,
-          child: Chip(
-            visualDensity: VisualDensity.compact,
-            avatar: Icon(Icons.verified, size: 16, color: semantic.success),
-            label: Text(l10n.centerReady),
-            side: BorderSide(color: semantic.success.withValues(alpha: 0.5)),
+          child: SheetBadge(
+            icon: Icons.verified,
+            label: l10n.centerReady,
+            tone: BadgeTone.success,
           ),
         ),
       );
     }
-    final warning = semantic.warning;
     return Padding(
       padding: const EdgeInsets.only(top: 8),
       child: Wrap(
@@ -105,27 +102,22 @@ class CenterNeedsChips extends ConsumerWidget {
           Text(l10n.centerNeedsDetails, style: theme.textTheme.labelMedium),
           for (final n in CenterNeed.values)
             if (needs.contains(n))
-              Chip(
-                visualDensity: VisualDensity.compact,
-                avatar: Icon(
-                  switch (n) {
-                    CenterNeed.capacityMissing ||
-                    CenterNeed.capacityEstimated => Icons.straighten,
-                    CenterNeed.location => Icons.location_off_outlined,
-                    CenterNeed.checklist => Icons.checklist_rtl_outlined,
-                    CenterNeed.supplies => Icons.inventory_outlined,
-                  },
-                  size: 16,
-                  color: warning,
-                ),
-                label: Text(switch (n) {
+              SheetBadge(
+                icon: switch (n) {
+                  CenterNeed.capacityMissing ||
+                  CenterNeed.capacityEstimated => Icons.straighten,
+                  CenterNeed.location => Icons.location_off_outlined,
+                  CenterNeed.checklist => Icons.checklist_rtl_outlined,
+                  CenterNeed.supplies => Icons.inventory_outlined,
+                },
+                label: switch (n) {
                   CenterNeed.capacityMissing => l10n.centerNeedCapacity,
                   CenterNeed.capacityEstimated => l10n.centerNeedCapacityEst,
                   CenterNeed.location => l10n.centerNeedLocation,
                   CenterNeed.checklist => l10n.centerNeedChecklist,
                   CenterNeed.supplies => l10n.centerNeedSupplies,
-                }),
-                side: BorderSide(color: warning.withValues(alpha: 0.5)),
+                },
+                tone: BadgeTone.warning,
               ),
         ],
       ),
@@ -165,7 +157,9 @@ class CenterFillBar extends StatelessWidget {
         child: LinearProgressIndicator(
           value: share,
           minHeight: 8,
-          backgroundColor: color.withValues(alpha: 0.15),
+          backgroundColor: Theme.of(
+            context,
+          ).colorScheme.surfaceContainerHighest,
           valueColor: AlwaysStoppedAnimation<Color>(color),
           semanticsValue: '${(share * 100).round()}%',
         ),

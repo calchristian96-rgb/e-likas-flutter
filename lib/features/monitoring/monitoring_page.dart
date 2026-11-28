@@ -1,3 +1,4 @@
+import '../../core/widgets/map_sheet.dart';
 import '../../core/widgets/ui_kit.dart';
 import 'dart:async';
 
@@ -12,8 +13,6 @@ import '../../core/widgets/error_state.dart';
 import '../../core/widgets/stat_strip.dart';
 import '../../l10n/app_localizations.dart';
 import '../staff_shell/current_event.dart';
-import '../barangay_status/presentation/barangay_status_card.dart'
-    show barangayStatusColor;
 import '../../core/utils/formatters.dart';
 
 /// One section of `GET /monitoring/{section}` (backend monitoring-api.md):
@@ -251,12 +250,11 @@ class _MonitoringPageState extends ConsumerState<MonitoringPage> {
         spacing: 8,
         runSpacing: 8,
         children: [
+          // Each barangay state as its own tag, with how many are in it.
           for (final e in statuses.entries)
-            Chip(
-              avatar: CircleAvatar(
-                backgroundColor: barangayStatusColor(context, e.key),
-              ),
-              label: Text('${e.value}: ${counts[e.key] ?? 0}'),
+            BarangayStateTag(
+              status: e.key,
+              label: '${e.value}: ${counts[e.key] ?? 0}',
             ),
         ],
       ),
@@ -269,19 +267,15 @@ class _MonitoringPageState extends ConsumerState<MonitoringPage> {
         for (final b in marked)
           ListTile(
             contentPadding: EdgeInsets.zero,
-            leading: CircleAvatar(
-              radius: 8,
-              backgroundColor: barangayStatusColor(
-                context,
-                b['status'] as String,
-              ),
-            ),
             title: Text(
               ((b['barangay'] as Map<String, dynamic>?)?['name'] as String?) ??
                   '',
             ),
             subtitle: b['note'] == null ? null : Text(b['note'] as String),
-            trailing: Text(b['label'] as String? ?? ''),
+            trailing: BarangayStateTag(
+              status: b['status'] as String,
+              label: b['label'] as String? ?? '',
+            ),
           ),
       if (timeline.isNotEmpty) ...[
         const SizedBox(height: 24),

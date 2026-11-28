@@ -1320,10 +1320,7 @@ class _PendingEntryTile extends ConsumerWidget {
           PendingRegistrationStatus.syncing => SizedBox(
             width: 24,
             height: 24,
-            child: CircularProgressIndicator(
-              strokeWidth: 2,
-              color: colorScheme.primary,
-            ),
+            child: CircularProgressIndicator(strokeWidth: 2),
           ),
           PendingRegistrationStatus.pending => Icon(
             Icons.cloud_off_outlined,

@@ -1,3 +1,4 @@
+import '../../../../core/widgets/map_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -158,10 +159,7 @@ class _StatusIcon extends StatelessWidget {
       PendingRegistrationStatus.syncing => SizedBox(
         width: 24,
         height: 24,
-        child: CircularProgressIndicator(
-          strokeWidth: 2,
-          color: colorScheme.primary,
-        ),
+        child: CircularProgressIndicator(strokeWidth: 2),
       ),
       PendingRegistrationStatus.pending => Icon(
         Icons.cloud_off_outlined,
@@ -179,26 +177,21 @@ class _StatusChip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
-    final colorScheme = Theme.of(context).colorScheme;
-    final (label, color) = switch (status) {
+    // The web's tinted badges: waiting amber, syncing info, attention red.
+    final (label, tone) = switch (status) {
       PendingRegistrationStatus.pending => (
         l10n.staffStatusPending,
-        colorScheme.onSurfaceVariant,
+        BadgeTone.warning,
       ),
       PendingRegistrationStatus.syncing => (
         l10n.staffStatusSyncing,
-        colorScheme.primary,
+        BadgeTone.info,
       ),
       PendingRegistrationStatus.needsAttention => (
         l10n.staffStatusNeedsAttention,
-        colorScheme.error,
+        BadgeTone.danger,
       ),
     };
-    return Chip(
-      label: Text(label, style: TextStyle(color: color, fontSize: 14)),
-      visualDensity: VisualDensity.compact,
-      backgroundColor: color.withValues(alpha: 0.08),
-      side: BorderSide.none,
-    );
+    return SheetBadge(label: label, tone: tone);
   }
 }

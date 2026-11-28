@@ -140,7 +140,7 @@ class _FacilityRow extends StatelessWidget {
           Icon(
             isAvailable ? Icons.check_circle : Icons.circle_outlined,
             size: 20,
-            color: isAvailable ? theme.colorScheme.primary : mutedColor,
+            color: isAvailable ? theme.colorScheme.onSurface : mutedColor,
           ),
           const SizedBox(width: 10),
           Expanded(

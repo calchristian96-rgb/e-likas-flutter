@@ -1,3 +1,4 @@
+import '../../../app/theme/sheet_tokens.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 
@@ -7,7 +8,7 @@ import 'barangay_status_card.dart';
 
 /// Barangay outlines filled by status, at 50% like the web map; a
 /// normal barangay is a plain outline. The resident's own barangay has
-/// a thicker brand-blue border. Each polygon's [Polygon.hitValue] is
+/// a thicker ink border. Each polygon's [Polygon.hitValue] is
 /// its status row, for tap-to-read.
 List<Polygon<BarangayStatus>> buildBarangayStatusPolygons({
   required BuildContext context,
@@ -20,7 +21,9 @@ List<Polygon<BarangayStatus>> buildBarangayStatusPolygons({
       if (b.psgcCode != null) b.psgcCode!: b,
   };
   final outlineColor = Theme.of(context).colorScheme.onSurfaceVariant;
-  final brand = Theme.of(context).colorScheme.primary;
+  // The resident's own barangay, ruled in ink (the map is light in both
+  // themes; sienna is kept for actions).
+  const brand = Sheet.ink;
   return [
     for (final o in outlines)
       () {

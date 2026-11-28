@@ -31,7 +31,7 @@ class UseTheWebPage extends ConsumerWidget {
           Icon(
             Icons.desktop_windows_outlined,
             size: 48,
-            color: theme.colorScheme.primary,
+            color: theme.colorScheme.onSurfaceVariant,
           ),
           const SizedBox(height: 16),
           Text(session.name, style: theme.textTheme.titleMedium),

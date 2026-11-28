@@ -1,4 +1,5 @@
 import 'package:elikas_mobile/app/theme/app_theme.dart';
+import 'package:elikas_mobile/core/widgets/map_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -84,4 +85,20 @@ void main() {
       expect(contrast(Colors.white, Sheet.bulletin), greaterThanOrEqualTo(4.5));
     });
   });
+
+  test(
+    'process badges: dark text on their tint passes AA, light and night',
+    () {
+      for (final night in [false, true]) {
+        for (final tone in BadgeTone.values) {
+          final c = badgeColours(tone, night: night);
+          expect(
+            contrast(c.text, c.bg),
+            greaterThanOrEqualTo(4.5),
+            reason: '$tone night=$night',
+          );
+        }
+      }
+    },
+  );
 }

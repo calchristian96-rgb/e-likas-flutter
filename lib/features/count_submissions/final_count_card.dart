@@ -575,7 +575,7 @@ class OnBehalfNote extends StatelessWidget {
           Icon(
             Icons.account_balance_outlined,
             size: 20,
-            color: theme.colorScheme.primary,
+            color: theme.colorScheme.onSurfaceVariant,
           ),
           const SizedBox(width: 8),
           Expanded(child: Text(note, style: theme.textTheme.bodyMedium)),

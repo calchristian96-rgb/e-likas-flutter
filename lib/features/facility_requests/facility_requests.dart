@@ -1,7 +1,7 @@
+import '../../core/widgets/map_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../app/theme/app_theme.dart';
 import '../../core/network/staff_api_client.dart';
 import '../../l10n/app_localizations.dart';
 import '../evacuation_centers/presentation/widgets/facility_type_display.dart';
@@ -216,14 +216,13 @@ class FacilityRequestsSection extends ConsumerWidget {
         _ => l10n.requestStatusWaiting,
       };
 
-  static Color statusColor(ThemeData theme, String status) {
-    final semantic = theme.extension<AppSemanticColors>()!;
-    return switch (status) {
-      'approved' || 'sent' || 'received' || 'fulfilled' => semantic.success,
-      'rejected' => theme.colorScheme.error,
-      _ => semantic.warning,
-    };
-  }
+  /// The web's badge tone: approved/sent/received green, rejected red,
+  /// waiting amber.
+  static BadgeTone statusTone(String status) => switch (status) {
+    'approved' || 'sent' || 'received' || 'fulfilled' => BadgeTone.success,
+    'rejected' => BadgeTone.danger,
+    _ => BadgeTone.warning,
+  };
 }
 
 class _RequestTile extends StatelessWidget {
@@ -331,19 +330,14 @@ class FacilityRequestTile extends ConsumerWidget {
                   style: theme.textTheme.bodyLarge,
                 ),
               ),
-              Text(
-                queuedReceive
+              const SizedBox(width: 8),
+              SheetBadge(
+                label: queuedReceive
                     ? l10n.syncWaiting
                     : FacilityRequestsSection.statusLabel(l10n, request.status),
-                style: theme.textTheme.labelMedium?.copyWith(
-                  color: queuedReceive
-                      ? null
-                      : FacilityRequestsSection.statusColor(
-                          theme,
-                          request.status,
-                        ),
-                  fontWeight: FontWeight.w600,
-                ),
+                tone: queuedReceive
+                    ? BadgeTone.warning
+                    : FacilityRequestsSection.statusTone(request.status),
               ),
             ],
           ),

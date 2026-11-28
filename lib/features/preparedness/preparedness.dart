@@ -201,7 +201,7 @@ class PreparePage extends ConsumerWidget {
                 children: [
                   Icon(
                     Icons.family_restroom,
-                    color: theme.colorScheme.primary,
+                    color: theme.colorScheme.onSurfaceVariant,
                     size: 32,
                   ),
                   const SizedBox(width: 12),
@@ -532,7 +532,10 @@ class _FamilyPlanPageState extends State<FamilyPlanPage> {
               children: [
                 Row(
                   children: [
-                    Icon(Icons.lock_outline, color: theme.colorScheme.primary),
+                    Icon(
+                      Icons.lock_outline,
+                      color: theme.colorScheme.onSurfaceVariant,
+                    ),
                     const SizedBox(width: 8),
                     Expanded(
                       child: Text(

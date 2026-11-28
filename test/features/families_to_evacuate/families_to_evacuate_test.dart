@@ -227,7 +227,7 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('Families to evacuate'), findsOneWidget);
-    expect(find.text('HIGH RISK'), findsOneWidget);
+    expect(find.text('High risk'), findsOneWidget);
     expect(find.text('CHECKED IN'), findsWidgets);
 
     // Maria Santos (high-risk Purok 3) is first.

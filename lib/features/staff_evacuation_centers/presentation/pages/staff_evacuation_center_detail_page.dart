@@ -1,9 +1,9 @@
+import '../../../../core/widgets/map_sheet.dart';
 import '../../../../core/widgets/ui_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:elikas_mobile/features/evacuation_centers/presentation/widgets/capacity_text.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../app/theme/app_theme.dart';
 import '../../../../core/widgets/error_state.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../evacuation_centers/domain/entities/evacuation_center.dart';
@@ -108,16 +108,19 @@ class _CenterDetailContent extends StatelessWidget {
           spacing: 8,
           runSpacing: 8,
           children: [
-            Chip(label: Text(localizedCenterStatus(context, center.status))),
-            Chip(label: Text(localizedCenterType(context, center.type))),
+            CenterStateTag(
+              status: center.status,
+              label: localizedCenterStatus(context, center.status),
+            ),
+            SheetBadge(
+              label: localizedCenterType(context, center.type),
+              tone: BadgeTone.neutral,
+            ),
             if (!center.hasCoordinates)
-              Chip(
-                avatar: const Icon(Icons.location_off_outlined, size: 16),
-                label: Text(l10n.centerNoLocationSet),
-                backgroundColor: theme
-                    .extension<AppSemanticColors>()
-                    ?.warning
-                    .withValues(alpha: 0.12),
+              SheetBadge(
+                icon: Icons.location_off_outlined,
+                label: l10n.centerNoLocationSet,
+                tone: BadgeTone.warning,
               ),
           ],
         ),

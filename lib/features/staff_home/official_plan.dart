@@ -251,7 +251,7 @@ class _PlanTile extends StatelessWidget {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Icon(icon, color: theme.colorScheme.primary),
+            Icon(icon, color: theme.colorScheme.onSurfaceVariant),
             const SizedBox(width: 12),
             Expanded(
               child: Column(
@@ -363,7 +363,7 @@ class DashboardTodoCard extends StatelessWidget {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Icon(icon, color: theme.colorScheme.primary),
+            Icon(icon, color: theme.colorScheme.onSurfaceVariant),
             const SizedBox(width: 12),
             Expanded(
               child: Column(

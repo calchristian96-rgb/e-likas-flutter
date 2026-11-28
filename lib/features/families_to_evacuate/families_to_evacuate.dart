@@ -1,3 +1,4 @@
+import '../../core/widgets/map_sheet.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -413,9 +414,9 @@ class FamiliesToEvacuatePage extends ConsumerWidget {
                           ),
                         ),
                         if (purok?.isHighRisk ?? false)
-                          StatusChip(
+                          SheetBadge(
                             label: l10n.listHighRisk,
-                            color: theme.colorScheme.error,
+                            tone: BadgeTone.danger,
                           ),
                       ],
                     ),

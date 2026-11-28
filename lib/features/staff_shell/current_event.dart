@@ -1,3 +1,4 @@
+import '../../core/widgets/map_sheet.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -147,16 +148,17 @@ class StaffEventBar extends ConsumerWidget {
         // Monitoring until the first check-in or an evacuation order
         // makes it Active (backend EventFlow).
         const SizedBox(width: 8),
-        StatusChip(
+        // As on the web: active amber, monitoring info, closed grey.
+        SheetBadge(
           label: switch (current.status) {
             'active' => l10n.eventStatusActive,
             'monitoring' => l10n.eventStatusMonitoring,
             _ => l10n.eventSwitchClosed,
           },
-          color: switch (current.status) {
-            'active' => const Color(0xFFB45309),
-            'monitoring' => const Color(0xFF2563EB),
-            _ => const Color(0xFF374151),
+          tone: switch (current.status) {
+            'active' => BadgeTone.warning,
+            'monitoring' => BadgeTone.info,
+            _ => BadgeTone.neutral,
           },
         ),
         if (choices > 1)
@@ -195,7 +197,7 @@ Future<void> _showSwitcher(
           e.id == state.selected?.id
               ? Icons.radio_button_checked
               : Icons.radio_button_unchecked,
-          color: theme.colorScheme.primary,
+          color: theme.colorScheme.onSurfaceVariant,
         ),
         onTap: () => Navigator.of(context).pop(e),
       );

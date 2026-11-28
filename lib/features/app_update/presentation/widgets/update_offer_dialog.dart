@@ -37,7 +37,9 @@ class UpdateOfferDialog extends StatelessWidget {
     return AlertDialog(
       icon: Icon(
         isRequired ? Icons.system_update_alt : Icons.system_update,
-        color: isRequired ? theme.colorScheme.error : theme.colorScheme.primary,
+        color: isRequired
+            ? theme.colorScheme.error
+            : theme.colorScheme.onSurface,
       ),
       title: Text(
         isRequired ? l10n.updateRequiredTitle : l10n.updateAvailableTitle,
