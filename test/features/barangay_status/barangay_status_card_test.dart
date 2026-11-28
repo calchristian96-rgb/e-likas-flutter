@@ -40,8 +40,8 @@ const _board = BarangayStatusBoard(
       id: 13,
       name: 'Binatagan',
       psgcCode: '050508013',
-      status: 'preemptive_evacuation',
-      label: 'Preemptive evacuation',
+      status: 'flooding_reported',
+      label: 'Flooding reported',
     ),
   ],
 );
@@ -68,13 +68,46 @@ void main() {
   testWidgets('the area, its status in words and what to do', (tester) async {
     await tester.pumpWidget(_card(const Success(LatLng(13.02, 123.02))));
     await tester.pumpAndSettle();
-    expect(find.text('Your area: Brgy. Binatagan'), findsOneWidget);
-    expect(find.text('Preemptive evacuation'), findsOneWidget);
+    expect(find.text('YOUR AREA: BRGY. BINATAGAN'), findsOneWidget);
+    expect(find.text('FLOODING REPORTED'), findsOneWidget);
     expect(
-      find.text('Preemptive evacuation: go to your evacuation center now.'),
+      find.text('Flooding is reported. Move to higher ground if water rises.'),
       findsOneWidget,
     );
     expect(find.text('Typhoon Pepito'), findsOneWidget);
+  });
+
+  testWidgets('an evacuation order is the red banner, not this card too', (
+    tester,
+  ) async {
+    await tester.pumpWidget(
+      testApp(
+        const Scaffold(body: SingleChildScrollView(child: YourAreaCard())),
+        overrides: [
+          residentPositionProvider.overrideWith(
+            (ref) async => const Success(LatLng(13.02, 123.02)),
+          ),
+          barangayOutlinesProvider.overrideWith((ref) async => const [_square]),
+          barangayStatusBoardProvider.overrideWith(
+            (ref) async => const BarangayStatusBoard(
+              eventName: 'Typhoon Pepito',
+              eventStatus: 'active',
+              barangays: [
+                BarangayStatus(
+                  id: 13,
+                  name: 'Binatagan',
+                  psgcCode: '050508013',
+                  status: 'preemptive_evacuation',
+                  label: 'Preemptive evacuation',
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+    await tester.pumpAndSettle();
+    expect(find.textContaining('YOUR AREA'), findsNothing);
   });
 
   testWidgets('"Binatagan (Pob.)" in the file is the server\'s "Binatagan"', (
@@ -122,8 +155,8 @@ void main() {
       ),
     );
     await tester.pumpAndSettle();
-    expect(find.text('Your area: Brgy. Binatagan'), findsOneWidget);
-    expect(find.text('Watch'), findsOneWidget);
+    expect(find.text('YOUR AREA: BRGY. BINATAGAN'), findsOneWidget);
+    expect(find.text('WATCH'), findsOneWidget);
   });
 
   testWidgets('no location, or outside Ligao: no card, nothing to choose', (
@@ -131,10 +164,10 @@ void main() {
   ) async {
     await tester.pumpWidget(_card(const Failed(LocationFailure('off', false))));
     await tester.pumpAndSettle();
-    expect(find.textContaining('Your area'), findsNothing);
+    expect(find.textContaining('YOUR AREA'), findsNothing);
 
     await tester.pumpWidget(_card(const Success(LatLng(14.6, 121.0))));
     await tester.pumpAndSettle();
-    expect(find.textContaining('Your area'), findsNothing);
+    expect(find.textContaining('YOUR AREA'), findsNothing);
   });
 }

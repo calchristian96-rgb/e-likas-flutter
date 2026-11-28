@@ -23,12 +23,14 @@ class QuickActionCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
-    final accent = accentColor ?? colorScheme.primary;
+    // The sheet has one action colour (sienna, for buttons); a tile's
+    // icon is plain ink, so [accentColor] is no longer painted.
+    final ink = colorScheme.onSurface;
 
     return Card(
       clipBehavior: Clip.antiAlias,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.zero,
         side: BorderSide(color: theme.colorScheme.outline),
       ),
       child: InkWell(
@@ -45,23 +47,19 @@ class QuickActionCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             mainAxisSize: MainAxisSize.min,
             children: [
-              Container(
-                width: 40,
-                height: 40,
-                decoration: BoxDecoration(
-                  color: accent.withValues(alpha: 0.12),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Icon(icon, color: accent, size: 21),
-              ),
+              Icon(icon, color: ink, size: 26),
               const SizedBox(height: 10),
               Text(
-                label,
+                label.toUpperCase(),
+                semanticsLabel: label,
                 textAlign: TextAlign.center,
                 maxLines: 2,
                 softWrap: true,
                 overflow: TextOverflow.ellipsis,
-                style: theme.textTheme.labelMedium,
+                style: theme.textTheme.labelMedium?.copyWith(
+                  fontWeight: FontWeight.w700,
+                  letterSpacing: 1.2,
+                ),
               ),
             ],
           ),

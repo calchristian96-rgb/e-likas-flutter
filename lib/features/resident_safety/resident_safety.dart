@@ -5,6 +5,8 @@ import 'package:latlong2/latlong.dart' show LatLng;
 
 import '../../core/error/result.dart';
 import '../../core/utils/distance_calculator.dart';
+import '../../core/utils/data_freshness_formatter.dart';
+import '../../core/widgets/map_sheet.dart';
 import '../../core/widgets/ui_kit.dart';
 import '../../l10n/app_localizations.dart';
 import '../barangay_status/data/barangay_outlines.dart';
@@ -113,6 +115,7 @@ class EvacuationOrderBanner extends ConsumerWidget {
     final l10n = AppLocalizations.of(context);
     final theme = Theme.of(context);
     final forced = status == BarangayStatusKey.forcedEvacuation;
+    final board = area?.board;
     // The barangay state's own fixed colour, with white text (4.8:1 and
     // 10:1).
     final color = forced ? Sheet.barangayForced : Sheet.barangayPreemptive;
@@ -153,6 +156,28 @@ class EvacuationOrderBanner extends ConsumerWidget {
                     fontWeight: FontWeight.w600,
                   ),
                 ),
+                // The event, and when the saved copy is from (the "Your
+                // area" card that used to say so is hidden under an order).
+                if (board != null && board.hasOpenEvent) ...[
+                  const SizedBox(height: 6),
+                  Text(
+                    board.eventName!,
+                    style: theme.textTheme.bodyMedium?.copyWith(
+                      color: Colors.white,
+                    ),
+                  ),
+                ],
+                if (board != null && board.isFromCache)
+                  Text(
+                    l10n.residentStatusSavedCopy(
+                      board.lastSyncedAt == null
+                          ? ''
+                          : formatElapsedSince(board.lastSyncedAt!),
+                    ),
+                    style: theme.textTheme.bodyMedium?.copyWith(
+                      color: Colors.white,
+                    ),
+                  ),
                 const SizedBox(height: 12),
                 FilledButton.icon(
                   style: FilledButton.styleFrom(
@@ -213,8 +238,13 @@ class SafeCentersCard extends ConsumerWidget {
                           ListTile(
                             contentPadding: EdgeInsets.zero,
                             minTileHeight: 64,
+                            horizontalTitleGap: 12,
                             onTap: () => context.push('/centers/${c.id}'),
-                            title: Text(c.name),
+                            leading: CenterSymbol(status: c.status),
+                            title: Text(
+                              c.name,
+                              style: theme.textTheme.titleSmall,
+                            ),
                             subtitle: Text(
                               [
                                 formatDistance(context, c.distanceMeters!),
@@ -227,8 +257,15 @@ class SafeCentersCard extends ConsumerWidget {
                                 ),
                               ].join(' · '),
                             ),
-                            trailing: IconButton.filledTonal(
+                            trailing: IconButton.outlined(
                               tooltip: l10n.getDirections,
+                              style: IconButton.styleFrom(
+                                side: BorderSide(
+                                  color: SheetPalette.of(context).ink,
+                                  width: Sheet.frame,
+                                ),
+                                foregroundColor: SheetPalette.of(context).ink,
+                              ),
                               constraints: const BoxConstraints(
                                 minWidth: 48,
                                 minHeight: 48,
@@ -336,7 +373,7 @@ class HazardsCard extends ConsumerWidget {
                         ? theme.colorScheme.error
                         : flood.highPct > 0
                         ? semantic.warning
-                        : theme.colorScheme.primary,
+                        : theme.colorScheme.onSurfaceVariant,
                   ),
                   const SizedBox(width: 8),
                   Expanded(
@@ -360,7 +397,7 @@ class HazardsCard extends ConsumerWidget {
                   Icon(
                     Icons.volcano_outlined,
                     color: switch (zone) {
-                      MayonZone.outside => theme.colorScheme.primary,
+                      MayonZone.outside => theme.colorScheme.onSurfaceVariant,
                       MayonZone.near => semantic.warning,
                       _ => theme.colorScheme.error,
                     },

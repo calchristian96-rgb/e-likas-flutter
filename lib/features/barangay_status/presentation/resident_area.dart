@@ -5,11 +5,14 @@ import 'package:latlong2/latlong.dart';
 
 import '../../../core/error/result.dart';
 import '../../../core/location/location_service.dart';
+import '../../../app/theme/sheet_tokens.dart';
 import '../../../core/utils/data_freshness_formatter.dart';
+import '../../../core/widgets/map_sheet.dart';
+import '../../../core/widgets/ui_kit.dart';
 import '../../../l10n/app_localizations.dart';
 import '../data/barangay_outlines.dart';
 import '../domain/barangay_status.dart';
-import 'barangay_status_card.dart' show barangayStatusColor, whatToDo;
+import 'barangay_status_card.dart' show whatToDo;
 import 'barangay_status_providers.dart';
 
 /// The phone's position, asked once and shared by Home's cards (the
@@ -122,108 +125,73 @@ class YourAreaCard extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final area = ref.watch(residentAreaProvider).value;
     if (area == null) return const SizedBox.shrink();
+    final status = area.status;
+    final key = status?.status ?? BarangayStatusKey.normal;
+    // An evacuation order for this barangay is the red banner above
+    // (EvacuationOrderBanner), with the event: not said twice.
+    if (key == BarangayStatusKey.preemptiveEvacuation ||
+        key == BarangayStatusKey.forcedEvacuation) {
+      return const SizedBox.shrink();
+    }
     final l10n = AppLocalizations.of(context);
     final theme = Theme.of(context);
-    final status = area.status;
+    final p = SheetPalette.of(context);
     final board = area.board;
-    final key = status?.status ?? BarangayStatusKey.normal;
-    final color = barangayStatusColor(context, key);
     return Padding(
       padding: const EdgeInsets.only(bottom: 16),
-      child: Card(
-        margin: EdgeInsets.zero,
-        clipBehavior: Clip.antiAlias,
-        child: InkWell(
-          onTap: () => context.go('/map'),
-          child: IntrinsicHeight(
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
+      child: AppCard(
+        onTap: () => context.go('/map'),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
               children: [
-                Container(width: 6, color: color),
+                Icon(Icons.my_location, size: 16, color: p.ink2),
+                const SizedBox(width: 6),
                 Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(16),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          children: [
-                            Icon(
-                              Icons.my_location,
-                              size: 16,
-                              color: theme.colorScheme.onSurfaceVariant,
-                            ),
-                            const SizedBox(width: 6),
-                            Expanded(
-                              child: Text(
-                                l10n.yourAreaTitle(area.name),
-                                style: theme.textTheme.bodyMedium?.copyWith(
-                                  color: theme.colorScheme.onSurfaceVariant,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 4),
-                        if (status == null)
-                          Text(
-                            l10n.yourAreaStatusUnavailable,
-                            style: theme.textTheme.bodyLarge,
-                          )
-                        else ...[
-                          Row(
-                            children: [
-                              Container(
-                                width: 12,
-                                height: 12,
-                                decoration: BoxDecoration(
-                                  color: color,
-                                  shape: BoxShape.circle,
-                                ),
-                              ),
-                              const SizedBox(width: 8),
-                              Flexible(
-                                child: Text(
-                                  status.label,
-                                  style: theme.textTheme.titleLarge?.copyWith(
-                                    fontWeight: FontWeight.w700,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 8),
-                          // What to do now, in plain words.
-                          Text(
-                            whatToDo(l10n, status.status),
-                            style: theme.textTheme.bodyLarge,
-                          ),
-                        ],
-                        if (board != null) ...[
-                          const SizedBox(height: 4),
-                          Text(
-                            board.hasOpenEvent
-                                ? board.eventName!
-                                : l10n.residentNoOpenEvent,
-                            style: theme.textTheme.bodySmall,
-                          ),
-                          if (board.isFromCache)
-                            Text(
-                              l10n.residentStatusSavedCopy(
-                                board.lastSyncedAt == null
-                                    ? ''
-                                    : formatElapsedSince(board.lastSyncedAt!),
-                              ),
-                              style: theme.textTheme.bodySmall,
-                            ),
-                        ],
-                      ],
-                    ),
+                  child: Text(
+                    l10n.yourAreaTitle(area.name).toUpperCase(),
+                    semanticsLabel: l10n.yourAreaTitle(area.name),
+                    style: SheetText.label(p.ink2, size: 14),
                   ),
                 ),
               ],
             ),
-          ),
+            const SizedBox(height: 10),
+            if (status == null)
+              Text(
+                l10n.yourAreaStatusUnavailable,
+                style: theme.textTheme.bodyLarge,
+              )
+            else ...[
+              // The barangay state in its fixed colour, with its words.
+              BarangayStateTag(status: key, label: status.label, size: 17),
+              const SizedBox(height: 10),
+              // What to do now, in plain words.
+              Text(
+                whatToDo(l10n, status.status),
+                style: theme.textTheme.bodyLarge,
+              ),
+            ],
+            if (board != null) ...[
+              const SizedBox(height: 4),
+              Text(
+                board.hasOpenEvent
+                    ? board.eventName!
+                    : l10n.residentNoOpenEvent,
+                style: theme.textTheme.bodySmall,
+              ),
+              if (board.isFromCache)
+                Text(
+                  l10n.residentStatusSavedCopy(
+                    board.lastSyncedAt == null
+                        ? ''
+                        : formatElapsedSince(board.lastSyncedAt!),
+                  ),
+                  style: theme.textTheme.bodySmall,
+                ),
+            ],
+          ],
         ),
       ),
     );

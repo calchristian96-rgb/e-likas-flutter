@@ -1,3 +1,4 @@
+import '../../../../core/widgets/map_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:elikas_mobile/core/error/friendly_error.dart';
 import 'package:elikas_mobile/features/evacuation_centers/presentation/widgets/capacity_text.dart';
@@ -9,7 +10,6 @@ import '../../../barangay_status/presentation/resident_area.dart';
 import '../../../../core/widgets/empty_state.dart';
 import '../../../../core/widgets/error_state.dart';
 import '../../../../core/widgets/loading_skeleton.dart';
-import '../../../../core/widgets/ui_kit.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../evacuation_centers/domain/entities/evacuation_center.dart';
 import '../../../evacuation_centers/presentation/providers/evacuation_centers_provider.dart';
@@ -92,7 +92,7 @@ class _UnavailableState extends StatelessWidget {
           height: 40,
           decoration: BoxDecoration(
             color: theme.colorScheme.surfaceContainerHighest,
-            borderRadius: BorderRadius.circular(10),
+            borderRadius: BorderRadius.zero,
           ),
           child: Icon(
             Icons.location_off_outlined,
@@ -224,9 +224,9 @@ class _CenterTile extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: 8),
-              StatusChip(
+              CenterStateTag(
+                status: center.status,
                 label: localizedCenterStatus(context, center.status),
-                color: centerStatusColorOf(center.status),
               ),
             ],
           ),

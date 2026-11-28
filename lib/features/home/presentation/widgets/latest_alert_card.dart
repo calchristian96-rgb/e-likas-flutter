@@ -121,19 +121,15 @@ class LatestAlertCard extends StatelessWidget {
     );
 
     return InkWell(
-      borderRadius: BorderRadius.circular(12),
+      borderRadius: BorderRadius.zero,
       onTap: () => context.push('/alerts/${currentAlert.id}'),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
+          SizedBox(
             width: 40,
             height: 40,
-            decoration: BoxDecoration(
-              color: color.withValues(alpha: 0.12),
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: Icon(icon, color: color, size: 20),
+            child: Center(child: Icon(icon, color: color, size: 20)),
           ),
           const SizedBox(width: 12),
           Expanded(
@@ -158,7 +154,7 @@ class LatestAlertCard extends StatelessWidget {
                       ),
                       decoration: BoxDecoration(
                         color: color.withValues(alpha: 0.12),
-                        borderRadius: BorderRadius.circular(20),
+                        borderRadius: BorderRadius.zero,
                       ),
                       child: Text(
                         label,

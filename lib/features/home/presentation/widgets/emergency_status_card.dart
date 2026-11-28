@@ -71,6 +71,13 @@ class EmergencyStatusCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Its own space below, so a hidden card leaves no gap on Home.
+    final card = _buildCard(context);
+    if (card is SizedBox && card.child == null) return card;
+    return Padding(padding: const EdgeInsets.only(bottom: 16), child: card);
+  }
+
+  Widget _buildCard(BuildContext context) {
     final theme = Theme.of(context);
     final semanticColors = theme.extension<AppSemanticColors>()!;
     final l10n = AppLocalizations.of(context);
@@ -113,12 +120,7 @@ class EmergencyStatusCard extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    l10n.liveDataUnavailable,
-                    style: theme.textTheme.titleSmall?.copyWith(
-                      color: semanticColors.warning,
-                    ),
-                  ),
+                  _Title(l10n.liveDataUnavailable),
                   const SizedBox(height: 2),
                   Text(l10n.showingSavedInfo, style: theme.textTheme.bodySmall),
                 ],
@@ -149,14 +151,11 @@ class EmergencyStatusCard extends StatelessWidget {
                 b.status == BarangayStatusKey.floodingReported,
           )
           .length;
-      final (color, icon, title, body) = evacuating > 0
-          ? (
-              theme.colorScheme.error,
-              Icons.campaign_outlined,
-              l10n.situationEvacuationOrdered,
-              l10n.situationEvacuatingBarangays(evacuating),
-            )
-          : watching > 0
+      // An evacuation order is already the live strip across the top
+      // (and the red banner for the resident's own barangay): this card
+      // does not repeat it.
+      if (evacuating > 0) return const SizedBox.shrink();
+      final (color, icon, title, body) = watching > 0
           ? (
               semanticColors.warning,
               Icons.visibility_outlined,
@@ -164,7 +163,7 @@ class EmergencyStatusCard extends StatelessWidget {
               l10n.situationWatchingBarangays(watching),
             )
           : (
-              theme.colorScheme.primary,
+              theme.colorScheme.onSurfaceVariant,
               Icons.event_note_outlined,
               l10n.situationMonitoring,
               l10n.situationNoEvacuation,
@@ -182,10 +181,7 @@ class EmergencyStatusCard extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      title,
-                      style: theme.textTheme.titleSmall?.copyWith(color: color),
-                    ),
+                    _Title(title),
                     const SizedBox(height: 2),
                     Text(body, style: theme.textTheme.bodyMedium),
                     const SizedBox(height: 4),
@@ -228,12 +224,7 @@ class EmergencyStatusCard extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    l10n.normalMonitoringTitle,
-                    style: theme.textTheme.titleSmall?.copyWith(
-                      color: semanticColors.success,
-                    ),
-                  ),
+                  _Title(l10n.normalMonitoringTitle),
                   const SizedBox(height: 2),
                   Text(l10n.normalMonitoring, style: theme.textTheme.bodySmall),
                   if (lastChecked != null) ...[
@@ -371,8 +362,7 @@ class EmergencyStatusCard extends StatelessWidget {
             child: FilledButton.icon(
               onPressed: () => context.push('/nearest-center'),
               icon: const Icon(Icons.near_me_outlined, size: 18),
-              label: Text(l10n.findNearestCenterAction),
-              style: FilledButton.styleFrom(backgroundColor: color),
+              label: Text(l10n.findNearestCenterAction.toUpperCase()),
             ),
           ),
           const SizedBox(height: 8),
@@ -407,9 +397,8 @@ class EmergencyStatusCard extends StatelessWidget {
               style: TextButton.styleFrom(
                 padding: const EdgeInsets.symmetric(horizontal: 8),
                 minimumSize: const Size(48, 48),
-                foregroundColor: color,
               ),
-              child: Text(l10n.viewAlert),
+              child: Text(l10n.viewAlert.toUpperCase()),
             ),
           ),
           const SizedBox(height: 4),
@@ -439,9 +428,8 @@ class EmergencyStatusCard extends StatelessWidget {
               style: TextButton.styleFrom(
                 padding: const EdgeInsets.symmetric(horizontal: 8),
                 minimumSize: const Size(48, 48),
-                foregroundColor: color,
               ),
-              child: Text(l10n.viewAlert),
+              child: Text(l10n.viewAlert.toUpperCase()),
             ),
           ),
         ];
@@ -456,9 +444,8 @@ class EmergencyStatusCard extends StatelessWidget {
               style: TextButton.styleFrom(
                 padding: const EdgeInsets.symmetric(horizontal: 8),
                 minimumSize: const Size(48, 48),
-                foregroundColor: color,
               ),
-              child: Text(l10n.viewDetails),
+              child: Text(l10n.viewDetails.toUpperCase()),
             ),
           ),
         ];
@@ -473,41 +460,44 @@ class _CardShell extends StatelessWidget {
     this.emphasized = false,
   });
 
+  /// The severity colour, carried by the card's icon; the plate itself
+  /// stays map paper.
   final Color color;
   final Widget child;
+
+  /// A mandatory alert: framed with the 2 px ink rule instead of a
+  /// hairline (no tint, no shadow on the sheet).
   final bool emphasized;
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final p = SheetPalette.of(context);
     return Container(
       decoration: BoxDecoration(
-        // A soft severity-tinted background — not just a coloured
-        // border — so mandatory/advisory states read as visually
-        // distinct at a glance without becoming a solid colour block.
-        // Subtle enough (4%/8% alpha) that body text stays fully
-        // readable regardless of the accent colour underneath it.
-        color: Color.alphaBlend(
-          color.withValues(alpha: emphasized ? 0.08 : 0.04),
-          theme.cardColor,
-        ),
-        borderRadius: BorderRadius.circular(16),
+        color: p.plate,
         border: Border.all(
-          color: color.withValues(alpha: emphasized ? 0.55 : 0.3),
-          width: emphasized ? 1.4 : 1,
+          color: p.rule,
+          width: emphasized ? Sheet.frame : Sheet.hairline,
         ),
-        boxShadow: [
-          BoxShadow(
-            color: theme.colorScheme.shadow.withValues(alpha: 0.06),
-            blurRadius: 8,
-            offset: const Offset(0, 2),
-          ),
-        ],
       ),
       padding: const EdgeInsets.all(16),
       child: child,
     );
   }
+}
+
+/// A card title in ink condensed caps.
+class _Title extends StatelessWidget {
+  const _Title(this.text);
+
+  final String text;
+
+  @override
+  Widget build(BuildContext context) => Text(
+    text.toUpperCase(),
+    semanticsLabel: text,
+    style: SheetText.title(SheetPalette.of(context).ink, size: 22),
+  );
 }
 
 /// A compact row of small emergency-shortcut buttons — deliberately
@@ -534,12 +524,10 @@ class _EmergencyActionStrip extends StatelessWidget {
           OutlinedButton.icon(
             onPressed: action.onTap,
             icon: Icon(action.icon, size: 16),
-            label: Text(action.label),
+            label: Text(action.label.toUpperCase()),
             style: OutlinedButton.styleFrom(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
               minimumSize: const Size(48, 48),
-              foregroundColor: color,
-              side: BorderSide(color: color.withValues(alpha: 0.4)),
             ),
           ),
       ],

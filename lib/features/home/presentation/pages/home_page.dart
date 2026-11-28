@@ -197,7 +197,6 @@ class _HomePageState extends ConsumerState<HomePage> {
                                   .value,
                             ),
                           ),
-                          const SizedBox(height: 16),
                           // Where the phone is now: its barangay's
                           // status and what to do (hidden without a
                           // location).
@@ -265,7 +264,9 @@ class _BrandedHeader extends StatelessWidget {
       child: DecoratedBox(
         decoration: BoxDecoration(
           color: p.ground,
-          border: Border(bottom: BorderSide(color: p.rule, width: Sheet.frame)),
+          border: Border(
+            bottom: BorderSide(color: p.rule, width: Sheet.frame),
+          ),
         ),
         child: SafeArea(
           bottom: false,
@@ -623,7 +624,7 @@ class _PrepareCard extends StatelessWidget {
         minTileHeight: 64,
         leading: Icon(
           Icons.backpack_outlined,
-          color: theme.colorScheme.primary,
+          color: theme.colorScheme.onSurface,
         ),
         title: Text(l10n.prepTitle),
         subtitle: Text(l10n.prepSubtitle),

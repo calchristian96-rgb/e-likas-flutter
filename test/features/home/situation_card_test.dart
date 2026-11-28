@@ -1,4 +1,6 @@
 import 'package:elikas_mobile/features/barangay_status/domain/barangay_status.dart';
+import 'package:elikas_mobile/features/barangay_status/presentation/barangay_status_providers.dart';
+import 'package:elikas_mobile/features/barangay_status/presentation/bulletin_strip.dart';
 import 'package:elikas_mobile/features/home/presentation/widgets/emergency_status_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -21,26 +23,61 @@ Widget _card(BarangayStatusBoard? board) => testApp(
 /// With no alert, the top card tells the truth about the barangays
 /// instead of "Normal Monitoring" while some evacuate.
 void main() {
-  testWidgets('barangays evacuating: Evacuation ordered', (tester) async {
+  final board = BarangayStatusBoard(
+    eventName: 'Typhoon Pepito',
+    eventStatus: 'active',
+    barangays: [
+      _b(1, 'preemptive_evacuation'),
+      _b(2, 'forced_evacuation'),
+      _b(3, 'watch'),
+    ],
+  );
+
+  testWidgets('barangays evacuating: the card does not repeat it', (
+    tester,
+  ) async {
+    await tester.pumpWidget(_card(board));
+    expect(find.text('EVACUATION ORDERED'), findsNothing);
+    expect(find.text('NORMAL MONITORING'), findsNothing);
+  });
+
+  testWidgets('barangays evacuating: the live strip says it once', (
+    tester,
+  ) async {
     await tester.pumpWidget(
-      _card(
-        BarangayStatusBoard(
-          eventName: 'Typhoon Pepito',
-          eventStatus: 'active',
-          barangays: [
-            _b(1, 'preemptive_evacuation'),
-            _b(2, 'forced_evacuation'),
-            _b(3, 'watch'),
-          ],
-        ),
+      testApp(
+        const Scaffold(body: BulletinStrip()),
+        overrides: [
+          barangayStatusBoardProvider.overrideWith((ref) async => board),
+        ],
       ),
     );
-    expect(find.text('Evacuation ordered'), findsOneWidget);
+    await tester.pumpAndSettle();
+    expect(find.text('EVACUATION ORDERED · Typhoon Pepito'), findsOneWidget);
     expect(
       find.text('2 barangays are under preemptive or forced evacuation.'),
       findsOneWidget,
     );
-    expect(find.text('Normal Monitoring'), findsNothing);
+  });
+
+  testWidgets('a calm day: no live strip at all', (tester) async {
+    await tester.pumpWidget(
+      testApp(
+        const Scaffold(body: BulletinStrip()),
+        overrides: [
+          barangayStatusBoardProvider.overrideWith(
+            (ref) async => BarangayStatusBoard(
+              eventName: 'Typhoon Pepito',
+              eventStatus: 'monitoring',
+              barangays: [_b(1, 'watch')],
+            ),
+          ),
+        ],
+      ),
+    );
+    await tester.pumpAndSettle();
+    expect(find.textContaining('EVACUATION ORDERED'), findsNothing);
+    expect(find.byType(InkWell), findsNothing);
   });
 
   testWidgets('an open event, nobody evacuating: monitored', (tester) async {
@@ -58,6 +95,6 @@ void main() {
 
   testWidgets('no open event: Normal Monitoring', (tester) async {
     await tester.pumpWidget(_card(const BarangayStatusBoard(barangays: [])));
-    expect(find.text('Normal Monitoring'), findsOneWidget);
+    expect(find.text('NORMAL MONITORING'), findsOneWidget);
   });
 }
