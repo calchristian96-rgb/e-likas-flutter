@@ -191,8 +191,12 @@ class _SeverityCard extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         color: theme.cardColor,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: color.withValues(alpha: 0.35)),
+        // Ink-ruled; an emergency gets the 2 px frame. The severity's
+        // colour stays on its icon and tag.
+        border: Border.all(
+          color: theme.colorScheme.outline,
+          width: alert.severity == 'mandatory' ? 2 : 1,
+        ),
       ),
       padding: const EdgeInsets.all(16),
       child: Column(

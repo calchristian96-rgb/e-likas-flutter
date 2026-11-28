@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../core/widgets/accent_card.dart';
+import '../../../../core/widgets/status_badge.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../domain/entities/alert.dart';
 import 'alert_type_display.dart';
@@ -58,52 +59,37 @@ class AlertListTile extends ConsumerWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  if (isLatest) ...[
-                    Text(
-                      l10n.latestAlertLabel.toUpperCase(),
-                      style: theme.textTheme.labelSmall?.copyWith(
-                        color: color,
-                        fontWeight: FontWeight.w700,
-                        letterSpacing: 0.6,
-                      ),
-                    ),
-                    const SizedBox(height: 2),
-                  ],
-                  if (isNew) ...[const NewBadge(), const SizedBox(height: 4)],
-                  Row(
+                  // The title stands alone (no kicker above it); its
+                  // tags follow underneath.
+                  Text(
+                    alert.title,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: theme.textTheme.titleSmall,
+                  ),
+                  const SizedBox(height: 6),
+                  Wrap(
+                    spacing: 6,
+                    runSpacing: 6,
                     children: [
-                      Expanded(
-                        child: Text(
-                          alert.title,
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                          style: theme.textTheme.titleSmall,
+                      StatusBadge(
+                        label: alertDisplayLabel(
+                          context,
+                          alert.alertType,
+                          alert.severity,
                         ),
+                        color: color,
                       ),
-                      const SizedBox(width: 6),
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 7,
-                          vertical: 3,
+                      if (isNew) const NewBadge(),
+                      if (isLatest)
+                        StatusBadge(
+                          label: l10n.latestAlertLabel,
+                          color: color,
+                          icon: Icons.schedule,
                         ),
-                        decoration: BoxDecoration(
-                          color: color.withValues(alpha: 0.12),
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        child: Text(
-                          alertDisplayLabel(
-                            context,
-                            alert.alertType,
-                            alert.severity,
-                          ),
-                          style: theme.textTheme.labelSmall?.copyWith(
-                            color: color,
-                          ),
-                        ),
-                      ),
                     ],
                   ),
-                  const SizedBox(height: 2),
+                  const SizedBox(height: 6),
                   Text(
                     alert.message,
                     maxLines: 2,

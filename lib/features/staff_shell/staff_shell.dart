@@ -143,21 +143,22 @@ class StaffShell extends StatelessWidget {
                 ),
               ),
               child: NavigationBar(
-              selectedIndex: selected,
-              labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
-              onDestinationSelected: (i) => navigationShell.goBranch(
-                tabs[i].branch,
-                initialLocation: tabs[i].branch == navigationShell.currentIndex,
+                selectedIndex: selected,
+                labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
+                onDestinationSelected: (i) => navigationShell.goBranch(
+                  tabs[i].branch,
+                  initialLocation:
+                      tabs[i].branch == navigationShell.currentIndex,
+                ),
+                destinations: [
+                  for (final t in tabs)
+                    NavigationDestination(
+                      icon: Icon(t.icon),
+                      selectedIcon: Icon(t.selectedIcon),
+                      label: t.label(l10n).toUpperCase(),
+                    ),
+                ],
               ),
-              destinations: [
-                for (final t in tabs)
-                  NavigationDestination(
-                    icon: Icon(t.icon),
-                    selectedIcon: Icon(t.selectedIcon),
-                    label: t.label(l10n).toUpperCase(),
-                  ),
-              ],
-            ),
             ),
           ),
         );

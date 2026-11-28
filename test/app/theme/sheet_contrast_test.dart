@@ -32,13 +32,7 @@ void main() {
     const p = SheetPalette.night;
     test('text on the ground, plates and folds passes AA', () {
       for (final bg in [p.ground, p.plate, p.fold]) {
-        for (final c in [
-          p.ink,
-          p.ink2,
-          p.actionText,
-          p.caption,
-          p.errorText,
-        ]) {
+        for (final c in [p.ink, p.ink2, p.actionText, p.caption, p.errorText]) {
           expect(contrast(c, bg), greaterThanOrEqualTo(4.5), reason: '$c/$bg');
         }
       }

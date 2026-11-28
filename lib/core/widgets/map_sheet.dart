@@ -331,10 +331,7 @@ class SheetTitle extends StatelessWidget {
     child: Text(
       text.toUpperCase(),
       semanticsLabel: text,
-      style: SheetText.title(
-        color ?? SheetPalette.of(context).ink,
-        size: size,
-      ),
+      style: SheetText.title(color ?? SheetPalette.of(context).ink, size: size),
     ),
   );
 }
@@ -419,4 +416,50 @@ class SheetLabel extends StatelessWidget {
     semanticsLabel: text,
     style: SheetText.label(color ?? SheetPalette.of(context).ink2, size: size),
   );
+}
+
+/// A note in the sheet's margin: the recessed paper fold ruled with a
+/// hairline, or, for an [advisory] (call now, act now), the sienna tint
+/// DESIGN.md gives an advisory note. Text stays ink; no side stripe.
+class SheetNote extends StatelessWidget {
+  const SheetNote({
+    super.key,
+    required this.icon,
+    required this.message,
+    this.advisory = false,
+  });
+
+  final IconData icon;
+  final String message;
+  final bool advisory;
+
+  @override
+  Widget build(BuildContext context) {
+    final p = SheetPalette.of(context);
+    final scheme = Theme.of(context).colorScheme;
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: advisory ? scheme.primaryContainer : p.fold,
+        border: Border.all(color: p.rule, width: Sheet.hairline),
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Icon(icon, color: advisory ? p.errorText : p.ink2),
+          const SizedBox(width: 10),
+          Expanded(
+            child: Text(
+              message,
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                color: p.ink,
+                fontWeight: advisory ? FontWeight.w600 : FontWeight.w400,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 }

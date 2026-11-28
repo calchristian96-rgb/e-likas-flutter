@@ -10,9 +10,6 @@ void showThemeModeSelectorSheet(BuildContext context) {
   showModalBottomSheet<void>(
     context: context,
     showDragHandle: true,
-    shape: const RoundedRectangleBorder(
-      borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
-    ),
     builder: (context) => const _ThemeModeSelectorSheet(),
   );
 }
@@ -73,7 +70,7 @@ class _ThemeModeOption extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return InkWell(
-      borderRadius: BorderRadius.circular(12),
+      borderRadius: BorderRadius.zero,
       onTap: onTap,
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 4),

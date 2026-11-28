@@ -825,7 +825,7 @@ class _HeadOfHouseholdInset extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(16, 14, 16, 16),
       decoration: BoxDecoration(
         color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.zero,
         border: Border.all(color: theme.colorScheme.outlineVariant),
       ),
       child: Column(
@@ -906,7 +906,7 @@ class _OtherBarangayNote extends ConsumerWidget {
       padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
       decoration: BoxDecoration(
         color: amber.withValues(alpha: 0.10),
-        borderRadius: BorderRadius.circular(10),
+        borderRadius: BorderRadius.zero,
         border: Border.all(color: amber.withValues(alpha: 0.35)),
       ),
       child: Row(
@@ -1106,7 +1106,7 @@ class _WillBeRecordedFooter extends StatelessWidget {
                   color: theme.colorScheme.primaryContainer.withValues(
                     alpha: 0.35,
                   ),
-                  borderRadius: BorderRadius.circular(10),
+                  borderRadius: BorderRadius.zero,
                 ),
                 child: SingleChildScrollView(
                   child: Column(

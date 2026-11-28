@@ -37,7 +37,10 @@ class AlertLevelChip extends StatelessWidget {
         theme.colorScheme.error,
       ),
       AlertLevel.advisory => (l10n.alertLevelAdvisory, semantic.warning),
-      AlertLevel.info => (l10n.alertLevelInfo, theme.colorScheme.primary),
+      AlertLevel.info => (
+        l10n.alertLevelInfo,
+        theme.colorScheme.onSurfaceVariant,
+      ),
       AlertLevel.allClear => (l10n.alertLevelAllClear, semantic.success),
     };
     return _Pill(label: label, color: color);
@@ -51,7 +54,7 @@ class NewBadge extends StatelessWidget {
   @override
   Widget build(BuildContext context) => _Pill(
     label: AppLocalizations.of(context).alertNew,
-    color: Theme.of(context).colorScheme.primary,
+    color: SheetPalette.of(context).ink,
     filled: true,
   );
 }
@@ -65,20 +68,35 @@ class _Pill extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    // A square tag in map-label caps: filled ink ("New"), or a swatch
+    // of the level's colour beside ink words.
+    final p = SheetPalette.of(context);
+    final style = SheetText.label(
+      filled ? p.ground : p.ink,
+      size: 14,
+    ).copyWith(fontWeight: FontWeight.w700, letterSpacing: 1.1);
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+      padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 3),
       decoration: BoxDecoration(
-        color: filled ? color : color.withValues(alpha: 0.12),
-        borderRadius: BorderRadius.circular(999),
-        border: Border.all(color: color),
+        color: filled ? p.ink : null,
+        border: Border.all(color: p.rule, width: Sheet.hairline),
       ),
-      child: Text(
-        label,
-        style: theme.textTheme.labelMedium?.copyWith(
-          color: filled ? theme.colorScheme.onPrimary : color,
-          fontWeight: FontWeight.w700,
-        ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          if (!filled) ...[
+            Container(
+              width: 9,
+              height: 9,
+              decoration: BoxDecoration(
+                color: color,
+                border: Border.all(color: p.symbolStroke),
+              ),
+            ),
+            const SizedBox(width: 5),
+          ],
+          Text(label.toUpperCase(), semanticsLabel: label, style: style),
+        ],
       ),
     );
   }

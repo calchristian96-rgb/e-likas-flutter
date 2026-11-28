@@ -21,14 +21,15 @@ class PriorityHotlineCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final l10n = AppLocalizations.of(context);
-    final emergencyColor = theme.colorScheme.error;
+    // The first number to call: a 2 px ink frame, big condensed
+    // numbers, and the one sienna action (Call).
+    final emergencyColor = theme.colorScheme.onSurface;
 
     return Container(
       width: double.infinity,
       decoration: BoxDecoration(
-        color: emergencyColor.withValues(alpha: 0.08),
-        borderRadius: BorderRadius.circular(18),
-        border: Border.all(color: emergencyColor.withValues(alpha: 0.5)),
+        color: theme.colorScheme.surface,
+        border: Border.all(color: emergencyColor, width: 2),
       ),
       padding: const EdgeInsets.all(18),
       child: Column(
@@ -41,8 +42,8 @@ class PriorityHotlineCard extends StatelessWidget {
                 width: 52,
                 height: 52,
                 decoration: BoxDecoration(
-                  color: emergencyColor.withValues(alpha: 0.15),
                   shape: BoxShape.circle,
+                  border: Border.all(color: emergencyColor, width: 2),
                 ),
                 child: Icon(Icons.emergency, color: emergencyColor, size: 28),
               ),
@@ -89,13 +90,9 @@ class PriorityHotlineCard extends StatelessWidget {
                 child: FilledButton.icon(
                   onPressed: () => _handleCall(context, hotline),
                   icon: const Icon(Icons.call, size: 20),
-                  label: Text(l10n.call),
+                  label: Text(l10n.call.toUpperCase()),
                   style: FilledButton.styleFrom(
-                    backgroundColor: emergencyColor,
                     minimumSize: const Size(140, 52),
-                    textStyle: theme.textTheme.titleSmall?.copyWith(
-                      fontWeight: FontWeight.w700,
-                    ),
                   ),
                 ),
               ),
@@ -105,10 +102,8 @@ class PriorityHotlineCard extends StatelessWidget {
                 child: OutlinedButton.icon(
                   onPressed: () => _handleCopy(context, hotline),
                   icon: const Icon(Icons.copy_outlined, size: 18),
-                  label: Text(l10n.copy),
+                  label: Text(l10n.copy.toUpperCase()),
                   style: OutlinedButton.styleFrom(
-                    foregroundColor: emergencyColor,
-                    side: BorderSide(color: emergencyColor),
                     minimumSize: const Size(120, 52),
                   ),
                 ),

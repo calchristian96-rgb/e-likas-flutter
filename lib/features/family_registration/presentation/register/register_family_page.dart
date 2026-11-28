@@ -328,7 +328,7 @@ class _StepHeader extends StatelessWidget {
                     color: i <= step
                         ? theme.colorScheme.primary
                         : theme.colorScheme.outline,
-                    borderRadius: BorderRadius.circular(2),
+                    borderRadius: BorderRadius.zero,
                   ),
                 ),
               ),

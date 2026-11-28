@@ -31,8 +31,27 @@ TileLayer mapBaseTileLayer(MapBaseLayer baseLayer) {
       MapBaseLayer.satellite => satelliteTileUrlTemplate,
     },
     userAgentPackageName: 'com.cswdo.elikas_mobile',
+    // The street map is printed onto the sheet like the web's: the
+    // tiles desaturated and warmed towards map paper. Satellite imagery
+    // stays true to life.
+    tileBuilder: baseLayer == MapBaseLayer.street ? _printedTile : null,
   );
 }
+
+/// The web's `saturate(.5) sepia(.18) hue-rotate(35deg) contrast(1.06)
+/// brightness(1.04)` as one colour matrix.
+const _printedMapMatrix = <double>[
+  0.487, 0.3449, 0.3035, 0, -7.956, //
+  0.2137, 0.9489, -0.0085, 0, -7.956, //
+  -0.045, 0.683, 0.4464, 0, -7.956, //
+  0, 0, 0, 1, 0, //
+];
+
+Widget _printedTile(BuildContext context, Widget tileWidget, TileImage tile) =>
+    ColorFiltered(
+      colorFilter: const ColorFilter.matrix(_printedMapMatrix),
+      child: tileWidget,
+    );
 
 /// An extra attribution line for an overlay layer; tapping it opens [url].
 class MapOverlayAttribution {

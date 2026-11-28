@@ -83,123 +83,79 @@ class _SplashPageState extends ConsumerState<SplashPage> {
 
   @override
   Widget build(BuildContext context) {
-    final semantic = Theme.of(context).extension<AppSemanticColors>()!;
+    final p = SheetPalette.of(context);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: SystemUiOverlayStyle.light,
+      value: isDark ? SystemUiOverlayStyle.light : SystemUiOverlayStyle.dark,
       child: Scaffold(
-        backgroundColor: semantic.navy,
-        // Plain logo navy, no background artwork -- the same treatment as
-        // the web dashboard's sidebar and the native launch screen.
-        body: Stack(
-          fit: StackFit.expand,
-          children: [
-            SafeArea(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 32,
-                  vertical: 32,
-                ),
-                // A short, one-time fade-in on entry — TweenAnimationBuilder
-                // animates from 0 to 1 automatically as soon as it first
-                // builds, no AnimationController/vsync plumbing needed for
-                // something this simple.
-                child: TweenAnimationBuilder<double>(
-                  tween: Tween(begin: 0, end: 1),
-                  duration: const Duration(milliseconds: 450),
-                  curve: Curves.easeOut,
-                  builder: (context, opacity, child) {
-                    return Opacity(opacity: opacity, child: child);
-                  },
-                  child: Column(
-                    children: [
-                      const Spacer(flex: 3),
-                      Container(
-                        width: 140,
-                        height: 140,
-                        padding: const EdgeInsets.all(16),
-                        decoration: const BoxDecoration(
-                          color: Colors.white,
-                          shape: BoxShape.circle,
-                        ),
-                        child: Image.asset(
-                          'assets/images/elikas_logo.png',
-                          fit: BoxFit.contain,
-                          // The real logo file is dropped into assets/images/
-                          // outside this codebase's own tooling — until it's
-                          // there, fall back to a placeholder rather than let
-                          // a missing asset show as a blank circle with no
-                          // indication why.
-                          errorBuilder: (context, error, stackTrace) => Icon(
-                            Icons.shield_outlined,
-                            size: 96,
-                            color: semantic.navy,
-                          ),
-                        ),
+        // Map paper (ink at night): the same ground as the native launch
+        // screen (android/app/src/main/res/values/colors.xml), so the
+        // hand-over has no flash. Navy is for live status only.
+        backgroundColor: p.ground,
+        body: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.all(32),
+            // A short, one-time fade-in on entry.
+            child: TweenAnimationBuilder<double>(
+              tween: Tween(begin: 0, end: 1),
+              duration: const Duration(milliseconds: 450),
+              curve: Curves.easeOut,
+              builder: (context, opacity, child) =>
+                  Opacity(opacity: opacity, child: child),
+              child: Column(
+                children: [
+                  const Spacer(flex: 3),
+                  // The mark on its white seal, ringed in ink.
+                  Container(
+                    width: 140,
+                    height: 140,
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      shape: BoxShape.circle,
+                      border: Border.all(color: p.rule, width: 2),
+                    ),
+                    child: Image.asset(
+                      'assets/images/elikas_logo.png',
+                      fit: BoxFit.contain,
+                      errorBuilder: (context, error, stackTrace) => const Icon(
+                        Icons.shield_outlined,
+                        size: 96,
+                        color: Sheet.ink,
                       ),
-                      const SizedBox(height: 24),
-                      const Text(
-                        'E-LIKAS',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 24,
-                          fontWeight: FontWeight.w800,
-                          letterSpacing: 0.5,
-                        ),
-                      ),
-                      const SizedBox(height: 8),
-                      Text(
-                        'Electronic Ligao Kaligtasan Sistema',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: Colors.white.withValues(alpha: 0.82),
-                          fontSize: 14,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                      const SizedBox(height: 6),
-                      Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Icon(
-                            Icons.location_on_outlined,
-                            size: 14,
-                            color: Colors.white.withValues(alpha: 0.7),
-                          ),
-                          const SizedBox(width: 4),
-                          Text(
-                            'Ligao City, Albay',
-                            style: TextStyle(
-                              color: Colors.white.withValues(alpha: 0.7),
-                              fontSize: 14,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ],
-                      ),
-                      const Spacer(flex: 4),
-                      SizedBox(
-                        width: 22,
-                        height: 22,
-                        child: CircularProgressIndicator(
-                          strokeWidth: 2.4,
-                          color: Colors.white.withValues(alpha: 0.85),
-                        ),
-                      ),
-                      const SizedBox(height: 14),
-                      Text(
-                        AppLocalizations.of(context).preparingEmergencyInfo,
-                        style: TextStyle(
-                          color: Colors.white.withValues(alpha: 0.75),
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ],
+                    ),
                   ),
-                ),
+                  const SizedBox(height: 24),
+                  Text('E-LIKAS', style: SheetText.title(p.ink, size: 44)),
+                  const SizedBox(height: 10),
+                  Text(
+                    'Electronic Ligao Kaligtasan Sistema'.toUpperCase(),
+                    textAlign: TextAlign.center,
+                    style: SheetText.label(p.ink2, size: 14),
+                  ),
+                  const SizedBox(height: 6),
+                  Text(
+                    'Ligao City, Albay',
+                    style: SheetText.caption(p.caption),
+                  ),
+                  const Spacer(flex: 4),
+                  const SizedBox(
+                    width: 22,
+                    height: 22,
+                    child: CircularProgressIndicator(strokeWidth: 2.4),
+                  ),
+                  const SizedBox(height: 14),
+                  Text(
+                    AppLocalizations.of(context).preparingEmergencyInfo,
+                    textAlign: TextAlign.center,
+                    style: Theme.of(
+                      context,
+                    ).textTheme.bodyMedium?.copyWith(color: p.ink2),
+                  ),
+                ],
               ),
             ),
-          ],
+          ),
         ),
       ),
     );

@@ -1,3 +1,4 @@
+import '../../../../core/widgets/map_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:elikas_mobile/core/error/friendly_error.dart';
 import 'package:flutter_map/flutter_map.dart';
@@ -18,7 +19,6 @@ import '../../../../core/widgets/error_state.dart';
 import '../../../../core/widgets/occupancy_progress.dart';
 import '../../../../core/widgets/offline_banner.dart';
 import '../../../../core/widgets/search_field.dart';
-import '../../../../core/widgets/status_badge.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../barangay_status/data/barangay_outlines.dart';
 import '../../../barangay_status/presentation/resident_area.dart';
@@ -456,7 +456,8 @@ class _MapViewState extends ConsumerState<_MapView> {
                       child: GestureDetector(
                         onTap: () => _selectCenter(center),
                         child: _CenterMarkerIcon(
-                          color: centerStatusColor(context, center),
+                          status: center.status,
+                          label: localizedCenterStatus(context, center.status),
                           selected: center.id == _selectedCenterId,
                         ),
                       ),
@@ -484,8 +485,8 @@ class _MapViewState extends ConsumerState<_MapView> {
               child: Column(
                 children: [
                   Material(
-                    elevation: 3,
-                    borderRadius: BorderRadius.circular(12),
+                    // The sheet's field: square and ruled, no shadow.
+                    color: Colors.transparent,
                     child: SearchField(
                       controller: _searchController,
                       focusNode: _searchFocusNode,
@@ -502,14 +503,18 @@ class _MapViewState extends ConsumerState<_MapView> {
                       margin: const EdgeInsets.only(top: 4),
                       constraints: const BoxConstraints(maxHeight: 260),
                       decoration: BoxDecoration(
-                        color: theme.cardColor,
-                        borderRadius: BorderRadius.circular(14),
-                        boxShadow: [
+                        // Floats over the map like a web map popup: an
+                        // ink frame and its soft shadow.
+                        color: theme.colorScheme.surface,
+                        border: Border.all(
+                          color: theme.colorScheme.outline,
+                          width: 2,
+                        ),
+                        boxShadow: const [
                           BoxShadow(
-                            color: theme.colorScheme.shadow.withValues(
-                              alpha: 0.15,
-                            ),
-                            blurRadius: 10,
+                            color: Color(0x2E17241D),
+                            blurRadius: 12,
+                            offset: Offset(0, 4),
                           ),
                         ],
                       ),
@@ -554,7 +559,7 @@ class _MapViewState extends ConsumerState<_MapView> {
           top: 140,
           child: SafeArea(
             bottom: false,
-            child: FloatingActionButton.small(
+            child: _MapControl(
               heroTag: 'map-layers',
               tooltip: l10n.layersTooltip,
               onPressed: () => _showLayersSheet(context),
@@ -570,7 +575,7 @@ class _MapViewState extends ConsumerState<_MapView> {
           bottom: 12,
           child: SafeArea(
             top: false,
-            child: FloatingActionButton.small(
+            child: _MapControl(
               heroTag: 'map-legend',
               tooltip: l10n.mapLegendTitle,
               onPressed: () => _showLegendSheet(context),
@@ -586,7 +591,7 @@ class _MapViewState extends ConsumerState<_MapView> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                FloatingActionButton.small(
+                _MapControl(
                   heroTag: 'map-locate-me',
                   tooltip: l10n.showMyLocation,
                   onPressed: _locating ? null : _locateMe,
@@ -594,15 +599,12 @@ class _MapViewState extends ConsumerState<_MapView> {
                       ? const SizedBox(
                           width: 18,
                           height: 18,
-                          child: CircularProgressIndicator(
-                            strokeWidth: 2.2,
-                            color: Colors.white,
-                          ),
+                          child: CircularProgressIndicator(strokeWidth: 2.2),
                         )
                       : const Icon(Icons.my_location),
                 ),
                 const SizedBox(height: 10),
-                FloatingActionButton.small(
+                _MapControl(
                   heroTag: 'map-fit-bounds',
                   tooltip: l10n.fitMapTooltip,
                   onPressed: _fitToVisible,
@@ -623,9 +625,6 @@ class _MapViewState extends ConsumerState<_MapView> {
       showDragHandle: true,
       // Rounded top corners + safe-area padding, matching the rest of
       // the app's sheet/card language rather than the plain default.
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
-      ),
       builder: (sheetContext) {
         return SafeArea(
           top: false,
@@ -658,9 +657,6 @@ class _MapViewState extends ConsumerState<_MapView> {
       context: context,
       showDragHandle: true,
       isScrollControlled: true,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
-      ),
       builder: (sheetContext) {
         final theme = Theme.of(sheetContext);
         final l10n = AppLocalizations.of(sheetContext);
@@ -686,10 +682,10 @@ class _MapViewState extends ConsumerState<_MapView> {
                       runSpacing: 8,
                       children: [
                         for (final status in _availableStatuses)
-                          _LegendEntry(
-                            color: _colorForStatus(sheetContext, status),
+                          CenterStateTag(
+                            status: status,
                             label: localizedCenterStatus(sheetContext, status),
-                            shape: BoxShape.circle,
+                            symbolSize: 22,
                           ),
                       ],
                     ),
@@ -720,7 +716,7 @@ class _MapViewState extends ConsumerState<_MapView> {
                     failedIds: _failedOverlayIds,
                   ),
                   _LegendEntry(
-                    color: theme.colorScheme.primary,
+                    color: Sheet.signal,
                     label: l10n.yourLocationLegend,
                     shape: BoxShape.circle,
                   ),
@@ -733,27 +729,11 @@ class _MapViewState extends ConsumerState<_MapView> {
     );
   }
 
-  static Color _colorForStatus(BuildContext context, String status) {
-    final theme = Theme.of(context);
-    final semantic = theme.extension<AppSemanticColors>()!;
-    return switch (status) {
-      'active' => semantic.success,
-      'on_standby' => semantic.warning,
-      'nearly_full' => semantic.warning,
-      'full' => theme.colorScheme.error,
-      'closed' => theme.colorScheme.onSurfaceVariant,
-      _ => theme.colorScheme.onSurfaceVariant,
-    };
-  }
-
   void _showLayersSheet(BuildContext context) {
     showModalBottomSheet<void>(
       context: context,
       showDragHandle: true,
       isScrollControlled: true,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
-      ),
       builder: (sheetContext) {
         return StatefulBuilder(
           builder: (sheetContext, setSheetState) {
@@ -942,21 +922,37 @@ class _MapViewState extends ConsumerState<_MapView> {
 /// selected center (tapped, or reached via search). No animation: a
 /// resident scanning the map benefits from an immediately-obvious state
 /// change, not a transition to watch.
+/// A center on the map: its state symbol (shape + pattern + colour, as
+/// on the web map and in the legend), ringed in ink while its sheet is
+/// open. The ink stroke stays ink on both themes: the map is light.
 class _CenterMarkerIcon extends StatelessWidget {
-  const _CenterMarkerIcon({required this.color, required this.selected});
+  const _CenterMarkerIcon({
+    required this.status,
+    required this.label,
+    required this.selected,
+  });
 
-  final Color color;
+  final String status;
+  final String label;
   final bool selected;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        color: selected ? color.withValues(alpha: 0.16) : Colors.transparent,
-        border: selected ? Border.all(color: color, width: 2.5) : null,
+      alignment: Alignment.center,
+      decoration: selected
+          ? BoxDecoration(
+              shape: BoxShape.circle,
+              color: Sheet.paper,
+              border: Border.all(color: Sheet.ink, width: 2.5),
+            )
+          : null,
+      child: CenterSymbol(
+        status: status,
+        size: selected ? 30 : 32,
+        stroke: Sheet.ink,
+        semanticLabel: label,
       ),
-      child: Icon(Icons.home_work, color: color, size: selected ? 28 : 32),
     );
   }
 }
@@ -1003,14 +999,10 @@ class _CenterSheetContent extends ConsumerWidget {
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(
+              SizedBox(
                 width: 44,
                 height: 44,
-                decoration: BoxDecoration(
-                  color: accentColor.withValues(alpha: 0.12),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Icon(Icons.home_work, color: accentColor),
+                child: Center(child: Icon(Icons.home_work, color: accentColor)),
               ),
               const SizedBox(width: 12),
               Expanded(
@@ -1022,10 +1014,9 @@ class _CenterSheetContent extends ConsumerWidget {
                 ),
               ),
               const SizedBox(width: 8),
-              StatusBadge(
+              CenterStateTag(
+                status: center.status,
                 label: localizedCenterStatus(context, center.status),
-                color: accentColor,
-                maxWidth: 110,
               ),
             ],
           ),
@@ -1154,7 +1145,7 @@ class _CompactCenterPhoto extends ConsumerWidget {
     final theme = Theme.of(context);
     final url = photoUrl;
     return ClipRRect(
-      borderRadius: BorderRadius.circular(12),
+      borderRadius: BorderRadius.zero,
       child: SizedBox(
         width: double.infinity,
         height: 96,
@@ -1249,11 +1240,15 @@ class _LegendEntry extends StatelessWidget {
           width: 14,
           height: 14,
           decoration: shape == BoxShape.circle
-              ? BoxDecoration(shape: BoxShape.circle, color: color)
+              ? BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: color,
+                  border: Border.all(color: Sheet.ink, width: 1.5),
+                )
               : BoxDecoration(
                   color: color.withValues(alpha: 0.35),
                   border: Border.all(color: color),
-                  borderRadius: BorderRadius.circular(3),
+                  borderRadius: BorderRadius.zero,
                 ),
         ),
         const SizedBox(width: 6),
@@ -1263,9 +1258,9 @@ class _LegendEntry extends StatelessWidget {
   }
 }
 
-/// A small blue dot with a white ring — the conventional "you are
-/// here" marker, visually distinct from the home-icon evacuation
-/// center markers so the two are never confused at a glance.
+/// "You are here": a signal-yellow dot ringed in ink (the one place
+/// besides the Mayon chip where signal yellow appears, as on the web
+/// map), unlike any center symbol.
 class _CurrentLocationDot extends StatelessWidget {
   const _CurrentLocationDot();
 
@@ -1274,11 +1269,55 @@ class _CurrentLocationDot extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        color: Theme.of(context).colorScheme.primary,
-        border: Border.all(color: Colors.white, width: 2.5),
-        boxShadow: [
-          BoxShadow(color: Colors.black.withValues(alpha: 0.25), blurRadius: 4),
-        ],
+        color: Sheet.signal,
+        border: Border.all(color: Sheet.ink, width: 2.5),
+      ),
+    );
+  }
+}
+
+/// A map control as printed on the sheet: a square paper button framed
+/// in 2 px ink, Barlow-weight icon in ink, no shadow (DESIGN.md "Map
+/// Controls"). Pressing inverts it to ink.
+class _MapControl extends StatelessWidget {
+  const _MapControl({
+    // Kept for the call sites that named their old buttons; unused.
+    // ignore: unused_element_parameter
+    this.heroTag,
+    required this.tooltip,
+    required this.onPressed,
+    required this.child,
+  });
+
+  final Object? heroTag;
+  final String tooltip;
+  final VoidCallback? onPressed;
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    final p = SheetPalette.of(context);
+    return Tooltip(
+      message: tooltip,
+      child: Material(
+        color: p.ground,
+        shape: RoundedRectangleBorder(
+          side: BorderSide(color: p.rule, width: Sheet.frame),
+        ),
+        child: InkWell(
+          onTap: onPressed,
+          highlightColor: p.ink.withValues(alpha: 0.2),
+          child: SizedBox(
+            width: 48,
+            height: 48,
+            child: Center(
+              child: IconTheme(
+                data: IconThemeData(color: p.ink, size: 24),
+                child: child,
+              ),
+            ),
+          ),
+        ),
       ),
     );
   }

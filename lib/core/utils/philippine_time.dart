@@ -1,5 +1,4 @@
 import 'package:intl/intl.dart';
-import 'package:flutter/foundation.dart' show visibleForTesting;
 
 /// The current moment, expressed in Philippine Standard Time
 /// (Asia/Manila, UTC+08:00) regardless of the device's own configured
@@ -24,9 +23,9 @@ DateTime philippineNow() {
   return deviceNow().toUtc().add(const Duration(hours: 8));
 }
 
-/// The device clock behind [philippineNow]. Always `DateTime.now` in the
-/// app; golden tests pin it so their screenshots do not change daily.
-@visibleForTesting
+/// The device clock behind [philippineNow] and Home's "last updated".
+/// Always `DateTime.now` in the app; only golden tests replace it, so
+/// their screenshots do not change every day.
 DateTime Function() deviceNow = DateTime.now;
 
 /// [moment] as Manila wall-clock time, e.g. "Nov 17, 3:00 PM": the

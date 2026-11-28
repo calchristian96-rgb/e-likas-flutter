@@ -1,3 +1,4 @@
+import '../../../../core/widgets/map_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:elikas_mobile/features/evacuation_centers/presentation/widgets/capacity_text.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -166,9 +167,9 @@ class _CenterCard extends StatelessWidget {
                   ),
                 ),
               ),
-              StatusChip(
+              CenterStateTag(
+                status: status,
                 label: localizedCenterStatus(context, status),
-                color: centerStatusColorOf(status),
               ),
             ],
           ),

@@ -358,7 +358,9 @@ class _AppShellState extends ConsumerState<AppShell>
         bottomNavigationBar: DecoratedBox(
           decoration: BoxDecoration(
             color: sheet.ground,
-            border: Border(top: BorderSide(color: sheet.rule, width: Sheet.rule)),
+            border: Border(
+              top: BorderSide(color: sheet.rule, width: Sheet.rule),
+            ),
           ),
           child: NavigationBar(
             selectedIndex: widget.navigationShell.currentIndex,

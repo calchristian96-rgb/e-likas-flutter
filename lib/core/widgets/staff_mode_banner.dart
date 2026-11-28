@@ -57,12 +57,16 @@ class StaffModeBanner extends ConsumerWidget {
                     Text(
                       l10n.staffBannerBack.toUpperCase(),
                       semanticsLabel: l10n.staffBannerBack,
-                      style: SheetText.label(
-                        Sheet.nightSiennaText,
-                        size: 16,
-                      ).copyWith(fontWeight: FontWeight.w700, letterSpacing: 1.4),
+                      style: SheetText.label(Sheet.nightSiennaText, size: 16)
+                          .copyWith(
+                            fontWeight: FontWeight.w700,
+                            letterSpacing: 1.4,
+                          ),
                     ),
-                    const Icon(Icons.chevron_right, color: Sheet.nightSiennaText),
+                    const Icon(
+                      Icons.chevron_right,
+                      color: Sheet.nightSiennaText,
+                    ),
                   ],
                 ),
               ),

@@ -39,7 +39,7 @@ class HotlineCard extends ConsumerWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 CircleAvatar(
-                  backgroundColor: categoryColor.withValues(alpha: 0.15),
+                  backgroundColor: theme.colorScheme.surfaceContainer,
                   child: Icon(
                     hotlineCategoryIcon(hotline.category),
                     color: categoryColor,
@@ -95,7 +95,7 @@ class HotlineCard extends ConsumerWidget {
                       icon: Icon(
                         isFavorite ? Icons.star_rounded : Icons.star_border,
                         color: isFavorite
-                            ? Colors.amber.shade700
+                            ? theme.colorScheme.onSurface
                             : theme.colorScheme.onSurfaceVariant,
                       ),
                     ),

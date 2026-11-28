@@ -161,7 +161,7 @@ class CenterFillBar extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(top: 8),
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(4),
+        borderRadius: BorderRadius.zero,
         child: LinearProgressIndicator(
           value: share,
           minHeight: 8,

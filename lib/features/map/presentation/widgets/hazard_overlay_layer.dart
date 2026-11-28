@@ -289,7 +289,7 @@ class HazardOverlayLegendSections extends StatelessWidget {
                           border: Border.all(
                             color: theme.colorScheme.outlineVariant,
                           ),
-                          borderRadius: BorderRadius.circular(3),
+                          borderRadius: BorderRadius.zero,
                         ),
                       ),
                       const SizedBox(width: 6),

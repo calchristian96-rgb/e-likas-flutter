@@ -48,7 +48,7 @@ class _LoadingSkeletonState extends State<LoadingSkeleton>
             color: baseColor.withValues(
               alpha: 0.35 + (0.3 * _controller.value),
             ),
-            borderRadius: BorderRadius.circular(widget.borderRadius),
+            borderRadius: BorderRadius.zero,
           ),
         );
       },

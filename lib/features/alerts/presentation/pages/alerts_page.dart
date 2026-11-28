@@ -324,15 +324,15 @@ class _SortButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Container(
+      // A line button, like the web's: 2 px ink, square.
       decoration: BoxDecoration(
-        color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
-        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: theme.colorScheme.onSurface, width: 2),
       ),
       child: PopupMenuButton<_AlertSort>(
         initialValue: sort,
         onSelected: onChanged,
         tooltip: l10n.sortAlertsTooltip,
-        icon: Icon(Icons.sort, color: theme.colorScheme.onSurfaceVariant),
+        icon: Icon(Icons.sort, color: theme.colorScheme.onSurface),
         itemBuilder: (context) => [
           CheckedPopupMenuItem(
             value: _AlertSort.newest,

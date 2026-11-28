@@ -210,7 +210,7 @@ class _Callout extends StatelessWidget {
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: warning.withValues(alpha: 0.12),
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.zero,
         border: Border.all(color: warning),
       ),
       child: Text(text, style: theme.textTheme.bodyMedium),

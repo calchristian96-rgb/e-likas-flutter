@@ -200,8 +200,7 @@ class AppTheme {
     WidgetStateProperty<Color?> pressOverlay(Color c) =>
         WidgetStateProperty.resolveWith(
           (s) =>
-              s.contains(WidgetState.pressed) ||
-                  s.contains(WidgetState.hovered)
+              s.contains(WidgetState.pressed) || s.contains(WidgetState.hovered)
               ? c.withValues(alpha: 0.12)
               : s.contains(WidgetState.focused)
               ? focus.withValues(alpha: 0.16)
@@ -459,7 +458,9 @@ class AppTheme {
         backgroundColor: sheet.plate,
         modalBackgroundColor: sheet.plate,
         surfaceTintColor: Colors.transparent,
-        shape: Border(top: BorderSide(color: sheet.rule, width: Sheet.frame)),
+        shape: Border(
+          top: BorderSide(color: sheet.rule, width: Sheet.frame),
+        ),
         elevation: 6,
         modalElevation: 6,
         shadowColor: floatingShadow,
@@ -618,7 +619,13 @@ class AppTheme {
       bodyMedium: body(14, 1.5, FontWeight.w400, ink),
       bodySmall: body(14, 1.45, FontWeight.w400, muted),
       // Buttons.
-      labelLarge: condensed(18, FontWeight.w700, ink, height: 1.1, spacing: 1.2),
+      labelLarge: condensed(
+        18,
+        FontWeight.w700,
+        ink,
+        height: 1.1,
+        spacing: 1.2,
+      ),
       labelMedium: condensed(
         16,
         FontWeight.w600,

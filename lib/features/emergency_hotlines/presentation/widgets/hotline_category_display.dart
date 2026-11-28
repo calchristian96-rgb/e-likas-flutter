@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../../../../app/theme/app_theme.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../domain/hotline.dart';
 
@@ -25,17 +24,10 @@ IconData hotlineCategoryIcon(HotlineCategory category) {
 }
 
 Color hotlineCategoryColor(HotlineCategory category, ThemeData theme) {
-  final semantic = theme.extension<AppSemanticColors>()!;
-  return switch (category) {
-    HotlineCategory.nationalEmergency => theme.colorScheme.error,
-    HotlineCategory.fire => theme.colorScheme.error,
-    HotlineCategory.disasterResponse => theme.colorScheme.primary,
-    HotlineCategory.police => theme.colorScheme.primary,
-    HotlineCategory.medical => semantic.success,
-    HotlineCategory.rescue => theme.colorScheme.primary,
-    HotlineCategory.socialWelfare => semantic.warning,
-    HotlineCategory.utility => theme.colorScheme.tertiary,
-  };
+  // On the map sheet a category is told apart by its icon and name, all
+  // in ink: red, amber and green belong to the evacuation states and
+  // sienna to actions, so none of them is borrowed here.
+  return theme.colorScheme.onSurface;
 }
 
 String hotlineCategoryLabel(BuildContext context, HotlineCategory category) {

@@ -4,7 +4,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/widgets/empty_state.dart';
 import '../../../../core/widgets/error_state.dart';
+import '../../../../app/theme/sheet_tokens.dart';
 import '../../../../core/widgets/filter_chip_row.dart';
+import '../../../../core/widgets/map_sheet.dart';
 import '../../../../core/widgets/search_field.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../domain/entities/evacuation_center.dart';
@@ -150,6 +152,16 @@ class _EvacuationCentersListPageState
                   labelBuilder: (status) => status == null
                       ? l10n.filterAll
                       : localizedCenterStatus(context, status),
+                  // The legend's own shapes, so a filter reads like the map.
+                  leadingBuilder: (status, selected) => status == null
+                      ? null
+                      : CenterSymbol(
+                          status: status,
+                          size: 20,
+                          stroke: selected
+                              ? SheetPalette.of(context).ground
+                              : null,
+                        ),
                   onSelected: (status) =>
                       setState(() => _statusFilter = status),
                 ),
@@ -235,15 +247,15 @@ class _CenterSortButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Container(
+      // A line button, like the web's: 2 px ink, square.
       decoration: BoxDecoration(
-        color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
-        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: theme.colorScheme.onSurface, width: 2),
       ),
       child: PopupMenuButton<_CenterSort>(
         initialValue: sort,
         onSelected: onChanged,
         tooltip: l10n.sortCentersTooltip,
-        icon: Icon(Icons.sort, color: theme.colorScheme.onSurfaceVariant),
+        icon: Icon(Icons.sort, color: theme.colorScheme.onSurface),
         itemBuilder: (context) => [
           CheckedPopupMenuItem(
             value: _CenterSort.name,

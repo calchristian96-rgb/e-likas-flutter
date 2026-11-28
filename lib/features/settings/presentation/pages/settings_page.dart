@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../app/theme/app_theme.dart';
+import '../../../../core/widgets/map_sheet.dart';
 import '../../../../core/widgets/ui_kit.dart';
 import '../../../../core/localization/app_locale.dart';
 import '../../../../core/localization/app_theme_mode.dart';
@@ -297,20 +298,8 @@ class _SectionLabel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final semantic = theme.extension<AppSemanticColors>()!;
-    // Logo navy on the light page; on the dark page navy text would be
-    // near-invisible (under 2:1), so it takes the secondary text color.
-    final color = theme.brightness == Brightness.dark
-        ? theme.colorScheme.onSurfaceVariant
-        : semantic.navy;
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(6, 0, 6, 8),
-      child: Text(
-        title,
-        style: theme.textTheme.titleSmall?.copyWith(color: color),
-      ),
-    );
+    // The sheet's margin head (map-label over a 1.5 px ink rule).
+    return MarginHead(title, top: 0);
   }
 }
 
@@ -325,15 +314,8 @@ class _SettingsCard extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         color: theme.cardColor,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.zero,
         border: Border.all(color: theme.colorScheme.outline),
-        boxShadow: [
-          BoxShadow(
-            color: theme.colorScheme.shadow.withValues(alpha: 0.05),
-            blurRadius: 8,
-            offset: const Offset(0, 2),
-          ),
-        ],
       ),
       clipBehavior: Clip.antiAlias,
       child: Column(children: children),
@@ -385,15 +367,17 @@ class _SettingsRow extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
       child: Row(
         children: [
+          // A plain ink icon ([iconColor] is no longer painted: sienna
+          // is for actions, and a tinted tile is decoration).
           leading ??
-              Container(
+              SizedBox(
                 width: 36,
                 height: 36,
-                decoration: BoxDecoration(
-                  color: iconColor.withValues(alpha: 0.12),
-                  borderRadius: BorderRadius.circular(10),
+                child: Icon(
+                  icon,
+                  size: 22,
+                  color: theme.colorScheme.onSurfaceVariant,
                 ),
-                child: Icon(icon, size: 20, color: iconColor),
               ),
           const SizedBox(width: 12),
           Expanded(

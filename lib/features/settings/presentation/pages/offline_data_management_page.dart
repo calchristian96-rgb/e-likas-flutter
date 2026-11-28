@@ -304,7 +304,7 @@ class _OverviewTile extends StatelessWidget {
       clipBehavior: Clip.antiAlias,
       decoration: BoxDecoration(
         color: theme.cardColor,
-        borderRadius: BorderRadius.circular(14),
+        borderRadius: BorderRadius.zero,
         border: Border.all(color: theme.colorScheme.outline),
       ),
       padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
@@ -312,14 +312,10 @@ class _OverviewTile extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
-          Container(
+          SizedBox(
             width: 32,
             height: 32,
-            decoration: BoxDecoration(
-              color: accentColor.withValues(alpha: 0.12),
-              borderRadius: BorderRadius.circular(9),
-            ),
-            child: Icon(icon, size: 17, color: accentColor),
+            child: Center(child: Icon(icon, size: 17, color: accentColor)),
           ),
           const SizedBox(height: 8),
           FittedBox(
@@ -385,14 +381,16 @@ class _CategoryTile extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
       child: Row(
         children: [
-          Container(
+          SizedBox(
             width: 36,
             height: 36,
-            decoration: BoxDecoration(
-              color: theme.colorScheme.primary.withValues(alpha: 0.1),
-              borderRadius: BorderRadius.circular(10),
+            child: Center(
+              child: Icon(
+                icon,
+                size: 18,
+                color: theme.colorScheme.onSurfaceVariant,
+              ),
             ),
-            child: Icon(icon, size: 18, color: theme.colorScheme.primary),
           ),
           const SizedBox(width: 12),
           Expanded(
@@ -436,7 +434,7 @@ class _CategoryTile extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         color: theme.cardColor,
-        borderRadius: BorderRadius.circular(14),
+        borderRadius: BorderRadius.zero,
         border: Border.all(color: theme.colorScheme.outline),
       ),
       clipBehavior: Clip.antiAlias,

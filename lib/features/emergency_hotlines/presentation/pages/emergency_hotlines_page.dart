@@ -1,3 +1,5 @@
+import '../../../../app/theme/sheet_tokens.dart';
+import '../../../../core/widgets/map_sheet.dart';
 import '../../../../core/widgets/ui_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -62,7 +64,7 @@ class EmergencyHotlinesPage extends ConsumerWidget {
             _SectionHeader(
               icon: Icons.star_rounded,
               label: l10n.favoritesSectionTitle,
-              color: Colors.amber.shade700,
+              color: Theme.of(context).colorScheme.onSurface,
             ),
             const SizedBox(height: 8),
             for (final hotline in favoriteHotlines)
@@ -134,23 +136,30 @@ class _SectionHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    return Row(
-      children: [
-        Icon(icon, size: 18, color: color),
-        const SizedBox(width: 8),
-        Expanded(
-          child: Text(
-            label,
-            style: theme.textTheme.titleSmall?.copyWith(
-              color: color,
-              fontWeight: FontWeight.w700,
-            ),
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-          ),
+    // A margin head: icon and map-label caps over a 1.5 px ink rule.
+    final p = SheetPalette.of(context);
+    return Container(
+      padding: const EdgeInsets.only(bottom: 6),
+      decoration: BoxDecoration(
+        border: Border(
+          bottom: BorderSide(color: p.rule, width: Sheet.rule),
         ),
-      ],
+      ),
+      child: Row(
+        children: [
+          Icon(icon, size: 18, color: p.ink),
+          const SizedBox(width: 8),
+          Expanded(
+            child: Text(
+              label.toUpperCase(),
+              semanticsLabel: label,
+              style: SheetText.label(p.ink, size: 15),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -167,34 +176,8 @@ class _OfficialServicesBanner extends StatelessWidget {
   final String message;
 
   @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    return Container(
-      decoration: BoxDecoration(
-        color: theme.colorScheme.secondaryContainer,
-        borderRadius: BorderRadius.circular(14),
-      ),
-      padding: const EdgeInsets.all(12),
-      child: Row(
-        children: [
-          Icon(
-            Icons.shield_outlined,
-            color: theme.colorScheme.onSecondaryContainer,
-          ),
-          const SizedBox(width: 10),
-          Expanded(
-            child: Text(
-              message,
-              style: theme.textTheme.bodySmall?.copyWith(
-                color: theme.colorScheme.onSecondaryContainer,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
+  Widget build(BuildContext context) =>
+      SheetNote(icon: Icons.shield_outlined, message: message);
 }
 
 /// A compact, static (no icon/colour change over time) strip making
@@ -208,35 +191,11 @@ class _EmergencyInfoBanner extends StatelessWidget {
   final String message;
 
   @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    return Container(
-      decoration: BoxDecoration(
-        color: theme.colorScheme.error.withValues(alpha: 0.08),
-        borderRadius: BorderRadius.circular(14),
-        border: Border.all(
-          color: theme.colorScheme.error.withValues(alpha: 0.3),
-        ),
-      ),
-      padding: const EdgeInsets.all(12),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Icon(Icons.priority_high_rounded, color: theme.colorScheme.error),
-          const SizedBox(width: 10),
-          Expanded(
-            child: Text(
-              message,
-              style: theme.textTheme.bodySmall?.copyWith(
-                color: theme.colorScheme.error,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
+  Widget build(BuildContext context) => SheetNote(
+    icon: Icons.priority_high_rounded,
+    message: message,
+    advisory: true,
+  );
 }
 
 class _OfflineCapabilityBanner extends StatelessWidget {
@@ -245,22 +204,6 @@ class _OfflineCapabilityBanner extends StatelessWidget {
   final String message;
 
   @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    return Card(
-      margin: EdgeInsets.zero,
-      color: theme.colorScheme.primaryContainer.withValues(alpha: 0.4),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
-      child: Padding(
-        padding: const EdgeInsets.all(12),
-        child: Row(
-          children: [
-            Icon(Icons.offline_bolt_outlined, color: theme.colorScheme.primary),
-            const SizedBox(width: 10),
-            Expanded(child: Text(message, style: theme.textTheme.bodySmall)),
-          ],
-        ),
-      ),
-    );
-  }
+  Widget build(BuildContext context) =>
+      SheetNote(icon: Icons.offline_bolt_outlined, message: message);
 }

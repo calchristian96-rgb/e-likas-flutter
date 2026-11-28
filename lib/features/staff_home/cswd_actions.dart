@@ -99,9 +99,9 @@ class StartEvacuationCard extends ConsumerWidget {
             Text(l10n.cswdStartHint, style: theme.textTheme.bodySmall),
             const SizedBox(height: 12),
             FilledButton.icon(
+              // An action, so sienna: red is the evacuation status.
               style: FilledButton.styleFrom(
                 minimumSize: const Size.fromHeight(56),
-                backgroundColor: theme.colorScheme.error,
               ),
               icon: const Icon(Icons.campaign_outlined),
               label: Text(l10n.cswdStartEvacuation),
@@ -270,7 +270,7 @@ class EvacuationProgressPage extends ConsumerWidget {
                     Card(
                       margin: const EdgeInsets.only(bottom: 8),
                       child: InkWell(
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.zero,
                         onTap: () => context.go('/staff/barangays/${r.id}'),
                         child: Padding(
                           padding: const EdgeInsets.all(12),

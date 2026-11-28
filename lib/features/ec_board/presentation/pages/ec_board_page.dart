@@ -420,7 +420,7 @@ class _BoardSheet extends StatelessWidget {
       clipBehavior: Clip.antiAlias,
       decoration: BoxDecoration(
         color: theme.colorScheme.surfaceContainerLow,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.zero,
         border: Border.all(color: theme.colorScheme.outlineVariant),
       ),
       child: Column(
@@ -719,7 +719,7 @@ class _AttentionNote extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(10, 8, 10, 8),
       decoration: BoxDecoration(
         color: warning.withValues(alpha: 0.10),
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.zero,
         border: Border.all(color: warning.withValues(alpha: 0.45)),
       ),
       child: Column(
@@ -1053,7 +1053,7 @@ class _PendingSection extends StatelessWidget {
       clipBehavior: Clip.antiAlias,
       decoration: BoxDecoration(
         color: warning.withValues(alpha: 0.06),
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.zero,
         border: Border.all(color: warning.withValues(alpha: 0.55)),
       ),
       child: Column(
@@ -1262,7 +1262,7 @@ class _ClosedEventNote extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
       decoration: BoxDecoration(
         color: warning.withValues(alpha: 0.10),
-        borderRadius: BorderRadius.circular(10),
+        borderRadius: BorderRadius.zero,
         border: Border.all(color: warning.withValues(alpha: 0.35)),
       ),
       child: Row(

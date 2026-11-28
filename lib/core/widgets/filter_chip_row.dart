@@ -17,6 +17,7 @@ class FilterChipRow<T> extends StatelessWidget {
     required this.labelBuilder,
     required this.onSelected,
     this.colorBuilder,
+    this.leadingBuilder,
   });
 
   final List<T> options;
@@ -24,6 +25,11 @@ class FilterChipRow<T> extends StatelessWidget {
   final String Function(T option) labelBuilder;
   final ValueChanged<T> onSelected;
   final Color? Function(T option)? colorBuilder;
+
+  /// A symbol before the words (e.g. a CenterSymbol for a center
+  /// state); wins over [colorBuilder]'s swatch. [selected] is true on
+  /// the inverted (ink) chip.
+  final Widget? Function(T option, bool selected)? leadingBuilder;
 
   @override
   Widget build(BuildContext context) {
@@ -40,17 +46,20 @@ class FilterChipRow<T> extends StatelessWidget {
           final color = colorBuilder?.call(option);
           // Selected inverts to ink, like the web's line button; a status
           // filter keeps a swatch of its colour next to its words.
+          final leading = leadingBuilder?.call(option, isSelected);
           return ChoiceChip(
-            avatar: color == null
-                ? null
-                : Container(
-                    width: 10,
-                    height: 10,
-                    decoration: BoxDecoration(
-                      color: color,
-                      border: Border.all(color: p.symbolStroke),
-                    ),
-                  ),
+            avatar:
+                leading ??
+                (color == null
+                    ? null
+                    : Container(
+                        width: 10,
+                        height: 10,
+                        decoration: BoxDecoration(
+                          color: color,
+                          border: Border.all(color: p.symbolStroke),
+                        ),
+                      )),
             label: Text(labelBuilder(option).toUpperCase()),
             selected: isSelected,
             onSelected: (_) => onSelected(option),

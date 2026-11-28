@@ -1,3 +1,4 @@
+import '../../../../core/widgets/map_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'center_directions.dart';
@@ -5,7 +6,6 @@ import 'center_directions.dart';
 import '../../../../core/utils/distance_formatter.dart';
 import '../../../../core/widgets/accent_card.dart';
 import '../../../../core/widgets/occupancy_progress.dart';
-import '../../../../core/widgets/status_badge.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../domain/entities/evacuation_center.dart';
 import 'center_status_display.dart';
@@ -42,10 +42,9 @@ class EvacuationCenterCard extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(width: 8),
-                StatusBadge(
+                CenterStateTag(
+                  status: center.status,
                   label: localizedCenterStatus(context, center.status),
-                  color: accentColor,
-                  maxWidth: 110,
                 ),
               ],
             ),

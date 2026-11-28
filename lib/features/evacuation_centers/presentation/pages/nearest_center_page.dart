@@ -181,7 +181,7 @@ class _NearestCentersBody extends ConsumerWidget {
                   margin: const EdgeInsets.only(top: 8),
                   decoration: BoxDecoration(
                     color: theme.cardColor,
-                    borderRadius: BorderRadius.circular(14),
+                    borderRadius: BorderRadius.zero,
                     border: Border.all(color: theme.colorScheme.outline),
                   ),
                   padding: const EdgeInsets.symmetric(horizontal: 10),

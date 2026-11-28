@@ -1,3 +1,4 @@
+import '../../core/widgets/map_sheet.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:elikas_mobile/features/evacuation_centers/presentation/widgets/capacity_text.dart';
@@ -402,12 +403,9 @@ class CswdBarangaysPage extends ConsumerWidget {
                             style: theme.textTheme.titleMedium,
                           ),
                         ),
-                        StatusChip(
+                        BarangayStateTag(
+                          status: b['status'] as String? ?? 'normal',
                           label: b['label'] as String? ?? '',
-                          color: barangayStatusColor(
-                            context,
-                            b['status'] as String? ?? 'normal',
-                          ),
                         ),
                       ],
                     ),
@@ -539,12 +537,9 @@ class CswdBarangayDetailPage extends ConsumerWidget {
             return [
               Text(name, style: theme.textTheme.headlineSmall),
               const SizedBox(height: 8),
-              StatusChip(
+              BarangayStateTag(
+                status: status['status'] as String? ?? 'normal',
                 label: status['label'] as String? ?? '',
-                color: barangayStatusColor(
-                  context,
-                  status['status'] as String? ?? 'normal',
-                ),
               ),
               EvacuationOrderLine(
                 order: EvacuationOrder.fromJson(status['order']),
@@ -649,12 +644,10 @@ class CswdBarangayDetailPage extends ConsumerWidget {
                           ],
                         ),
                       ),
-                      StatusChip(
+                      CenterStateTag(
+                        status: c['status'] as String? ?? '',
                         label: localizedCenterStatus(
                           context,
-                          c['status'] as String? ?? '',
-                        ),
-                        color: centerStatusColorOf(
                           c['status'] as String? ?? '',
                         ),
                       ),
@@ -822,10 +815,9 @@ class _OrderDialogState extends State<_OrderDialog> {
           onPressed: () => Navigator.of(context).pop(),
           child: Text(l10n.cancel),
         ),
+        // An action: sienna like every other (red means the
+        // evacuation status itself, never a button).
         FilledButton(
-          style: FilledButton.styleFrom(
-            backgroundColor: theme.colorScheme.error,
-          ),
           onPressed: !_ready
               ? null
               : () => Navigator.of(context).pop((

@@ -25,7 +25,7 @@ class CenterPhotoCard extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return ClipRRect(
-      borderRadius: BorderRadius.circular(16),
+      borderRadius: BorderRadius.zero,
       child: AspectRatio(
         aspectRatio: 16 / 9,
         child: photoUrl == null || photoUrl!.isEmpty

@@ -39,9 +39,7 @@ Future<void> loadSheetFonts() async {
     );
     if (icons.existsSync()) {
       final loader = FontLoader('MaterialIcons')
-        ..addFont(
-          Future.value(ByteData.sublistView(icons.readAsBytesSync())),
-        );
+        ..addFont(Future.value(ByteData.sublistView(icons.readAsBytesSync())));
       await loader.load();
     }
   }

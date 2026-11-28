@@ -54,9 +54,10 @@ Color alertTypeColor(BuildContext context, String alertType) {
     return semantic?.warning ?? theme.colorScheme.error;
   }
   if (normalized.contains('all_clear') || normalized.contains('clear')) {
-    return semantic?.success ?? theme.colorScheme.primary;
+    return semantic?.success ?? theme.colorScheme.onSurfaceVariant;
   }
-  return theme.colorScheme.primary;
+  // Plain information: ink, not sienna (sienna only says "do this").
+  return theme.colorScheme.onSurfaceVariant;
 }
 
 /// A human-readable version of the raw `alert_type` value — turns
@@ -93,9 +94,9 @@ Color alertSeverityColor(BuildContext context, String? severity) {
   return switch (severity) {
     'mandatory' => theme.colorScheme.error,
     'advisory' => semantic?.warning ?? theme.colorScheme.error,
-    'info' => theme.colorScheme.primary,
-    'all_clear' => semantic?.success ?? theme.colorScheme.primary,
-    _ => theme.colorScheme.primary,
+    'info' => theme.colorScheme.onSurfaceVariant,
+    'all_clear' => semantic?.success ?? theme.colorScheme.onSurfaceVariant,
+    _ => theme.colorScheme.onSurfaceVariant,
   };
 }
 

@@ -482,7 +482,7 @@ class _LateEntriesNote extends StatelessWidget {
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
         color: semantic.warning.withValues(alpha: 0.10),
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.zero,
         border: Border.all(color: semantic.warning.withValues(alpha: 0.5)),
       ),
       child: Row(

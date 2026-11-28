@@ -70,10 +70,7 @@ class OccupancyProgress extends StatelessWidget {
           DecoratedBox(
             position: DecorationPosition.foreground,
             decoration: BoxDecoration(
-              border: Border.all(
-                color: theme.colorScheme.outline,
-                width: 1,
-              ),
+              border: Border.all(color: theme.colorScheme.outline, width: 1),
             ),
             child: LinearProgressIndicator(
               value: (percent / 100).clamp(0.0, 1.0),

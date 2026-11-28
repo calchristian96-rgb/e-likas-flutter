@@ -367,7 +367,7 @@ class _PossibleDuplicateWarning extends StatelessWidget {
       padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
         color: warning.withValues(alpha: 0.1),
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.zero,
         border: Border.all(color: warning.withValues(alpha: 0.4)),
       ),
       child: Row(

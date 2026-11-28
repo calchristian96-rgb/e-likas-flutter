@@ -51,7 +51,9 @@ class OfflineBanner extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 9),
       decoration: BoxDecoration(
         color: p.fold,
-        border: Border(bottom: BorderSide(color: p.rule, width: Sheet.hairline)),
+        border: Border(
+          bottom: BorderSide(color: p.rule, width: Sheet.hairline),
+        ),
       ),
       child: Row(
         children: [

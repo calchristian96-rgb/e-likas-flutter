@@ -1,3 +1,4 @@
+import '../../../../core/widgets/map_sheet.dart';
 import '../../../../core/widgets/ui_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:elikas_mobile/core/error/friendly_error.dart';
@@ -8,7 +9,6 @@ import '../widgets/center_directions.dart';
 
 import '../../../../core/widgets/error_state.dart';
 import '../../../../core/widgets/occupancy_progress.dart';
-import '../../../../core/widgets/status_badge.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../domain/entities/evacuation_center.dart';
 import '../providers/evacuation_centers_provider.dart';
@@ -92,14 +92,10 @@ class _CenterDetailsBody extends StatelessWidget {
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-              width: 48,
-              height: 48,
-              decoration: BoxDecoration(
-                color: statusColor.withValues(alpha: 0.12),
-                borderRadius: BorderRadius.circular(14),
-              ),
-              child: Icon(Icons.home_work_outlined, color: statusColor),
+            // The center's state symbol, as on the map and the legend.
+            Padding(
+              padding: const EdgeInsets.only(top: 2),
+              child: CenterSymbol(status: center.status, size: 40),
             ),
             const SizedBox(width: 12),
             Expanded(
@@ -117,9 +113,9 @@ class _CenterDetailsBody extends StatelessWidget {
                     ),
                   ],
                   const SizedBox(height: 8),
-                  StatusBadge(
+                  CenterStateTag(
+                    status: center.status,
                     label: localizedCenterStatus(context, center.status),
-                    color: statusColor,
                   ),
                 ],
               ),
@@ -127,7 +123,13 @@ class _CenterDetailsBody extends StatelessWidget {
           ],
         ),
         const SizedBox(height: 16),
-        CenterPhotoCard(centerId: center.id, photoUrl: center.photoUrl),
+        // An image plate, framed with the sheet's neatline.
+        Neatline(
+          child: CenterPhotoCard(
+            centerId: center.id,
+            photoUrl: center.photoUrl,
+          ),
+        ),
         if (center.photoUrl == null) _PhotoBackfillTrigger(centerId: center.id),
         const Divider(height: 32),
 
@@ -188,7 +190,7 @@ class _CenterDetailsBody extends StatelessWidget {
             color: theme.colorScheme.surfaceContainerHighest.withValues(
               alpha: 0.4,
             ),
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.zero,
           ),
           padding: const EdgeInsets.all(14),
           child: Row(
@@ -307,7 +309,7 @@ class _StatChip extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
       decoration: BoxDecoration(
         color: theme.cardColor,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.zero,
         border: Border.all(color: theme.colorScheme.outline),
       ),
       child: Column(

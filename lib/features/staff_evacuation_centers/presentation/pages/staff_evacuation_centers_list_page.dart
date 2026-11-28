@@ -1,3 +1,4 @@
+import '../../../../core/widgets/map_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -15,7 +16,6 @@ import '../providers/own_centers_provider.dart';
 import '../widgets/approval_badge.dart';
 import '../widgets/center_needs_details.dart';
 import '../widgets/occupancy_note.dart';
-import '../../../../core/widgets/ui_kit.dart';
 
 /// "My Evacuation Centers": the official's own barangay's centers,
 /// from the staff `GET /evacuation-centers` (so Unverified and rejected
@@ -148,7 +148,7 @@ class _StaffCenterTile extends StatelessWidget {
     return Card(
       margin: EdgeInsets.zero,
       child: InkWell(
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.zero,
         onTap: () =>
             context.push('/staff/more/evacuation-centers/${center.id}'),
         child: Padding(
@@ -165,9 +165,9 @@ class _StaffCenterTile extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(width: 8),
-                  StatusChip(
+                  CenterStateTag(
+                    status: center.status,
                     label: localizedCenterStatus(context, center.status),
-                    color: statusColor,
                   ),
                 ],
               ),

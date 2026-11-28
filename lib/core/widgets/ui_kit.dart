@@ -142,8 +142,7 @@ class SectionTitle extends StatelessWidget {
   final Widget? trailing;
 
   @override
-  Widget build(BuildContext context) =>
-      MarginHead(text, trailing: trailing);
+  Widget build(BuildContext context) => MarginHead(text, trailing: trailing);
 }
 
 /// The page's one primary action, fixed at the bottom, above the system
@@ -172,7 +171,9 @@ class BottomActionBar extends StatelessWidget {
       child: DecoratedBox(
         decoration: BoxDecoration(
           color: p.ground,
-          border: Border(top: BorderSide(color: p.rule, width: Sheet.rule)),
+          border: Border(
+            top: BorderSide(color: p.rule, width: Sheet.rule),
+          ),
         ),
         child: SafeArea(
           top: false,

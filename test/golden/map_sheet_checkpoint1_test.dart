@@ -58,13 +58,25 @@ EvacuationCenter _center(
 );
 
 final _centers = [
-  _center(1, 'Binatagan Elementary School', 'active', 13.031, 123.531,
-      inside: 84),
-  _center(2, 'Ligao Central Gym', 'nearly_full', 13.033, 123.536,
-      inside: 176),
+  _center(
+    1,
+    'Binatagan Elementary School',
+    'active',
+    13.031,
+    123.531,
+    inside: 84,
+  ),
+  _center(2, 'Ligao Central Gym', 'nearly_full', 13.033, 123.536, inside: 176),
   _center(3, 'Bonga Covered Court', 'on_standby', 13.028, 123.529),
-  _center(4, 'Tuburan Barangay Hall', 'full', 13.036, 123.54,
-      capacity: 80, inside: 80),
+  _center(
+    4,
+    'Tuburan Barangay Hall',
+    'full',
+    13.036,
+    123.54,
+    capacity: 80,
+    inside: 80,
+  ),
   _center(5, 'Paulba Chapel', 'closed', 13.04, 123.52),
 ];
 
@@ -81,11 +93,18 @@ BarangayStatusBoard _board({required bool news}) => BarangayStatusBoard(
   eventName: news ? 'Typhoon Pepito' : null,
   eventStatus: news ? 'active' : null,
   barangays: [
-    _b(13, 'Binatagan',
-        news ? 'preemptive_evacuation' : 'normal',
-        news ? 'Preemptive evacuation' : 'Normal'),
-    _b(21, 'Tuburan', news ? 'forced_evacuation' : 'normal',
-        news ? 'Forced evacuation' : 'Normal'),
+    _b(
+      13,
+      'Binatagan',
+      news ? 'preemptive_evacuation' : 'normal',
+      news ? 'Preemptive evacuation' : 'Normal',
+    ),
+    _b(
+      21,
+      'Tuburan',
+      news ? 'forced_evacuation' : 'normal',
+      news ? 'Forced evacuation' : 'Normal',
+    ),
     _b(30, 'Bonga', news ? 'watch' : 'normal', news ? 'Watch' : 'Normal'),
   ],
 );
@@ -149,7 +168,9 @@ class _ShellPreview extends StatelessWidget {
       bottomNavigationBar: DecoratedBox(
         decoration: BoxDecoration(
           color: sheet.ground,
-          border: Border(top: BorderSide(color: sheet.rule, width: Sheet.rule)),
+          border: Border(
+            top: BorderSide(color: sheet.rule, width: Sheet.rule),
+          ),
         ),
         child: NavigationBar(
           selectedIndex: 0,
@@ -266,7 +287,13 @@ class _Components extends StatelessWidget {
             selected: 'all',
             labelBuilder: (s) =>
                 s == 'all' ? 'All' : localizedCenterStatus(context, s),
-            colorBuilder: (s) => s == 'all' ? null : centerStatusColorOf(s),
+            leadingBuilder: (s, selected) => s == 'all'
+                ? null
+                : CenterSymbol(
+                    status: s,
+                    size: 20,
+                    stroke: selected ? SheetPalette.of(context).ground : null,
+                  ),
             onSelected: (_) {},
           ),
           Row(

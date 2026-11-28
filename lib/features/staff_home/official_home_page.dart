@@ -1,3 +1,4 @@
+import '../../core/widgets/map_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -5,8 +6,6 @@ import 'package:go_router/go_router.dart';
 import '../../core/widgets/stat_strip.dart';
 import '../../core/widgets/ui_kit.dart';
 import '../../l10n/app_localizations.dart';
-import '../barangay_status/presentation/barangay_status_card.dart'
-    show barangayStatusColor;
 import '../barangay_status/staff/barangay_page.dart';
 import '../box_relief/relief_page.dart';
 import '../box_relief/round_families_page.dart';
@@ -275,10 +274,7 @@ class _QuickStatusCard extends ConsumerWidget {
         children: [
           Text(l10n.homeBarangayStatus, style: theme.textTheme.bodyMedium),
           const SizedBox(height: 4),
-          StatusChip(
-            label: label,
-            color: barangayStatusColor(context, s.status),
-          ),
+          BarangayStateTag(status: s.status, label: label),
           if (queued.isEmpty) EvacuationOrderLine(order: s.order),
           if (queued.isEmpty && s.setAt != null)
             Padding(
