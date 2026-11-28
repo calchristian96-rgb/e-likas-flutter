@@ -394,7 +394,12 @@ class _MapViewState extends ConsumerState<_MapView> {
       children: [
         FlutterMap(
           mapController: _mapController,
-          options: MapOptions(initialCenter: initialCenter, initialZoom: 13),
+          options: MapOptions(
+            initialCenter: initialCenter,
+            initialZoom: 13,
+            // The map's own paper (paper-2), under tiles still loading.
+            backgroundColor: Sheet.paper2,
+          ),
           children: [
             // Street/Satellite are mutually-exclusive BASE maps, kept
             // entirely independent of every overlay below (markers,

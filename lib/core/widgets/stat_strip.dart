@@ -33,26 +33,31 @@ class StatStrip extends StatelessWidget {
             for (final item in items)
               FractionallySizedBox(
                 widthFactor: 0.5,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      item.label.toUpperCase(),
-                      semanticsLabel: item.label,
-                      style: SheetText.label(
-                        theme.colorScheme.onSurfaceVariant,
-                        size: 14,
+                // Room between the two columns, so two caps labels never
+                // run together into one.
+                child: Padding(
+                  padding: const EdgeInsetsDirectional.only(end: 12),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        item.label.toUpperCase(),
+                        semanticsLabel: item.label,
+                        style: SheetText.label(
+                          theme.colorScheme.onSurfaceVariant,
+                          size: 14,
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      formatStatValue(item.value),
-                      style: theme.textTheme.headlineMedium?.copyWith(
-                        fontFeatures: const [FontFeature.tabularFigures()],
-                        color: item.alert ? theme.colorScheme.error : null,
+                      const SizedBox(height: 4),
+                      Text(
+                        formatStatValue(item.value),
+                        style: theme.textTheme.headlineMedium?.copyWith(
+                          fontFeatures: const [FontFeature.tabularFigures()],
+                          color: item.alert ? theme.colorScheme.error : null,
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
           ],

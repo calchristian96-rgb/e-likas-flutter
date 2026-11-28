@@ -1,3 +1,4 @@
+import '../../../../app/theme/sheet_tokens.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
@@ -60,6 +61,7 @@ class _CenterMapPickerPageState extends State<CenterMapPickerPage> {
             options: MapOptions(
               initialCenter: _point,
               initialZoom: widget.initial == null ? 14 : 17,
+              backgroundColor: Sheet.paper2,
               onPositionChanged: (camera, _) =>
                   setState(() => _point = camera.center),
               onTap: (_, p) {
