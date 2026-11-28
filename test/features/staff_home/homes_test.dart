@@ -28,8 +28,8 @@ void main() {
     expect(find.widgetWithText(OutlinedButton, 'Watch'), findsOneWidget);
     // Evacuees in my centers, families without a box, boxes left.
     expect(find.text('380'), findsOneWidget);
-    expect(find.text('Families without a box'), findsOneWidget);
-    expect(find.text('Boxes left'), findsOneWidget);
+    expect(find.text('FAMILIES WITHOUT A BOX'), findsOneWidget);
+    expect(find.text('BOXES LEFT'), findsOneWidget);
     // The three big buttons.
     expect(find.text('Register family'), findsOneWidget);
     expect(find.text('Check in / Check out'), findsOneWidget);

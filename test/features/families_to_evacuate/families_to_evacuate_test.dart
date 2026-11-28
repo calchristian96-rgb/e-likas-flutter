@@ -228,7 +228,7 @@ void main() {
 
     expect(find.text('Families to evacuate'), findsOneWidget);
     expect(find.text('HIGH RISK'), findsOneWidget);
-    expect(find.text('Checked in'), findsWidgets);
+    expect(find.text('CHECKED IN'), findsWidgets);
 
     // Maria Santos (high-risk Purok 3) is first.
     await tester.tap(find.widgetWithText(FilledButton, 'Check in').first);

@@ -94,7 +94,7 @@ void main() {
     );
     final outbox = OutboxRepository(db, FakeStaffApi(), offline, 4);
     tester.view.devicePixelRatio = 2;
-    tester.view.physicalSize = const Size(720, 3000);
+    tester.view.physicalSize = const Size(720, 5000);
     addTearDown(tester.view.reset);
     await tester.pumpWidget(
       testApp(
