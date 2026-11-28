@@ -29,6 +29,7 @@ class SectionHeader extends StatelessWidget {
             header: true,
             child: Text(
               title.toUpperCase(),
+              semanticsLabel: title,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
               style: SheetText.label(p.ink, size: 15),
