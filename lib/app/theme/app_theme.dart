@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-/// Brand tokens the Material 3 [ColorScheme] roles don't cover:
-/// warning/success (no such roles exist), plus the two navy shades and
-/// light-blue tint used for the branded header and highlighted
-/// containers. Kept as a [ThemeExtension] — same pattern the project
-/// already used for warning/success — rather than hardcoded [Colors]
-/// constants in a widget, so dark mode and any future re-theming stay
-/// centralized here.
+import 'sheet_tokens.dart';
+
+export 'sheet_tokens.dart';
+
+/// Tokens the Material 3 [ColorScheme] roles don't cover: a warning and
+/// a success colour for plain messages (never for an evacuation state:
+/// those are [Sheet]'s state colours), plus three names kept from the
+/// earlier design so existing screens keep compiling. On the map sheet,
+/// [navy] and [deepNavy] are the heading ink (paper at night) and
+/// [lightBlue] the quiet hydro tint; bulletin navy itself is live status
+/// only and lives in [Sheet.bulletin].
 ///
-/// The values are the E-LIKAS design system's (the web dashboard's
-/// docs/design-system.md): [navy] is the logo's own navy, and
-/// [warning]/[success] are dark enough to be used as *text* on white or
-/// on their own light tints at WCAG AA (4.5:1), not just as icon fills.
+/// [warning] and [success] are dark enough to be text on the ground and
+/// on their own light tints at WCAG AA (4.5:1).
 @immutable
 class AppSemanticColors extends ThemeExtension<AppSemanticColors> {
   const AppSemanticColors({
@@ -30,22 +32,21 @@ class AppSemanticColors extends ThemeExtension<AppSemanticColors> {
   final Color lightBlue;
 
   static const light = AppSemanticColors(
-    // Both are used as text on their own 6-15% tints (badges, callouts),
-    // so they're picked to clear 4.5:1 there too: 4.51:1 (warning) and
-    // 4.83:1 (success) on a 15% tint, 5.6:1 and 6.0:1 on white.
+    // 5.1:1 and 5.5:1 on map paper.
     warning: Color(0xFFA84E08),
     success: Color(0xFF13723A),
-    navy: Color(0xFF094776),
-    deepNavy: Color(0xFF073A61),
-    lightBlue: Color(0xFFEFF6FF),
+    navy: Sheet.ink,
+    deepNavy: Sheet.ink,
+    lightBlue: Sheet.hydroTint,
   );
 
   static const dark = AppSemanticColors(
-    warning: Color(0xFFFBBF24),
-    success: Color(0xFF4ADE80),
-    navy: Color(0xFF094776),
-    deepNavy: Color(0xFF062B48),
-    lightBlue: Color(0xFF172554),
+    // 8.7:1 and 7.5:1 on the night ground.
+    warning: Color(0xFFF0B45A),
+    success: Color(0xFF5FC583),
+    navy: Sheet.paper,
+    deepNavy: Sheet.paper,
+    lightBlue: Color(0xFF1D3A52),
   );
 
   @override
@@ -78,259 +79,560 @@ class AppSemanticColors extends ThemeExtension<AppSemanticColors> {
   }
 }
 
-/// E-LIKAS app theme.
+/// E-LIKAS app theme: the "Ligao Map Sheet" (elikas-backend DESIGN.md).
 ///
-/// An explicit [ColorScheme] built from the E-LIKAS design system — the
-/// same tokens as the web dashboard and the desktop app (brand blue
-/// #2563EB, the logo's navy #094776, gray neutrals, red for danger) —
-/// rather than [ColorScheme.fromSeed]: the brand colors are specified
-/// exactly, not derived algorithmically, so the three apps read as the
-/// same product. Typeface: Public Sans, bundled in assets/fonts/.
+/// Map paper and green-black ink, square corners everywhere (only full
+/// circles stay round), ink rules instead of shadows (only things that
+/// float, such as dialogs, menus, sheets and snackbars, cast one), sienna
+/// as the one action colour, hydro blue for focus and captions.
+/// Barlow Condensed names, labels and acts; Public Sans explains.
+///
+/// Dark mode is the "night sheet": the same system on an ink ground with
+/// paper text. Buttons keep the sienna fill; sienna and hydro *text*
+/// step lighter there so they still pass WCAG AA (see
+/// test/app/theme/sheet_contrast_test.dart).
 class AppTheme {
   AppTheme._();
 
-  static const String fontFamily = 'PublicSans';
+  /// The body face (Public Sans).
+  static const String fontFamily = Sheet.bodyFont;
 
-  static const Color _brandBlue = Color(0xFF2563EB);
-  static const Color _brandBlue100 = Color(0xFFDBEAFE);
-  static const Color _navy = Color(0xFF094776);
-  static const Color _deepNavy = Color(0xFF073A61);
-  static const Color _danger = Color(0xFFDC2626);
-  static const Color _background = Color(0xFFF9FAFB); // gray-50
-  static const Color _cardSurface = Color(0xFFFFFFFF);
-  static const Color _primaryText = Color(0xFF111827); // gray-900
-  static const Color _secondaryText = Color(0xFF4B5563); // gray-600, 7.56:1
-  static const Color _border = Color(0xFFE5E7EB); // gray-200
-  static const Color _buttonBorder = Color(0xFFD1D5DB); // gray-300
+  static const _square = RoundedRectangleBorder();
 
-  /// Form-field border: 3.30:1 on white, the WCAG 1.4.11 minimum for a
-  /// control's boundary (the card border above is far lighter).
-  static const Color _fieldBorder = Color(0xFF868E9C);
-
-  static final ColorScheme _lightScheme = ColorScheme(
+  static const ColorScheme _lightScheme = ColorScheme(
     brightness: Brightness.light,
-    primary: _brandBlue,
+    primary: Sheet.sienna,
     onPrimary: Colors.white,
-    primaryContainer: _brandBlue100,
-    onPrimaryContainer: _navy,
-    secondary: _navy,
+    primaryContainer: Sheet.siennaTint,
+    onPrimaryContainer: Sheet.siennaDark,
+    secondary: Sheet.hydro,
     onSecondary: Colors.white,
-    secondaryContainer: const Color(0xFFEFF6FF),
-    onSecondaryContainer: _navy,
-    tertiary: _deepNavy,
-    onTertiary: Colors.white,
-    error: _danger,
+    secondaryContainer: Sheet.hydroTint,
+    onSecondaryContainer: Color(0xFF164A73),
+    tertiary: Sheet.ink,
+    onTertiary: Sheet.paper,
+    error: Sheet.errorInk,
     onError: Colors.white,
-    errorContainer: const Color(0xFFFEF2F2),
-    onErrorContainer: const Color(0xFF991B1B),
-    surface: _cardSurface,
-    onSurface: _primaryText,
-    surfaceContainerHighest: const Color(0xFFF3F4F6),
-    onSurfaceVariant: _secondaryText,
-    outline: _border,
-    outlineVariant: _border,
-    shadow: Colors.black,
-    scrim: Colors.black,
-    inverseSurface: const Color(0xFF1F2937),
-    onInverseSurface: Colors.white,
-    inversePrimary: const Color(0xFF93C5FD),
+    errorContainer: Color(0xFFF9E3E0),
+    onErrorContainer: Color(0xFF7A1A12),
+    surface: Sheet.paper,
+    onSurface: Sheet.ink,
+    surfaceContainerLowest: Colors.white,
+    surfaceContainerLow: Sheet.paper,
+    surfaceContainer: Sheet.paper2,
+    surfaceContainerHigh: Sheet.paper2,
+    surfaceContainerHighest: Sheet.paper3,
+    onSurfaceVariant: Sheet.ink2,
+    outline: Sheet.ink,
+    outlineVariant: Sheet.paper3,
+    shadow: Sheet.ink,
+    scrim: Sheet.ink,
+    inverseSurface: Sheet.ink,
+    onInverseSurface: Sheet.paper,
+    inversePrimary: Sheet.nightSiennaText,
+    surfaceTint: Colors.transparent,
   );
 
-  static final ColorScheme _darkScheme = ColorScheme(
+  static const ColorScheme _darkScheme = ColorScheme(
     brightness: Brightness.dark,
-    primary: const Color(0xFF60A5FA),
-    onPrimary: const Color(0xFF0F172A),
-    primaryContainer: const Color(0xFF1E3A8A),
-    onPrimaryContainer: _brandBlue100,
-    secondary: const Color(0xFF93C5FD),
-    onSecondary: const Color(0xFF0F172A),
-    secondaryContainer: const Color(0xFF1E3A8A),
-    onSecondaryContainer: _brandBlue100,
-    tertiary: _brandBlue100,
-    onTertiary: _deepNavy,
-    error: const Color(0xFFF87171),
-    onError: const Color(0xFF450A0A),
-    errorContainer: const Color(0xFF7F1D1D),
-    onErrorContainer: const Color(0xFFFEE2E2),
-    surface: const Color(0xFF111827),
-    onSurface: const Color(0xFFF3F4F6),
-    surfaceContainerHighest: const Color(0xFF1F2937),
-    onSurfaceVariant: const Color(0xFF9CA3AF),
-    outline: const Color(0xFF374151),
-    outlineVariant: const Color(0xFF374151),
+    // Sienna as text/icons on the ink ground; buttons keep Sheet.sienna.
+    primary: Sheet.nightSiennaText,
+    onPrimary: Sheet.ink,
+    primaryContainer: Color(0xFF4A2A18),
+    onPrimaryContainer: Sheet.siennaTint,
+    secondary: Sheet.nightHydroText,
+    onSecondary: Sheet.ink,
+    secondaryContainer: Color(0xFF1D3A52),
+    onSecondaryContainer: Sheet.hydroTint,
+    tertiary: Sheet.paper,
+    onTertiary: Sheet.ink,
+    error: Sheet.nightErrorText,
+    onError: Sheet.ink,
+    errorContainer: Color(0xFF4A1A14),
+    onErrorContainer: Color(0xFFFAD4CF),
+    surface: Sheet.nightGround,
+    onSurface: Sheet.paper,
+    surfaceContainerLowest: Sheet.nightField,
+    surfaceContainerLow: Sheet.nightPlate,
+    surfaceContainer: Sheet.nightPlate,
+    surfaceContainerHigh: Sheet.nightFold,
+    surfaceContainerHighest: Sheet.nightFold,
+    onSurfaceVariant: Sheet.nightText2,
+    outline: Sheet.nightRule,
+    outlineVariant: Sheet.nightCrease,
     shadow: Colors.black,
     scrim: Colors.black,
-    inverseSurface: const Color(0xFFF3F4F6),
-    onInverseSurface: const Color(0xFF111827),
-    inversePrimary: _brandBlue,
+    inverseSurface: Sheet.paper,
+    onInverseSurface: Sheet.ink,
+    inversePrimary: Sheet.sienna,
+    surfaceTint: Colors.transparent,
   );
 
   static ThemeData get light => _themeFrom(_lightScheme);
 
   static ThemeData get dark => _themeFrom(_darkScheme);
 
-  static ThemeData _themeFrom(ColorScheme colorScheme) {
-    final isDark = colorScheme.brightness == Brightness.dark;
-    final semanticColors = isDark
-        ? AppSemanticColors.dark
-        : AppSemanticColors.light;
-    final textTheme = _textThemeFrom(colorScheme);
+  static ThemeData _themeFrom(ColorScheme scheme) {
+    final isDark = scheme.brightness == Brightness.dark;
+    final semantic = isDark ? AppSemanticColors.dark : AppSemanticColors.light;
+    final sheet = isDark ? SheetPalette.night : SheetPalette.light;
+    final text = _textThemeFrom(scheme);
 
-    // One shape for every button and field, like the web's rounded-lg.
-    final controlShape = RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(8),
-    );
-    const buttonPadding = EdgeInsets.symmetric(horizontal: 16, vertical: 10);
-    // 48 dp: the touch target for field use (E27).
+    // 48 dp: the touch target for field use.
     const buttonMinSize = Size(64, 48);
-    final buttonText = textTheme.labelLarge?.copyWith(
-      fontSize: 14,
-      fontWeight: FontWeight.w600,
+    const buttonPadding = EdgeInsets.symmetric(horizontal: 20, vertical: 12);
+    final buttonText = text.labelLarge!;
+
+    // Things that float over the page keep a soft shadow and an ink border.
+    final floatingShape = RoundedRectangleBorder(
+      side: BorderSide(color: sheet.rule, width: Sheet.frame),
     );
-    final fieldBorderColor = isDark ? const Color(0xFF6B7280) : _fieldBorder;
-    OutlineInputBorder fieldBorder(Color color, [double width = 1]) =>
+    final floatingShadow = Sheet.ink.withValues(alpha: isDark ? 0.6 : 0.18);
+
+    OutlineInputBorder field(Color color, [double width = Sheet.rule]) =>
         OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.zero,
           borderSide: BorderSide(color: color, width: width),
         );
+    final fieldColor = isDark ? Sheet.nightRule : Sheet.ink2;
+    final focus = isDark ? Sheet.nightHydroText : Sheet.hydro;
+
+    WidgetStateProperty<Color?> pressOverlay(Color c) =>
+        WidgetStateProperty.resolveWith(
+          (s) =>
+              s.contains(WidgetState.pressed) ||
+                  s.contains(WidgetState.hovered)
+              ? c.withValues(alpha: 0.12)
+              : s.contains(WidgetState.focused)
+              ? focus.withValues(alpha: 0.16)
+              : null,
+        );
+
+    final sienna = ButtonStyle(
+      backgroundColor: WidgetStateProperty.resolveWith(
+        (s) => s.contains(WidgetState.disabled)
+            ? Sheet.sienna.withValues(alpha: 0.6)
+            : s.contains(WidgetState.pressed)
+            ? Sheet.siennaDark
+            : Sheet.sienna,
+      ),
+      foregroundColor: WidgetStateProperty.resolveWith(
+        (s) => s.contains(WidgetState.disabled)
+            ? Colors.white.withValues(alpha: 0.85)
+            : Colors.white,
+      ),
+      iconColor: const WidgetStatePropertyAll(Colors.white),
+      overlayColor: pressOverlay(Colors.black),
+      elevation: const WidgetStatePropertyAll(0),
+      shadowColor: const WidgetStatePropertyAll(Colors.transparent),
+      shape: const WidgetStatePropertyAll(_square),
+      padding: const WidgetStatePropertyAll(buttonPadding),
+      minimumSize: const WidgetStatePropertyAll(buttonMinSize),
+      textStyle: WidgetStatePropertyAll(buttonText),
+    );
 
     return ThemeData(
       useMaterial3: true,
+      brightness: scheme.brightness,
       fontFamily: fontFamily,
-      colorScheme: colorScheme,
-      scaffoldBackgroundColor: isDark ? colorScheme.surface : _background,
-      textTheme: textTheme,
+      colorScheme: scheme,
+      scaffoldBackgroundColor: sheet.ground,
+      canvasColor: sheet.ground,
+      textTheme: text,
+      focusColor: focus.withValues(alpha: 0.16),
+      splashFactory: InkRipple.splashFactory,
+      dividerColor: sheet.rule,
+      textSelectionTheme: TextSelectionThemeData(
+        cursorColor: sheet.ink,
+        selectionColor: isDark
+            ? Sheet.sienna.withValues(alpha: 0.5)
+            : Sheet.siennaTint,
+        selectionHandleColor: scheme.primary,
+      ),
       appBarTheme: AppBarTheme(
-        backgroundColor: colorScheme.surface,
-        foregroundColor: colorScheme.onSurface,
+        backgroundColor: sheet.ground,
+        foregroundColor: sheet.ink,
+        surfaceTintColor: Colors.transparent,
         elevation: 0,
+        scrolledUnderElevation: 0,
         centerTitle: true,
-        titleTextStyle: textTheme.titleLarge,
+        titleTextStyle: text.titleLarge,
+        shape: Border(
+          bottom: BorderSide(color: sheet.rule, width: Sheet.rule),
+        ),
+        iconTheme: IconThemeData(color: sheet.ink),
+        actionsIconTheme: IconThemeData(color: sheet.ink),
         systemOverlayStyle: isDark
             ? SystemUiOverlayStyle.light
             : SystemUiOverlayStyle.dark,
       ),
       cardTheme: CardThemeData(
-        color: colorScheme.surface,
+        color: sheet.plate,
+        surfaceTintColor: Colors.transparent,
         elevation: 0,
         margin: EdgeInsets.zero,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-          side: BorderSide(color: colorScheme.outline),
+          side: BorderSide(color: sheet.rule, width: Sheet.hairline),
         ),
       ),
-      filledButtonTheme: FilledButtonThemeData(
-        style: FilledButton.styleFrom(
-          shape: controlShape,
-          padding: buttonPadding,
-          minimumSize: buttonMinSize,
-          textStyle: buttonText,
-        ),
-      ),
-      elevatedButtonTheme: ElevatedButtonThemeData(
-        style: ElevatedButton.styleFrom(
-          shape: controlShape,
-          padding: buttonPadding,
-          minimumSize: buttonMinSize,
-          textStyle: buttonText,
-          elevation: 0,
-        ),
-      ),
+      filledButtonTheme: FilledButtonThemeData(style: sienna),
+      elevatedButtonTheme: ElevatedButtonThemeData(style: sienna),
       outlinedButtonTheme: OutlinedButtonThemeData(
-        style: OutlinedButton.styleFrom(
-          shape: controlShape,
-          padding: buttonPadding,
-          minimumSize: buttonMinSize,
-          textStyle: buttonText,
-          side: BorderSide(color: isDark ? colorScheme.outline : _buttonBorder),
+        style: ButtonStyle(
+          foregroundColor: WidgetStateProperty.resolveWith(
+            (s) => s.contains(WidgetState.disabled) ? sheet.ink3 : sheet.ink,
+          ),
+          iconColor: WidgetStatePropertyAll(sheet.ink),
+          overlayColor: pressOverlay(sheet.ink),
+          side: WidgetStateProperty.resolveWith(
+            (s) => BorderSide(
+              color: s.contains(WidgetState.disabled) ? sheet.ink3 : sheet.ink,
+              width: Sheet.frame,
+            ),
+          ),
+          shape: const WidgetStatePropertyAll(_square),
+          padding: const WidgetStatePropertyAll(
+            EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          ),
+          minimumSize: const WidgetStatePropertyAll(buttonMinSize),
+          textStyle: WidgetStatePropertyAll(buttonText),
         ),
       ),
       textButtonTheme: TextButtonThemeData(
-        style: TextButton.styleFrom(shape: controlShape, textStyle: buttonText),
+        style: ButtonStyle(
+          foregroundColor: WidgetStateProperty.resolveWith(
+            (s) => s.contains(WidgetState.disabled)
+                ? sheet.ink3
+                : sheet.actionText,
+          ),
+          iconColor: WidgetStatePropertyAll(sheet.actionText),
+          overlayColor: pressOverlay(sheet.actionText),
+          shape: const WidgetStatePropertyAll(_square),
+          minimumSize: const WidgetStatePropertyAll(Size(48, 48)),
+          textStyle: WidgetStatePropertyAll(buttonText),
+        ),
+      ),
+      iconButtonTheme: IconButtonThemeData(
+        style: ButtonStyle(
+          shape: const WidgetStatePropertyAll(_square),
+          overlayColor: pressOverlay(sheet.ink),
+        ),
+      ),
+      floatingActionButtonTheme: FloatingActionButtonThemeData(
+        backgroundColor: Sheet.sienna,
+        foregroundColor: Colors.white,
+        shape: const RoundedRectangleBorder(),
+        elevation: 2,
+        focusElevation: 2,
+        hoverElevation: 3,
+        highlightElevation: 3,
+        extendedTextStyle: buttonText,
+      ),
+      segmentedButtonTheme: SegmentedButtonThemeData(
+        style: ButtonStyle(
+          shape: const WidgetStatePropertyAll(_square),
+          side: WidgetStatePropertyAll(
+            BorderSide(color: sheet.ink, width: Sheet.rule),
+          ),
+          backgroundColor: WidgetStateProperty.resolveWith(
+            (s) => s.contains(WidgetState.selected) ? sheet.ink : null,
+          ),
+          foregroundColor: WidgetStateProperty.resolveWith(
+            (s) => s.contains(WidgetState.selected) ? sheet.ground : sheet.ink,
+          ),
+          iconColor: WidgetStateProperty.resolveWith(
+            (s) => s.contains(WidgetState.selected) ? sheet.ground : sheet.ink,
+          ),
+          textStyle: WidgetStatePropertyAll(text.labelMedium),
+          minimumSize: const WidgetStatePropertyAll(Size(48, 48)),
+        ),
       ),
       inputDecorationTheme: InputDecorationTheme(
-        border: fieldBorder(fieldBorderColor),
-        enabledBorder: fieldBorder(fieldBorderColor),
-        focusedBorder: fieldBorder(colorScheme.primary, 2),
-        errorBorder: fieldBorder(colorScheme.error),
-        focusedErrorBorder: fieldBorder(colorScheme.error, 2),
-        disabledBorder: fieldBorder(colorScheme.outline),
+        filled: true,
+        fillColor: sheet.field,
+        border: field(fieldColor),
+        enabledBorder: field(fieldColor),
+        focusedBorder: field(focus, 2.5),
+        errorBorder: field(scheme.error),
+        focusedErrorBorder: field(scheme.error, 2.5),
+        disabledBorder: field(sheet.crease),
+        hintStyle: TextStyle(color: sheet.ink3),
+        labelStyle: TextStyle(color: sheet.ink2),
+        floatingLabelStyle: WidgetStateTextStyle.resolveWith(
+          (s) => TextStyle(
+            color: s.contains(WidgetState.error)
+                ? scheme.error
+                : s.contains(WidgetState.focused)
+                ? focus
+                : sheet.ink2,
+          ),
+        ),
+        prefixIconColor: sheet.ink2,
+        suffixIconColor: sheet.ink2,
+      ),
+      dropdownMenuTheme: DropdownMenuThemeData(
+        menuStyle: MenuStyle(
+          shape: WidgetStatePropertyAll(floatingShape),
+          backgroundColor: WidgetStatePropertyAll(sheet.plate),
+          surfaceTintColor: const WidgetStatePropertyAll(Colors.transparent),
+          elevation: const WidgetStatePropertyAll(4),
+          shadowColor: WidgetStatePropertyAll(floatingShadow),
+        ),
+      ),
+      menuTheme: MenuThemeData(
+        style: MenuStyle(
+          shape: WidgetStatePropertyAll(floatingShape),
+          backgroundColor: WidgetStatePropertyAll(sheet.plate),
+          surfaceTintColor: const WidgetStatePropertyAll(Colors.transparent),
+          elevation: const WidgetStatePropertyAll(4),
+          shadowColor: WidgetStatePropertyAll(floatingShadow),
+        ),
+      ),
+      popupMenuTheme: PopupMenuThemeData(
+        shape: floatingShape,
+        color: sheet.plate,
+        surfaceTintColor: Colors.transparent,
+        elevation: 4,
+        shadowColor: floatingShadow,
+        textStyle: text.bodyLarge,
       ),
       chipTheme: ChipThemeData(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-        side: BorderSide(color: isDark ? colorScheme.outline : _buttonBorder),
+        shape: const RoundedRectangleBorder(),
+        side: BorderSide(color: sheet.ink, width: Sheet.rule),
+        backgroundColor: sheet.ground,
+        selectedColor: isDark ? const Color(0xFF4A2A18) : Sheet.siennaTint,
+        checkmarkColor: sheet.actionText,
+        labelStyle: text.labelMedium?.copyWith(color: sheet.ink),
+        secondaryLabelStyle: text.labelMedium?.copyWith(color: sheet.ink),
+        iconTheme: IconThemeData(color: sheet.ink, size: 18),
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+      ),
+      checkboxTheme: CheckboxThemeData(
+        shape: const RoundedRectangleBorder(),
+        side: BorderSide(color: sheet.ink2, width: Sheet.frame),
+        fillColor: WidgetStateProperty.resolveWith(
+          (s) => s.contains(WidgetState.selected) ? Sheet.sienna : null,
+        ),
+        checkColor: const WidgetStatePropertyAll(Colors.white),
+      ),
+      radioTheme: RadioThemeData(
+        fillColor: WidgetStateProperty.resolveWith(
+          (s) => s.contains(WidgetState.selected) ? scheme.primary : sheet.ink2,
+        ),
+      ),
+      switchTheme: SwitchThemeData(
+        thumbColor: WidgetStateProperty.resolveWith(
+          (s) => s.contains(WidgetState.selected) ? Colors.white : sheet.ink2,
+        ),
+        trackColor: WidgetStateProperty.resolveWith(
+          (s) => s.contains(WidgetState.selected) ? Sheet.sienna : sheet.fold,
+        ),
+        trackOutlineColor: WidgetStateProperty.resolveWith(
+          (s) => s.contains(WidgetState.selected) ? Sheet.sienna : sheet.ink2,
+        ),
+      ),
+      listTileTheme: ListTileThemeData(
+        shape: const RoundedRectangleBorder(),
+        iconColor: sheet.ink2,
+        textColor: sheet.ink,
+        titleTextStyle: text.bodyLarge?.copyWith(fontWeight: FontWeight.w600),
+        subtitleTextStyle: text.bodyMedium?.copyWith(color: sheet.ink2),
+      ),
+      expansionTileTheme: ExpansionTileThemeData(
+        shape: const RoundedRectangleBorder(),
+        collapsedShape: const RoundedRectangleBorder(),
+        iconColor: sheet.ink,
+        collapsedIconColor: sheet.ink,
+        textColor: sheet.ink,
+        collapsedTextColor: sheet.ink,
       ),
       dialogTheme: DialogThemeData(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        backgroundColor: sheet.plate,
+        surfaceTintColor: Colors.transparent,
+        shape: floatingShape,
+        elevation: 6,
+        shadowColor: floatingShadow,
+        titleTextStyle: text.headlineSmall,
+        contentTextStyle: text.bodyLarge,
+      ),
+      bottomSheetTheme: BottomSheetThemeData(
+        backgroundColor: sheet.plate,
+        modalBackgroundColor: sheet.plate,
+        surfaceTintColor: Colors.transparent,
+        shape: Border(top: BorderSide(color: sheet.rule, width: Sheet.frame)),
+        elevation: 6,
+        modalElevation: 6,
+        shadowColor: floatingShadow,
+        dragHandleColor: sheet.ink3,
+        dragHandleSize: const Size(40, 4),
+        showDragHandle: false,
       ),
       snackBarTheme: SnackBarThemeData(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+        backgroundColor: isDark ? Sheet.paper : Sheet.ink,
+        contentTextStyle: text.bodyLarge?.copyWith(
+          color: isDark ? Sheet.ink : Sheet.paper,
+        ),
+        actionTextColor: isDark ? Sheet.sienna : Sheet.nightSiennaText,
+        shape: const RoundedRectangleBorder(),
+        elevation: 4,
       ),
-      dividerTheme: DividerThemeData(color: colorScheme.outline, space: 1),
+      tooltipTheme: TooltipThemeData(
+        decoration: BoxDecoration(color: isDark ? Sheet.paper : Sheet.ink),
+        textStyle: text.bodyMedium?.copyWith(
+          color: isDark ? Sheet.ink : Sheet.paper,
+        ),
+      ),
+      badgeTheme: BadgeThemeData(
+        backgroundColor: isDark ? Sheet.paper : Sheet.ink,
+        textColor: isDark ? Sheet.ink : Sheet.paper,
+      ),
+      progressIndicatorTheme: ProgressIndicatorThemeData(
+        color: sheet.ink,
+        linearTrackColor: sheet.crease,
+        circularTrackColor: Colors.transparent,
+        refreshBackgroundColor: sheet.plate,
+        borderRadius: BorderRadius.zero,
+      ),
+      sliderTheme: SliderThemeData(
+        activeTrackColor: Sheet.sienna,
+        thumbColor: Sheet.sienna,
+        inactiveTrackColor: sheet.crease,
+      ),
+      dividerTheme: DividerThemeData(
+        color: sheet.rule,
+        space: 1,
+        thickness: Sheet.hairline,
+      ),
+      tabBarTheme: TabBarThemeData(
+        labelColor: sheet.ink,
+        unselectedLabelColor: sheet.ink2,
+        labelStyle: text.labelLarge,
+        unselectedLabelStyle: text.labelLarge?.copyWith(
+          fontWeight: FontWeight.w600,
+        ),
+        indicatorSize: TabBarIndicatorSize.tab,
+        indicator: UnderlineTabIndicator(
+          borderSide: BorderSide(color: sheet.actionText, width: 3),
+        ),
+        dividerColor: sheet.rule,
+      ),
+      drawerTheme: DrawerThemeData(
+        backgroundColor: sheet.plate,
+        shape: const RoundedRectangleBorder(),
+        endShape: const RoundedRectangleBorder(),
+      ),
+      searchBarTheme: SearchBarThemeData(
+        shape: WidgetStatePropertyAll(
+          RoundedRectangleBorder(
+            side: BorderSide(color: sheet.ink, width: Sheet.frame),
+          ),
+        ),
+        elevation: const WidgetStatePropertyAll(0),
+        backgroundColor: WidgetStatePropertyAll(sheet.field),
+      ),
+      datePickerTheme: DatePickerThemeData(
+        shape: floatingShape,
+        backgroundColor: sheet.plate,
+        surfaceTintColor: Colors.transparent,
+        dayShape: const WidgetStatePropertyAll(CircleBorder()),
+      ),
+      timePickerTheme: TimePickerThemeData(
+        shape: floatingShape,
+        backgroundColor: sheet.plate,
+        hourMinuteShape: const RoundedRectangleBorder(),
+        dayPeriodShape: const RoundedRectangleBorder(),
+      ),
       navigationBarTheme: NavigationBarThemeData(
-        backgroundColor: colorScheme.surface,
-        indicatorColor: colorScheme.primaryContainer,
+        backgroundColor: sheet.ground,
+        surfaceTintColor: Colors.transparent,
         elevation: 0,
-        // No custom height override: Material 3's own default (80) is
-        // what gives longer labels like "Nearest Center" room to wrap
-        // to a second line without clipping — a smaller custom value
-        // here reintroduces exactly that clipping.
+        // The current tab: a sienna rule under its icon, like the web's
+        // active nav underline (no tinted pill).
+        indicatorColor: Colors.transparent,
+        indicatorShape: Border(
+          bottom: BorderSide(color: sheet.actionText, width: 3),
+        ),
+        // No custom height: Material 3's default (80) gives long labels
+        // room to wrap to a second line without clipping.
         labelTextStyle: WidgetStateProperty.resolveWith((states) {
           final selected = states.contains(WidgetState.selected);
-          return textTheme.labelSmall?.copyWith(
-            fontWeight: selected ? FontWeight.w700 : FontWeight.w500,
-            color: selected
-                ? (isDark ? colorScheme.onSurface : semanticColors.navy)
-                : colorScheme.onSurfaceVariant,
+          return text.labelSmall?.copyWith(
+            fontWeight: selected ? FontWeight.w700 : FontWeight.w600,
+            color: selected ? sheet.ink : sheet.ink2,
           );
         }),
         iconTheme: WidgetStateProperty.resolveWith((states) {
           final selected = states.contains(WidgetState.selected);
-          return IconThemeData(
-            color: selected
-                ? (isDark ? colorScheme.onSurface : semanticColors.navy)
-                : colorScheme.onSurfaceVariant,
-          );
+          return IconThemeData(color: selected ? sheet.ink : sheet.ink2);
         }),
       ),
-      extensions: [semanticColors],
+      extensions: [semantic, sheet],
     );
   }
 
-  /// Hierarchy per the design spec: page title 24–28, section title
-  /// 17–19, card title 13–15, metric value 22–28, supporting text 12–14,
-  /// labels medium weight. Titles are semibold, as on the web dashboard.
-  static TextTheme _textThemeFrom(ColorScheme colorScheme) {
-    final base = Typography.material2021(colorScheme: colorScheme).englishLike
-        .merge(Typography.material2021(colorScheme: colorScheme).black);
-    // The web design system's type scale (backend docs/design-system.md,
-    // E26): 24 page title / headline figure, 18 section title, 15 card
-    // title and body, 14 labels, buttons, badges and
-    // captions: nothing smaller than 14 on a phone (Part 2.8).
-    TextStyle? size(
-      TextStyle? t,
+  /// Barlow Condensed for display, headline, title and label (names,
+  /// labels, buttons, big numbers); Public Sans for body (explaining).
+  /// Nothing smaller than 14 on a phone; the condensed face runs a step
+  /// larger than Public Sans to read at the same size.
+  static TextTheme _textThemeFrom(ColorScheme scheme) {
+    final ink = scheme.onSurface;
+    final muted = scheme.onSurfaceVariant;
+
+    TextStyle condensed(
       double px,
-      double line,
       FontWeight w,
-      Color c,
-    ) => t?.copyWith(fontSize: px, height: line / px, fontWeight: w, color: c);
-    final ink = colorScheme.onSurface;
-    final muted = colorScheme.onSurfaceVariant;
-    return base
-        .copyWith(
-          headlineSmall: size(base.headlineSmall, 24, 32, FontWeight.w700, ink),
-          titleLarge: size(base.titleLarge, 18, 28, FontWeight.w600, ink),
-          titleMedium: size(base.titleMedium, 15, 24, FontWeight.w600, ink),
-          titleSmall: size(base.titleSmall, 14, 22, FontWeight.w600, ink),
-          bodyLarge: size(base.bodyLarge, 15, 24, FontWeight.w400, ink),
-          bodyMedium: size(base.bodyMedium, 14, 22, FontWeight.w400, ink),
-          bodySmall: size(base.bodySmall, 14, 20, FontWeight.w400, muted),
-          // labelLarge is set explicitly so the dark theme never gets
-          // the "black" typography's dark-on-dark label color.
-          labelLarge: size(base.labelLarge, 14, 22, FontWeight.w600, ink),
-          labelMedium: size(base.labelMedium, 14, 20, FontWeight.w600, ink),
-          labelSmall: size(base.labelSmall, 14, 20, FontWeight.w600, muted),
-        )
-        .apply(fontSizeFactor: 1.0, fontFamily: fontFamily);
+      Color c, {
+      double height = 0.95,
+      double? spacing,
+    }) => TextStyle(
+      fontFamily: Sheet.labelFont,
+      fontSize: px,
+      height: height,
+      fontWeight: w,
+      letterSpacing: spacing ?? -0.005 * px,
+      color: c,
+    );
+
+    TextStyle body(double px, double line, FontWeight w, Color c) => TextStyle(
+      fontFamily: Sheet.bodyFont,
+      fontSize: px,
+      height: line,
+      fontWeight: w,
+      color: c,
+    );
+
+    return TextTheme(
+      displayLarge: condensed(44, FontWeight.w800, ink),
+      displayMedium: condensed(40, FontWeight.w800, ink),
+      displaySmall: condensed(36, FontWeight.w800, ink),
+      headlineLarge: condensed(34, FontWeight.w800, ink),
+      headlineMedium: condensed(30, FontWeight.w800, ink),
+      // Page titles and headline figures.
+      headlineSmall: condensed(28, FontWeight.w800, ink, height: 1.0),
+      // Section titles and the app bar.
+      titleLarge: condensed(23, FontWeight.w800, ink, height: 1.05),
+      // Card titles: the name of a center, an alert, a family.
+      titleMedium: condensed(20, FontWeight.w700, ink, height: 1.1),
+      titleSmall: condensed(18, FontWeight.w700, ink, height: 1.1),
+      bodyLarge: body(15, 1.5, FontWeight.w400, ink),
+      bodyMedium: body(14, 1.5, FontWeight.w400, ink),
+      bodySmall: body(14, 1.45, FontWeight.w400, muted),
+      // Buttons.
+      labelLarge: condensed(18, FontWeight.w700, ink, height: 1.1, spacing: 1.2),
+      labelMedium: condensed(
+        16,
+        FontWeight.w600,
+        ink,
+        height: 1.15,
+        spacing: 0.6,
+      ),
+      labelSmall: condensed(
+        15,
+        FontWeight.w600,
+        muted,
+        height: 1.15,
+        spacing: 0.6,
+      ),
+    );
   }
 }
