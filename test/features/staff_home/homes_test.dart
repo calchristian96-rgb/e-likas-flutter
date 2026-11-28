@@ -24,7 +24,7 @@ void main() {
 
     expect(find.text('Event: Typhoon Pepito'), findsOneWidget);
     // Status with the quick buttons it may still switch to.
-    expect(find.text('Flooding reported'), findsOneWidget);
+    expect(find.text('FLOODING REPORTED'), findsOneWidget);
     expect(find.widgetWithText(OutlinedButton, 'Watch'), findsOneWidget);
     // Evacuees in my centers, families without a box, boxes left.
     expect(find.text('380'), findsOneWidget);

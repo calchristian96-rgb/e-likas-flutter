@@ -127,7 +127,7 @@ class _HomePageState extends ConsumerState<HomePage> {
     // first-pass dashboard timestamp.
     ref.listen(allEvacuationCentersProvider, (previous, next) {
       if (next.hasValue) {
-        setState(() => _lastUpdated = DateTime.now());
+        setState(() => _lastUpdated = deviceNow());
       }
     });
 

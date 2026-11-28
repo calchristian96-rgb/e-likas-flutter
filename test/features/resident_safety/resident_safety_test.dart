@@ -172,8 +172,8 @@ void main() {
       ),
     );
     await tester.pumpAndSettle();
-    expect(find.text('Forced evacuation: Bay'), findsOneWidget);
-    expect(find.text('Nearest open centers'), findsOneWidget);
+    expect(find.text('FORCED EVACUATION: BAY'), findsOneWidget);
+    expect(find.text('NEAREST OPEN CENTERS'), findsOneWidget);
   });
 
   test('barangay-status: flood and Mayon per barangay are parsed', () {

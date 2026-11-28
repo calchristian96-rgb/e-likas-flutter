@@ -1,4 +1,5 @@
 import 'package:intl/intl.dart';
+import 'package:flutter/foundation.dart' show visibleForTesting;
 
 /// The current moment, expressed in Philippine Standard Time
 /// (Asia/Manila, UTC+08:00) regardless of the device's own configured
@@ -20,8 +21,13 @@ import 'package:intl/intl.dart';
 /// it back into further timezone-sensitive arithmetic expecting a
 /// true UTC instant.
 DateTime philippineNow() {
-  return DateTime.now().toUtc().add(const Duration(hours: 8));
+  return deviceNow().toUtc().add(const Duration(hours: 8));
 }
+
+/// The device clock behind [philippineNow]. Always `DateTime.now` in the
+/// app; golden tests pin it so their screenshots do not change daily.
+@visibleForTesting
+DateTime Function() deviceNow = DateTime.now;
 
 /// [moment] as Manila wall-clock time, e.g. "Nov 17, 3:00 PM": the
 /// times the server reports (orders, final counts, late entries) are

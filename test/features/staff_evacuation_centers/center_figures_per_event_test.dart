@@ -206,11 +206,11 @@ void main() {
       );
       await tester.pumpAndSettle();
       expect(find.text('0 / 1,088'), findsOneWidget);
-      expect(find.text('On standby'), findsOneWidget);
+      expect(find.text('ON STANDBY'), findsOneWidget);
       expect(find.text('87 people here for Typhoon Drill'), findsOneWidget);
       expect(find.text('87 / 1,088'), findsNothing);
       // The Evacuees total of the strip is the event's own: 0.
-      expect(find.text('Evacuees'), findsOneWidget);
+      expect(find.text('EVACUEES'), findsOneWidget);
       expect(find.text('0'), findsOneWidget);
     },
   );
@@ -223,7 +223,7 @@ void main() {
     );
     await tester.pumpAndSettle();
     expect(find.text('87 / 1,088'), findsOneWidget);
-    expect(find.text('Active'), findsOneWidget);
+    expect(find.text('ACTIVE'), findsOneWidget);
     expect(find.textContaining('people here for'), findsNothing);
     expect(find.text('87'), findsOneWidget);
   });
@@ -239,7 +239,7 @@ void main() {
     );
     await tester.pumpAndSettle();
     expect(find.text('0 / 1,088 (0%)'), findsOneWidget);
-    expect(find.text('On standby'), findsOneWidget);
+    expect(find.text('ON STANDBY'), findsOneWidget);
     expect(find.text('87 people here for Typhoon Drill'), findsOneWidget);
     expect(find.textContaining('87 / 1,088'), findsNothing);
   });

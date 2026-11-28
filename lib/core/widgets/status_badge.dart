@@ -50,6 +50,7 @@ class StatusBadge extends StatelessWidget {
           Flexible(
             child: Text(
               label.toUpperCase(),
+              semanticsLabel: label,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
               style: SheetText.label(

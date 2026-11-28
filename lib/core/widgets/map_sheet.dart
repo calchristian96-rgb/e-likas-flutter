@@ -194,6 +194,7 @@ class CenterStateTag extends StatelessWidget {
         Flexible(
           child: Text(
             label.toUpperCase(),
+            semanticsLabel: label,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
             style:
@@ -259,6 +260,7 @@ class BarangayStateTag extends StatelessWidget {
         ),
         child: Text(
           label.toUpperCase(),
+          semanticsLabel: label,
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
           style: SheetText.label(
@@ -303,6 +305,7 @@ class MarginHead extends StatelessWidget {
             Expanded(
               child: Text(
                 text.toUpperCase(),
+                semanticsLabel: text,
                 style: SheetText.label(p.ink, size: 15),
               ),
             ),
@@ -327,6 +330,7 @@ class SheetTitle extends StatelessWidget {
     header: true,
     child: Text(
       text.toUpperCase(),
+      semanticsLabel: text,
       style: SheetText.title(
         color ?? SheetPalette.of(context).ink,
         size: size,
@@ -412,6 +416,7 @@ class SheetLabel extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Text(
     text.toUpperCase(),
+    semanticsLabel: text,
     style: SheetText.label(color ?? SheetPalette.of(context).ink2, size: size),
   );
 }

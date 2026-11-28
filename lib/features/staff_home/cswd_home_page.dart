@@ -801,10 +801,16 @@ class _OrderDialogState extends State<_OrderDialog> {
                     _time == null ? l10n.cswdOrderNow : _time!.format(context),
                   ),
                 ),
-                TextButton(
-                  style: TextButton.styleFrom(minimumSize: const Size(48, 48)),
-                  onPressed: _pickTime,
-                  child: Text(l10n.cswdOrderChangeTime),
+                // Flexible: a large text size wraps the label instead of
+                // pushing the row off the dialog.
+                Flexible(
+                  child: TextButton(
+                    style: TextButton.styleFrom(
+                      minimumSize: const Size(48, 48),
+                    ),
+                    onPressed: _pickTime,
+                    child: Text(l10n.cswdOrderChangeTime),
+                  ),
                 ),
               ],
             ),

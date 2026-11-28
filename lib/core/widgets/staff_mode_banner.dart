@@ -56,6 +56,7 @@ class StaffModeBanner extends ConsumerWidget {
                     const SizedBox(width: 8),
                     Text(
                       l10n.staffBannerBack.toUpperCase(),
+                      semanticsLabel: l10n.staffBannerBack,
                       style: SheetText.label(
                         Sheet.nightSiennaText,
                         size: 16,

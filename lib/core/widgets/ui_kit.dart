@@ -117,7 +117,8 @@ class StatusChip extends StatelessWidget {
             Flexible(
               child: Text(
                 label.toUpperCase(),
-                maxLines: 1,
+                semanticsLabel: label,
+                maxLines: 2,
                 overflow: TextOverflow.ellipsis,
                 style: SheetText.label(
                   p.ink,

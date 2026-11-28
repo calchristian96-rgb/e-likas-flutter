@@ -38,6 +38,7 @@ class StatStrip extends StatelessWidget {
                   children: [
                     Text(
                       item.label.toUpperCase(),
+                      semanticsLabel: item.label,
                       style: SheetText.label(
                         theme.colorScheme.onSurfaceVariant,
                         size: 14,

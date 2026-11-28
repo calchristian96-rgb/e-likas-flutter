@@ -365,9 +365,12 @@ class TransferCard extends ConsumerWidget {
                   _ => l10n.transferBetween(r.fromBarangay, r.toBarangay),
                 }, style: theme.textTheme.titleMedium),
               ),
-              StatusChip(
-                label: transferStatusLabel(l10n, r),
-                color: transferStatusColor(r),
+              const SizedBox(width: 8),
+              Flexible(
+                child: StatusChip(
+                  label: transferStatusLabel(l10n, r),
+                  color: transferStatusColor(r),
+                ),
               ),
             ],
           ),

@@ -18,11 +18,11 @@ void main() {
     );
     await tester.pumpAndSettle();
     expect(find.text('Signed in as staff: Ana Official'), findsOneWidget);
-    expect(find.text('Staff Mode'), findsOneWidget);
+    expect(find.text('STAFF MODE'), findsOneWidget);
     final material = tester.widget<Material>(
       find
           .ancestor(
-            of: find.text('Staff Mode'),
+            of: find.text('STAFF MODE'),
             matching: find.byType(Material),
           )
           .first,

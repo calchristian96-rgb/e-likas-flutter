@@ -97,12 +97,12 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.text('Event: Typhoon Drill'), findsOneWidget);
     // Its status: Monitoring until the first check-in makes it Active.
-    expect(find.text('Active'), findsOneWidget);
+    expect(find.text('ACTIVE'), findsOneWidget);
 
     await tester.tap(find.text('Change'));
     await tester.pumpAndSettle();
-    expect(find.text('Open events'), findsOneWidget);
-    expect(find.text('Closed events (read-only)'), findsOneWidget);
+    expect(find.text('OPEN EVENTS'), findsOneWidget);
+    expect(find.text('CLOSED EVENTS (READ-ONLY)'), findsOneWidget);
     expect(find.text('Typhoon Kristine'), findsOneWidget);
 
     await tester.tap(find.text('Typhoon Rolly'));

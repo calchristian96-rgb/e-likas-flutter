@@ -120,7 +120,7 @@ void main() {
     );
     await tester.pumpAndSettle();
 
-    expect(find.text('Suggested for your centers'), findsOneWidget);
+    expect(find.text('SUGGESTED FOR YOUR CENTERS'), findsOneWidget);
     expect(find.text('Approved 6 of 10'), findsOneWidget);
     expect(find.text('Received'), findsOneWidget);
     expect(find.text('Request again'), findsOneWidget);

@@ -85,7 +85,7 @@ void main() {
     (tester) async {
       await _pumpList(tester);
       expect(find.text('From Binatagan'), findsOneWidget);
-      expect(find.text('Escalated to CSWD'), findsOneWidget);
+      expect(find.text('ESCALATED TO CSWD'), findsOneWidget);
       expect(find.text('Bea Bituin: 4 persons'), findsOneWidget);
       // A demo request: "Asked by Binatagan", never "Asked by ,".
       expect(find.textContaining('Asked by Binatagan,'), findsOneWidget);

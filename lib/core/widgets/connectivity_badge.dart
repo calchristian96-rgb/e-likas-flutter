@@ -42,6 +42,7 @@ class ConnectivityBadge extends StatelessWidget {
               const SizedBox(width: 6),
               Text(
                 label.toUpperCase(),
+                semanticsLabel: label,
                 style: SheetText.label(
                   p.ink,
                   size: 14,
